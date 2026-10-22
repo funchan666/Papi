@@ -1,0 +1,2858 @@
+{
+  "Home": {
+    "es": "Inicio",
+    "th": "หน้าแรก",
+    "ar": "الرئيسية",
+    "vi": "Trang chủ",
+    "ko": "홈"
+  },
+  "Voice": {
+    "es": "Voz",
+    "th": "เสียง",
+    "ar": "الصوت",
+    "vi": "Trò chuyện",
+    "ko": "음성"
+  },
+  "Messages": {
+    "es": "Mensajes",
+    "th": "ข้อความ",
+    "ar": "الرسائل",
+    "vi": "Tin nhắn",
+    "ko": "메시지"
+  },
+  "Me": {
+    "es": "Perfil",
+    "th": "โปรไฟล์",
+    "ar": "ملفي",
+    "vi": "Hồ sơ",
+    "ko": "프로필"
+  },
+  "Log in": {
+    "es": "Entrar",
+    "th": "เข้าสู่ระบบ",
+    "ar": "تسجيل الدخول",
+    "vi": "Đăng nhập",
+    "ko": "로그인"
+  },
+  "Skip": {
+    "es": "Omitir",
+    "th": "ข้าม",
+    "ar": "تخطي",
+    "vi": "Bỏ qua",
+    "ko": "건너뛰기"
+  },
+  "Next": {
+    "es": "Siguiente",
+    "th": "ถัดไป",
+    "ar": "التالي",
+    "vi": "Tiếp theo",
+    "ko": "다음"
+  },
+  "By continuing, you agree to our": {
+    "es": "Al continuar, aceptas nuestros",
+    "th": "เมื่อดำเนินการต่อ คุณยอมรับ",
+    "ar": "بالمتابعة، توافق على",
+    "vi": "Khi tiếp tục, bạn đồng ý với",
+    "ko": "계속하면 다음에 동의합니다"
+  },
+  "User Agreement": {
+    "es": "Términos de uso",
+    "th": "ข้อตกลงผู้ใช้",
+    "ar": "اتفاقية المستخدم",
+    "vi": "Điều khoản sử dụng",
+    "ko": "이용약관"
+  },
+  "Privacy Policy": {
+    "es": "Privacidad",
+    "th": "นโยบายความเป็นส่วนตัว",
+    "ar": "سياسة الخصوصية",
+    "vi": "Chính sách quyền riêng tư",
+    "ko": "개인정보 처리방침"
+  },
+  "Settings": {
+    "es": "Ajustes",
+    "th": "การตั้งค่า",
+    "ar": "الإعدادات",
+    "vi": "Cài đặt",
+    "ko": "설정"
+  },
+  "Language": {
+    "es": "Idioma",
+    "th": "ภาษา",
+    "ar": "اللغة",
+    "vi": "Ngôn ngữ",
+    "ko": "언어"
+  },
+  "Save": {
+    "es": "Guardar",
+    "th": "บันทึก",
+    "ar": "حفظ",
+    "vi": "Lưu",
+    "ko": "저장"
+  },
+  "SAVE": {
+    "es": "GUARDAR",
+    "th": "บันทึก",
+    "ar": "حفظ",
+    "vi": "LƯU",
+    "ko": "저장"
+  },
+  "Follow": {
+    "es": "Seguir",
+    "th": "ติดตาม",
+    "ar": "متابعة",
+    "vi": "Theo dõi",
+    "ko": "팔로우"
+  },
+  "Following": {
+    "es": "Siguiendo",
+    "th": "กำลังติดตาม",
+    "ar": "المتابَعون",
+    "vi": "Đang theo dõi",
+    "ko": "팔로잉"
+  },
+  "Follower": {
+    "es": "Seguidores",
+    "th": "ผู้ติดตาม",
+    "ar": "المتابعون",
+    "vi": "Người theo dõi",
+    "ko": "팔로워"
+  },
+  "Friends": {
+    "es": "Amigos",
+    "th": "เพื่อน",
+    "ar": "الأصدقاء",
+    "vi": "Bạn bè",
+    "ko": "친구"
+  },
+  "All": {
+    "es": "Todos",
+    "th": "ทั้งหมด",
+    "ar": "الكل",
+    "vi": "Tất cả",
+    "ko": "전체"
+  },
+  "Recent": {
+    "es": "Recientes",
+    "th": "ล่าสุด",
+    "ar": "الأخيرة",
+    "vi": "Gần đây",
+    "ko": "최근"
+  },
+  "Backpack": {
+    "es": "Colección",
+    "th": "กระเป๋า",
+    "ar": "الحقيبة",
+    "vi": "Bộ sưu tập",
+    "ko": "보관함"
+  },
+  "My backpack": {
+    "es": "Mi colección",
+    "th": "กระเป๋าของฉัน",
+    "ar": "حقيبتي",
+    "vi": "Bộ sưu tập của tôi",
+    "ko": "내 보관함"
+  },
+  "My wallet": {
+    "es": "Mi cartera",
+    "th": "กระเป๋าเงินของฉัน",
+    "ar": "محفظتي",
+    "vi": "Ví của tôi",
+    "ko": "내 지갑"
+  },
+  "Check in": {
+    "es": "Registro diario",
+    "th": "เช็คอิน",
+    "ar": "الحضور اليومي",
+    "vi": "Điểm danh",
+    "ko": "출석 체크"
+  },
+  "Log Out": {
+    "es": "Cerrar sesión",
+    "th": "ออกจากระบบ",
+    "ar": "تسجيل الخروج",
+    "vi": "Đăng xuất",
+    "ko": "로그아웃"
+  },
+  "Log out": {
+    "es": "Cerrar sesión",
+    "th": "ออกจากระบบ",
+    "ar": "تسجيل الخروج",
+    "vi": "Đăng xuất",
+    "ko": "로그아웃"
+  },
+  "Back": {
+    "es": "Volver",
+    "th": "กลับ",
+    "ar": "رجوع",
+    "vi": "Quay lại",
+    "ko": "뒤로"
+  },
+  "Close": {
+    "es": "Cerrar",
+    "th": "ปิด",
+    "ar": "إغلاق",
+    "vi": "Đóng",
+    "ko": "닫기"
+  },
+  "Cancel": {
+    "es": "Cancelar",
+    "th": "ยกเลิก",
+    "ar": "إلغاء",
+    "vi": "Hủy",
+    "ko": "취소"
+  },
+  "Confirm": {
+    "es": "Confirmar",
+    "th": "ยืนยัน",
+    "ar": "تأكيد",
+    "vi": "Xác nhận",
+    "ko": "확인"
+  },
+  "OK": {
+    "es": "Aceptar",
+    "th": "ตกลง",
+    "ar": "موافق",
+    "vi": "OK",
+    "ko": "확인"
+  },
+  "Got it": {
+    "es": "Entendido",
+    "th": "เข้าใจแล้ว",
+    "ar": "فهمت",
+    "vi": "Đã hiểu",
+    "ko": "알겠어요"
+  },
+  "Continue": {
+    "es": "Continuar",
+    "th": "ดำเนินการต่อ",
+    "ar": "متابعة",
+    "vi": "Tiếp tục",
+    "ko": "계속"
+  },
+  "Selected": {
+    "es": "Seleccionado",
+    "th": "เลือกแล้ว",
+    "ar": "محدد",
+    "vi": "Đã chọn",
+    "ko": "선택됨"
+  },
+  "More": {
+    "es": "Más",
+    "th": "เพิ่ม",
+    "ar": "المزيد",
+    "vi": "Thêm",
+    "ko": "더 보기"
+  },
+  "Less": {
+    "es": "Menos",
+    "th": "ลด",
+    "ar": "أقل",
+    "vi": "Bớt",
+    "ko": "줄이기"
+  },
+  "Total": {
+    "es": "Total",
+    "th": "รวม",
+    "ar": "الإجمالي",
+    "vi": "Tổng",
+    "ko": "합계"
+  },
+  "Collect": {
+    "es": "Coleccionar",
+    "th": "สะสม",
+    "ar": "اقتناء",
+    "vi": "Sưu tập",
+    "ko": "수집"
+  },
+  "Gifts": {
+    "es": "Regalos",
+    "th": "ของขวัญ",
+    "ar": "الهدايا",
+    "vi": "Quà tặng",
+    "ko": "선물"
+  },
+  "Collect a gift": {
+    "es": "Coleccionar un regalo",
+    "th": "สะสมของขวัญ",
+    "ar": "اقتناء هدية",
+    "vi": "Sưu tập quà",
+    "ko": "선물 수집"
+  },
+  "Collect gifts": {
+    "es": "Coleccionar regalos",
+    "th": "สะสมของขวัญ",
+    "ar": "اقتناء الهدايا",
+    "vi": "Sưu tập quà",
+    "ko": "선물 수집"
+  },
+  "Collect for my backpack": {
+    "es": "Añadir a mi colección",
+    "th": "เพิ่มในกระเป๋าของฉัน",
+    "ar": "إضافة إلى حقيبتي",
+    "vi": "Thêm vào bộ sưu tập",
+    "ko": "보관함에 수집"
+  },
+  "Explore gifts": {
+    "es": "Explorar regalos",
+    "th": "ดูของขวัญ",
+    "ar": "استكشاف الهدايا",
+    "vi": "Khám phá quà",
+    "ko": "선물 둘러보기"
+  },
+  "Preview gift": {
+    "es": "Vista previa",
+    "th": "ดูตัวอย่างของขวัญ",
+    "ar": "معاينة الهدية",
+    "vi": "Xem trước quà",
+    "ko": "선물 미리 보기"
+  },
+  "Gift previews": {
+    "es": "Vistas previas",
+    "th": "ตัวอย่างของขวัญ",
+    "ar": "معاينات الهدايا",
+    "vi": "Quà đã xem trước",
+    "ko": "선물 미리 보기 기록"
+  },
+  "Send gift": {
+    "es": "Enviar regalo",
+    "th": "ส่งของขวัญ",
+    "ar": "إرسال هدية",
+    "vi": "Tặng quà",
+    "ko": "선물 보내기"
+  },
+  "Display on profile": {
+    "es": "Mostrar en el perfil",
+    "th": "แสดงบนโปรไฟล์",
+    "ar": "عرض في الملف",
+    "vi": "Hiển thị trên hồ sơ",
+    "ko": "프로필에 표시"
+  },
+  "Remove display": {
+    "es": "Quitar del perfil",
+    "th": "เลิกแสดง",
+    "ar": "إزالة العرض",
+    "vi": "Bỏ hiển thị",
+    "ko": "표시 해제"
+  },
+  "My coins": {
+    "es": "Mis monedas",
+    "th": "เหรียญของฉัน",
+    "ar": "عملاتي",
+    "vi": "Xu của tôi",
+    "ko": "내 코인"
+  },
+  "My coins:": {
+    "es": "Mis monedas:",
+    "th": "เหรียญของฉัน:",
+    "ar": "عملاتي:",
+    "vi": "Xu của tôi:",
+    "ko": "내 코인:"
+  },
+  "Recharge": {
+    "es": "Recargar",
+    "th": "เติมเหรียญ",
+    "ar": "شحن الرصيد",
+    "vi": "Nạp xu",
+    "ko": "충전"
+  },
+  "Open wallet": {
+    "es": "Abrir cartera",
+    "th": "เปิดกระเป๋าเงิน",
+    "ar": "فتح المحفظة",
+    "vi": "Mở ví",
+    "ko": "지갑 열기"
+  },
+  "Wallet activity": {
+    "es": "Movimientos",
+    "th": "ประวัติกระเป๋าเงิน",
+    "ar": "سجل المحفظة",
+    "vi": "Lịch sử ví",
+    "ko": "지갑 내역"
+  },
+  "GET": {
+    "es": "OBTENER",
+    "th": "รับ",
+    "ar": "الحصول",
+    "vi": "NHẬN",
+    "ko": "받기"
+  },
+  "Not available yet": {
+    "es": "Aún no disponible",
+    "th": "ยังไม่พร้อมใช้งาน",
+    "ar": "غير متاح بعد",
+    "vi": "Chưa khả dụng",
+    "ko": "아직 이용 불가"
+  },
+  "Processing…": {
+    "es": "Procesando…",
+    "th": "กำลังดำเนินการ…",
+    "ar": "جارٍ المعالجة…",
+    "vi": "Đang xử lý…",
+    "ko": "처리 중…"
+  },
+  "Reload products": {
+    "es": "Recargar productos",
+    "th": "โหลดสินค้าใหม่",
+    "ar": "إعادة تحميل المنتجات",
+    "vi": "Tải lại sản phẩm",
+    "ko": "상품 다시 불러오기"
+  },
+  "Recover purchases": {
+    "es": "Recuperar compras",
+    "th": "กู้คืนการซื้อ",
+    "ar": "استرداد المشتريات",
+    "vi": "Khôi phục giao dịch",
+    "ko": "구매 복구"
+  },
+  "Not enough coins": {
+    "es": "Monedas insuficientes",
+    "th": "เหรียญไม่พอ",
+    "ar": "عملات غير كافية",
+    "vi": "Không đủ xu",
+    "ko": "코인 부족"
+  },
+  "Added to your backpack": {
+    "es": "Añadido a tu colección",
+    "th": "เพิ่มในกระเป๋าแล้ว",
+    "ar": "أُضيفت إلى حقيبتك",
+    "vi": "Đã thêm vào bộ sưu tập",
+    "ko": "보관함에 추가됨"
+  },
+  "Gift preview saved": {
+    "es": "Vista previa guardada",
+    "th": "บันทึกตัวอย่างแล้ว",
+    "ar": "حُفظت معاينة الهدية",
+    "vi": "Đã lưu bản xem trước",
+    "ko": "선물 미리 보기 저장됨"
+  },
+  "Sending love": {
+    "es": "Con cariño",
+    "th": "ส่งความรัก",
+    "ar": "بكل حب",
+    "vi": "Gửi yêu thương",
+    "ko": "마음을 담아"
+  },
+  "Peach": {
+    "es": "Melocotón",
+    "th": "พีช",
+    "ar": "خوخ",
+    "vi": "Đào",
+    "ko": "복숭아"
+  },
+  "Sweet brew": {
+    "es": "Dulce café",
+    "th": "กาแฟหวาน",
+    "ar": "قهوة حلوة",
+    "vi": "Vị ngọt cà phê",
+    "ko": "달콤한 커피"
+  },
+  "Three wishes": {
+    "es": "Tres deseos",
+    "th": "สามคำอธิษฐาน",
+    "ar": "ثلاث أمنيات",
+    "vi": "Ba điều ước",
+    "ko": "세 가지 소원"
+  },
+  "Little bird": {
+    "es": "Pajarito",
+    "th": "นกน้อย",
+    "ar": "عصفور صغير",
+    "vi": "Chim nhỏ",
+    "ko": "작은 새"
+  },
+  "Coffee beats": {
+    "es": "Ritmo de café",
+    "th": "จังหวะกาแฟ",
+    "ar": "إيقاع القهوة",
+    "vi": "Nhịp cà phê",
+    "ko": "커피 비트"
+  },
+  "Dream ride": {
+    "es": "Viaje de ensueño",
+    "th": "รถในฝัน",
+    "ar": "رحلة الأحلام",
+    "vi": "Chuyến xe mơ ước",
+    "ko": "꿈의 드라이브"
+  },
+  "Café royalty": {
+    "es": "Realeza del café",
+    "th": "ราชวงศ์กาแฟ",
+    "ar": "ملوك القهوة",
+    "vi": "Hoàng gia cà phê",
+    "ko": "커피 왕관"
+  },
+  "Check in Rewards": {
+    "es": "Recompensas diarias",
+    "th": "รางวัลเช็คอิน",
+    "ar": "مكافآت الحضور",
+    "vi": "Thưởng điểm danh",
+    "ko": "출석 보상"
+  },
+  "Daily check-in": {
+    "es": "Registro diario",
+    "th": "เช็คอินรายวัน",
+    "ar": "الحضور اليومي",
+    "vi": "Điểm danh hằng ngày",
+    "ko": "매일 출석"
+  },
+  "Already checked in": {
+    "es": "Ya te registraste",
+    "th": "เช็คอินแล้ว",
+    "ar": "تم الحضور بالفعل",
+    "vi": "Đã điểm danh",
+    "ko": "이미 출석했어요"
+  },
+  "Checked in today": {
+    "es": "Registro de hoy completado",
+    "th": "เช็คอินวันนี้แล้ว",
+    "ar": "تم حضور اليوم",
+    "vi": "Đã điểm danh hôm nay",
+    "ko": "오늘 출석 완료"
+  },
+  "Check-in complete": {
+    "es": "Registro completado",
+    "th": "เช็คอินสำเร็จ",
+    "ar": "اكتمل الحضور",
+    "vi": "Điểm danh hoàn tất",
+    "ko": "출석 완료"
+  },
+  "My Level": {
+    "es": "Mi nivel",
+    "th": "ระดับของฉัน",
+    "ar": "مستواي",
+    "vi": "Cấp độ của tôi",
+    "ko": "내 레벨"
+  },
+  "My level": {
+    "es": "Mi nivel",
+    "th": "ระดับของฉัน",
+    "ar": "مستواي",
+    "vi": "Cấp độ của tôi",
+    "ko": "내 레벨"
+  },
+  "Your Coffee Journey": {
+    "es": "Tu viaje cafetero",
+    "th": "เส้นทางกาแฟของคุณ",
+    "ar": "رحلتك مع القهوة",
+    "vi": "Hành trình cà phê",
+    "ko": "나의 커피 여정"
+  },
+  "Coffee Community": {
+    "es": "Comunidad del café",
+    "th": "ชุมชนกาแฟ",
+    "ar": "مجتمع القهوة",
+    "vi": "Cộng đồng cà phê",
+    "ko": "커피 커뮤니티"
+  },
+  "Discover & share coffee moments": {
+    "es": "Descubre y comparte momentos de café",
+    "th": "ค้นพบและแบ่งปันช่วงเวลากาแฟ",
+    "ar": "اكتشف وشارك لحظات القهوة",
+    "vi": "Khám phá và chia sẻ khoảnh khắc cà phê",
+    "ko": "커피의 순간을 발견하고 나눠요"
+  },
+  "Coffee Updates": {
+    "es": "Novedades cafeteras",
+    "th": "เรื่องราวกาแฟ",
+    "ar": "جديد القهوة",
+    "vi": "Cập nhật cà phê",
+    "ko": "커피 소식"
+  },
+  "Curated previews": {
+    "es": "Selección de vistas previas",
+    "th": "ตัวอย่างที่คัดสรร",
+    "ar": "معاينات مختارة",
+    "vi": "Nội dung xem trước",
+    "ko": "추천 미리 보기"
+  },
+  "Curated content preview": {
+    "es": "Contenido de muestra",
+    "th": "เนื้อหาตัวอย่างที่คัดสรร",
+    "ar": "معاينة محتوى مختار",
+    "vi": "Nội dung mẫu tuyển chọn",
+    "ko": "추천 콘텐츠 미리 보기"
+  },
+  "Create a post": {
+    "es": "Crear publicación",
+    "th": "สร้างโพสต์",
+    "ar": "إنشاء منشور",
+    "vi": "Tạo bài viết",
+    "ko": "게시물 만들기"
+  },
+  "Coffee moment": {
+    "es": "Momento de café",
+    "th": "ช่วงเวลากาแฟ",
+    "ar": "لحظة قهوة",
+    "vi": "Khoảnh khắc cà phê",
+    "ko": "커피의 순간"
+  },
+  "A coffee moment": {
+    "es": "Un momento de café",
+    "th": "ช่วงเวลากาแฟ",
+    "ar": "لحظة قهوة",
+    "vi": "Một khoảnh khắc cà phê",
+    "ko": "커피의 순간"
+  },
+  "Like": {
+    "es": "Me gusta",
+    "th": "ถูกใจ",
+    "ar": "إعجاب",
+    "vi": "Thích",
+    "ko": "좋아요"
+  },
+  "Unlike": {
+    "es": "Quitar Me gusta",
+    "th": "เลิกถูกใจ",
+    "ar": "إلغاء الإعجاب",
+    "vi": "Bỏ thích",
+    "ko": "좋아요 취소"
+  },
+  "Open comments": {
+    "es": "Ver notas",
+    "th": "ดูบันทึก",
+    "ar": "عرض الملاحظات",
+    "vi": "Xem ghi chú",
+    "ko": "메모 보기"
+  },
+  "Post options": {
+    "es": "Opciones de publicación",
+    "th": "ตัวเลือกโพสต์",
+    "ar": "خيارات المنشور",
+    "vi": "Tùy chọn bài viết",
+    "ko": "게시물 옵션"
+  },
+  "Save coffee moment": {
+    "es": "Guardar momento",
+    "th": "บันทึกช่วงเวลา",
+    "ar": "حفظ اللحظة",
+    "vi": "Lưu khoảnh khắc",
+    "ko": "커피의 순간 저장"
+  },
+  "My local notes": {
+    "es": "Mis notas locales",
+    "th": "บันทึกในเครื่องของฉัน",
+    "ar": "ملاحظاتي المحلية",
+    "vi": "Ghi chú trên máy",
+    "ko": "내 기기 메모"
+  },
+  "Delete note": {
+    "es": "Eliminar nota",
+    "th": "ลบบันทึก",
+    "ar": "حذف الملاحظة",
+    "vi": "Xóa ghi chú",
+    "ko": "메모 삭제"
+  },
+  "Photo": {
+    "es": "Foto",
+    "th": "รูปภาพ",
+    "ar": "صورة",
+    "vi": "Ảnh",
+    "ko": "사진"
+  },
+  "Video": {
+    "es": "Vídeo",
+    "th": "วิดีโอ",
+    "ar": "فيديو",
+    "vi": "Video",
+    "ko": "동영상"
+  },
+  "Play": {
+    "es": "Reproducir",
+    "th": "เล่น",
+    "ar": "تشغيل",
+    "vi": "Phát",
+    "ko": "재생"
+  },
+  "Pause": {
+    "es": "Pausar",
+    "th": "หยุดชั่วคราว",
+    "ar": "إيقاف مؤقت",
+    "vi": "Tạm dừng",
+    "ko": "일시 정지"
+  },
+  "Playback position": {
+    "es": "Posición de reproducción",
+    "th": "ตำแหน่งการเล่น",
+    "ar": "موضع التشغيل",
+    "vi": "Vị trí phát",
+    "ko": "재생 위치"
+  },
+  "Play local voice draft": {
+    "es": "Reproducir borrador de voz",
+    "th": "เล่นร่างเสียงในเครื่อง",
+    "ar": "تشغيل المسودة الصوتية",
+    "vi": "Phát bản nháp thoại",
+    "ko": "음성 초안 재생"
+  },
+  "Stop voice draft": {
+    "es": "Detener voz",
+    "th": "หยุดเสียง",
+    "ar": "إيقاف الصوت",
+    "vi": "Dừng bản nháp thoại",
+    "ko": "음성 초안 정지"
+  },
+  "Photo. Double tap to zoom.": {
+    "es": "Foto. Toca dos veces para ampliar.",
+    "th": "รูปภาพ แตะสองครั้งเพื่อซูม",
+    "ar": "صورة. اضغط مرتين للتكبير.",
+    "vi": "Ảnh. Chạm hai lần để phóng to.",
+    "ko": "사진. 두 번 탭하여 확대하세요."
+  },
+  "Add pictures or videos…": {
+    "es": "Añadir fotos o vídeos…",
+    "th": "เพิ่มรูปภาพหรือวิดีโอ…",
+    "ar": "إضافة صور أو فيديو…",
+    "vi": "Thêm ảnh hoặc video…",
+    "ko": "사진 또는 동영상 추가…"
+  },
+  "Choose a different photo or video": {
+    "es": "Elegir otra foto o vídeo",
+    "th": "เลือกรูปภาพหรือวิดีโออื่น",
+    "ar": "اختيار صورة أو فيديو آخر",
+    "vi": "Chọn ảnh hoặc video khác",
+    "ko": "다른 사진 또는 동영상 선택"
+  },
+  "Importing…": {
+    "es": "Importando…",
+    "th": "กำลังนำเข้า…",
+    "ar": "جارٍ الاستيراد…",
+    "vi": "Đang nhập…",
+    "ko": "가져오는 중…"
+  },
+  "Importing photo…": {
+    "es": "Importando foto…",
+    "th": "กำลังนำเข้ารูป…",
+    "ar": "جارٍ استيراد الصورة…",
+    "vi": "Đang nhập ảnh…",
+    "ko": "사진 가져오는 중…"
+  },
+  "Take photo": {
+    "es": "Hacer foto",
+    "th": "ถ่ายรูป",
+    "ar": "التقاط صورة",
+    "vi": "Chụp ảnh",
+    "ko": "사진 촬영"
+  },
+  "Record video": {
+    "es": "Grabar vídeo",
+    "th": "บันทึกวิดีโอ",
+    "ar": "تسجيل فيديو",
+    "vi": "Quay video",
+    "ko": "동영상 촬영"
+  },
+  "Say something about your coffee…": {
+    "es": "Cuéntanos algo sobre tu café…",
+    "th": "เล่าเรื่องกาแฟของคุณ…",
+    "ar": "اكتب عن قهوتك…",
+    "vi": "Kể về cà phê của bạn…",
+    "ko": "커피 이야기를 들려주세요…"
+  },
+  "Tell your opinion…": {
+    "es": "Escribe tu opinión…",
+    "th": "เขียนความคิดเห็น…",
+    "ar": "اكتب رأيك…",
+    "vi": "Viết suy nghĩ của bạn…",
+    "ko": "생각을 적어주세요…"
+  },
+  "Saved only on this device": {
+    "es": "Guardado solo en este dispositivo",
+    "th": "บันทึกเฉพาะในเครื่องนี้",
+    "ar": "محفوظ على هذا الجهاز فقط",
+    "vi": "Chỉ lưu trên thiết bị này",
+    "ko": "이 기기에만 저장됨"
+  },
+  "Saved on this device": {
+    "es": "Guardado en este dispositivo",
+    "th": "บันทึกในเครื่องนี้",
+    "ar": "محفوظ على هذا الجهاز",
+    "vi": "Đã lưu trên thiết bị này",
+    "ko": "이 기기에 저장됨"
+  },
+  "Save a post for": {
+    "es": "Guardar publicación por",
+    "th": "บันทึกโพสต์ด้วย",
+    "ar": "حفظ منشور مقابل",
+    "vi": "Lưu bài viết với",
+    "ko": "게시물 저장 비용"
+  },
+  "coins": {
+    "es": "monedas",
+    "th": "เหรียญ",
+    "ar": "عملة",
+    "vi": "xu",
+    "ko": "코인"
+  },
+  "Save to my journal": {
+    "es": "Guardar en mi diario",
+    "th": "บันทึกในสมุดของฉัน",
+    "ar": "حفظ في يومياتي",
+    "vi": "Lưu vào nhật ký",
+    "ko": "내 일지에 저장"
+  },
+  "Save this coffee moment?": {
+    "es": "¿Guardar este momento?",
+    "th": "บันทึกช่วงเวลากาแฟนี้ไหม?",
+    "ar": "حفظ لحظة القهوة؟",
+    "vi": "Lưu khoảnh khắc này?",
+    "ko": "이 순간을 저장할까요?"
+  },
+  "Save · 10 coins": {
+    "es": "Guardar · 10 monedas",
+    "th": "บันทึก · 10 เหรียญ",
+    "ar": "حفظ · 10 عملات",
+    "vi": "Lưu · 10 xu",
+    "ko": "저장 · 10 코인"
+  },
+  "Keep editing": {
+    "es": "Seguir editando",
+    "th": "แก้ไขต่อ",
+    "ar": "متابعة التحرير",
+    "vi": "Tiếp tục sửa",
+    "ko": "계속 편집"
+  },
+  "Saved to your journal": {
+    "es": "Guardado en tu diario",
+    "th": "บันทึกในสมุดแล้ว",
+    "ar": "حُفظ في يومياتك",
+    "vi": "Đã lưu vào nhật ký",
+    "ko": "일지에 저장됨"
+  },
+  "Delete post": {
+    "es": "Eliminar publicación",
+    "th": "ลบโพสต์",
+    "ar": "حذف المنشور",
+    "vi": "Xóa bài viết",
+    "ko": "게시물 삭제"
+  },
+  "Keep post": {
+    "es": "Conservar publicación",
+    "th": "เก็บโพสต์",
+    "ar": "إبقاء المنشور",
+    "vi": "Giữ bài viết",
+    "ko": "게시물 유지"
+  },
+  "Delete this local post?": {
+    "es": "¿Eliminar esta publicación local?",
+    "th": "ลบโพสต์ในเครื่องนี้ไหม?",
+    "ar": "حذف هذا المنشور المحلي؟",
+    "vi": "Xóa bài viết trên máy?",
+    "ko": "이 로컬 게시물을 삭제할까요?"
+  },
+  "This content is unavailable": {
+    "es": "Contenido no disponible",
+    "th": "ไม่มีเนื้อหานี้",
+    "ar": "المحتوى غير متاح",
+    "vi": "Nội dung không khả dụng",
+    "ko": "콘텐츠를 볼 수 없어요"
+  },
+  "Profile": {
+    "es": "Perfil",
+    "th": "โปรไฟล์",
+    "ar": "الملف الشخصي",
+    "vi": "Hồ sơ",
+    "ko": "프로필"
+  },
+  "Edit Profile": {
+    "es": "Editar perfil",
+    "th": "แก้ไขโปรไฟล์",
+    "ar": "تعديل الملف",
+    "vi": "Chỉnh sửa hồ sơ",
+    "ko": "프로필 편집"
+  },
+  "Edit profile": {
+    "es": "Editar perfil",
+    "th": "แก้ไขโปรไฟล์",
+    "ar": "تعديل الملف",
+    "vi": "Chỉnh sửa hồ sơ",
+    "ko": "프로필 편집"
+  },
+  "Change background": {
+    "es": "Cambiar fondo",
+    "th": "เปลี่ยนพื้นหลัง",
+    "ar": "تغيير الخلفية",
+    "vi": "Đổi ảnh nền",
+    "ko": "배경 변경"
+  },
+  "Change avatar": {
+    "es": "Cambiar foto",
+    "th": "เปลี่ยนรูปโปรไฟล์",
+    "ar": "تغيير الصورة",
+    "vi": "Đổi ảnh đại diện",
+    "ko": "프로필 사진 변경"
+  },
+  "Your local profile": {
+    "es": "Tu perfil local",
+    "th": "โปรไฟล์ในเครื่องของคุณ",
+    "ar": "ملفك المحلي",
+    "vi": "Hồ sơ trên máy",
+    "ko": "내 기기 프로필"
+  },
+  "Name": {
+    "es": "Nombre",
+    "th": "ชื่อ",
+    "ar": "الاسم",
+    "vi": "Tên",
+    "ko": "이름"
+  },
+  "About you": {
+    "es": "Sobre ti",
+    "th": "เกี่ยวกับคุณ",
+    "ar": "نبذة عنك",
+    "vi": "Giới thiệu",
+    "ko": "소개"
+  },
+  "Please enter the name…": {
+    "es": "Escribe tu nombre…",
+    "th": "กรุณาใส่ชื่อ…",
+    "ar": "أدخل الاسم…",
+    "vi": "Nhập tên…",
+    "ko": "이름을 입력하세요…"
+  },
+  "All good things start with coffee.": {
+    "es": "Todo lo bueno empieza con café.",
+    "th": "สิ่งดีๆ เริ่มต้นด้วยกาแฟ",
+    "ar": "كل الأشياء الجميلة تبدأ بالقهوة.",
+    "vi": "Mọi điều tốt đẹp bắt đầu từ cà phê.",
+    "ko": "좋은 일은 커피 한 잔에서 시작돼요."
+  },
+  "Photo album": {
+    "es": "Álbum de fotos",
+    "th": "อัลบั้มรูป",
+    "ar": "ألبوم الصور",
+    "vi": "Album ảnh",
+    "ko": "사진 앨범"
+  },
+  "Add photo": {
+    "es": "Añadir foto",
+    "th": "เพิ่มรูป",
+    "ar": "إضافة صورة",
+    "vi": "Thêm ảnh",
+    "ko": "사진 추가"
+  },
+  "Remove album photo": {
+    "es": "Eliminar foto del álbum",
+    "th": "ลบรูปจากอัลบั้ม",
+    "ar": "حذف صورة الألبوم",
+    "vi": "Xóa ảnh khỏi album",
+    "ko": "앨범 사진 삭제"
+  },
+  "Posts": {
+    "es": "Publicaciones",
+    "th": "โพสต์",
+    "ar": "المنشورات",
+    "vi": "Bài viết",
+    "ko": "게시물"
+  },
+  "Saved": {
+    "es": "Guardado",
+    "th": "บันทึกไว้",
+    "ar": "المحفوظات",
+    "vi": "Đã lưu",
+    "ko": "저장됨"
+  },
+  "Blacklist": {
+    "es": "Bloqueados",
+    "th": "บัญชีที่บล็อก",
+    "ar": "قائمة الحظر",
+    "vi": "Danh sách chặn",
+    "ko": "차단 목록"
+  },
+  "Connections": {
+    "es": "Conexiones",
+    "th": "ความสัมพันธ์",
+    "ar": "العلاقات",
+    "vi": "Kết nối",
+    "ko": "연결"
+  },
+  "No album photos yet": {
+    "es": "Aún no hay fotos",
+    "th": "ยังไม่มีรูปในอัลบั้ม",
+    "ar": "لا توجد صور بعد",
+    "vi": "Chưa có ảnh",
+    "ko": "아직 앨범 사진이 없어요"
+  },
+  "Add a photo from Edit Profile.": {
+    "es": "Añade una foto desde Editar perfil.",
+    "th": "เพิ่มรูปจากหน้าแก้ไขโปรไฟล์",
+    "ar": "أضف صورة من تعديل الملف.",
+    "vi": "Thêm ảnh từ Chỉnh sửa hồ sơ.",
+    "ko": "프로필 편집에서 사진을 추가하세요."
+  },
+  "Your coffee journal is waiting": {
+    "es": "Tu diario te espera",
+    "th": "สมุดกาแฟกำลังรอคุณ",
+    "ar": "يوميات القهوة بانتظارك",
+    "vi": "Nhật ký cà phê đang chờ",
+    "ko": "커피 일지를 시작해 보세요"
+  },
+  "No saved moments": {
+    "es": "No hay momentos guardados",
+    "th": "ยังไม่มีช่วงเวลาที่บันทึก",
+    "ar": "لا توجد لحظات محفوظة",
+    "vi": "Chưa có khoảnh khắc đã lưu",
+    "ko": "저장한 순간이 없어요"
+  },
+  "No following yet": {
+    "es": "Aún no sigues a nadie",
+    "th": "ยังไม่ได้ติดตามใคร",
+    "ar": "لا تتابع أحدًا بعد",
+    "vi": "Chưa theo dõi ai",
+    "ko": "아직 팔로잉이 없어요"
+  },
+  "No followers": {
+    "es": "Sin seguidores",
+    "th": "ยังไม่มีผู้ติดตาม",
+    "ar": "لا يوجد متابعون",
+    "vi": "Chưa có người theo dõi",
+    "ko": "팔로워가 없어요"
+  },
+  "No mutual connections": {
+    "es": "Sin conexiones mutuas",
+    "th": "ยังไม่มีการติดตามกัน",
+    "ar": "لا توجد متابعة متبادلة",
+    "vi": "Chưa theo dõi lẫn nhau",
+    "ko": "서로 팔로우한 사람이 없어요"
+  },
+  "Your blacklist is empty": {
+    "es": "No hay perfiles bloqueados",
+    "th": "ยังไม่มีบัญชีที่บล็อก",
+    "ar": "قائمة الحظر فارغة",
+    "vi": "Danh sách chặn trống",
+    "ko": "차단 목록이 비어 있어요"
+  },
+  "Hidden profile": {
+    "es": "Perfil oculto",
+    "th": "โปรไฟล์ที่ซ่อน",
+    "ar": "ملف مخفي",
+    "vi": "Hồ sơ đã ẩn",
+    "ko": "숨긴 프로필"
+  },
+  "Unblock": {
+    "es": "Desbloquear",
+    "th": "เลิกบล็อก",
+    "ar": "إلغاء الحظر",
+    "vi": "Bỏ chặn",
+    "ko": "차단 해제"
+  },
+  "Unblock this profile": {
+    "es": "Desbloquear perfil",
+    "th": "เลิกบล็อกโปรไฟล์นี้",
+    "ar": "إلغاء حظر هذا الملف",
+    "vi": "Bỏ chặn hồ sơ này",
+    "ko": "이 프로필 차단 해제"
+  },
+  "Delete local guest": {
+    "es": "Eliminar visitante local",
+    "th": "ลบผู้เยี่ยมชมในเครื่อง",
+    "ar": "حذف الضيف المحلي",
+    "vi": "Xóa khách trên máy",
+    "ko": "로컬 게스트 삭제"
+  },
+  "Delete local data": {
+    "es": "Eliminar datos locales",
+    "th": "ลบข้อมูลในเครื่อง",
+    "ar": "حذف البيانات المحلية",
+    "vi": "Xóa dữ liệu trên máy",
+    "ko": "로컬 데이터 삭제"
+  },
+  "Delete this local guest?": {
+    "es": "¿Eliminar este visitante local?",
+    "th": "ลบผู้เยี่ยมชมนี้ไหม?",
+    "ar": "حذف هذا الضيف المحلي؟",
+    "vi": "Xóa khách trên máy này?",
+    "ko": "이 로컬 게스트를 삭제할까요?"
+  },
+  "Log out?": {
+    "es": "¿Cerrar sesión?",
+    "th": "ออกจากระบบไหม?",
+    "ar": "تسجيل الخروج؟",
+    "vi": "Đăng xuất?",
+    "ko": "로그아웃할까요?"
+  },
+  "Notifications": {
+    "es": "Notificaciones",
+    "th": "การแจ้งเตือน",
+    "ar": "الإشعارات",
+    "vi": "Thông báo",
+    "ko": "알림"
+  },
+  "Local preference: on": {
+    "es": "Preferencia local: activada",
+    "th": "การตั้งค่าในเครื่อง: เปิด",
+    "ar": "التفضيل المحلي: مفعّل",
+    "vi": "Tùy chọn trên máy: bật",
+    "ko": "기기 설정: 켜짐"
+  },
+  "Local preference: off": {
+    "es": "Preferencia local: desactivada",
+    "th": "การตั้งค่าในเครื่อง: ปิด",
+    "ar": "التفضيل المحلي: معطّل",
+    "vi": "Tùy chọn trên máy: tắt",
+    "ko": "기기 설정: 꺼짐"
+  },
+  "Preference saved": {
+    "es": "Preferencia guardada",
+    "th": "บันทึกการตั้งค่าแล้ว",
+    "ar": "حُفظ التفضيل",
+    "vi": "Đã lưu tùy chọn",
+    "ko": "설정 저장됨"
+  },
+  "Local guest": {
+    "es": "Visitante local",
+    "th": "ผู้เยี่ยมชมในเครื่อง",
+    "ar": "ضيف محلي",
+    "vi": "Khách trên máy",
+    "ko": "로컬 게스트"
+  },
+  "Retry local storage": {
+    "es": "Reintentar almacenamiento",
+    "th": "ลองจัดเก็บข้อมูลอีกครั้ง",
+    "ar": "إعادة محاولة التخزين",
+    "vi": "Thử lưu trữ lại",
+    "ko": "기기 저장소 재시도"
+  },
+  "Change language?": {
+    "es": "¿Cambiar idioma?",
+    "th": "เปลี่ยนภาษาไหม?",
+    "ar": "تغيير اللغة؟",
+    "vi": "Đổi ngôn ngữ?",
+    "ko": "언어를 변경할까요?"
+  },
+  "Preview": {
+    "es": "Vista previa",
+    "th": "ตัวอย่าง",
+    "ar": "معاينة",
+    "vi": "Xem trước",
+    "ko": "미리 보기"
+  },
+  "Local preview": {
+    "es": "Vista previa local",
+    "th": "ตัวอย่างในเครื่อง",
+    "ar": "معاينة محلية",
+    "vi": "Xem trước trên máy",
+    "ko": "로컬 미리 보기"
+  },
+  "Profile unavailable": {
+    "es": "Perfil no disponible",
+    "th": "ไม่มีโปรไฟล์นี้",
+    "ar": "الملف غير متاح",
+    "vi": "Hồ sơ không khả dụng",
+    "ko": "프로필을 볼 수 없어요"
+  },
+  "No published posts": {
+    "es": "Sin publicaciones",
+    "th": "ยังไม่มีโพสต์",
+    "ar": "لا توجد منشورات",
+    "vi": "Chưa có bài viết",
+    "ko": "게시물이 없어요"
+  },
+  "Member options": {
+    "es": "Opciones del perfil",
+    "th": "ตัวเลือกสมาชิก",
+    "ar": "خيارات العضو",
+    "vi": "Tùy chọn thành viên",
+    "ko": "회원 옵션"
+  },
+  "Block member": {
+    "es": "Bloquear perfil",
+    "th": "บล็อกสมาชิก",
+    "ar": "حظر العضو",
+    "vi": "Chặn thành viên",
+    "ko": "회원 차단"
+  },
+  "Report member": {
+    "es": "Denunciar perfil",
+    "th": "รายงานสมาชิก",
+    "ar": "الإبلاغ عن العضو",
+    "vi": "Báo cáo thành viên",
+    "ko": "회원 신고"
+  },
+  "Report Type": {
+    "es": "Motivo de denuncia",
+    "th": "ประเภทรายงาน",
+    "ar": "نوع البلاغ",
+    "vi": "Loại báo cáo",
+    "ko": "신고 유형"
+  },
+  "Choose a reason": {
+    "es": "Elige un motivo",
+    "th": "เลือกเหตุผล",
+    "ar": "اختر السبب",
+    "vi": "Chọn lý do",
+    "ko": "사유 선택"
+  },
+  "Inappropriate content": {
+    "es": "Contenido inapropiado",
+    "th": "เนื้อหาไม่เหมาะสม",
+    "ar": "محتوى غير لائق",
+    "vi": "Nội dung không phù hợp",
+    "ko": "부적절한 콘텐츠"
+  },
+  "Harassment or hate": {
+    "es": "Acoso u odio",
+    "th": "การคุกคามหรือความเกลียดชัง",
+    "ar": "مضايقة أو كراهية",
+    "vi": "Quấy rối hoặc thù ghét",
+    "ko": "괴롭힘 또는 혐오"
+  },
+  "Discrimination": {
+    "es": "Discriminación",
+    "th": "การเลือกปฏิบัติ",
+    "ar": "تمييز",
+    "vi": "Phân biệt đối xử",
+    "ko": "차별"
+  },
+  "Spam or misleading content": {
+    "es": "Spam o contenido engañoso",
+    "th": "สแปมหรือเนื้อหาหลอกลวง",
+    "ar": "رسائل مزعجة أو محتوى مضلل",
+    "vi": "Spam hoặc gây hiểu lầm",
+    "ko": "스팸 또는 오해를 유발하는 콘텐츠"
+  },
+  "Other safety concern": {
+    "es": "Otro problema de seguridad",
+    "th": "ปัญหาความปลอดภัยอื่น",
+    "ar": "مشكلة أمان أخرى",
+    "vi": "Vấn đề an toàn khác",
+    "ko": "기타 안전 문제"
+  },
+  "Report saved locally": {
+    "es": "Denuncia guardada localmente",
+    "th": "บันทึกรายงานในเครื่องแล้ว",
+    "ar": "حُفظ البلاغ محليًا",
+    "vi": "Đã lưu báo cáo trên máy",
+    "ko": "신고가 기기에 저장됨"
+  },
+  "Chat": {
+    "es": "Charla",
+    "th": "แชท",
+    "ar": "دردشة",
+    "vi": "Trò chuyện",
+    "ko": "채팅"
+  },
+  "Chatting": {
+    "es": "Chatear",
+    "th": "แชท",
+    "ar": "دردشة",
+    "vi": "Nhắn tin",
+    "ko": "채팅하기"
+  },
+  "Learn": {
+    "es": "Aprender",
+    "th": "เรียนรู้",
+    "ar": "تعلّم",
+    "vi": "Học hỏi",
+    "ko": "배우기"
+  },
+  "Match": {
+    "es": "Conectar",
+    "th": "พบเพื่อน",
+    "ar": "تعارف",
+    "vi": "Kết bạn",
+    "ko": "만남"
+  },
+  "Vibe": {
+    "es": "Ambiente",
+    "th": "บรรยากาศ",
+    "ar": "أجواء",
+    "vi": "Cảm hứng",
+    "ko": "분위기"
+  },
+  "Breeze": {
+    "es": "Brisa",
+    "th": "สายลม",
+    "ar": "نسيم",
+    "vi": "Nhẹ nhàng",
+    "ko": "산들바람"
+  },
+  "Dream": {
+    "es": "Soñar",
+    "th": "ความฝัน",
+    "ar": "حلم",
+    "vi": "Mơ mộng",
+    "ko": "꿈"
+  },
+  "Preview room": {
+    "es": "Sala de muestra",
+    "th": "ห้องตัวอย่าง",
+    "ar": "غرفة معاينة",
+    "vi": "Phòng mẫu",
+    "ko": "미리 보기 방"
+  },
+  "No followed rooms yet": {
+    "es": "Sin salas seguidas",
+    "th": "ยังไม่มีห้องที่ติดตาม",
+    "ar": "لا توجد غرف متابَعة",
+    "vi": "Chưa có phòng đang theo dõi",
+    "ko": "팔로우한 방이 없어요"
+  },
+  "No recent rooms": {
+    "es": "Sin salas recientes",
+    "th": "ยังไม่มีห้องล่าสุด",
+    "ar": "لا توجد غرف حديثة",
+    "vi": "Chưa có phòng gần đây",
+    "ko": "최근 방문한 방이 없어요"
+  },
+  "Local room preview · Not connected": {
+    "es": "Sala local · Sin conexión",
+    "th": "ตัวอย่างห้องในเครื่อง · ไม่ได้เชื่อมต่อ",
+    "ar": "معاينة محلية · غير متصل",
+    "vi": "Phòng xem trước · Chưa kết nối",
+    "ko": "로컬 방 미리 보기 · 연결 안 됨"
+  },
+  "Mic": {
+    "es": "Micrófono",
+    "th": "ไมค์",
+    "ar": "ميكروفون",
+    "vi": "Mic",
+    "ko": "마이크"
+  },
+  "Report room": {
+    "es": "Denunciar sala",
+    "th": "รายงานห้อง",
+    "ar": "الإبلاغ عن الغرفة",
+    "vi": "Báo cáo phòng",
+    "ko": "방 신고"
+  },
+  "Leave room": {
+    "es": "Salir de la sala",
+    "th": "ออกจากห้อง",
+    "ar": "مغادرة الغرفة",
+    "vi": "Rời phòng",
+    "ko": "방 나가기"
+  },
+  "Leave the room?": {
+    "es": "¿Salir de la sala?",
+    "th": "ออกจากห้องไหม?",
+    "ar": "مغادرة الغرفة؟",
+    "vi": "Rời khỏi phòng?",
+    "ko": "방에서 나갈까요?"
+  },
+  "Stay here": {
+    "es": "Quedarme",
+    "th": "อยู่ต่อ",
+    "ar": "البقاء هنا",
+    "vi": "Ở lại",
+    "ko": "머무르기"
+  },
+  "Join the conversation": {
+    "es": "Unirse a la conversación",
+    "th": "เข้าร่วมสนทนา",
+    "ar": "انضم إلى المحادثة",
+    "vi": "Tham gia trò chuyện",
+    "ko": "대화 참여"
+  },
+  "Room member": {
+    "es": "Miembro de la sala",
+    "th": "สมาชิกห้อง",
+    "ar": "عضو الغرفة",
+    "vi": "Thành viên phòng",
+    "ko": "방 참여자"
+  },
+  "Send room message": {
+    "es": "Enviar mensaje a la sala",
+    "th": "ส่งข้อความในห้อง",
+    "ar": "إرسال رسالة للغرفة",
+    "vi": "Gửi tin nhắn trong phòng",
+    "ko": "방 메시지 보내기"
+  },
+  "Open chat": {
+    "es": "Abrir chat",
+    "th": "เปิดแชท",
+    "ar": "فتح الدردشة",
+    "vi": "Mở trò chuyện",
+    "ko": "채팅 열기"
+  },
+  "Clear chat drafts": {
+    "es": "Borrar borradores",
+    "th": "ล้างร่างแชท",
+    "ar": "مسح مسودات الدردشة",
+    "vi": "Xóa bản nháp trò chuyện",
+    "ko": "채팅 초안 지우기"
+  },
+  "Clear chat drafts?": {
+    "es": "¿Borrar los borradores?",
+    "th": "ล้างร่างแชทไหม?",
+    "ar": "مسح مسودات الدردشة؟",
+    "vi": "Xóa bản nháp trò chuyện?",
+    "ko": "채팅 초안을 지울까요?"
+  },
+  "Clear drafts": {
+    "es": "Borrar borradores",
+    "th": "ล้างร่าง",
+    "ar": "مسح المسودات",
+    "vi": "Xóa bản nháp",
+    "ko": "초안 지우기"
+  },
+  "Keep drafts": {
+    "es": "Conservar borradores",
+    "th": "เก็บร่าง",
+    "ar": "إبقاء المسودات",
+    "vi": "Giữ bản nháp",
+    "ko": "초안 유지"
+  },
+  "Saved drafts": {
+    "es": "Borradores guardados",
+    "th": "ร่างที่บันทึก",
+    "ar": "المسودات المحفوظة",
+    "vi": "Bản nháp đã lưu",
+    "ko": "저장된 초안"
+  },
+  "Draft": {
+    "es": "Borrador",
+    "th": "ร่าง",
+    "ar": "مسودة",
+    "vi": "Bản nháp",
+    "ko": "초안"
+  },
+  "Photo draft": {
+    "es": "Borrador de foto",
+    "th": "ร่างรูปภาพ",
+    "ar": "مسودة صورة",
+    "vi": "Bản nháp ảnh",
+    "ko": "사진 초안"
+  },
+  "Voice draft": {
+    "es": "Borrador de voz",
+    "th": "ร่างเสียง",
+    "ar": "مسودة صوتية",
+    "vi": "Bản nháp thoại",
+    "ko": "음성 초안"
+  },
+  "Interactions": {
+    "es": "Interacciones",
+    "th": "กิจกรรม",
+    "ar": "التفاعلات",
+    "vi": "Tương tác",
+    "ko": "활동"
+  },
+  "Papi updates": {
+    "es": "Novedades de Papi",
+    "th": "ข่าวจาก Papi",
+    "ar": "جديد Papi",
+    "vi": "Cập nhật Papi",
+    "ko": "Papi 소식"
+  },
+  "Start with a coffee hello.": {
+    "es": "Empieza con un saludo cafetero.",
+    "th": "เริ่มด้วยคำทักทายพร้อมกาแฟ",
+    "ar": "ابدأ بتحية مع القهوة.",
+    "vi": "Bắt đầu bằng lời chào bên cà phê.",
+    "ko": "커피와 함께 인사를 건네세요."
+  },
+  "Local attachment · Not sent": {
+    "es": "Adjunto local · Sin enviar",
+    "th": "ไฟล์แนบในเครื่อง · ยังไม่ส่ง",
+    "ar": "مرفق محلي · لم يُرسل",
+    "vi": "Tệp trên máy · Chưa gửi",
+    "ko": "기기 첨부 파일 · 미전송"
+  },
+  "Remove attachment": {
+    "es": "Quitar adjunto",
+    "th": "ลบไฟล์แนบ",
+    "ar": "إزالة المرفق",
+    "vi": "Xóa tệp đính kèm",
+    "ko": "첨부 파일 제거"
+  },
+  "Remove voice draft": {
+    "es": "Quitar borrador de voz",
+    "th": "ลบร่างเสียง",
+    "ar": "حذف المسودة الصوتية",
+    "vi": "Xóa bản nháp thoại",
+    "ko": "음성 초안 제거"
+  },
+  "Record local voice draft": {
+    "es": "Grabar borrador local",
+    "th": "บันทึกร่างเสียงในเครื่อง",
+    "ar": "تسجيل مسودة صوتية محلية",
+    "vi": "Ghi bản nháp thoại trên máy",
+    "ko": "로컬 음성 초안 녹음"
+  },
+  "Say Hi…": {
+    "es": "Di hola…",
+    "th": "ทักทาย…",
+    "ar": "قل مرحبًا…",
+    "vi": "Nói xin chào…",
+    "ko": "인사를 건네세요…"
+  },
+  "Send message": {
+    "es": "Enviar mensaje",
+    "th": "ส่งข้อความ",
+    "ar": "إرسال رسالة",
+    "vi": "Gửi tin nhắn",
+    "ko": "메시지 보내기"
+  },
+  "Choose a local photo draft": {
+    "es": "Elegir foto para el borrador",
+    "th": "เลือกรูปสำหรับร่าง",
+    "ar": "اختيار صورة للمسودة",
+    "vi": "Chọn ảnh cho bản nháp",
+    "ko": "사진 초안 선택"
+  },
+  "Record": {
+    "es": "Grabar",
+    "th": "บันทึกเสียง",
+    "ar": "تسجيل",
+    "vi": "Ghi âm",
+    "ko": "녹음"
+  },
+  "Stop recording": {
+    "es": "Detener grabación",
+    "th": "หยุดบันทึก",
+    "ar": "إيقاف التسجيل",
+    "vi": "Dừng ghi âm",
+    "ko": "녹음 정지"
+  },
+  "Keep draft": {
+    "es": "Guardar borrador",
+    "th": "เก็บร่าง",
+    "ar": "إبقاء المسودة",
+    "vi": "Giữ bản nháp",
+    "ko": "초안 보관"
+  },
+  "Local activity": {
+    "es": "Actividad local",
+    "th": "กิจกรรมในเครื่อง",
+    "ar": "النشاط المحلي",
+    "vi": "Hoạt động trên máy",
+    "ko": "기기 활동"
+  },
+  "Welcome to Papi": {
+    "es": "Bienvenido a Papi",
+    "th": "ยินดีต้อนรับสู่ Papi",
+    "ar": "مرحبًا بك في Papi",
+    "vi": "Chào mừng đến Papi",
+    "ko": "Papi에 오신 것을 환영해요"
+  },
+  "Saved report drafts": {
+    "es": "Denuncias guardadas",
+    "th": "ร่างรายงานที่บันทึก",
+    "ar": "مسودات البلاغات المحفوظة",
+    "vi": "Bản nháp báo cáo đã lưu",
+    "ko": "저장된 신고 초안"
+  },
+  "Saved locally · Not submitted": {
+    "es": "Guardado localmente · Sin enviar",
+    "th": "บันทึกในเครื่อง · ยังไม่ส่ง",
+    "ar": "محفوظ محليًا · لم يُقدّم",
+    "vi": "Lưu trên máy · Chưa gửi",
+    "ko": "기기에 저장됨 · 미제출"
+  },
+  "Coffee beans": {
+    "es": "Granos de café",
+    "th": "เมล็ดกาแฟ",
+    "ar": "حبوب القهوة",
+    "vi": "Hạt cà phê",
+    "ko": "커피 원두"
+  },
+  "Explore Coffee Bean Varieties": {
+    "es": "Explora variedades de café",
+    "th": "สำรวจพันธุ์เมล็ดกาแฟ",
+    "ar": "استكشف أصناف القهوة",
+    "vi": "Khám phá các loại hạt cà phê",
+    "ko": "커피 원두 종류 둘러보기"
+  },
+  "Learn flavors, origins & brewing tips": {
+    "es": "Sabores, orígenes y consejos",
+    "th": "รสชาติ แหล่งกำเนิด และเคล็ดลับชง",
+    "ar": "النكهات والأصول ونصائح التحضير",
+    "vi": "Hương vị, xuất xứ và mẹo pha",
+    "ko": "풍미, 원산지, 추출 팁"
+  },
+  "Explore cafés": {
+    "es": "Explorar cafeterías",
+    "th": "สำรวจคาเฟ่",
+    "ar": "استكشاف المقاهي",
+    "vi": "Khám phá quán cà phê",
+    "ko": "카페 둘러보기"
+  },
+  "Café inspiration · Illustrative listings": {
+    "es": "Inspiración de cafés · Ejemplos",
+    "th": "แรงบันดาลใจคาเฟ่ · รายการตัวอย่าง",
+    "ar": "إلهام المقاهي · أمثلة توضيحية",
+    "vi": "Cảm hứng quán cà phê · Danh sách mẫu",
+    "ko": "카페 아이디어 · 예시 목록"
+  },
+  "Coffee inspiration": {
+    "es": "Inspiración cafetera",
+    "th": "แรงบันดาลใจกาแฟ",
+    "ar": "إلهام القهوة",
+    "vi": "Cảm hứng cà phê",
+    "ko": "커피 아이디어"
+  },
+  "Add a caption": {
+    "es": "Añade un texto",
+    "th": "เพิ่มคำบรรยาย",
+    "ar": "أضف تعليقًا",
+    "vi": "Thêm chú thích",
+    "ko": "설명을 추가하세요"
+  },
+  "Add a photo or video": {
+    "es": "Añade una foto o vídeo",
+    "th": "เพิ่มรูปหรือวิดีโอ",
+    "ar": "أضف صورة أو فيديو",
+    "vi": "Thêm ảnh hoặc video",
+    "ko": "사진이나 동영상을 추가하세요"
+  },
+  "Camera unavailable": {
+    "es": "Cámara no disponible",
+    "th": "กล้องไม่พร้อมใช้งาน",
+    "ar": "الكاميرا غير متاحة",
+    "vi": "Camera không khả dụng",
+    "ko": "카메라를 사용할 수 없어요"
+  },
+  "Check your profile": {
+    "es": "Revisa tu perfil",
+    "th": "ตรวจสอบโปรไฟล์",
+    "ar": "راجع ملفك",
+    "vi": "Kiểm tra hồ sơ",
+    "ko": "프로필을 확인하세요"
+  },
+  "Could not import media": {
+    "es": "No se pudo importar",
+    "th": "นำเข้าสื่อไม่ได้",
+    "ar": "تعذّر استيراد الوسائط",
+    "vi": "Không thể nhập phương tiện",
+    "ko": "미디어를 가져올 수 없어요"
+  },
+  "Could not import photo": {
+    "es": "No se pudo importar la foto",
+    "th": "นำเข้ารูปไม่ได้",
+    "ar": "تعذّر استيراد الصورة",
+    "vi": "Không thể nhập ảnh",
+    "ko": "사진을 가져올 수 없어요"
+  },
+  "Could not save": {
+    "es": "No se pudo guardar",
+    "th": "บันทึกไม่ได้",
+    "ar": "تعذّر الحفظ",
+    "vi": "Không thể lưu",
+    "ko": "저장할 수 없어요"
+  },
+  "Local data unavailable": {
+    "es": "Datos locales no disponibles",
+    "th": "ข้อมูลในเครื่องไม่พร้อม",
+    "ar": "البيانات المحلية غير متاحة",
+    "vi": "Dữ liệu trên máy không khả dụng",
+    "ko": "기기 데이터를 사용할 수 없어요"
+  },
+  "Media removal incomplete": {
+    "es": "Eliminación de medios incompleta",
+    "th": "ลบสื่อไม่สมบูรณ์",
+    "ar": "لم يكتمل حذف الوسائط",
+    "vi": "Chưa xóa hết phương tiện",
+    "ko": "미디어 삭제 미완료"
+  },
+  "Message not sent": {
+    "es": "Mensaje no enviado",
+    "th": "ยังไม่ได้ส่งข้อความ",
+    "ar": "لم تُرسل الرسالة",
+    "vi": "Chưa gửi tin nhắn",
+    "ko": "메시지 미전송"
+  },
+  "Note is too long": {
+    "es": "La nota es demasiado larga",
+    "th": "บันทึกยาวเกินไป",
+    "ar": "الملاحظة طويلة جدًا",
+    "vi": "Ghi chú quá dài",
+    "ko": "메모가 너무 길어요"
+  },
+  "Profile is blocked": {
+    "es": "Perfil bloqueado",
+    "th": "บล็อกโปรไฟล์แล้ว",
+    "ar": "الملف محظور",
+    "vi": "Hồ sơ đã bị chặn",
+    "ko": "차단된 프로필이에요"
+  },
+  "Guest changed": {
+    "es": "El visitante ha cambiado",
+    "th": "ผู้เยี่ยมชมเปลี่ยนแล้ว",
+    "ar": "تغيّر الضيف",
+    "vi": "Khách đã thay đổi",
+    "ko": "게스트가 변경되었어요"
+  },
+  "Follow each other first": {
+    "es": "Primero debéis seguiros",
+    "th": "ต้องติดตามกันก่อน",
+    "ar": "تابعا بعضكما أولًا",
+    "vi": "Cần theo dõi nhau trước",
+    "ko": "먼저 서로 팔로우하세요"
+  },
+  "No transactions yet": {
+    "es": "Aún no hay movimientos",
+    "th": "ยังไม่มีรายการ",
+    "ar": "لا توجد معاملات بعد",
+    "vi": "Chưa có giao dịch",
+    "ko": "아직 거래가 없어요"
+  },
+  "Not sent · No coins spent": {
+    "es": "Sin enviar · Sin gasto",
+    "th": "ยังไม่ส่ง · ไม่เสียเหรียญ",
+    "ar": "لم تُرسل · دون إنفاق عملات",
+    "vi": "Chưa gửi · Không mất xu",
+    "ko": "미전송 · 코인 사용 없음"
+  },
+  "Your collection starts here": {
+    "es": "Tu colección empieza aquí",
+    "th": "เริ่มสะสมได้ที่นี่",
+    "ar": "مجموعتك تبدأ هنا",
+    "vi": "Bắt đầu bộ sưu tập tại đây",
+    "ko": "여기서 수집을 시작하세요"
+  },
+  "Your coffee space, saved on this device.": {
+    "es": "Tu espacio cafetero, guardado en este dispositivo.",
+    "th": "พื้นที่กาแฟของคุณ บันทึกในเครื่องนี้",
+    "ar": "مساحتك للقهوة، محفوظة على هذا الجهاز.",
+    "vi": "Không gian cà phê của bạn, lưu trên máy này.",
+    "ko": "이 기기에 저장되는 나만의 커피 공간."
+  },
+  "Your coffee moment is available on this device.": {
+    "es": "Tu momento de café está en este dispositivo.",
+    "th": "ช่วงเวลากาแฟของคุณอยู่ในเครื่องนี้",
+    "ar": "لحظة قهوتك متاحة على هذا الجهاز.",
+    "vi": "Khoảnh khắc cà phê đã có trên thiết bị này.",
+    "ko": "커피의 순간이 이 기기에 저장되었어요."
+  },
+  "Your drafts and current guest will stay the same.": {
+    "es": "Tus borradores y visitante se conservarán.",
+    "th": "ร่างและผู้เยี่ยมชมปัจจุบันจะคงเดิม",
+    "ar": "ستبقى مسوداتك والضيف الحالي كما هما.",
+    "vi": "Bản nháp và khách hiện tại được giữ nguyên.",
+    "ko": "초안과 현재 게스트는 그대로 유지돼요."
+  },
+  "Your local draft and room history will be kept.": {
+    "es": "Se conservarán el borrador y el historial de salas.",
+    "th": "ร่างและประวัติห้องในเครื่องจะถูกเก็บไว้",
+    "ar": "ستُحفظ المسودة المحلية وسجل الغرف.",
+    "vi": "Bản nháp và lịch sử phòng được giữ lại.",
+    "ko": "기기 초안과 방 기록이 유지돼요."
+  },
+  "Your local data stays on this device. One-tap login will reopen the same guest.": {
+    "es": "Tus datos permanecen aquí. Un toque reabre el mismo visitante.",
+    "th": "ข้อมูลยังอยู่ในเครื่อง เข้าสู่ระบบอีกครั้งจะเปิดผู้เยี่ยมชมเดิม",
+    "ar": "تبقى بياناتك هنا. الدخول بنقرة يعيد فتح الضيف نفسه.",
+    "vi": "Dữ liệu vẫn trên máy. Đăng nhập một chạm mở lại cùng khách.",
+    "ko": "데이터는 이 기기에 남아요. 한 번 탭해 같은 게스트로 다시 로그인해요."
+  },
+  "Your draft is kept if you leave this page. Nothing is uploaded to a public feed.": {
+    "es": "Al salir se conserva el borrador. No se publica nada en línea.",
+    "th": "ออกจากหน้านี้แล้วร่างยังอยู่ ไม่มีการอัปโหลดสู่ฟีดสาธารณะ",
+    "ar": "تُحفظ مسودتك عند المغادرة. لا يُرفع شيء إلى موجز عام.",
+    "vi": "Rời trang vẫn giữ bản nháp. Không tải gì lên bảng tin công khai.",
+    "ko": "페이지를 나가도 초안은 유지돼요. 공개 피드에 업로드되지 않아요."
+  },
+  "Changes are saved only when you tap Save.": {
+    "es": "Los cambios se guardan al tocar Guardar.",
+    "th": "การเปลี่ยนแปลงจะบันทึกเมื่อแตะบันทึกเท่านั้น",
+    "ar": "تُحفظ التغييرات عند الضغط على حفظ فقط.",
+    "vi": "Chỉ lưu thay đổi khi nhấn Lưu.",
+    "ko": "저장을 눌러야 변경 사항이 저장돼요."
+  },
+  "Use a name of 1–40 characters and a bio under 300 characters.": {
+    "es": "Usa un nombre de 1–40 caracteres y una biografía de menos de 300.",
+    "th": "ชื่อ 1–40 ตัวอักษร และคำแนะนำตัวไม่เกิน 300 ตัวอักษร",
+    "ar": "استخدم اسمًا من 1–40 حرفًا ونبذة أقل من 300 حرف.",
+    "vi": "Tên từ 1–40 ký tự, giới thiệu dưới 300 ký tự.",
+    "ko": "이름은 1~40자, 소개는 300자 이내로 입력하세요."
+  },
+  "Reopen this page to edit the current guest.": {
+    "es": "Vuelve a abrir esta página para editar al visitante actual.",
+    "th": "เปิดหน้านี้อีกครั้งเพื่อแก้ไขผู้เยี่ยมชมปัจจุบัน",
+    "ar": "أعد فتح الصفحة لتعديل الضيف الحالي.",
+    "vi": "Mở lại trang để sửa khách hiện tại.",
+    "ko": "페이지를 다시 열어 현재 게스트를 편집하세요."
+  },
+  "Choose a coffee moment before saving your post.": {
+    "es": "Elige una foto o vídeo antes de guardar.",
+    "th": "เลือกรูปหรือวิดีโอก่อนบันทึกโพสต์",
+    "ar": "اختر صورة أو فيديو قبل حفظ المنشور.",
+    "vi": "Chọn ảnh hoặc video trước khi lưu bài viết.",
+    "ko": "게시물을 저장하기 전에 사진이나 동영상을 선택하세요."
+  },
+  "Tell the story behind this coffee moment.": {
+    "es": "Cuenta la historia de este momento.",
+    "th": "เล่าเรื่องราวช่วงเวลากาแฟนี้",
+    "ar": "احكِ قصة لحظة القهوة هذه.",
+    "vi": "Kể câu chuyện sau khoảnh khắc này.",
+    "ko": "이 순간의 이야기를 적어주세요."
+  },
+  "Choose an existing photo or video instead.": {
+    "es": "Elige una foto o vídeo existente.",
+    "th": "เลือกรูปหรือวิดีโอที่มีอยู่แทน",
+    "ar": "اختر صورة أو فيديو موجودًا بدلًا من ذلك.",
+    "vi": "Hãy chọn ảnh hoặc video có sẵn.",
+    "ko": "기존 사진이나 동영상을 선택하세요."
+  },
+  "Choose a video smaller than 150 MB.": {
+    "es": "Elige un vídeo de menos de 150 MB.",
+    "th": "เลือกวิดีโอขนาดไม่เกิน 150 MB",
+    "ar": "اختر فيديو أصغر من 150 MB.",
+    "vi": "Chọn video nhỏ hơn 150 MB.",
+    "ko": "150 MB 미만의 동영상을 선택하세요."
+  },
+  "This image could not be opened. Choose another image under 40 MB.": {
+    "es": "No se pudo abrir la imagen. Elige otra de menos de 40 MB.",
+    "th": "เปิดรูปนี้ไม่ได้ เลือกรูปอื่นขนาดไม่เกิน 40 MB",
+    "ar": "تعذّر فتح الصورة. اختر صورة أخرى أقل من 40 MB.",
+    "vi": "Không mở được ảnh. Chọn ảnh khác dưới 40 MB.",
+    "ko": "사진을 열 수 없어요. 40 MB 미만의 다른 사진을 선택하세요."
+  },
+  "This video is unavailable.": {
+    "es": "Este vídeo no está disponible.",
+    "th": "วิดีโอนี้ไม่พร้อมใช้งาน",
+    "ar": "الفيديو غير متاح.",
+    "vi": "Video này không khả dụng.",
+    "ko": "이 동영상을 사용할 수 없어요."
+  },
+  "This video could not be played. Try another coffee moment.": {
+    "es": "No se pudo reproducir. Prueba otro vídeo.",
+    "th": "เล่นวิดีโอนี้ไม่ได้ ลองรายการอื่น",
+    "ar": "تعذّر تشغيل الفيديو. جرّب لحظة أخرى.",
+    "vi": "Không phát được video. Hãy thử video khác.",
+    "ko": "재생할 수 없어요. 다른 동영상을 선택하세요."
+  },
+  "Keep a tasting note or thought about this moment.": {
+    "es": "Guarda una nota de cata o un pensamiento.",
+    "th": "บันทึกรสชาติหรือความคิดเกี่ยวกับช่วงเวลานี้",
+    "ar": "احتفظ بملاحظة تذوق أو فكرة عن هذه اللحظة.",
+    "vi": "Ghi lại vị cà phê hoặc suy nghĩ về khoảnh khắc này.",
+    "ko": "맛이나 이 순간에 대한 생각을 기록하세요."
+  },
+  "Keep your note under 2,000 characters. Your text has been kept.": {
+    "es": "Usa menos de 2000 caracteres. Tu texto se ha conservado.",
+    "th": "ใช้ไม่เกิน 2,000 ตัวอักษร ข้อความยังอยู่",
+    "ar": "اكتب أقل من 2000 حرف. احتُفظ بنصك.",
+    "vi": "Giữ ghi chú dưới 2.000 ký tự. Nội dung vẫn được giữ.",
+    "ko": "2,000자 이내로 작성하세요. 입력 내용은 유지돼요."
+  },
+  "10 coins will be used once the post is saved to your local journal.": {
+    "es": "Se usarán 10 monedas cuando se guarde en tu diario local.",
+    "th": "จะใช้ 10 เหรียญเมื่อบันทึกโพสต์ในสมุดสำเร็จ",
+    "ar": "ستُستخدم 10 عملات بعد حفظ المنشور في يومياتك المحلية.",
+    "vi": "Dùng 10 xu khi bài viết được lưu vào nhật ký trên máy.",
+    "ko": "기기 일지에 게시물이 저장되면 10 코인이 사용돼요."
+  },
+  "The post will be removed from this guest's journal. Coins already used are not refunded.": {
+    "es": "Se eliminará del diario. Las monedas usadas no se devuelven.",
+    "th": "โพสต์จะถูกลบจากสมุด เหรียญที่ใช้ไปแล้วไม่คืน",
+    "ar": "سيُحذف المنشور من اليوميات. لا تُرد العملات المستخدمة.",
+    "vi": "Bài viết bị xóa khỏi nhật ký. Xu đã dùng không được hoàn lại.",
+    "ko": "일지에서 게시물이 삭제돼요. 사용한 코인은 반환되지 않아요."
+  },
+  "Saving a post costs 10 coins. You can collect coins with daily check-in.": {
+    "es": "Guardar cuesta 10 monedas. Consíguelas con el registro diario.",
+    "th": "บันทึกโพสต์ใช้ 10 เหรียญ รับเหรียญจากเช็คอินรายวันได้",
+    "ar": "حفظ المنشور يكلف 10 عملات. اجمعها بالحضور اليومي.",
+    "vi": "Lưu bài viết tốn 10 xu. Bạn có thể nhận xu khi điểm danh.",
+    "ko": "게시물 저장은 10 코인이에요. 매일 출석해 코인을 모으세요."
+  },
+  "Coins can be used for your local posts and gift collection.": {
+    "es": "Usa monedas para publicaciones locales y regalos de tu colección.",
+    "th": "ใช้เหรียญบันทึกโพสต์ในเครื่องและสะสมของขวัญ",
+    "ar": "استخدم العملات للمنشورات المحلية واقتناء الهدايا.",
+    "vi": "Xu dùng để lưu bài viết trên máy và sưu tập quà.",
+    "ko": "코인은 로컬 게시물과 선물 수집에 사용할 수 있어요."
+  },
+  "Collect gifts with coins and display a favorite on your local profile.": {
+    "es": "Colecciona regalos con monedas y muestra uno en tu perfil.",
+    "th": "ใช้เหรียญสะสมของขวัญและแสดงชิ้นโปรดบนโปรไฟล์",
+    "ar": "اقتَنِ هدايا بالعملات واعرض المفضلة في ملفك المحلي.",
+    "vi": "Dùng xu sưu tập quà và trưng bày quà yêu thích trên hồ sơ.",
+    "ko": "코인으로 선물을 모아 프로필에 좋아하는 선물을 표시하세요."
+  },
+  "Collect more coins with daily check-in or open your wallet.": {
+    "es": "Consigue monedas con el registro diario o abre la cartera.",
+    "th": "รับเหรียญเพิ่มจากเช็คอินหรือเปิดกระเป๋าเงิน",
+    "ar": "اجمع عملات بالحضور اليومي أو افتح المحفظة.",
+    "vi": "Nhận thêm xu khi điểm danh hoặc mở ví.",
+    "ko": "출석으로 코인을 모으거나 지갑을 여세요."
+  },
+  "No recipient is connected. Previewing a gift does not spend coins or send it to another person.": {
+    "es": "No hay destinatario conectado. La vista previa no gasta monedas ni envía regalos.",
+    "th": "ไม่มีผู้รับเชื่อมต่อ การดูตัวอย่างไม่เสียเหรียญและไม่ส่งให้ใคร",
+    "ar": "لا يوجد مستلم متصل. المعاينة لا تنفق عملات ولا ترسل الهدية.",
+    "vi": "Chưa có người nhận kết nối. Xem trước không tốn xu và không gửi quà.",
+    "ko": "연결된 수신자가 없어요. 미리 보기는 코인을 쓰거나 선물을 보내지 않아요."
+  },
+  "A little reward for your daily ritual.": {
+    "es": "Un pequeño premio por tu ritual diario.",
+    "th": "รางวัลเล็กๆ สำหรับกิจวัตรประจำวัน",
+    "ar": "مكافأة صغيرة لطقسك اليومي.",
+    "vi": "Phần thưởng nhỏ cho thói quen mỗi ngày.",
+    "ko": "매일의 작은 습관을 위한 보상."
+  },
+  "Come back after 00:00 UTC for your next reward.": {
+    "es": "Vuelve después de las 00:00 UTC para tu próxima recompensa.",
+    "th": "กลับมาหลัง 00:00 UTC เพื่อรับรางวัลถัดไป",
+    "ar": "عُد بعد 00:00 UTC للمكافأة التالية.",
+    "vi": "Quay lại sau 00:00 UTC để nhận thưởng tiếp.",
+    "ko": "다음 보상은 UTC 00:00 이후에 받을 수 있어요."
+  },
+  "Daily check-in is a free way to start collecting coins.": {
+    "es": "El registro diario te da monedas gratis.",
+    "th": "เช็คอินรายวันเพื่อรับเหรียญฟรี",
+    "ar": "الحضور اليومي يمنحك عملات مجانًا.",
+    "vi": "Điểm danh hằng ngày để nhận xu miễn phí.",
+    "ko": "매일 출석해 무료로 코인을 모으세요."
+  },
+  "Seven check-ins complete a reward cycle. Each day starts at 00:00 UTC; missed days do not reset your collection.": {
+    "es": "Cada 7 registros se repite el ciclo. El día empieza a las 00:00 UTC; faltar no reinicia el progreso.",
+    "th": "เช็คอินครบ 7 ครั้งเริ่มรอบใหม่ วันเริ่มที่ 00:00 UTC ขาดวันไม่รีเซ็ตความคืบหน้า",
+    "ar": "تكتمل الدورة بعد 7 أيام حضور. يبدأ اليوم عند 00:00 UTC، ولا تعيد الأيام الفائتة تقدمك للصفر.",
+    "vi": "Chu kỳ gồm 7 lần điểm danh. Ngày bắt đầu lúc 00:00 UTC; bỏ ngày không đặt lại tiến độ.",
+    "ko": "7회 출석마다 보상이 반복돼요. 하루는 UTC 00:00에 시작하며 빠진 날이 있어도 진행도는 유지돼요."
+  },
+  "Check in for 20 EXP. Save a local coffee post for 10 EXP. Every 100 EXP brings a new level.": {
+    "es": "Regístrate: 20 EXP. Guarda un post: 10 EXP. Cada 100 EXP subes de nivel.",
+    "th": "เช็คอินรับ 20 EXP บันทึกโพสต์รับ 10 EXP ทุก 100 EXP เพิ่มหนึ่งระดับ",
+    "ar": "الحضور: 20 EXP. حفظ منشور: 10 EXP. كل 100 EXP ترفع المستوى.",
+    "vi": "Điểm danh: 20 EXP. Lưu bài viết: 10 EXP. Mỗi 100 EXP tăng một cấp.",
+    "ko": "출석 시 20 EXP, 게시물 저장 시 10 EXP. 100 EXP마다 레벨이 올라요."
+  },
+  "Progress is saved with this local guest.": {
+    "es": "El progreso se guarda con este visitante local.",
+    "th": "บันทึกความคืบหน้ากับผู้เยี่ยมชมนี้",
+    "ar": "يُحفظ التقدم مع هذا الضيف المحلي.",
+    "vi": "Tiến độ lưu cùng khách trên máy này.",
+    "ko": "진행도는 이 로컬 게스트에 저장돼요."
+  },
+  "Use the plus button on Home to save your first local post.": {
+    "es": "Pulsa + en Inicio para guardar tu primer post local.",
+    "th": "แตะปุ่มบวกที่หน้าแรกเพื่อบันทึกโพสต์แรก",
+    "ar": "اضغط زر الإضافة في الرئيسية لحفظ أول منشور محلي.",
+    "vi": "Nhấn dấu cộng ở Trang chủ để lưu bài viết đầu tiên.",
+    "ko": "홈의 더하기 버튼으로 첫 게시물을 저장하세요."
+  },
+  "Save a moment from its detail page to find it here.": {
+    "es": "Guarda un momento desde su detalle para verlo aquí.",
+    "th": "บันทึกช่วงเวลาจากหน้ารายละเอียดเพื่อดูที่นี่",
+    "ar": "احفظ لحظة من صفحة التفاصيل لتجدها هنا.",
+    "vi": "Lưu khoảnh khắc từ trang chi tiết để xem tại đây.",
+    "ko": "상세 화면에서 순간을 저장하면 여기서 볼 수 있어요."
+  },
+  "Explore coffee moments in the Papi collection.": {
+    "es": "Explora momentos en la colección de Papi.",
+    "th": "สำรวจช่วงเวลากาแฟในคอลเลกชัน Papi",
+    "ar": "استكشف لحظات القهوة في مجموعة Papi.",
+    "vi": "Khám phá khoảnh khắc trong bộ sưu tập Papi.",
+    "ko": "Papi 컬렉션에서 커피의 순간을 둘러보세요."
+  },
+  "Follow a preview profile to keep it in your local list.": {
+    "es": "Sigue un perfil de muestra para guardarlo en tu lista.",
+    "th": "ติดตามโปรไฟล์ตัวอย่างเพื่อเก็บไว้ในรายการของคุณ",
+    "ar": "تابع ملف معاينة لإضافته إلى قائمتك المحلية.",
+    "vi": "Theo dõi hồ sơ mẫu để lưu vào danh sách trên máy.",
+    "ko": "미리 보기 프로필을 팔로우해 목록에 추가하세요."
+  },
+  "Preview profiles do not automatically follow you. Real connections require a connected community service.": {
+    "es": "Los perfiles de muestra no te siguen. Las conexiones reales necesitan un servicio comunitario.",
+    "th": "โปรไฟล์ตัวอย่างไม่ติดตามคุณอัตโนมัติ การเชื่อมต่อจริงต้องมีบริการชุมชน",
+    "ar": "ملفات المعاينة لا تتابعك تلقائيًا. العلاقات الحقيقية تتطلب خدمة مجتمع متصلة.",
+    "vi": "Hồ sơ mẫu không tự theo dõi bạn. Kết nối thật cần dịch vụ cộng đồng.",
+    "ko": "미리 보기 프로필은 자동으로 팔로우하지 않아요. 실제 연결에는 커뮤니티 서비스가 필요해요."
+  },
+  "Explore a room or follow a preview host to see it here.": {
+    "es": "Explora una sala o sigue a su anfitrión para verla aquí.",
+    "th": "เข้าชมห้องหรือติดตามเจ้าของห้องตัวอย่างเพื่อดูที่นี่",
+    "ar": "استكشف غرفة أو تابع مضيفًا لتراها هنا.",
+    "vi": "Khám phá phòng hoặc theo dõi chủ phòng mẫu để xem tại đây.",
+    "ko": "방을 방문하거나 호스트를 팔로우하면 여기에 표시돼요."
+  },
+  "Blocking hides this preview profile and its rooms on this device.": {
+    "es": "Bloquear oculta este perfil y sus salas en este dispositivo.",
+    "th": "การบล็อกจะซ่อนโปรไฟล์และห้องของเขาในเครื่องนี้",
+    "ar": "الحظر يخفي الملف وغرفه على هذا الجهاز.",
+    "vi": "Chặn sẽ ẩn hồ sơ và phòng của họ trên thiết bị này.",
+    "ko": "차단하면 이 기기에서 해당 프로필과 방이 숨겨져요."
+  },
+  "Reports remain on this device until a moderation service is connected.": {
+    "es": "Las denuncias quedan aquí hasta conectar un servicio de moderación.",
+    "th": "รายงานจะอยู่ในเครื่องจนกว่าจะเชื่อมต่อบริการดูแล",
+    "ar": "تبقى البلاغات على هذا الجهاز حتى تتصل خدمة الإشراف.",
+    "vi": "Báo cáo nằm trên máy đến khi có dịch vụ kiểm duyệt.",
+    "ko": "신고는 관리 서비스가 연결될 때까지 이 기기에만 저장돼요."
+  },
+  "This report is stored on this device. No moderation service is connected, so it has not been sent to a platform.": {
+    "es": "Guardado en este dispositivo. Sin servicio de moderación, no se ha enviado a ninguna plataforma.",
+    "th": "รายงานถูกเก็บในเครื่อง ไม่มีบริการดูแลจึงยังไม่ได้ส่งไปยังแพลตฟอร์ม",
+    "ar": "البلاغ محفوظ هنا. لا توجد خدمة إشراف، لذلك لم يُرسل إلى منصة.",
+    "vi": "Báo cáo lưu trên máy. Chưa có kiểm duyệt nên chưa gửi lên nền tảng.",
+    "ko": "이 기기에 저장되었어요. 관리 서비스가 없어 플랫폼으로 전송되지 않았어요."
+  },
+  "Messages require mutual following. This preview profile is not connected to a messaging service.": {
+    "es": "El chat requiere seguimiento mutuo. Este perfil no está conectado a mensajería.",
+    "th": "แชทต้องติดตามกัน โปรไฟล์ตัวอย่างนี้ไม่เชื่อมต่อบริการข้อความ",
+    "ar": "تتطلب الرسائل متابعة متبادلة. ملف المعاينة غير متصل بخدمة رسائل.",
+    "vi": "Nhắn tin cần theo dõi nhau. Hồ sơ mẫu chưa kết nối dịch vụ tin nhắn.",
+    "ko": "메시지는 서로 팔로우해야 해요. 이 미리 보기 프로필은 메시지 서비스에 연결되지 않았어요."
+  },
+  "Messages require mutual following. Your draft has been kept.": {
+    "es": "Se necesita seguimiento mutuo. Tu borrador se conserva.",
+    "th": "ต้องติดตามกันก่อน ร่างของคุณยังอยู่",
+    "ar": "يلزم تبادل المتابعة. احتُفظ بمسودتك.",
+    "vi": "Cần theo dõi nhau. Bản nháp được giữ lại.",
+    "ko": "서로 팔로우해야 해요. 초안은 유지돼요."
+  },
+  "This profile is a local preview and cannot follow you back. Messaging will become available when a community service is connected. Your draft is saved.": {
+    "es": "Este perfil local no puede seguirte. El chat requiere un servicio comunitario. Tu borrador está guardado.",
+    "th": "โปรไฟล์ในเครื่องติดตามกลับไม่ได้ แชทจะใช้ได้เมื่อเชื่อมบริการชุมชน ร่างถูกบันทึกแล้ว",
+    "ar": "هذا الملف المحلي لا يستطيع متابعتك. يلزم اتصال بخدمة مجتمع للمراسلة. حُفظت مسودتك.",
+    "vi": "Hồ sơ mẫu không thể theo dõi lại. Nhắn tin cần kết nối dịch vụ cộng đồng. Bản nháp đã lưu.",
+    "ko": "이 로컬 프로필은 맞팔로우할 수 없어요. 메시지는 커뮤니티 서비스 연결 후 가능해요. 초안은 저장돼요."
+  },
+  "Unblock this profile before using chat. Your draft has been kept.": {
+    "es": "Desbloquea el perfil para usar el chat. Tu borrador se conserva.",
+    "th": "เลิกบล็อกก่อนใช้แชท ร่างยังอยู่",
+    "ar": "ألغِ حظر الملف قبل الدردشة. احتُفظ بمسودتك.",
+    "vi": "Bỏ chặn hồ sơ trước khi trò chuyện. Bản nháp được giữ.",
+    "ko": "채팅하려면 차단을 해제하세요. 초안은 유지돼요."
+  },
+  "Profiles above are previews. No unread messages or mutual follows are generated automatically.": {
+    "es": "Son perfiles de muestra. No se generan mensajes ni seguimientos mutuos.",
+    "th": "โปรไฟล์ข้างบนเป็นตัวอย่าง ไม่มีการสร้างข้อความหรือการติดตามกันอัตโนมัติ",
+    "ar": "الملفات أعلاه للمعاينة. لا تُنشأ رسائل أو متابعات متبادلة تلقائيًا.",
+    "vi": "Các hồ sơ trên là mẫu. Không tự tạo tin nhắn chưa đọc hay theo dõi nhau.",
+    "ko": "위 프로필은 미리 보기예요. 읽지 않은 메시지나 맞팔로우를 자동으로 만들지 않아요."
+  },
+  "Remove all saved chat text, photo attachments and voice drafts from your chats. Your profile and journal stay unchanged.": {
+    "es": "Borra los textos, fotos y audios de los borradores de chat. Tu perfil y diario se conservan.",
+    "th": "ล้างข้อความ รูปแนบ และร่างเสียงในแชท โปรไฟล์และสมุดยังคงเดิม",
+    "ar": "احذف نصوص الدردشة والصور والمسودات الصوتية. يبقى ملفك ويومياتك دون تغيير.",
+    "vi": "Xóa văn bản, ảnh đính kèm và bản nháp thoại trong trò chuyện. Giữ nguyên hồ sơ và nhật ký.",
+    "ko": "채팅의 텍스트, 사진 첨부, 음성 초안을 모두 지워요. 프로필과 일지는 유지돼요."
+  },
+  "Your local activity and saved reports": {
+    "es": "Tu actividad local y denuncias guardadas",
+    "th": "กิจกรรมในเครื่องและรายงานที่บันทึก",
+    "ar": "نشاطك المحلي والبلاغات المحفوظة",
+    "vi": "Hoạt động và báo cáo đã lưu trên máy",
+    "ko": "기기 활동과 저장된 신고"
+  },
+  "A quieter place for your coffee moments": {
+    "es": "Un lugar tranquilo para tus momentos de café",
+    "th": "พื้นที่สงบสำหรับช่วงเวลากาแฟ",
+    "ar": "مكان هادئ للحظات قهوتك",
+    "vi": "Nơi yên bình cho khoảnh khắc cà phê",
+    "ko": "커피의 순간을 위한 조용한 공간"
+  },
+  "Your coffee journal, collection and drafts stay on this device. No system messages are fabricated for preview profiles.": {
+    "es": "Diario, colección y borradores quedan aquí. No se inventan mensajes para los perfiles de muestra.",
+    "th": "สมุด คอลเลกชัน และร่างอยู่ในเครื่องนี้ ไม่มีข้อความระบบปลอมจากโปรไฟล์ตัวอย่าง",
+    "ar": "يومياتك ومجموعتك ومسوداتك تبقى هنا. لا تُختلق رسائل لملفات المعاينة.",
+    "vi": "Nhật ký, bộ sưu tập và bản nháp nằm trên máy. Không tạo tin hệ thống giả cho hồ sơ mẫu.",
+    "ko": "일지, 컬렉션, 초안은 이 기기에 저장돼요. 미리 보기 프로필의 시스템 메시지를 만들어 내지 않아요."
+  },
+  "Record a private voice draft. It is not sent to anyone.": {
+    "es": "Graba un borrador privado. No se envía a nadie.",
+    "th": "บันทึกร่างเสียงส่วนตัว จะไม่ส่งให้ใคร",
+    "ar": "سجّل مسودة صوتية خاصة. لا تُرسل لأحد.",
+    "vi": "Ghi bản nháp thoại riêng. Không gửi cho ai.",
+    "ko": "개인 음성 초안을 녹음하세요. 누구에게도 전송되지 않아요."
+  },
+  "Recording locally. Tap Stop to keep this voice draft.": {
+    "es": "Grabando localmente. Toca Detener para conservar el audio.",
+    "th": "กำลังบันทึกในเครื่อง แตะหยุดเพื่อเก็บร่างเสียง",
+    "ar": "جارٍ التسجيل محليًا. اضغط إيقاف للاحتفاظ بالمسودة.",
+    "vi": "Đang ghi trên máy. Nhấn Dừng để giữ bản nháp.",
+    "ko": "기기에 녹음 중이에요. 정지를 눌러 초안을 보관하세요."
+  },
+  "Voice draft recorded on this device.": {
+    "es": "Borrador grabado en este dispositivo.",
+    "th": "บันทึกร่างเสียงในเครื่องนี้แล้ว",
+    "ar": "سُجّلت المسودة على هذا الجهاز.",
+    "vi": "Đã ghi bản nháp thoại trên thiết bị này.",
+    "ko": "음성 초안이 이 기기에 녹음되었어요."
+  },
+  "Recording could not start. Please try again.": {
+    "es": "No se pudo iniciar la grabación. Reinténtalo.",
+    "th": "เริ่มบันทึกไม่ได้ โปรดลองอีกครั้ง",
+    "ar": "تعذّر بدء التسجيل. حاول مجددًا.",
+    "vi": "Không thể bắt đầu ghi. Hãy thử lại.",
+    "ko": "녹음을 시작할 수 없어요. 다시 시도하세요."
+  },
+  "Microphone permission was not granted. You can change it in iOS Settings.": {
+    "es": "Sin permiso de micrófono. Cámbialo en Ajustes de iOS.",
+    "th": "ไม่ได้รับอนุญาตไมโครโฟน เปลี่ยนได้ในการตั้งค่า iOS",
+    "ar": "لم يُمنح إذن الميكروفون. يمكنك تغييره في إعدادات iOS.",
+    "vi": "Chưa cấp quyền mic. Có thể đổi trong Cài đặt iOS.",
+    "ko": "마이크 권한이 없어요. iOS 설정에서 변경할 수 있어요."
+  },
+  "This room is a preview. No microphone is connected and no messages are sent to other people.": {
+    "es": "Sala de muestra: no hay micrófono conectado ni mensajes enviados.",
+    "th": "ห้องนี้เป็นตัวอย่าง ไม่เชื่อมไมโครโฟนหรือส่งข้อความถึงผู้อื่น",
+    "ar": "هذه غرفة معاينة. لا ميكروفون متصل ولا رسائل تُرسل للآخرين.",
+    "vi": "Đây là phòng mẫu. Không kết nối mic hoặc gửi tin cho người khác.",
+    "ko": "미리 보기 방이에요. 마이크가 연결되거나 다른 사람에게 메시지가 전송되지 않아요."
+  },
+  "Live audio is not connected in this local edition. No microphone request will be sent.": {
+    "es": "El audio en directo no está conectado. No se enviará solicitud de micrófono.",
+    "th": "เวอร์ชันในเครื่องไม่เชื่อมเสียงสด จะไม่ส่งคำขอใช้ไมค์",
+    "ar": "الصوت المباشر غير متصل في هذه النسخة. لن يُرسل طلب ميكروفون.",
+    "vi": "Bản trên máy chưa có âm thanh trực tiếp. Không gửi yêu cầu lên mic.",
+    "ko": "이 로컬 버전에는 실시간 오디오가 없어요. 마이크 참여 요청을 보내지 않아요."
+  },
+  "The room is not connected. Your draft has been kept.": {
+    "es": "La sala no está conectada. Tu borrador se conserva.",
+    "th": "ห้องไม่ได้เชื่อมต่อ ร่างยังอยู่",
+    "ar": "الغرفة غير متصلة. احتُفظ بمسودتك.",
+    "vi": "Phòng chưa kết nối. Bản nháp được giữ.",
+    "ko": "방이 연결되지 않았어요. 초안은 유지돼요."
+  },
+  "A little space for coffee and conversation.": {
+    "es": "Un espacio para el café y la charla.",
+    "th": "พื้นที่เล็กๆ สำหรับกาแฟและการสนทนา",
+    "ar": "مساحة صغيرة للقهوة والحديث.",
+    "vi": "Một góc nhỏ cho cà phê và trò chuyện.",
+    "ko": "커피와 대화를 위한 작은 공간."
+  },
+  "No push notification service is connected. This preference is stored for this guest only.": {
+    "es": "Sin servicio de notificaciones. La preferencia solo se guarda para este visitante.",
+    "th": "ไม่มีบริการแจ้งเตือน บันทึกการตั้งค่าเฉพาะผู้เยี่ยมชมนี้",
+    "ar": "لا توجد خدمة إشعارات متصلة. يُحفظ التفضيل لهذا الضيف فقط.",
+    "vi": "Chưa có thông báo đẩy. Tùy chọn chỉ lưu cho khách này.",
+    "ko": "푸시 알림 서비스가 없어요. 이 게스트의 설정만 저장돼요."
+  },
+  "Your profile, journal, coins and gift collection stay on this device. Preview profiles cannot send messages, join audio or receive gifts. No account is created on a server.": {
+    "es": "Perfil, diario, monedas y regalos quedan aquí. Los perfiles de muestra no envían mensajes, hablan ni reciben regalos. No se crea cuenta en un servidor.",
+    "th": "โปรไฟล์ สมุด เหรียญ และของขวัญอยู่ในเครื่อง โปรไฟล์ตัวอย่างไม่ส่งข้อความ เข้าร่วมเสียง หรือรับของขวัญ ไม่มีบัญชีบนเซิร์ฟเวอร์",
+    "ar": "يبقى ملفك ويومياتك وعملاتك وهداياك هنا. ملفات المعاينة لا تراسل أو تنضم للصوت أو تستقبل هدايا. لا يُنشأ حساب على خادم.",
+    "vi": "Hồ sơ, nhật ký, xu và quà nằm trên máy. Hồ sơ mẫu không nhắn tin, tham gia thoại hay nhận quà. Không tạo tài khoản máy chủ.",
+    "ko": "프로필, 일지, 코인, 선물은 이 기기에 남아요. 미리 보기 프로필은 메시지, 음성 참여, 선물 수신을 하지 못해요. 서버 계정은 생성되지 않아요."
+  },
+  "This removes your local profile, posts, media, coins and gifts. Purchase identifiers are retained only to protect ownership and prevent duplicate delivery. This cannot be undone.": {
+    "es": "Elimina perfil, posts, medios, monedas y regalos locales. Solo se conservan identificadores de compra para proteger la propiedad y evitar duplicados. Es irreversible.",
+    "th": "ลบโปรไฟล์ โพสต์ สื่อ เหรียญและของขวัญในเครื่อง เก็บรหัสซื้อเพื่อป้องกันสิทธิ์และการให้ซ้ำเท่านั้น ย้อนกลับไม่ได้",
+    "ar": "يحذف الملف والمنشورات والوسائط والعملات والهدايا المحلية. تُحفظ معرّفات الشراء فقط لحماية الملكية ومنع التسليم المكرر. لا يمكن التراجع.",
+    "vi": "Xóa hồ sơ, bài viết, phương tiện, xu và quà trên máy. Chỉ giữ mã giao dịch để bảo vệ chủ sở hữu và tránh cấp trùng. Không thể hoàn tác.",
+    "ko": "기기의 프로필, 게시물, 미디어, 코인, 선물을 삭제해요. 소유권 보호와 중복 지급 방지를 위해 구매 ID만 남겨요. 되돌릴 수 없어요."
+  },
+  "Unlock the device and use Retry in Settings. Your saved data will not be overwritten.": {
+    "es": "Desbloquea el dispositivo y pulsa Reintentar en Ajustes. No se sobrescribirán tus datos.",
+    "th": "ปลดล็อกเครื่องแล้วลองใหม่ในการตั้งค่า ข้อมูลเดิมจะไม่ถูกทับ",
+    "ar": "افتح قفل الجهاز واستخدم إعادة المحاولة في الإعدادات. لن تُستبدل بياناتك.",
+    "vi": "Mở khóa thiết bị và chọn Thử lại trong Cài đặt. Không ghi đè dữ liệu đã lưu.",
+    "ko": "기기를 잠금 해제한 뒤 설정에서 재시도하세요. 저장된 데이터를 덮어쓰지 않아요."
+  },
+  "Your local data could not be saved securely. Unlock this device and try again. Existing data has been kept.": {
+    "es": "No se pudieron guardar los datos de forma segura. Desbloquea y reinténtalo. Los datos anteriores se conservan.",
+    "th": "บันทึกข้อมูลอย่างปลอดภัยไม่ได้ ปลดล็อกแล้วลองใหม่ ข้อมูลเดิมยังอยู่",
+    "ar": "تعذّر حفظ البيانات بأمان. افتح القفل وحاول مجددًا. احتُفظ بالبيانات السابقة.",
+    "vi": "Không thể lưu dữ liệu an toàn. Mở khóa và thử lại. Dữ liệu cũ vẫn được giữ.",
+    "ko": "데이터를 안전하게 저장할 수 없어요. 잠금을 해제하고 다시 시도하세요. 기존 데이터는 유지돼요."
+  },
+  "The guest profile was removed, but some local media could not be deleted. Unlock this device and reopen Papi to retry. No new guest can access those files.": {
+    "es": "Perfil eliminado, pero quedan algunos medios. Desbloquea y reabre Papi para reintentar. Ningún visitante nuevo puede acceder a esos archivos.",
+    "th": "ลบโปรไฟล์แล้วแต่ยังลบสื่อบางส่วนไม่ได้ ปลดล็อกแล้วเปิด Papi ใหม่เพื่อทำซ้ำ ผู้เยี่ยมชมใหม่เข้าถึงไฟล์เหล่านี้ไม่ได้",
+    "ar": "حُذف الملف لكن تعذّر حذف بعض الوسائط. افتح القفل وأعد فتح Papi للمحاولة. لا يستطيع ضيف جديد الوصول لتلك الملفات.",
+    "vi": "Đã xóa hồ sơ nhưng còn một số tệp. Mở khóa rồi mở lại Papi để thử tiếp. Khách mới không truy cập được các tệp đó.",
+    "ko": "프로필은 삭제됐지만 일부 미디어가 남았어요. 잠금 해제 후 Papi를 다시 열면 재시도해요. 새 게스트는 해당 파일에 접근할 수 없어요."
+  },
+  "Purchase awaiting review": {
+    "es": "Compra pendiente de revisión",
+    "th": "การซื้อรอตรวจสอบ",
+    "ar": "شراء ينتظر المراجعة",
+    "vi": "Giao dịch chờ xem xét",
+    "ko": "구매 검토 대기"
+  },
+  "Purchase pending": {
+    "es": "Compra pendiente",
+    "th": "การซื้อรอดำเนินการ",
+    "ar": "شراء معلّق",
+    "vi": "Giao dịch đang chờ",
+    "ko": "구매 대기 중"
+  },
+  "Purchase recovery active": {
+    "es": "Recuperación en curso",
+    "th": "กำลังกู้คืนการซื้อ",
+    "ar": "استرداد الشراء جارٍ",
+    "vi": "Đang khôi phục giao dịch",
+    "ko": "구매 복구 중"
+  },
+  "Purchases are not configured yet. Daily check-in is available.": {
+    "es": "Compras aún no configuradas. Puedes usar el registro diario.",
+    "th": "ยังไม่ตั้งค่าการซื้อ ใช้เช็คอินรายวันได้",
+    "ar": "المشتريات غير مهيأة بعد. الحضور اليومي متاح.",
+    "vi": "Chưa cấu hình mua hàng. Bạn vẫn có thể điểm danh.",
+    "ko": "구매가 아직 설정되지 않았어요. 매일 출석은 가능해요."
+  },
+  "Prices are provided by Apple. Coins stay with this local guest.": {
+    "es": "Apple proporciona los precios. Las monedas son de este visitante local.",
+    "th": "ราคาให้บริการโดย Apple เหรียญอยู่กับผู้เยี่ยมชมนี้",
+    "ar": "الأسعار من Apple. العملات تبقى مع هذا الضيف المحلي.",
+    "vi": "Giá do Apple cung cấp. Xu thuộc khách trên máy này.",
+    "ko": "가격은 Apple에서 제공해요. 코인은 이 로컬 게스트에 귀속돼요."
+  },
+  "Products could not be loaded. Please try again.": {
+    "es": "No se pudieron cargar los productos. Reinténtalo.",
+    "th": "โหลดสินค้าไม่ได้ โปรดลองใหม่",
+    "ar": "تعذّر تحميل المنتجات. حاول مجددًا.",
+    "vi": "Không tải được sản phẩm. Hãy thử lại.",
+    "ko": "상품을 불러올 수 없어요. 다시 시도하세요."
+  },
+  "Products could not be loaded. Try again later.": {
+    "es": "No se pudieron cargar los productos. Inténtalo más tarde.",
+    "th": "โหลดสินค้าไม่ได้ ลองใหม่ภายหลัง",
+    "ar": "تعذّر تحميل المنتجات. حاول لاحقًا.",
+    "vi": "Không tải được sản phẩm. Thử lại sau.",
+    "ko": "상품을 불러올 수 없어요. 나중에 다시 시도하세요."
+  },
+  "Resolve pending purchases before deleting this guest. This protects the original purchase owner.": {
+    "es": "Resuelve las compras pendientes antes de borrar al visitante para proteger al propietario original.",
+    "th": "จัดการการซื้อที่ค้างก่อนลบผู้เยี่ยมชม เพื่อปกป้องเจ้าของการซื้อเดิม",
+    "ar": "عالج المشتريات المعلّقة قبل حذف الضيف لحماية المالك الأصلي.",
+    "vi": "Xử lý giao dịch đang chờ trước khi xóa khách để bảo vệ chủ sở hữu gốc.",
+    "ko": "원래 구매자를 보호하도록 대기 중인 구매를 처리한 뒤 게스트를 삭제하세요."
+  },
+  "Resolve the purchase before changing this local guest.": {
+    "es": "Resuelve la compra antes de cambiar al visitante.",
+    "th": "จัดการการซื้อก่อนเปลี่ยนผู้เยี่ยมชม",
+    "ar": "عالج الشراء قبل تغيير الضيف المحلي.",
+    "vi": "Xử lý giao dịch trước khi đổi khách.",
+    "ko": "구매를 처리한 뒤 로컬 게스트를 변경하세요."
+  },
+  "An existing purchase is awaiting approval or recovery. No second purchase has been started.": {
+    "es": "Hay una compra pendiente de aprobación o recuperación. No se ha iniciado otra.",
+    "th": "มีการซื้อรออนุมัติหรือกู้คืน ยังไม่ได้เริ่มรายการใหม่",
+    "ar": "شراء سابق ينتظر الموافقة أو الاسترداد. لم يبدأ شراء آخر.",
+    "vi": "Giao dịch trước đang chờ duyệt hoặc khôi phục. Chưa bắt đầu giao dịch thứ hai.",
+    "ko": "기존 구매가 승인 또는 복구를 기다리고 있어요. 새 구매는 시작하지 않았어요."
+  },
+  "Awaiting Apple's approval. Your original guest ownership has been saved.": {
+    "es": "Esperando la aprobación de Apple. Se ha guardado el visitante propietario original.",
+    "th": "รอ Apple อนุมัติ บันทึกผู้เยี่ยมชมเจ้าของเดิมแล้ว",
+    "ar": "بانتظار موافقة Apple. حُفظت ملكية الضيف الأصلي.",
+    "vi": "Đang chờ Apple duyệt. Đã lưu khách sở hữu ban đầu.",
+    "ko": "Apple 승인을 기다리고 있어요. 원래 게스트 소유권은 저장됐어요."
+  },
+  "Purchase cancelled.": {
+    "es": "Compra cancelada.",
+    "th": "ยกเลิกการซื้อแล้ว",
+    "ar": "أُلغي الشراء.",
+    "vi": "Đã hủy giao dịch.",
+    "ko": "구매가 취소되었어요."
+  },
+  "Purchase interrupted. Ownership has been retained for recovery.": {
+    "es": "Compra interrumpida. Se conserva la propiedad para recuperarla.",
+    "th": "การซื้อถูกขัดจังหวะ เก็บสิทธิ์ไว้สำหรับกู้คืน",
+    "ar": "انقطع الشراء. احتُفظ بالملكية للاسترداد.",
+    "vi": "Giao dịch gián đoạn. Giữ quyền sở hữu để khôi phục.",
+    "ko": "구매가 중단되었어요. 복구를 위해 소유권은 유지돼요."
+  },
+  "The purchase needs review. Its original owner has been retained.": {
+    "es": "La compra necesita revisión. Se conserva el propietario original.",
+    "th": "ต้องตรวจสอบการซื้อ เก็บเจ้าของเดิมไว้แล้ว",
+    "ar": "الشراء يحتاج مراجعة. احتُفظ بالمالك الأصلي.",
+    "vi": "Giao dịch cần xem xét. Đã giữ chủ sở hữu gốc.",
+    "ko": "구매 검토가 필요해요. 원래 소유자는 유지돼요."
+  },
+  "An unverified transaction is waiting for review. It has not been credited or finished.": {
+    "es": "Transacción sin verificar pendiente de revisión. No se ha acreditado ni finalizado.",
+    "th": "รายการที่ยังไม่ยืนยันรอตรวจสอบ ยังไม่เพิ่มเหรียญหรือปิดรายการ",
+    "ar": "معاملة غير متحققة تنتظر المراجعة. لم تُضف عملات ولم تُنهَ.",
+    "vi": "Giao dịch chưa xác minh chờ xem xét. Chưa cộng xu hay kết thúc.",
+    "ko": "미확인 거래가 검토 대기 중이에요. 코인을 지급하거나 거래를 완료하지 않았어요."
+  },
+  "A transaction belongs to an unknown or previous guest, or needs review. No balance was changed and it remains unfinished.": {
+    "es": "La transacción es de un visitante desconocido o anterior, o necesita revisión. El saldo no cambió y no se finalizó.",
+    "th": "รายการเป็นของผู้เยี่ยมชมเดิมหรือไม่ทราบเจ้าของ หรือต้องตรวจสอบ ยอดไม่เปลี่ยนและยังไม่ปิดรายการ",
+    "ar": "المعاملة لضيف مجهول أو سابق، أو تحتاج مراجعة. لم يتغير الرصيد ولم تُنهَ.",
+    "vi": "Giao dịch thuộc khách cũ, không rõ chủ hoặc cần xem xét. Số dư không đổi và chưa kết thúc.",
+    "ko": "이전 또는 알 수 없는 게스트의 거래이거나 검토가 필요해요. 잔액은 그대로이며 거래도 완료하지 않았어요."
+  },
+  "Payment verification succeeded, but local delivery has not been saved. Recovery will retry.": {
+    "es": "Pago verificado, pero la entrega local no se guardó. La recuperación reintentará.",
+    "th": "ยืนยันการชำระแล้วแต่ยังบันทึกการให้เหรียญไม่ได้ ระบบกู้คืนจะลองใหม่",
+    "ar": "تم التحقق من الدفع لكن لم يُحفظ التسليم المحلي. ستُعاد محاولة الاسترداد.",
+    "vi": "Đã xác minh thanh toán nhưng chưa lưu việc cấp xu. Khôi phục sẽ thử lại.",
+    "ko": "결제는 확인됐지만 기기 지급이 저장되지 않았어요. 복구 시 다시 시도해요."
+  },
+  "Apple purchase sync did not complete. Try again later.": {
+    "es": "No se completó la sincronización con Apple. Reinténtalo más tarde.",
+    "th": "ซิงค์การซื้อ Apple ไม่สำเร็จ ลองใหม่ภายหลัง",
+    "ar": "لم تكتمل مزامنة مشتريات Apple. حاول لاحقًا.",
+    "vi": "Chưa đồng bộ xong giao dịch Apple. Thử lại sau.",
+    "ko": "Apple 구매 동기화가 완료되지 않았어요. 나중에 다시 시도하세요."
+  },
+  "Consumable coins belong to this local guest. They do not sync between devices. Deleting the guest removes its spendable balance; purchase ownership records are kept to prevent duplicate delivery.": {
+    "es": "Las monedas pertenecen a este visitante y no se sincronizan entre dispositivos. Borrarlo elimina su saldo; se guardan registros de propiedad para evitar entregas duplicadas.",
+    "th": "เหรียญเป็นของผู้เยี่ยมชมนี้ ไม่ซิงค์ข้ามเครื่อง การลบจะลบยอดใช้ได้ แต่เก็บบันทึกเจ้าของการซื้อเพื่อป้องกันให้ซ้ำ",
+    "ar": "العملات لهذا الضيف ولا تتزامن بين الأجهزة. حذفه يزيل الرصيد القابل للإنفاق، وتبقى سجلات الملكية لمنع التسليم المكرر.",
+    "vi": "Xu thuộc khách này, không đồng bộ giữa thiết bị. Xóa khách sẽ mất số dư; giữ hồ sơ sở hữu để tránh cấp trùng.",
+    "ko": "코인은 이 게스트에 귀속되며 기기 간 동기화되지 않아요. 게스트 삭제 시 사용 가능한 잔액은 사라지고 중복 지급 방지를 위한 구매 소유권 기록은 남아요."
+  },
+  "Apple purchase": {
+    "es": "Compra Apple",
+    "th": "การซื้อ Apple",
+    "ar": "شراء Apple",
+    "vi": "Giao dịch Apple",
+    "ko": "Apple 구매"
+  },
+  "Apple purchase revoked": {
+    "es": "Compra Apple revocada",
+    "th": "เพิกถอนการซื้อ Apple",
+    "ar": "شراء Apple ملغى",
+    "vi": "Giao dịch Apple bị thu hồi",
+    "ko": "Apple 구매 취소 처리"
+  },
+  "Local post": {
+    "es": "Publicación local",
+    "th": "โพสต์ในเครื่อง",
+    "ar": "منشور محلي",
+    "vi": "Bài viết trên máy",
+    "ko": "로컬 게시물"
+  },
+  "Quantity {0}": {
+    "es": "Cantidad: {0}",
+    "th": "จำนวน {0}",
+    "ar": "الكمية {0}",
+    "vi": "Số lượng {0}",
+    "ko": "수량 {0}"
+  },
+  "Collect {0}?": {
+    "es": "¿Coleccionar {0}?",
+    "th": "สะสม {0} ไหม?",
+    "ar": "اقتناء {0}؟",
+    "vi": "Sưu tập {0}?",
+    "ko": "{0}을 수집할까요?"
+  },
+  "Spend {0} coins to add {1} to your local backpack. You can display an owned gift on your profile.": {
+    "es": "Gasta {0} monedas para añadir {1} a tu colección local. Puedes mostrar un regalo en tu perfil.",
+    "th": "ใช้ {0} เหรียญเพิ่ม {1} ชิ้นในกระเป๋า และแสดงของขวัญบนโปรไฟล์ได้",
+    "ar": "أنفق {0} عملة لإضافة {1} إلى حقيبتك المحلية. يمكنك عرض هدية في ملفك.",
+    "vi": "Dùng {0} xu thêm {1} món vào bộ sưu tập trên máy. Bạn có thể trưng bày quà trên hồ sơ.",
+    "ko": "{0} 코인으로 {1}개를 보관함에 추가해요. 보유한 선물을 프로필에 표시할 수 있어요."
+  },
+  "{0} × {1} is saved to this guest's collection.": {
+    "es": "{0} × {1} guardado en la colección de este visitante.",
+    "th": "บันทึก {0} × {1} ในคอลเลกชันแล้ว",
+    "ar": "حُفظت {0} × {1} في مجموعة هذا الضيف.",
+    "vi": "Đã lưu {0} × {1} vào bộ sưu tập của khách này.",
+    "ko": "이 게스트의 컬렉션에 {0} × {1} 저장됨."
+  },
+  "{0} × {1}. No recipient is connected; no coins or inventory were spent. You can collect this gift for your local backpack.": {
+    "es": "{0} × {1}. Sin destinatario conectado; no se gastaron monedas ni regalos. Puedes añadirlo a tu colección.",
+    "th": "{0} × {1} ไม่มีผู้รับเชื่อมต่อ ไม่เสียเหรียญหรือของสะสม คุณสะสมของขวัญนี้ในกระเป๋าได้",
+    "ar": "{0} × {1}. لا يوجد مستلم متصل ولم تُنفق عملات أو مخزون. يمكنك اقتناؤها لحقيبتك.",
+    "vi": "{0} × {1}. Chưa có người nhận; không mất xu hay quà trong kho. Bạn có thể sưu tập quà này.",
+    "ko": "{0} × {1}. 연결된 수신자가 없어 코인이나 보관함 선물은 사용되지 않았어요. 이 선물을 수집할 수 있어요."
+  },
+  "{0} × {1}": {
+    "es": "{0} × {1}",
+    "th": "{0} × {1}",
+    "ar": "{0} × {1}",
+    "vi": "{0} × {1}",
+    "ko": "{0} × {1}"
+  },
+  "{0} coins": {
+    "es": "{0} monedas",
+    "th": "{0} เหรียญ",
+    "ar": "{0} عملة",
+    "vi": "{0} xu",
+    "ko": "{0} 코인"
+  },
+  "Day {0}": {
+    "es": "Día {0}",
+    "th": "วันที่ {0}",
+    "ar": "اليوم {0}",
+    "vi": "Ngày {0}",
+    "ko": "{0}일차"
+  },
+  "Check in · {0} coins": {
+    "es": "Registro · {0} monedas",
+    "th": "เช็คอิน · {0} เหรียญ",
+    "ar": "حضور · {0} عملة",
+    "vi": "Điểm danh · {0} xu",
+    "ko": "출석 · {0} 코인"
+  },
+  "{0} days collected": {
+    "es": "Días de registro: {0}",
+    "th": "เช็คอินสะสม {0} วัน",
+    "ar": "أيام الحضور: {0}",
+    "vi": "Số ngày điểm danh: {0}",
+    "ko": "누적 출석: {0}일"
+  },
+  "{0} coins have been added to your local wallet.": {
+    "es": "Se añadieron {0} monedas a tu cartera local.",
+    "th": "เพิ่ม {0} เหรียญในกระเป๋าเงินแล้ว",
+    "ar": "أُضيفت {0} عملة إلى محفظتك المحلية.",
+    "vi": "Đã thêm {0} xu vào ví trên máy.",
+    "ko": "기기 지갑에 {0} 코인이 추가되었어요."
+  },
+  "{0} coins added to your local wallet.": {
+    "es": "{0} monedas añadidas a tu cartera local.",
+    "th": "เพิ่ม {0} เหรียญในกระเป๋าเงินแล้ว",
+    "ar": "أُضيفت {0} عملة إلى محفظتك المحلية.",
+    "vi": "Đã thêm {0} xu vào ví trên máy.",
+    "ko": "기기 지갑에 {0} 코인이 추가되었어요."
+  },
+  "Seat {0}": {
+    "es": "Asiento {0}",
+    "th": "ที่นั่ง {0}",
+    "ar": "المقعد {0}",
+    "vi": "Ghế {0}",
+    "ko": "좌석 {0}"
+  },
+  "Return to {0}": {
+    "es": "Volver a {0}",
+    "th": "กลับไปที่ {0}",
+    "ar": "العودة إلى {0}",
+    "vi": "Quay lại {0}",
+    "ko": "{0}(으)로 돌아가기"
+  },
+  "Photo {0} / {1}": {
+    "es": "Foto {0} / {1}",
+    "th": "รูป {0} / {1}",
+    "ar": "صورة {0} / {1}",
+    "vi": "Ảnh {0} / {1}",
+    "ko": "사진 {0} / {1}"
+  },
+  "{0} Reopen the app or retry local storage before making more changes.": {
+    "es": "{0} Reabre la app o reintenta el almacenamiento antes de hacer más cambios.",
+    "th": "{0} เปิดแอปใหม่หรือลองจัดเก็บข้อมูลอีกครั้งก่อนแก้ไขต่อ",
+    "ar": "{0} أعد فتح التطبيق أو حاول التخزين مجددًا قبل إجراء تغييرات أخرى.",
+    "vi": "{0} Mở lại ứng dụng hoặc thử lưu trữ lại trước khi sửa tiếp.",
+    "ko": "{0} 앱을 다시 열거나 저장소를 재시도한 뒤 계속 변경하세요."
+  },
+  "App controls follow your selected language. Your writing and original artwork keep their original language.": {
+    "es": "Los controles usan el idioma elegido. Tus textos y el arte conservan su idioma original.",
+    "th": "ส่วนควบคุมใช้ภาษาที่เลือก ข้อความของคุณและภาพต้นฉบับคงภาษาเดิม",
+    "ar": "تتبع عناصر التحكم لغتك المختارة. تبقى كتاباتك والصور الأصلية بلغتها.",
+    "vi": "Điều khiển theo ngôn ngữ đã chọn. Nội dung bạn viết và hình gốc giữ nguyên ngôn ngữ.",
+    "ko": "조작 문구는 선택한 언어로 표시돼요. 작성한 내용과 원본 이미지는 원래 언어를 유지해요."
+  },
+  "Local edition information": {
+    "es": "Información de la edición local",
+    "th": "ข้อมูลเวอร์ชันในเครื่อง",
+    "ar": "معلومات النسخة المحلية",
+    "vi": "Thông tin phiên bản trên máy",
+    "ko": "로컬 버전 안내"
+  },
+  "Original English text": {
+    "es": "Texto original en inglés",
+    "th": "ต้นฉบับภาษาอังกฤษ",
+    "ar": "النص الإنجليزي الأصلي",
+    "vi": "Bản gốc tiếng Anh",
+    "ko": "영어 원문"
+  },
+  "Papi · Local edition": {
+    "es": "Papi · Edición local",
+    "th": "Papi · เวอร์ชันในเครื่อง",
+    "ar": "Papi · النسخة المحلية",
+    "vi": "Papi · Phiên bản trên máy",
+    "ko": "Papi · 로컬 버전"
+  },
+  "Papi 1.0 · Original coffee-community design": {
+    "es": "Papi 1.0 · Comunidad del café",
+    "th": "Papi 1.0 · ชุมชนกาแฟ",
+    "ar": "Papi 1.0 · مجتمع القهوة",
+    "vi": "Papi 1.0 · Cộng đồng cà phê",
+    "ko": "Papi 1.0 · 커피 커뮤니티"
+  },
+  "Papi coffee journal": {
+    "es": "Diario cafetero de Papi",
+    "th": "สมุดกาแฟ Papi",
+    "ar": "يوميات قهوة Papi",
+    "vi": "Nhật ký cà phê Papi",
+    "ko": "Papi 커피 일지"
+  },
+  "Coffee friend": {
+    "es": "Amigo del café",
+    "th": "เพื่อนกาแฟ",
+    "ar": "صديق القهوة",
+    "vi": "Bạn cà phê",
+    "ko": "커피 친구"
+  },
+  "Coffee, conversation, and a slower kind of day.": {
+    "es": "Café, charla y un día sin prisa.",
+    "th": "กาแฟ บทสนทนา และวันที่ไม่เร่งรีบ",
+    "ar": "قهوة وحديث ويوم على مهل.",
+    "vi": "Cà phê, trò chuyện và một ngày chậm rãi.",
+    "ko": "커피, 대화, 그리고 여유로운 하루."
+  },
+  "My coffee": {
+    "es": "Mi café",
+    "th": "กาแฟของฉัน",
+    "ar": "قهوتي",
+    "vi": "Cà phê của tôi",
+    "ko": "내 커피"
+  },
+  "Pour Over": {
+    "es": "Café filtrado",
+    "th": "กาแฟดริป",
+    "ar": "قهوة مقطرة",
+    "vi": "Cà phê pour over",
+    "ko": "핸드드립"
+  },
+  "Latte Art": {
+    "es": "Arte latte",
+    "th": "ลาเต้อาร์ต",
+    "ar": "فن اللاتيه",
+    "vi": "Nghệ thuật latte",
+    "ko": "라테 아트"
+  },
+  "Café Life": {
+    "es": "Vida de café",
+    "th": "ชีวิตคาเฟ่",
+    "ar": "حياة المقاهي",
+    "vi": "Cuộc sống cà phê",
+    "ko": "카페 라이프"
+  },
+  "Community films": {
+    "es": "Vídeos de la comunidad",
+    "th": "วิดีโอชุมชน",
+    "ar": "أفلام المجتمع",
+    "vi": "Video cộng đồng",
+    "ko": "커뮤니티 영상"
+  },
+  "Slow mornings": {
+    "es": "Mañanas tranquilas",
+    "th": "เช้าที่ไม่เร่งรีบ",
+    "ar": "صباح هادئ",
+    "vi": "Buổi sáng chậm rãi",
+    "ko": "여유로운 아침"
+  },
+  "The brewing table": {
+    "es": "La mesa del café",
+    "th": "โต๊ะชงกาแฟ",
+    "ar": "طاولة التحضير",
+    "vi": "Bàn pha cà phê",
+    "ko": "커피 테이블"
+  },
+  "Meet over coffee": {
+    "es": "Conocernos con café",
+    "th": "พบกันพร้อมกาแฟ",
+    "ar": "لقاء على القهوة",
+    "vi": "Gặp nhau bên cà phê",
+    "ko": "커피와 함께 만나요"
+  },
+  "Evening espresso": {
+    "es": "Espresso al atardecer",
+    "th": "เอสเปรสโซยามเย็น",
+    "ar": "إسبريسو المساء",
+    "vi": "Espresso buổi tối",
+    "ko": "저녁의 에스프레소"
+  },
+  "Window seat": {
+    "es": "Junto a la ventana",
+    "th": "ที่นั่งริมหน้าต่าง",
+    "ar": "مقعد النافذة",
+    "vi": "Chỗ ngồi bên cửa sổ",
+    "ko": "창가 자리"
+  },
+  "Coffee daydreams": {
+    "es": "Sueños de café",
+    "th": "ฝันกลางวันกับกาแฟ",
+    "ar": "أحلام القهوة",
+    "vi": "Mơ màng cà phê",
+    "ko": "커피와 공상"
+  },
+  "Open": {
+    "es": "Abrir",
+    "th": "เปิด",
+    "ar": "فتح",
+    "vi": "Mở",
+    "ko": "열기"
+  },
+  "Welcome Coffee Party": {
+    "es": "Bienvenido a la fiesta del café",
+    "th": "ยินดีต้อนรับสู่ปาร์ตี้กาแฟ",
+    "ar": "مرحبًا بحفلة القهوة",
+    "vi": "Chào mừng tiệc cà phê",
+    "ko": "커피 파티에 오신 걸 환영해요"
+  },
+  "Floral aroma & quiet leisure": {
+    "es": "Aroma floral y calma",
+    "th": "กลิ่นดอกไม้และความสงบ",
+    "ar": "عطر الزهور والهدوء",
+    "vi": "Hương hoa và thư thái",
+    "ko": "꽃향기와 고요한 여유"
+  },
+  "Hidden spot for hand brew": {
+    "es": "Un rincón para café filtrado",
+    "th": "มุมลับสำหรับกาแฟดริป",
+    "ar": "ركن خفي للقهوة المقطرة",
+    "vi": "Góc nhỏ cho cà phê thủ công",
+    "ko": "핸드드립을 위한 숨은 공간"
+  },
+  "Fruity signature & easy vibe": {
+    "es": "Notas frutales y relax",
+    "th": "กลิ่นผลไม้และบรรยากาศสบาย",
+    "ar": "نكهة فاكهية وأجواء مريحة",
+    "vi": "Hương trái cây và nhẹ nhàng",
+    "ko": "과일 향과 편안한 분위기"
+  },
+  "Cozy space for sharing": {
+    "es": "Un lugar acogedor para compartir",
+    "th": "พื้นที่อบอุ่นสำหรับแบ่งปัน",
+    "ar": "مساحة دافئة للمشاركة",
+    "vi": "Không gian ấm cúng để chia sẻ",
+    "ko": "함께 나누는 아늑한 공간"
+  },
+  "These are design-inspired café concepts, not verified business listings. No live locations, bookings or opening hours are provided.": {
+    "es": "Son conceptos inspirados en el diseño, no negocios verificados. No incluyen ubicaciones reales, reservas ni horarios.",
+    "th": "เป็นแนวคิดคาเฟ่จากดีไซน์ ไม่ใช่ร้านที่ตรวจสอบแล้ว ไม่มีพิกัดจริง การจอง หรือเวลาเปิด",
+    "ar": "هذه أفكار مقاهٍ من التصميم وليست أنشطة موثقة. لا تتوفر مواقع فعلية أو حجوزات أو ساعات عمل.",
+    "vi": "Đây là ý tưởng quán từ thiết kế, không phải cơ sở đã xác minh. Không có địa điểm thật, đặt chỗ hay giờ mở cửa.",
+    "ko": "디자인에서 가져온 카페 아이디어이며 확인된 매장이 아니에요. 실제 위치, 예약, 영업시간은 제공하지 않아요."
+  },
+  "{0}. This is an inspiration card. A real café directory has not been connected.": {
+    "es": "{0}. Es una tarjeta de inspiración. No hay un directorio real conectado.",
+    "th": "{0} เป็นการ์ดแรงบันดาลใจ ยังไม่เชื่อมไดเรกทอรีร้านจริง",
+    "ar": "{0}. بطاقة للإلهام. لم يتصل دليل مقاهٍ حقيقي.",
+    "vi": "{0}. Đây là thẻ cảm hứng. Chưa kết nối danh bạ quán thật.",
+    "ko": "{0}. 아이디어 카드예요. 실제 카페 목록은 연결되지 않았어요."
+  },
+  "Every roast and harvest is different. Use these cards as a starting point for your own tasting journal.": {
+    "es": "Cada tueste y cosecha es distinto. Usa estas tarjetas para empezar tu diario de cata.",
+    "th": "การคั่วและแต่ละฤดูเก็บเกี่ยวต่างกัน ใช้การ์ดนี้เริ่มบันทึกการชิม",
+    "ar": "كل تحميص وحصاد مختلف. ابدأ بهذه البطاقات يوميات تذوقك.",
+    "vi": "Mỗi mẻ rang và vụ thu hoạch khác nhau. Dùng các thẻ để bắt đầu nhật ký nếm.",
+    "ko": "로스팅과 수확마다 달라요. 이 카드를 시작으로 맛을 기록해 보세요."
+  },
+  "Often enjoyed for a nuanced cup. Try recording the aroma, sweetness and finish of your own brew.": {
+    "es": "Suele ofrecer matices delicados. Anota aroma, dulzor y final de tu café.",
+    "th": "มักมีรสละเอียดอ่อน ลองบันทึกกลิ่น ความหวาน และรสท้าย",
+    "ar": "غالبًا ما تتميز بنكهات دقيقة. سجّل الرائحة والحلاوة والطعم النهائي.",
+    "vi": "Thường có vị tinh tế. Ghi lại hương, độ ngọt và hậu vị.",
+    "ko": "섬세한 풍미를 즐겨 보세요. 향, 단맛, 여운을 기록해 보세요."
+  },
+  "A fuller-bodied coffee often used in blends. Compare different brew ratios in your journal.": {
+    "es": "Café con más cuerpo, común en mezclas. Compara proporciones en tu diario.",
+    "th": "กาแฟบอดี้หนักที่ใช้ในเบลนด์ ลองเทียบอัตราส่วนการชง",
+    "ar": "قهوة بقوام ممتلئ تُستخدم في الخلطات. قارن نسب التحضير في يومياتك.",
+    "vi": "Cà phê đậm thể chất, thường dùng phối trộn. So sánh tỷ lệ pha trong nhật ký.",
+    "ko": "블렌드에 자주 쓰이는 묵직한 커피예요. 추출 비율을 비교해 보세요."
+  },
+  "Take time with the aroma and let the cup cool before adding your tasting notes.": {
+    "es": "Disfruta del aroma y deja enfriar antes de anotar tus impresiones.",
+    "th": "สัมผัสกลิ่นและปล่อยให้เย็นก่อนบันทึกการชิม",
+    "ar": "استمتع بالرائحة ودع القهوة تبرد قبل كتابة ملاحظات التذوق.",
+    "vi": "Thưởng thức hương và để nguội trước khi ghi chú.",
+    "ko": "향을 즐기고 식힌 뒤 맛을 기록해 보세요."
+  },
+  "Compare roast levels and note how sweetness changes in your cup.": {
+    "es": "Compara tuestes y observa cómo cambia el dulzor.",
+    "th": "เปรียบเทียบระดับการคั่วและบันทึกความหวานที่เปลี่ยนไป",
+    "ar": "قارن درجات التحميص ولاحظ تغيّر الحلاوة.",
+    "vi": "So sánh mức rang và ghi lại thay đổi độ ngọt.",
+    "ko": "로스팅 정도에 따라 단맛이 어떻게 달라지는지 비교해 보세요."
+  },
+  "Explore your brewing recipe and note the texture and finish.": {
+    "es": "Explora tu receta y anota la textura y el final.",
+    "th": "สำรวจสูตรชงและบันทึกสัมผัสกับรสท้าย",
+    "ar": "استكشف وصفتك وسجّل القوام والطعم النهائي.",
+    "vi": "Khám phá công thức và ghi lại kết cấu, hậu vị.",
+    "ko": "나만의 레시피로 질감과 여운을 기록해 보세요."
+  },
+  "Keep track of grind size and water temperature as you explore each cup.": {
+    "es": "Anota la molienda y la temperatura del agua de cada taza.",
+    "th": "บันทึกขนาดบดและอุณหภูมิน้ำขณะสำรวจแต่ละแก้ว",
+    "ar": "تابع حجم الطحن وحرارة الماء مع كل كوب.",
+    "vi": "Ghi lại cỡ xay và nhiệt độ nước cho mỗi tách.",
+    "ko": "각 잔의 분쇄도와 물 온도를 기록해 보세요."
+  },
+  "Your data stays with you": {
+    "es": "Tus datos se quedan contigo",
+    "th": "ข้อมูลอยู่กับคุณ",
+    "ar": "بياناتك تبقى معك",
+    "vi": "Dữ liệu ở cùng bạn",
+    "ko": "데이터는 사용자 곁에"
+  },
+  "Photos, camera and microphone": {
+    "es": "Fotos, cámara y micrófono",
+    "th": "รูปภาพ กล้อง และไมโครโฟน",
+    "ar": "الصور والكاميرا والميكروفون",
+    "vi": "Ảnh, camera và mic",
+    "ko": "사진, 카메라, 마이크"
+  },
+  "No community server": {
+    "es": "Sin servidor comunitario",
+    "th": "ไม่มีเซิร์ฟเวอร์ชุมชน",
+    "ar": "لا يوجد خادم مجتمع",
+    "vi": "Không có máy chủ cộng đồng",
+    "ko": "커뮤니티 서버 없음"
+  },
+  "Purchases": {
+    "es": "Compras",
+    "th": "การซื้อ",
+    "ar": "المشتريات",
+    "vi": "Mua hàng",
+    "ko": "구매"
+  },
+  "Deletion and local storage": {
+    "es": "Eliminación y almacenamiento local",
+    "th": "การลบและการจัดเก็บในเครื่อง",
+    "ar": "الحذف والتخزين المحلي",
+    "vi": "Xóa và lưu trữ trên máy",
+    "ko": "삭제 및 기기 저장"
+  },
+  "Support": {
+    "es": "Ayuda",
+    "th": "การสนับสนุน",
+    "ar": "الدعم",
+    "vi": "Hỗ trợ",
+    "ko": "지원"
+  },
+  "One-tap local access": {
+    "es": "Acceso local con un toque",
+    "th": "เข้าใช้ในเครื่องด้วยแตะเดียว",
+    "ar": "دخول محلي بنقرة واحدة",
+    "vi": "Truy cập trên máy một chạm",
+    "ko": "한 번 탭으로 로컬 이용"
+  },
+  "Your coffee journal": {
+    "es": "Tu diario cafetero",
+    "th": "สมุดกาแฟของคุณ",
+    "ar": "يوميات قهوتك",
+    "vi": "Nhật ký cà phê của bạn",
+    "ko": "나의 커피 일지"
+  },
+  "Coins and gifts": {
+    "es": "Monedas y regalos",
+    "th": "เหรียญและของขวัญ",
+    "ar": "العملات والهدايا",
+    "vi": "Xu và quà",
+    "ko": "코인과 선물"
+  },
+  "Respectful content": {
+    "es": "Contenido respetuoso",
+    "th": "เนื้อหาที่เคารพผู้อื่น",
+    "ar": "محتوى محترم",
+    "vi": "Nội dung tôn trọng",
+    "ko": "서로 존중하는 콘텐츠"
+  },
+  "Availability and data": {
+    "es": "Disponibilidad y datos",
+    "th": "ความพร้อมและข้อมูล",
+    "ar": "التوفر والبيانات",
+    "vi": "Khả dụng và dữ liệu",
+    "ko": "이용 가능 여부와 데이터"
+  },
+  "Development edition": {
+    "es": "Edición de desarrollo",
+    "th": "เวอร์ชันพัฒนา",
+    "ar": "نسخة التطوير",
+    "vi": "Phiên bản phát triển",
+    "ko": "개발 버전"
+  },
+  "Updated 21 October 2026": {
+    "es": "Actualizado el 21 de octubre de 2026",
+    "th": "อัปเดต 21 ตุลาคม 2026",
+    "ar": "حُدّث في 21 أكتوبر 2026",
+    "vi": "Cập nhật ngày 21 tháng 10 năm 2026",
+    "ko": "2026년 10월 21일 업데이트"
+  },
+  "Papi creates a guest identifier on this device. Profile details, follows, local notes, check-ins, wallet records, drafts and gift collections are kept in device-protected storage. Selected photos and videos are copied to the app's private media folder.": {
+    "es": "Papi crea un identificador de visitante en este dispositivo. El perfil, los seguimientos, las notas, los registros diarios, la cartera, los borradores y los regalos se guardan en almacenamiento protegido del dispositivo. Las fotos y vídeos elegidos se copian a la carpeta privada de la app.",
+    "th": "Papi สร้างรหัสผู้เยี่ยมชมบนเครื่องนี้ ข้อมูลโปรไฟล์ การติดตาม บันทึก เช็คอิน กระเป๋าเงิน ร่าง และของขวัญถูกเก็บในพื้นที่ที่อุปกรณ์ปกป้อง รูปและวิดีโอที่เลือกจะคัดลอกไปยังโฟลเดอร์ส่วนตัวของแอป",
+    "ar": "ينشئ Papi معرّف ضيف على هذا الجهاز. تُحفظ تفاصيل الملف والمتابعات والملاحظات والحضور وسجلات المحفظة والمسودات والهدايا في تخزين يحميه الجهاز. تُنسخ الصور والفيديوهات المختارة إلى مجلد التطبيق الخاص.",
+    "vi": "Papi tạo mã khách trên thiết bị này. Hồ sơ, theo dõi, ghi chú, điểm danh, sổ ví, bản nháp và quà được lưu trong vùng bảo vệ của thiết bị. Ảnh và video được chọn được sao chép vào thư mục riêng của ứng dụng.",
+    "ko": "Papi는 이 기기에 게스트 ID를 만들어요. 프로필, 팔로우, 메모, 출석, 지갑 기록, 초안, 선물은 기기로 보호되는 저장소에 보관돼요. 선택한 사진과 동영상은 앱의 개인 미디어 폴더로 복사돼요."
+  },
+  "Papi accesses a photo or video when you choose it in Apple's picker. Camera or microphone access is requested only for a feature you explicitly start. Preview voice rooms do not connect to live audio.": {
+    "es": "Papi accede a una foto o vídeo cuando lo eliges en el selector de Apple. Solo solicita cámara o micrófono al iniciar la función correspondiente. Las salas de muestra no conectan audio en directo.",
+    "th": "Papi เข้าถึงรูปหรือวิดีโอเมื่อคุณเลือกในตัวเลือกของ Apple ขอสิทธิ์กล้องหรือไมโครโฟนเฉพาะเมื่อคุณเริ่มฟังก์ชันนั้น ห้องตัวอย่างไม่เชื่อมต่อเสียงสด",
+    "ar": "يصل Papi إلى صورة أو فيديو عندما تختاره في منتقي Apple. لا يُطلب إذن الكاميرا أو الميكروفون إلا لميزة تبدأها بنفسك. غرف المعاينة لا تتصل بصوت مباشر.",
+    "vi": "Papi truy cập ảnh hoặc video khi bạn chọn bằng trình chọn Apple. Chỉ xin quyền camera hoặc mic khi bạn chủ động dùng tính năng đó. Phòng mẫu không kết nối âm thanh trực tiếp.",
+    "ko": "Apple 선택기에서 선택한 사진이나 동영상에만 접근해요. 직접 시작한 기능에 한해 카메라 또는 마이크 권한을 요청해요. 미리 보기 음성방은 실시간 오디오에 연결되지 않아요."
+  },
+  "This edition does not upload posts, send chat messages, submit reports to a moderation team or transmit gifts. Supplied content and member profiles are previews. No advertising or analytics SDK is included.": {
+    "es": "Esta edición no sube publicaciones, envía chats, remite denuncias a moderación ni transfiere regalos. El contenido y los perfiles son muestras. No incluye SDK de publicidad ni análisis.",
+    "th": "เวอร์ชันนี้ไม่อัปโหลดโพสต์ ส่งแชท ส่งรายงานให้ผู้ดูแล หรือส่งของขวัญ เนื้อหาและโปรไฟล์เป็นตัวอย่าง ไม่มี SDK โฆษณาหรือวิเคราะห์",
+    "ar": "هذه النسخة لا ترفع منشورات ولا ترسل رسائل أو بلاغات إلى فريق إشراف أو تنقل هدايا. المحتوى والملفات للمعاينة. لا تتضمن SDK للإعلانات أو التحليلات.",
+    "vi": "Phiên bản này không tải bài viết, gửi tin nhắn, gửi báo cáo đến đội kiểm duyệt hay chuyển quà. Nội dung và hồ sơ là mẫu. Không có SDK quảng cáo hoặc phân tích.",
+    "ko": "이 버전은 게시물 업로드, 채팅 전송, 관리팀 신고 제출, 선물 전송을 하지 않아요. 콘텐츠와 프로필은 미리 보기예요. 광고나 분석 SDK는 포함되지 않았어요."
+  },
+  "Purchases are disabled until products are configured. If enabled in a future configuration, Apple handles payment and Papi stores transaction identifiers and the original guest token for delivery and recovery. Papi does not receive your payment card details.": {
+    "es": "Las compras están desactivadas hasta configurar los productos. Si se activan, Apple gestiona el pago y Papi guarda identificadores de transacción y el token del visitante original para entregar y recuperar la compra. Papi no recibe los datos de tu tarjeta.",
+    "th": "ปิดการซื้อจนกว่าจะตั้งค่าสินค้า หากเปิดในอนาคต Apple จะจัดการการชำระเงิน Papi เก็บรหัสรายการและโทเคนผู้เยี่ยมชมเดิมเพื่อให้สินค้าและกู้คืน Papi ไม่รับข้อมูลบัตรของคุณ",
+    "ar": "المشتريات معطّلة حتى تهيئة المنتجات. إذا فُعّلت لاحقًا تتولى Apple الدفع ويحفظ Papi معرّفات المعاملات ورمز الضيف الأصلي للتسليم والاسترداد. لا يتلقى Papi تفاصيل بطاقتك.",
+    "vi": "Mua hàng tắt đến khi cấu hình sản phẩm. Nếu bật sau này, Apple xử lý thanh toán; Papi lưu mã giao dịch và token khách gốc để cấp và khôi phục. Papi không nhận thông tin thẻ thanh toán.",
+    "ko": "상품 설정 전에는 구매가 비활성화돼요. 추후 활성화하면 Apple이 결제를 처리하고 Papi는 지급과 복구를 위해 거래 ID와 원래 게스트 토큰을 저장해요. 결제 카드 정보는 받지 않아요."
+  },
+  "Log out keeps your data. Delete local guest removes the local profile and its media. Minimal guest and transaction ownership records remain to prevent a future guest from claiming old purchases. Data does not sync to other devices; the app cannot recover local media lost on uninstall.": {
+    "es": "Cerrar sesión conserva los datos. Eliminar al visitante borra su perfil y medios. Se conservan registros mínimos de propiedad para impedir que otro visitante reclame compras antiguas. Los datos no se sincronizan; no se recuperan medios locales perdidos al desinstalar.",
+    "th": "ออกจากระบบยังเก็บข้อมูลไว้ การลบผู้เยี่ยมชมลบโปรไฟล์และสื่อ เก็บบันทึกเจ้าของรายการเท่าที่จำเป็นเพื่อไม่ให้ผู้เยี่ยมชมใหม่อ้างซื้อเก่า ข้อมูลไม่ซิงค์ข้ามเครื่องและกู้คืนสื่อที่หายเมื่อถอนแอปไม่ได้",
+    "ar": "تسجيل الخروج يبقي البيانات. حذف الضيف يزيل الملف ووسائطه. تبقى سجلات ملكية محدودة لمنع ضيف لاحق من المطالبة بمشتريات قديمة. لا تتزامن البيانات، ولا يمكن استعادة الوسائط المفقودة عند إزالة التطبيق.",
+    "vi": "Đăng xuất giữ dữ liệu. Xóa khách sẽ xóa hồ sơ và phương tiện. Giữ tối thiểu hồ sơ sở hữu để khách mới không nhận giao dịch cũ. Dữ liệu không đồng bộ; không khôi phục được phương tiện mất khi gỡ ứng dụng.",
+    "ko": "로그아웃하면 데이터가 유지돼요. 로컬 게스트 삭제 시 프로필과 미디어가 제거돼요. 새 게스트가 이전 구매를 받지 못하도록 최소한의 소유권 기록은 남아요. 다른 기기와 동기화되지 않으며 삭제한 앱의 미디어는 복구할 수 없어요."
+  },
+  "A public support contact has not been configured for this development edition. This document must be reviewed and a valid support channel supplied before public distribution.": {
+    "es": "Esta edición no tiene contacto público de soporte configurado. Antes de distribuirla, hay que revisar este documento y añadir un canal de soporte válido.",
+    "th": "เวอร์ชันพัฒนานี้ยังไม่มีช่องทางสนับสนุนสาธารณะ ต้องตรวจทานเอกสารและเพิ่มช่องทางที่ใช้ได้ก่อนเผยแพร่",
+    "ar": "لم تُحدد جهة دعم عامة لهذه النسخة. يجب مراجعة الوثيقة وإضافة قناة دعم صالحة قبل النشر العام.",
+    "vi": "Bản phát triển chưa có liên hệ hỗ trợ công khai. Cần rà soát tài liệu và thêm kênh hỗ trợ hợp lệ trước khi phát hành.",
+    "ko": "개발 버전의 공개 지원 연락처는 아직 없어요. 공개 배포 전 이 문서를 검토하고 유효한 지원 채널을 제공해야 해요."
+  },
+  "By continuing, you create or reopen a local guest in Papi. This is not server authentication and does not create an online community account.": {
+    "es": "Al continuar, creas o reabres un visitante local. No es autenticación de servidor ni crea una cuenta de comunidad en línea.",
+    "th": "ดำเนินการต่อจะสร้างหรือเปิดผู้เยี่ยมชมในเครื่อง ไม่ใช่การยืนยันตัวตนเซิร์ฟเวอร์และไม่สร้างบัญชีชุมชนออนไลน์",
+    "ar": "بالمتابعة تنشئ أو تعيد فتح ضيف محلي. ليس هذا مصادقة خادم ولا ينشئ حساب مجتمع عبر الإنترنت.",
+    "vi": "Tiếp tục sẽ tạo hoặc mở lại khách trên máy. Đây không phải xác thực máy chủ hay tạo tài khoản cộng đồng trực tuyến.",
+    "ko": "계속하면 Papi의 로컬 게스트를 만들거나 다시 열어요. 서버 인증이 아니며 온라인 커뮤니티 계정은 생성되지 않아요."
+  },
+  "You may select your own photos and videos, write notes, follow preview profiles, and save local posts. Only use media you are entitled to use. No content is publicly published by this edition.": {
+    "es": "Puedes elegir tus fotos y vídeos, escribir notas, seguir perfiles de muestra y guardar posts locales. Usa solo medios que tengas derecho a usar. Esta edición no publica contenido de forma pública.",
+    "th": "คุณเลือกรูปและวิดีโอ เขียนบันทึก ติดตามโปรไฟล์ตัวอย่าง และบันทึกโพสต์ในเครื่องได้ ใช้เฉพาะสื่อที่คุณมีสิทธิ์ เวอร์ชันนี้ไม่เผยแพร่เนื้อหาสู่สาธารณะ",
+    "ar": "يمكنك اختيار صورك وفيديوهاتك وكتابة ملاحظات ومتابعة ملفات معاينة وحفظ منشورات محلية. استخدم وسائط يحق لك استخدامها فقط. لا تنشر هذه النسخة محتوى للعامة.",
+    "vi": "Bạn có thể chọn ảnh, video, viết ghi chú, theo dõi hồ sơ mẫu và lưu bài trên máy. Chỉ dùng phương tiện bạn có quyền sử dụng. Phiên bản này không công khai nội dung.",
+    "ko": "사진과 동영상 선택, 메모 작성, 미리 보기 프로필 팔로우, 로컬 게시물 저장을 할 수 있어요. 이용 권한이 있는 미디어만 사용하세요. 이 버전은 콘텐츠를 공개 게시하지 않아요."
+  },
+  "Daily check-ins provide local coins. Saving a post costs 10 coins. Collecting gifts uses the displayed coin amount and adds items to your local backpack. Gift previews are not remote transfers and spend no coins. Collected gifts can be displayed on your profile.": {
+    "es": "El registro diario da monedas locales. Guardar un post cuesta 10. Los regalos de colección cuestan lo indicado y se añaden a tu mochila local. Las vistas previas no transfieren regalos ni gastan monedas. Puedes mostrar regalos propios en tu perfil.",
+    "th": "เช็คอินรายวันให้เหรียญในเครื่อง บันทึกโพสต์ใช้ 10 เหรียญ สะสมของขวัญใช้เหรียญตามที่แสดงและเพิ่มในกระเป๋า ตัวอย่างของขวัญไม่ใช่การโอนและไม่เสียเหรียญ ของสะสมแสดงบนโปรไฟล์ได้",
+    "ar": "الحضور اليومي يمنح عملات محلية. حفظ المنشور يكلف 10 عملات. اقتناء الهدية يخصم السعر المعروض ويضيفها للحقيبة. المعاينة ليست تحويلًا ولا تنفق عملات. يمكنك عرض الهدايا في ملفك.",
+    "vi": "Điểm danh cho xu trên máy. Lưu bài tốn 10 xu. Sưu tập quà dùng số xu hiển thị và thêm vào bộ sưu tập. Xem trước không chuyển quà hoặc tốn xu. Có thể trưng bày quà trên hồ sơ.",
+    "ko": "매일 출석으로 로컬 코인을 받아요. 게시물 저장은 10 코인이에요. 선물 수집 시 표시된 코인을 사용해 보관함에 추가해요. 미리 보기는 원격 전송이 아니며 코인을 쓰지 않아요. 수집한 선물은 프로필에 표시할 수 있어요."
+  },
+  "Do not use the app to create or distribute abusive, exploitative, hateful or unlawful content. Block and report controls are available; reports are local records until a real moderation channel is connected.": {
+    "es": "No crees ni distribuyas contenido abusivo, explotador, de odio o ilegal. Puedes bloquear y denunciar; las denuncias son locales hasta conectar un canal real de moderación.",
+    "th": "ห้ามสร้างหรือแจกจ่ายเนื้อหาล่วงละเมิด แสวงหาประโยชน์ เกลียดชัง หรือผิดกฎหมาย มีปุ่มบล็อกและรายงาน รายงานยังอยู่ในเครื่องจนเชื่อมช่องทางดูแลจริง",
+    "ar": "لا تنشئ أو تنشر محتوى مسيئًا أو استغلاليًا أو يحض على الكراهية أو مخالفًا للقانون. الحظر والإبلاغ متاحان، وتبقى البلاغات محلية حتى اتصال قناة إشراف حقيقية.",
+    "vi": "Không tạo hoặc phân phối nội dung lạm dụng, bóc lột, thù ghét hay trái pháp luật. Có chặn và báo cáo; báo cáo chỉ lưu trên máy đến khi có kênh kiểm duyệt thật.",
+    "ko": "학대, 착취, 혐오, 불법 콘텐츠를 만들거나 배포하지 마세요. 차단과 신고 기능이 있으며 실제 관리 채널 연결 전 신고는 기기에만 저장돼요."
+  },
+  "Preview rooms and people do not represent online availability. Remote chat and live voice are not active. Local guest data is device-bound, and deleting a guest removes its usable balance and collection.": {
+    "es": "Las salas y perfiles de muestra no indican presencia en línea. Chat remoto y voz en directo no están activos. Los datos son de este dispositivo; borrar al visitante elimina saldo y colección utilizables.",
+    "th": "ห้องและบุคคลตัวอย่างไม่ได้แสดงว่าออนไลน์ แชทระยะไกลและเสียงสดไม่เปิดใช้ ข้อมูลผูกกับเครื่อง การลบผู้เยี่ยมชมลบยอดใช้ได้และคอลเลกชัน",
+    "ar": "الغرف والأشخاص للمعاينة ولا يمثلون توفرًا عبر الإنترنت. الدردشة والصوت المباشر غير نشطين. بيانات الضيف مرتبطة بالجهاز، وحذفه يزيل الرصيد والمجموعة القابلين للاستخدام.",
+    "vi": "Phòng và hồ sơ mẫu không thể hiện trạng thái trực tuyến. Chat từ xa và thoại trực tiếp chưa hoạt động. Dữ liệu gắn với thiết bị; xóa khách làm mất số dư và bộ sưu tập.",
+    "ko": "미리 보기 방과 사람은 온라인 상태를 의미하지 않아요. 원격 채팅과 실시간 음성은 활성화되지 않았어요. 게스트 데이터는 기기에 귀속되고 삭제하면 잔액과 컬렉션을 사용할 수 없어요."
+  },
+  "Purchase products, real-time services and a public support contact still require configuration before this app is distributed as an online service.": {
+    "es": "Antes de distribuir la app como servicio en línea, hay que configurar productos, servicios en tiempo real y soporte público.",
+    "th": "ต้องตั้งค่าสินค้า บริการเรียลไทม์ และช่องทางสนับสนุนก่อนเผยแพร่เป็นบริการออนไลน์",
+    "ar": "يلزم إعداد منتجات الشراء والخدمات الفورية وجهة دعم عامة قبل نشر التطبيق كخدمة عبر الإنترنت.",
+    "vi": "Cần cấu hình sản phẩm, dịch vụ thời gian thực và hỗ trợ công khai trước khi phát hành như dịch vụ trực tuyến.",
+    "ko": "온라인 서비스로 배포하기 전에 구매 상품, 실시간 서비스, 공개 지원 연락처를 설정해야 해요."
+  },
+  "Retry": {
+    "es": "Reintentar",
+    "th": "ลองอีกครั้ง",
+    "ar": "إعادة المحاولة",
+    "vi": "Thử lại",
+    "ko": "다시 시도"
+  },
+  "Audio could not start. Please try again.": {
+    "es": "No se pudo iniciar el audio. Reinténtalo.",
+    "th": "เริ่มเสียงไม่ได้ โปรดลองใหม่",
+    "ar": "تعذّر بدء الصوت. حاول مجددًا.",
+    "vi": "Không thể phát âm thanh. Hãy thử lại.",
+    "ko": "오디오를 시작할 수 없어요. 다시 시도하세요."
+  },
+  "Recording could not be saved. Please record again.": {
+    "es": "No se pudo guardar la grabación. Grábala de nuevo.",
+    "th": "บันทึกเสียงไม่ได้ กรุณาอัดใหม่",
+    "ar": "تعذّر حفظ التسجيل. سجّل مجددًا.",
+    "vi": "Không lưu được bản ghi. Hãy ghi lại.",
+    "ko": "녹음을 저장할 수 없어요. 다시 녹음하세요."
+  },
+  "This voice draft is unavailable.": {
+    "es": "Este borrador de voz no está disponible.",
+    "th": "ร่างเสียงนี้ไม่พร้อมใช้งาน",
+    "ar": "المسودة الصوتية غير متاحة.",
+    "vi": "Bản nháp thoại này không khả dụng.",
+    "ko": "이 음성 초안을 사용할 수 없어요."
+  }
+}

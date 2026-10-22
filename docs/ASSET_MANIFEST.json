@@ -1,0 +1,576 @@
+[
+  {
+    "asset": "brandMark",
+    "source": "ProjectMaterials/UIAssets/image_868@2x.png"
+  },
+  {
+    "asset": "welcomeBackground",
+    "source": "ProjectMaterials/UIAssets/Group_1271@2x.png"
+  },
+  {
+    "asset": "onboardingPour",
+    "source": "ProjectMaterials/UIAssets/Group_1272@2x.png"
+  },
+  {
+    "asset": "onboardingChill",
+    "source": "ProjectMaterials/UIAssets/Group_1273@2x.png"
+  },
+  {
+    "asset": "onboardingRoast",
+    "source": "ProjectMaterials/UIAssets/Group_1274@2x.png"
+  },
+  {
+    "asset": "pageBackground",
+    "source": "ProjectMaterials/UIAssets/Group_1295@2x.png"
+  },
+  {
+    "asset": "roomListBackground",
+    "source": "ProjectMaterials/UIAssets/Group_1285@2x.png"
+  },
+  {
+    "asset": "homeTitle",
+    "source": "ProjectMaterials/UIAssets/Group_1275@2x.png"
+  },
+  {
+    "asset": "exploreBanner",
+    "source": "ProjectMaterials/UIAssets/Group_1276@2x.png"
+  },
+  {
+    "asset": "beansBanner",
+    "source": "ProjectMaterials/UIAssets/Group_1277@2x.png"
+  },
+  {
+    "asset": "chatTitle",
+    "source": "ProjectMaterials/UIAssets/Group_1286@2x.png"
+  },
+  {
+    "asset": "profileTitle",
+    "source": "ProjectMaterials/UIAssets/Group_1287@2x.png"
+  },
+  {
+    "asset": "walletBanner",
+    "source": "ProjectMaterials/UIAssets/Group_1288@2x.png"
+  },
+  {
+    "asset": "levelBanner",
+    "source": "ProjectMaterials/UIAssets/Group_1289@2x.png"
+  },
+  {
+    "asset": "checkinBackground",
+    "source": "ProjectMaterials/UIAssets/Group_1292@2x.png"
+  },
+  {
+    "asset": "levelCard",
+    "source": "ProjectMaterials/UIAssets/Group_1293@2x.png"
+  },
+  {
+    "asset": "walletCard",
+    "source": "ProjectMaterials/UIAssets/Group_1294@2x.png"
+  },
+  {
+    "asset": "beanArabica",
+    "source": "ProjectMaterials/UIAssets/Group_1278@2x.png"
+  },
+  {
+    "asset": "beanRobusta",
+    "source": "ProjectMaterials/UIAssets/Group_1279@2x.png"
+  },
+  {
+    "asset": "beanGeisha",
+    "source": "ProjectMaterials/UIAssets/Group_1280@2x.png"
+  },
+  {
+    "asset": "beanBourbon",
+    "source": "ProjectMaterials/UIAssets/Group_1281@2x.png"
+  },
+  {
+    "asset": "beanPacamara",
+    "source": "ProjectMaterials/UIAssets/Group_1282@2x.png"
+  },
+  {
+    "asset": "beanSL28",
+    "source": "ProjectMaterials/UIAssets/Group_1283@2x.png"
+  },
+  {
+    "asset": "back",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(29).png"
+  },
+  {
+    "asset": "close",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(17).png"
+  },
+  {
+    "asset": "more",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(24).png"
+  },
+  {
+    "asset": "moreLight",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(16).png"
+  },
+  {
+    "asset": "plus",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(25).png"
+  },
+  {
+    "asset": "edit",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(2).png"
+  },
+  {
+    "asset": "star",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(23).png"
+  },
+  {
+    "asset": "photo",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(15).png"
+  },
+  {
+    "asset": "send",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(34).png"
+  },
+  {
+    "asset": "check",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(12).png"
+  },
+  {
+    "asset": "trash",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(30).png"
+  },
+  {
+    "asset": "chevron",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(10).png"
+  },
+  {
+    "asset": "blocked",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(4).png"
+  },
+  {
+    "asset": "bag",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(5).png"
+  },
+  {
+    "asset": "calendar",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(6).png"
+  },
+  {
+    "asset": "globe",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(7).png"
+  },
+  {
+    "asset": "settings",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(8).png"
+  },
+  {
+    "asset": "emptyCup",
+    "source": "ProjectMaterials/UIAssets/Frame@2x.png"
+  },
+  {
+    "asset": "soundWave",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(26).png"
+  },
+  {
+    "asset": "like",
+    "source": "ProjectMaterials/UIAssets/Group_1225@2x.png"
+  },
+  {
+    "asset": "comment",
+    "source": "ProjectMaterials/UIAssets/Group_1226@2x.png"
+  },
+  {
+    "asset": "clean",
+    "source": "ProjectMaterials/UIAssets/Group_1236@2x.png"
+  },
+  {
+    "asset": "systemNotice",
+    "source": "ProjectMaterials/UIAssets/Group_1238@2x.png"
+  },
+  {
+    "asset": "interactionNotice",
+    "source": "ProjectMaterials/UIAssets/Group_1239@2x.png"
+  },
+  {
+    "asset": "onboardNext",
+    "source": "ProjectMaterials/UIAssets/Group_1109@2x.png"
+  },
+  {
+    "asset": "report",
+    "source": "ProjectMaterials/UIAssets/Group_135@2x.png"
+  },
+  {
+    "asset": "block",
+    "source": "ProjectMaterials/UIAssets/Group_136@2x.png"
+  },
+  {
+    "asset": "followButton",
+    "source": "ProjectMaterials/UIAssets/Group_559@2x.png"
+  },
+  {
+    "asset": "chatButton",
+    "source": "ProjectMaterials/UIAssets/Group_560@2x(1).png"
+  },
+  {
+    "asset": "followedButton",
+    "source": "ProjectMaterials/UIAssets/Group_561@2x.png"
+  },
+  {
+    "asset": "homeOn",
+    "source": "ProjectMaterials/UIAssets/Group_592@2x.png"
+  },
+  {
+    "asset": "homeOff",
+    "source": "ProjectMaterials/UIAssets/Group_592@2x(1).png"
+  },
+  {
+    "asset": "voiceOn",
+    "source": "ProjectMaterials/UIAssets/Group_593@2x.png"
+  },
+  {
+    "asset": "voiceOff",
+    "source": "ProjectMaterials/UIAssets/Group_593@2x(1).png"
+  },
+  {
+    "asset": "messagesOn",
+    "source": "ProjectMaterials/UIAssets/Group_594@2x.png"
+  },
+  {
+    "asset": "messagesOff",
+    "source": "ProjectMaterials/UIAssets/Group_594@2x(1).png"
+  },
+  {
+    "asset": "meOn",
+    "source": "ProjectMaterials/UIAssets/Group_595@2x.png"
+  },
+  {
+    "asset": "meOff",
+    "source": "ProjectMaterials/UIAssets/Group_595@2x(1).png"
+  },
+  {
+    "asset": "gift",
+    "source": "ProjectMaterials/UIAssets/Group_782@2x.png"
+  },
+  {
+    "asset": "mic",
+    "source": "ProjectMaterials/UIAssets/Group_904@2x.png"
+  },
+  {
+    "asset": "chatPhoto",
+    "source": "ProjectMaterials/UIAssets/Group_905@2x.png"
+  },
+  {
+    "asset": "speaker",
+    "source": "ProjectMaterials/UIAssets/Group_906@2x.png"
+  },
+  {
+    "asset": "coffeeUpdates",
+    "source": "ProjectMaterials/UIAssets/image_872@2x.png"
+  },
+  {
+    "asset": "uploadImage",
+    "source": "ProjectMaterials/UIAssets/image_194@2x.png"
+  },
+  {
+    "asset": "hot",
+    "source": "ProjectMaterials/UIAssets/image_878@2x.png"
+  },
+  {
+    "asset": "coin",
+    "source": "ProjectMaterials/UIAssets/image_883@2x.png"
+  },
+  {
+    "asset": "dialogBackground",
+    "source": "ProjectMaterials/UIAssets/image_885@2x.png"
+  },
+  {
+    "asset": "giftLove",
+    "source": "ProjectMaterials/UIAssets/Group_673@2x.png"
+  },
+  {
+    "asset": "giftPeach",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1106@2x.png"
+  },
+  {
+    "asset": "giftCake",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1108@2x.png"
+  },
+  {
+    "asset": "giftUmbrella",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1107@2x.png"
+  },
+  {
+    "asset": "giftBird",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1113@2x.png"
+  },
+  {
+    "asset": "giftHeadphones",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1114@2x.png"
+  },
+  {
+    "asset": "giftCar",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1115@2x.png"
+  },
+  {
+    "asset": "giftCrown",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1116@2x.png"
+  },
+  {
+    "asset": "coffee00",
+    "source": "ProjectMaterials/ContentImages/491446704_18495838444015606_2951662145041834063_n.jpg"
+  },
+  {
+    "asset": "coffee01",
+    "source": "ProjectMaterials/ContentImages/531218040_18215454979307337_4523770324707123032_n.jpg"
+  },
+  {
+    "asset": "coffee02",
+    "source": "ProjectMaterials/ContentImages/545336021_18236256523292459_4507865406424230615_n.jpg"
+  },
+  {
+    "asset": "coffee03",
+    "source": "ProjectMaterials/ContentImages/576547713_18084713414088363_1285219696126171284_n.jpg"
+  },
+  {
+    "asset": "coffee04",
+    "source": "ProjectMaterials/ContentImages/587561444_18520843717067479_7889809574185219306_n.jpg"
+  },
+  {
+    "asset": "coffee05",
+    "source": "ProjectMaterials/ContentImages/589257354_18331874491214752_1361707186294986293_n.jpg"
+  },
+  {
+    "asset": "coffee06",
+    "source": "ProjectMaterials/ContentImages/610897135_18554168221034896_5027949645344542905_n.jpg"
+  },
+  {
+    "asset": "coffee07",
+    "source": "ProjectMaterials/ContentImages/621599361_17997497273856576_6448872857505022523_n.jpg"
+  },
+  {
+    "asset": "coffee08",
+    "source": "ProjectMaterials/ContentImages/627472722_18436267090118139_6342985871363311357_n.jpg"
+  },
+  {
+    "asset": "coffee09",
+    "source": "ProjectMaterials/ContentImages/628012198_18438626845128037_4967181347781712324_n.jpeg"
+  },
+  {
+    "asset": "coffee10",
+    "source": "ProjectMaterials/ContentImages/640856207_18567478963053198_3773407055237167139_n.jpg"
+  },
+  {
+    "asset": "coffee11",
+    "source": "ProjectMaterials/ContentImages/654566804_18013469846676232_8010475497353305856_n.jpg"
+  },
+  {
+    "asset": "coffee12",
+    "source": "ProjectMaterials/ContentImages/706028737_17928520068313071_4136620075343317093_n.jpg"
+  },
+  {
+    "asset": "coffee13",
+    "source": "ProjectMaterials/ContentImages/729148503_18005159000928677_2131875526618465034_n.jpg"
+  },
+  {
+    "asset": "coffee14",
+    "source": "ProjectMaterials/ContentImages/757665890_18620593681051045_6033168349973866481_n.jpg"
+  },
+  {
+    "asset": "coffee15",
+    "source": "ProjectMaterials/ContentImages/764102974_18109832771003789_5171860791040556245_n.jpg"
+  },
+  {
+    "asset": "coffee16",
+    "source": "ProjectMaterials/ContentImages/782542831_18247893658307970_7502922252822748806_n.jpg"
+  },
+  {
+    "asset": "coffee17",
+    "source": "ProjectMaterials/ContentImages/825322594_18015018077952191_641264614028541211_n.webp"
+  },
+  {
+    "asset": "coffee30",
+    "source": "ProjectMaterials/ContentImages/839589733_18223950805337746_8518896593143034853_n.jpg"
+  },
+  {
+    "asset": "person00",
+    "source": "ProjectMaterials/ContentImages/828150671_18460538542189071_1789721700966985714_n.jpg",
+    "owner": "preview-member-0",
+    "displayName": "Mia",
+    "mappingApprovedByUser": "2026-10-21"
+  },
+  {
+    "asset": "person01",
+    "source": "ProjectMaterials/ContentImages/828924727_18592029697068547_9134634135057079283_n.jpg",
+    "owner": "preview-member-1",
+    "displayName": "Luna",
+    "mappingApprovedByUser": "2026-10-21"
+  },
+  {
+    "asset": "person02",
+    "source": "ProjectMaterials/ContentImages/830487382_18487605439104358_2075193543309807603_n.jpg",
+    "owner": "preview-member-2",
+    "displayName": "Avery",
+    "mappingApprovedByUser": "2026-10-21"
+  },
+  {
+    "asset": "person03",
+    "source": "ProjectMaterials/ContentImages/830594342_17911443807537299_6706399938915264218_n.jpg",
+    "owner": "preview-member-3",
+    "displayName": "Sam",
+    "mappingApprovedByUser": "2026-10-21"
+  },
+  {
+    "asset": "person04",
+    "source": "ProjectMaterials/ContentImages/831424261_18635464435021134_6891735408629346119_n.jpg",
+    "owner": "preview-member-4",
+    "displayName": "Alex",
+    "mappingApprovedByUser": "2026-10-21"
+  },
+  {
+    "asset": "person05",
+    "source": "ProjectMaterials/ContentImages/833701675_18377411281215137_4162611926844631045_n.jpg",
+    "owner": "preview-member-5",
+    "displayName": "Noah",
+    "mappingApprovedByUser": "2026-10-21"
+  },
+  {
+    "asset": "person06",
+    "source": "ProjectMaterials/ContentImages/833790432_18414404590080004_2113187723771374653_n.jpg",
+    "owner": "preview-member-6",
+    "displayName": "Quinn",
+    "mappingApprovedByUser": "2026-10-21"
+  },
+  {
+    "asset": "person07",
+    "source": "ProjectMaterials/ContentImages/834333937_18102939077437158_2249796027265385049_n.jpg",
+    "owner": "preview-member-7",
+    "displayName": "Charlie",
+    "mappingApprovedByUser": "2026-10-21"
+  },
+  {
+    "asset": "coffeeVideo00",
+    "source": "ProjectMaterials/ContentVideos/AQMMWPVvGd3CXLwvme60KodkT6POOXMuzYtmY1BBJ3-8TsaTvOOYIxw2Zb7EU-MVrjFtgsCLFX-R45ejX9QHHpFm47le-_KWhYfHLTc.mp4",
+    "poster": "coffeeVideo00.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo01",
+    "source": "ProjectMaterials/ContentVideos/AQMPyLg4xKrvk9K2-3z5bFppGZ4BXjyLqCZbDbSulzR4qs4_MIS4WmoQyGLzdThFIGqepkGlxzm8XfZ_JDKkwNgxA2bRTEaRFo3epPk.mp4",
+    "poster": "coffeeVideo01.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo02",
+    "source": "ProjectMaterials/ContentVideos/AQMjB1uEvbHyxAl8nY8qeri5bkDbfWG-bS3cTzZehRSzulwOYjSQWYgn0ThuHfrtGzAEmhA0G54DZ-94mTWawly8UTBE9N2IXzJ0rYc.mp4",
+    "poster": "coffeeVideo02.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo03",
+    "source": "ProjectMaterials/ContentVideos/AQMmC0sIQ4NmgrJy9YygZSitQmNKxrpjIUlfE6DbfifbFKexSOENdWBXQeoJ_IngCJGUZ58pDlx_og7X5zpZvqkmB4jgkPHyBJRx5xI.mp4",
+    "poster": "coffeeVideo03.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo04",
+    "source": "ProjectMaterials/ContentVideos/AQN4L-GB2rD_WTY50ltWz0NfCUUQxiyWuzJQrXV3r44sLQQ3855Zy_TXSkAGfxrP7Kv1F5yYc847poaAl8zIZxqMz9KxRuN29bZNv8A.mp4",
+    "poster": "coffeeVideo04.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo05",
+    "source": "ProjectMaterials/ContentVideos/AQNFekgDQ1UINyqcrmDjU9IKnFRgx1VNwgrXLQ5KRgyZn8scsOznU3430EgeXQKq3ttD6GfSNVbP5OHRzEc6jddgSSY1j6oLgdE8oKU.mp4",
+    "poster": "coffeeVideo05.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo06",
+    "source": "ProjectMaterials/ContentVideos/AQNN7LdTNuTD7FdQdwXhZ71Ll5a9FgECLpx0ao1S3ha73jwH0GSHgeVlh-1zE_SkKmFFrn7HHUgF7ReYNY57OVEFBgYpR1bP5oM3T1A.mp4",
+    "poster": "coffeeVideo06.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo07",
+    "source": "ProjectMaterials/ContentVideos/AQNh25D7bDaWrl7AfwH0XoLCR90EGL6Q7KszJ2ODbELVYUautRLHLgrPVDN-8abHcOCqXe4kSM543gJbL-g_Dm29dZyskWQPgMvlwqk.mp4",
+    "poster": "coffeeVideo07.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo08",
+    "source": "ProjectMaterials/ContentVideos/AQNnLAKorkEXp49wkTyXoOb7xgzZfgLAGOcX9GEESYX01thVplX2L_r4eKmXSwEKp7cO-GU_Z43GvJ8GLuFyuTH4LPbSO32Qkrgy0iE.mp4",
+    "poster": "coffeeVideo08.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo09",
+    "source": "ProjectMaterials/ContentVideos/AQO1SxnnKk4IuLTQkKf49X73ad-DXoe7kMY8uHAqSl2f0_YUbO9VXaRnUXOxVkrQpD-wvpBqhZ3lL9AHnWAo3cB3U2yZV66p8rsZ2G4.mp4",
+    "poster": "coffeeVideo09.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo10",
+    "source": "ProjectMaterials/ContentVideos/AQOATF2y8Ss6N0_xp4paeEtHO9_3fzt2XBVGlnSLdBG30R4fJuOoz9KFGeA3T09Q-36wDtMZr3OlEQctiC7Q1OIldYMD01U7w4ARlAo.mp4",
+    "poster": "coffeeVideo10.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo11",
+    "source": "ProjectMaterials/ContentVideos/AQOPp9s5zaj1hwNY4F51Ousj0iEBgaknegMrxVIR2ulV-k2hJqOWY4bQ6Vny-ioScqDbUGSHVbghTgwQQ9IZX-3QKq_VwznzCG9xr1Y.mp4",
+    "poster": "coffeeVideo11.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo12",
+    "source": "ProjectMaterials/ContentVideos/AQOVTD7Qw3rvUbflEsPfqAUEJg6Y_Tp2xOdZT8CGd32GagGQxZhh_LyIsYpr5P4wQUXCYlMA8i3nfXCmO_Jehyvea_Wa21BvDa-PJCI.mp4",
+    "poster": "coffeeVideo12.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo13",
+    "source": "ProjectMaterials/ContentVideos/AQOqDevvZpejZaxcS_j6ou_JDnryhjVx63fB4rjhyStfOorUxHnonZVELbxJ46nK6AHEEk6CLIJQFHg1MTevCV5qsrgXyix_8qDEX8o.mp4",
+    "poster": "coffeeVideo13.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo14",
+    "source": "ProjectMaterials/ContentVideos/AQOqif0IggotCMxdixLIrcWchlp27j7AKuSQv06QkqhChmn8nlOkarWTjUy6AyptqWJ_29NdO6tG38qWzUt84fxcBz-EtnUWM5Jvwv8.mp4",
+    "poster": "coffeeVideo14.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo15",
+    "source": "ProjectMaterials/ContentVideos/AQOw6t5UJFCzpYup-7IWsJMxaLSpq5TyqJZgs0j1tn19uTvvby78cpCRrS1gpn6kdR0jvQwDnEVBG6wA6EOIhAuFJG6o_O_Yz2xg-zs.mp4",
+    "poster": "coffeeVideo15.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo16",
+    "source": "ProjectMaterials/ContentVideos/AQPEW3XG-3JkaH4nOxbNUjK_0cSX27ZeJbE-ljzZlYFhBEve_5fA_OIufoo1ibXBOkRsnAT6F2VoYdkxpoB1f4Wtwa7J4MlPONUVuEo.mp4",
+    "poster": "coffeeVideo16.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo17",
+    "source": "ProjectMaterials/ContentVideos/AQPNx6nNtrKyg7fDwSu_Zyy8PSUZ8uhEhlhdgAJUkWZw9q16iy_UNQlZ3gyqGiK7mhuSSiyn8j9j1afUY8VT6WpzAAvON8b1LCMe93M.mp4",
+    "poster": "coffeeVideo17.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo18",
+    "source": "ProjectMaterials/ContentVideos/AQPSEOmv3K-cJOeVH5IvLdNtfqakg8JQGMaclioGZWxSY_d6C2Nhq8keAUqmBE0nBzOphHMUGNQ9nGeTcAczI3kxSX81Fffsg9_xupA.mp4",
+    "poster": "coffeeVideo18.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo19",
+    "source": "ProjectMaterials/ContentVideos/AQPcg4wtkJ1mamBqaWqrT2Iewrz-mDWOGEnPMOG5_XTx9syGLBkwfAM4RMx1np4Gk7zGV03W4bz8oFBOQJwa1cB2H0EvNOgA9FMmK8I.mp4",
+    "poster": "coffeeVideo19.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "coffeeVideo20",
+    "source": "ProjectMaterials/ContentVideos/AQPqC5T4ywHyMPomckZ0uFckxEXUNr4IT0EqQl9pzG4ONBUUzC-vs3VqvHKLQxHdc7KTDMohQyZ_Yr48UqarNDHSBv999JZP19ZpaNY.mp4",
+    "poster": "coffeeVideo20.jpg",
+    "owner": "unassigned-editorial-preview"
+  },
+  {
+    "asset": "roomBackground",
+    "source": "ProjectMaterials/UIAssets/Generated/roomBackground.png"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "images": [
+    {
+      "filename": "coffee11.jpg",
+      "idiom": "universal",
+      "scale": "2x"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  }
+}

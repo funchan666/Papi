@@ -1,0 +1,26 @@
+{
+  "sourceFiles": 18,
+  "imageSets": 106,
+  "bundledVideos": 21,
+  "resourceBytes": 93302568,
+  "resourcePhase": [
+    "Assets.xcassets",
+    "InfoPlist.strings",
+    "Papi/Resources/Localization",
+    "Papi/Resources/Media",
+    "PrivacyInfo.xcprivacy"
+  ],
+  "translationEntries": 408,
+  "uiLanguages": [
+    "en",
+    "ar",
+    "es",
+    "ko",
+    "th",
+    "vi"
+  ],
+  "findings": [],
+  "buildExecuted": false,
+  "testsExecuted": false,
+  "appLaunched": false
+}
