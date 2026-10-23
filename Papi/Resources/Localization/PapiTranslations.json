@@ -2854,5 +2854,2546 @@
     "ar": "المسودة الصوتية غير متاحة.",
     "vi": "Bản nháp thoại này không khả dụng.",
     "ko": "이 음성 초안을 사용할 수 없어요."
+  },
+  "Report": {
+    "es": "Denunciar",
+    "th": "รายงาน",
+    "ar": "إبلاغ",
+    "vi": "Báo cáo",
+    "ko": "신고"
+  },
+  "Conversation": {
+    "es": "Conversación",
+    "th": "การสนทนา",
+    "ar": "محادثة",
+    "vi": "Cuộc trò chuyện",
+    "ko": "대화"
+  },
+  "Sent": {
+    "es": "Enviado",
+    "th": "ส่งแล้ว",
+    "ar": "أُرسلت",
+    "vi": "Đã gửi",
+    "ko": "전송됨"
+  },
+  "Received": {
+    "es": "Recibido",
+    "th": "ได้รับแล้ว",
+    "ar": "مستلمة",
+    "vi": "Đã nhận",
+    "ko": "수신됨"
+  },
+  "Approved": {
+    "es": "Aprobado",
+    "th": "อนุมัติแล้ว",
+    "ar": "معتمد",
+    "vi": "Đã duyệt",
+    "ko": "승인됨"
+  },
+  "Under review": {
+    "es": "En revisión",
+    "th": "อยู่ระหว่างตรวจสอบ",
+    "ar": "قيد المراجعة",
+    "vi": "Đang xét duyệt",
+    "ko": "검토 중"
+  },
+  "Not approved": {
+    "es": "No aprobado",
+    "th": "ไม่ผ่านอนุมัติ",
+    "ar": "غير معتمد",
+    "vi": "Chưa được duyệt",
+    "ko": "미승인"
+  },
+  "Safety options": {
+    "es": "Opciones de seguridad",
+    "th": "ตัวเลือกความปลอดภัย",
+    "ar": "خيارات الأمان",
+    "vi": "Tùy chọn an toàn",
+    "ko": "안전 옵션"
+  },
+  "Comment options": {
+    "es": "Opciones de la nota",
+    "th": "ตัวเลือกความคิดเห็น",
+    "ar": "خيارات التعليق",
+    "vi": "Tùy chọn bình luận",
+    "ko": "댓글 옵션"
+  },
+  "Message options": {
+    "es": "Opciones del mensaje",
+    "th": "ตัวเลือกข้อความ",
+    "ar": "خيارات الرسالة",
+    "vi": "Tùy chọn tin nhắn",
+    "ko": "메시지 옵션"
+  },
+  "Hide content": {
+    "es": "Ocultar contenido",
+    "th": "ซ่อนเนื้อหา",
+    "ar": "إخفاء المحتوى",
+    "vi": "Ẩn nội dung",
+    "ko": "콘텐츠 숨기기"
+  },
+  "Hide this content?": {
+    "es": "¿Ocultar este contenido?",
+    "th": "ซ่อนเนื้อหานี้ไหม?",
+    "ar": "إخفاء هذا المحتوى؟",
+    "vi": "Ẩn nội dung này?",
+    "ko": "이 콘텐츠를 숨길까요?"
+  },
+  "Block user": {
+    "es": "Bloquear usuario",
+    "th": "บล็อกผู้ใช้",
+    "ar": "حظر المستخدم",
+    "vi": "Chặn người dùng",
+    "ko": "사용자 차단"
+  },
+  "Block author": {
+    "es": "Bloquear autor",
+    "th": "บล็อกผู้เขียน",
+    "ar": "حظر الكاتب",
+    "vi": "Chặn tác giả",
+    "ko": "작성자 차단"
+  },
+  "Block this user?": {
+    "es": "¿Bloquear a este usuario?",
+    "th": "บล็อกผู้ใช้นี้ไหม?",
+    "ar": "حظر هذا المستخدم؟",
+    "vi": "Chặn người dùng này?",
+    "ko": "이 사용자를 차단할까요?"
+  },
+  "User blocked": {
+    "es": "Usuario bloqueado",
+    "th": "บล็อกผู้ใช้แล้ว",
+    "ar": "تم حظر المستخدم",
+    "vi": "Đã chặn người dùng",
+    "ko": "사용자 차단됨"
+  },
+  "User unblocked": {
+    "es": "Usuario desbloqueado",
+    "th": "เลิกบล็อกแล้ว",
+    "ar": "أُلغي حظر المستخدم",
+    "vi": "Đã bỏ chặn",
+    "ko": "차단 해제됨"
+  },
+  "Content hidden": {
+    "es": "Contenido oculto",
+    "th": "ซ่อนเนื้อหาแล้ว",
+    "ar": "أُخفي المحتوى",
+    "vi": "Đã ẩn nội dung",
+    "ko": "콘텐츠 숨김 완료"
+  },
+  "Report saved": {
+    "es": "Denuncia guardada",
+    "th": "บันทึกรายงานแล้ว",
+    "ar": "حُفظ البلاغ",
+    "vi": "Đã lưu báo cáo",
+    "ko": "신고 저장됨"
+  },
+  "Privacy or safety concern": {
+    "es": "Privacidad o seguridad",
+    "th": "ปัญหาความเป็นส่วนตัวหรือความปลอดภัย",
+    "ar": "مشكلة خصوصية أو أمان",
+    "vi": "Vấn đề riêng tư hoặc an toàn",
+    "ko": "개인정보 또는 안전 문제"
+  },
+  "Choose a report reason, or hide this item from your lists.": {
+    "es": "Elige un motivo de denuncia u oculta este elemento.",
+    "th": "เลือกเหตุผลรายงานหรือซ่อนรายการนี้",
+    "ar": "اختر سبب البلاغ أو أخفِ العنصر من قوائمك.",
+    "vi": "Chọn lý do báo cáo hoặc ẩn mục này.",
+    "ko": "신고 사유를 선택하거나 목록에서 이 항목을 숨기세요."
+  },
+  "Your report stays on this device and the item will be hidden immediately after saving.": {
+    "es": "La denuncia queda en este dispositivo y el elemento se oculta al guardarla.",
+    "th": "รายงานอยู่ในเครื่องและรายการจะถูกซ่อนทันทีเมื่อบันทึก",
+    "ar": "يبقى البلاغ على هذا الجهاز ويُخفى العنصر فور الحفظ.",
+    "vi": "Báo cáo lưu trên máy và mục sẽ bị ẩn ngay sau khi lưu.",
+    "ko": "신고는 이 기기에 저장되며 저장 즉시 항목이 숨겨져요."
+  },
+  "Your report is saved on this device and this item is hidden from your lists. It has not been sent to a moderation team because no community service is connected.": {
+    "es": "Denuncia guardada e elemento oculto. No se ha enviado a moderación porque no hay servicio comunitario conectado.",
+    "th": "บันทึกรายงานและซ่อนรายการแล้ว ยังไม่ส่งให้ผู้ดูแลเพราะไม่ได้เชื่อมบริการชุมชน",
+    "ar": "حُفظ البلاغ وأُخفي العنصر. لم يُرسل لفريق إشراف لعدم اتصال خدمة مجتمع.",
+    "vi": "Đã lưu báo cáo và ẩn mục. Chưa gửi đến kiểm duyệt vì chưa có dịch vụ cộng đồng.",
+    "ko": "신고가 기기에 저장되고 항목이 숨겨졌어요. 커뮤니티 서비스가 없어 관리팀에는 전송되지 않았어요."
+  },
+  "Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.": {
+    "es": "Se ocultarán sus posts, notas, salas y chats. Puedes desbloquearlo en Ajustes.",
+    "th": "โพสต์ ความคิดเห็น ห้องและแชทจะถูกซ่อน เลิกบล็อกได้ในการตั้งค่า",
+    "ar": "ستُخفى منشوراته وتعليقاته وغرفه ودردشاته. يمكنك إلغاء الحظر في الإعدادات.",
+    "vi": "Bài viết, bình luận, phòng và trò chuyện sẽ bị ẩn. Bỏ chặn trong Cài đặt.",
+    "ko": "게시물, 댓글, 방, 채팅이 숨겨져요. 설정에서 차단을 해제할 수 있어요."
+  },
+  "This user's profile, posts, comments, rooms and chats are hidden on this device. You can manage blocked users in Settings.": {
+    "es": "El perfil, posts, notas, salas y chats se ocultan en este dispositivo. Gestiona los bloqueos en Ajustes.",
+    "th": "ซ่อนโปรไฟล์ โพสต์ ความคิดเห็น ห้องและแชทในเครื่องนี้ จัดการผู้ใช้ที่บล็อกได้ในการตั้งค่า",
+    "ar": "أُخفي ملف المستخدم ومنشوراته وتعليقاته وغرفه ودردشاته على هذا الجهاز. أدر الحظر في الإعدادات.",
+    "vi": "Đã ẩn hồ sơ, bài viết, bình luận, phòng và trò chuyện trên máy. Quản lý chặn trong Cài đặt.",
+    "ko": "이 기기에서 프로필, 게시물, 댓글, 방, 채팅이 숨겨졌어요. 설정에서 차단 사용자를 관리하세요."
+  },
+  "This item will disappear from your lists on this device.": {
+    "es": "Este elemento desaparecerá de tus listas en este dispositivo.",
+    "th": "รายการนี้จะหายจากรายการในเครื่องนี้",
+    "ar": "سيختفي هذا العنصر من قوائمك على هذا الجهاز.",
+    "vi": "Mục này sẽ biến mất khỏi danh sách trên thiết bị.",
+    "ko": "이 기기의 목록에서 이 항목이 사라져요."
+  },
+  "This item is hidden from your lists and will stay hidden after you reopen Papi.": {
+    "es": "El elemento seguirá oculto al volver a abrir Papi.",
+    "th": "รายการถูกซ่อนและจะยังซ่อนเมื่อเปิด Papi ใหม่",
+    "ar": "أُخفي العنصر وسيبقى مخفيًا بعد إعادة فتح Papi.",
+    "vi": "Mục đã ẩn và vẫn ẩn khi mở lại Papi.",
+    "ko": "항목이 숨겨졌으며 Papi를 다시 열어도 유지돼요."
+  },
+  "The block has been removed. Previously reported items remain hidden, and following or friendship is never restored automatically.": {
+    "es": "Bloqueo eliminado. Las denuncias siguen ocultas; seguir o ser amigos no se restaura automáticamente.",
+    "th": "เลิกบล็อกแล้ว รายการที่รายงานยังซ่อนอยู่ และไม่คืนการติดตามหรือเพื่อนอัตโนมัติ",
+    "ar": "أُلغي الحظر. تبقى العناصر المبلّغ عنها مخفية، ولا تُستعاد المتابعة أو الصداقة تلقائيًا.",
+    "vi": "Đã bỏ chặn. Mục bị báo cáo vẫn ẩn; không tự khôi phục theo dõi hay bạn bè.",
+    "ko": "차단이 해제됐어요. 신고한 항목은 계속 숨겨지며 팔로우나 친구 관계는 자동 복구되지 않아요."
+  },
+  "Both people must choose to follow each other before sending messages or starting a video call. Your draft has been kept.": {
+    "es": "Ambas personas deben seguirse para enviar mensajes o iniciar videollamadas. Tu borrador se conserva.",
+    "th": "ทั้งสองฝ่ายต้องเลือกติดตามกันก่อนส่งข้อความหรือวิดีโอคอล ร่างยังอยู่",
+    "ar": "يجب أن يختار الطرفان متابعة بعضهما قبل المراسلة أو مكالمة الفيديو. احتُفظ بمسودتك.",
+    "vi": "Hai bên phải tự theo dõi nhau trước khi gửi tin hoặc gọi video. Bản nháp được giữ.",
+    "ko": "메시지나 영상 통화 전 두 사람이 서로 팔로우해야 해요. 초안은 유지돼요."
+  },
+  "Messages require mutual following.": {
+    "es": "Los mensajes requieren seguimiento mutuo.",
+    "th": "ข้อความต้องติดตามกันทั้งสองฝ่าย",
+    "ar": "تتطلب الرسائل متابعة متبادلة.",
+    "vi": "Nhắn tin cần theo dõi nhau.",
+    "ko": "메시지는 서로 팔로우해야 해요."
+  },
+  "Mutual following confirmed": {
+    "es": "Seguimiento mutuo confirmado",
+    "th": "ยืนยันติดตามกันแล้ว",
+    "ar": "تأكدت المتابعة المتبادلة",
+    "vi": "Đã xác nhận theo dõi nhau",
+    "ko": "맞팔로우 확인됨"
+  },
+  "No relationships are created automatically. Friendship needs the other person's acceptance.": {
+    "es": "No se crean relaciones automáticamente. La amistad requiere aceptación de la otra persona.",
+    "th": "ไม่สร้างความสัมพันธ์อัตโนมัติ การเป็นเพื่อนต้องได้รับการยอมรับจากอีกฝ่าย",
+    "ar": "لا تُنشأ علاقات تلقائيًا. الصداقة تتطلب قبول الطرف الآخر.",
+    "vi": "Không tự tạo quan hệ. Kết bạn cần đối phương đồng ý.",
+    "ko": "관계는 자동 생성되지 않아요. 친구가 되려면 상대방의 수락이 필요해요."
+  },
+  "Request friendship": {
+    "es": "Solicitar amistad",
+    "th": "ขอเป็นเพื่อน",
+    "ar": "طلب صداقة",
+    "vi": "Gửi yêu cầu kết bạn",
+    "ko": "친구 요청"
+  },
+  "Request awaiting connection": {
+    "es": "Solicitud pendiente de conexión",
+    "th": "คำขอรอเชื่อมต่อ",
+    "ar": "الطلب ينتظر الاتصال",
+    "vi": "Yêu cầu chờ kết nối",
+    "ko": "연결 대기 중인 요청"
+  },
+  "Friend request saved": {
+    "es": "Solicitud guardada",
+    "th": "บันทึกคำขอแล้ว",
+    "ar": "حُفظ طلب الصداقة",
+    "vi": "Đã lưu yêu cầu kết bạn",
+    "ko": "친구 요청 저장됨"
+  },
+  "The request is saved on this device. No community service is connected, so it has not been sent or accepted. Nobody has been added as a friend.": {
+    "es": "Solicitud guardada localmente. Sin servicio comunitario, no se ha enviado ni aceptado. No se ha añadido ningún amigo.",
+    "th": "บันทึกคำขอในเครื่อง ไม่มีบริการชุมชนจึงยังไม่ส่งหรือยอมรับ และยังไม่ได้เพิ่มใครเป็นเพื่อน",
+    "ar": "حُفظ الطلب محليًا. لا توجد خدمة مجتمع، لذا لم يُرسل أو يُقبل ولم يُضف أي صديق.",
+    "vi": "Yêu cầu lưu trên máy. Chưa có dịch vụ nên chưa gửi hoặc chấp nhận. Chưa thêm ai làm bạn.",
+    "ko": "요청은 기기에 저장됐어요. 서비스가 없어 전송되거나 수락되지 않았고 친구도 추가되지 않았어요."
+  },
+  "No conversations yet": {
+    "es": "Aún no hay conversaciones",
+    "th": "ยังไม่มีการสนทนา",
+    "ar": "لا توجد محادثات بعد",
+    "vi": "Chưa có cuộc trò chuyện",
+    "ko": "아직 대화가 없어요"
+  },
+  "Open a profile to start a draft. Sending messages requires both people to follow each other.": {
+    "es": "Abre un perfil para escribir un borrador. Para enviar, ambos deben seguirse.",
+    "th": "เปิดโปรไฟล์เพื่อเขียนร่าง การส่งต้องติดตามกันทั้งสองฝ่าย",
+    "ar": "افتح ملفًا لبدء مسودة. الإرسال يتطلب متابعة متبادلة.",
+    "vi": "Mở hồ sơ để viết bản nháp. Gửi tin cần hai bên theo dõi nhau.",
+    "ko": "프로필에서 초안을 시작하세요. 보내려면 서로 팔로우해야 해요."
+  },
+  "This profile is unavailable or hidden. Your saved conversation stays on this device.": {
+    "es": "El perfil no está disponible o está oculto. La conversación guardada permanece aquí.",
+    "th": "โปรไฟล์ไม่พร้อมหรือถูกซ่อน บทสนทนาที่บันทึกยังอยู่ในเครื่อง",
+    "ar": "الملف غير متاح أو مخفي. تبقى المحادثة المحفوظة على هذا الجهاز.",
+    "vi": "Hồ sơ không khả dụng hoặc bị ẩn. Trò chuyện đã lưu vẫn trên máy.",
+    "ko": "프로필을 볼 수 없거나 숨겨졌어요. 저장된 대화는 이 기기에 유지돼요."
+  },
+  "Saved locally · Not delivered": {
+    "es": "Guardado localmente · Sin entregar",
+    "th": "บันทึกในเครื่อง · ยังไม่ส่งถึง",
+    "ar": "محفوظ محليًا · لم يُسلّم",
+    "vi": "Lưu trên máy · Chưa chuyển đến",
+    "ko": "기기에 저장됨 · 미전달"
+  },
+  "Saved to outbox": {
+    "es": "Guardado en la bandeja de salida",
+    "th": "บันทึกในกล่องขาออก",
+    "ar": "حُفظت في صندوق الصادر",
+    "vi": "Đã lưu vào hộp thư đi",
+    "ko": "보낼 편지함에 저장됨"
+  },
+  "Your message is saved locally, not delivered. A connected messaging service is required to send it to another person.": {
+    "es": "Mensaje guardado localmente, sin entregar. Para enviarlo se necesita mensajería conectada.",
+    "th": "บันทึกข้อความในเครื่อง ยังไม่ส่งถึงผู้อื่น ต้องเชื่อมบริการข้อความก่อน",
+    "ar": "حُفظت الرسالة محليًا ولم تُسلّم. يلزم اتصال بخدمة مراسلة لإرسالها.",
+    "vi": "Tin nhắn lưu trên máy, chưa chuyển đến. Cần dịch vụ nhắn tin để gửi cho đối phương.",
+    "ko": "메시지가 기기에 저장됐으며 전달되지 않았어요. 상대에게 보내려면 메시지 서비스가 필요해요."
+  },
+  "Video call": {
+    "es": "Videollamada",
+    "th": "วิดีโอคอล",
+    "ar": "مكالمة فيديو",
+    "vi": "Gọi video",
+    "ko": "영상 통화"
+  },
+  "Preview my camera": {
+    "es": "Vista previa de mi cámara",
+    "th": "ดูตัวอย่างกล้องของฉัน",
+    "ar": "معاينة كاميرتي",
+    "vi": "Xem trước camera",
+    "ko": "내 카메라 미리 보기"
+  },
+  "My camera preview": {
+    "es": "Mi cámara",
+    "th": "ตัวอย่างกล้องของฉัน",
+    "ar": "معاينة كاميرتي",
+    "vi": "Camera của tôi",
+    "ko": "내 카메라 미리 보기"
+  },
+  "Camera preview paused": {
+    "es": "Vista previa en pausa",
+    "th": "หยุดตัวอย่างกล้องชั่วคราว",
+    "ar": "معاينة الكاميرا متوقفة",
+    "vi": "Xem trước đã tạm dừng",
+    "ko": "카메라 미리 보기 일시 정지"
+  },
+  "Requesting camera and microphone access…": {
+    "es": "Solicitando cámara y micrófono…",
+    "th": "กำลังขอสิทธิ์กล้องและไมโครโฟน…",
+    "ar": "جارٍ طلب إذن الكاميرا والميكروفون…",
+    "vi": "Đang xin quyền camera và mic…",
+    "ko": "카메라 및 마이크 권한 요청 중…"
+  },
+  "Camera and microphone access are required. You can allow them in iOS Settings.": {
+    "es": "Se requieren cámara y micrófono. Puedes permitirlos en Ajustes de iOS.",
+    "th": "ต้องใช้สิทธิ์กล้องและไมโครโฟน อนุญาตได้ในการตั้งค่า iOS",
+    "ar": "يلزم إذن الكاميرا والميكروفون. يمكنك السماح بهما في إعدادات iOS.",
+    "vi": "Cần quyền camera và mic. Cho phép trong Cài đặt iOS.",
+    "ko": "카메라와 마이크 권한이 필요해요. iOS 설정에서 허용할 수 있어요."
+  },
+  "Private camera preview · No call connected": {
+    "es": "Vista privada · Sin llamada",
+    "th": "ตัวอย่างส่วนตัว · ไม่ได้เชื่อมสาย",
+    "ar": "معاينة خاصة · لا مكالمة متصلة",
+    "vi": "Xem trước riêng · Chưa kết nối cuộc gọi",
+    "ko": "개인 미리 보기 · 통화 연결 없음"
+  },
+  "This is only your local camera preview. No video or microphone audio is recorded or sent, and no other person is connected.": {
+    "es": "Solo es tu vista previa local. No se graba ni envía vídeo o audio; no hay otra persona conectada.",
+    "th": "เป็นเพียงตัวอย่างกล้องในเครื่อง ไม่บันทึกหรือส่งภาพและเสียง และไม่มีผู้อื่นเชื่อมต่อ",
+    "ar": "هذه معاينة محلية فقط. لا يُسجّل أو يُرسل فيديو أو صوت ولا يتصل شخص آخر.",
+    "vi": "Chỉ xem trước camera trên máy. Không ghi hay gửi video hoặc âm thanh, không có người khác kết nối.",
+    "ko": "기기 카메라 미리 보기예요. 영상과 마이크 소리를 녹화하거나 전송하지 않으며 상대도 연결되지 않아요."
+  },
+  "Open iOS Settings": {
+    "es": "Abrir Ajustes de iOS",
+    "th": "เปิดการตั้งค่า iOS",
+    "ar": "فتح إعدادات iOS",
+    "vi": "Mở Cài đặt iOS",
+    "ko": "iOS 설정 열기"
+  },
+  "My submissions": {
+    "es": "Mis envíos",
+    "th": "รายการที่ส่งของฉัน",
+    "ar": "مشاركاتي",
+    "vi": "Bài đã gửi",
+    "ko": "내 제출 내역"
+  },
+  "No submissions yet": {
+    "es": "Aún no hay envíos",
+    "th": "ยังไม่มีรายการส่ง",
+    "ar": "لا توجد مشاركات بعد",
+    "vi": "Chưa có bài gửi",
+    "ko": "아직 제출 내역이 없어요"
+  },
+  "Awaiting moderation connection": {
+    "es": "Esperando conexión a moderación",
+    "th": "รอเชื่อมต่อการตรวจสอบ",
+    "ar": "بانتظار اتصال الإشراف",
+    "vi": "Chờ kết nối kiểm duyệt",
+    "ko": "관리 서비스 연결 대기"
+  },
+  "Saved privately": {
+    "es": "Guardado en privado",
+    "th": "บันทึกเป็นส่วนตัว",
+    "ar": "محفوظ بشكل خاص",
+    "vi": "Đã lưu riêng tư",
+    "ko": "비공개 저장됨"
+  },
+  "Visible only after approval": {
+    "es": "Visible solo tras aprobación",
+    "th": "แสดงหลังอนุมัติเท่านั้น",
+    "ar": "يظهر بعد الموافقة فقط",
+    "vi": "Chỉ hiển thị sau khi duyệt",
+    "ko": "승인 후에만 표시"
+  },
+  "Submit for review": {
+    "es": "Enviar a revisión",
+    "th": "ส่งเพื่อตรวจสอบ",
+    "ar": "إرسال للمراجعة",
+    "vi": "Gửi xét duyệt",
+    "ko": "검토 요청"
+  },
+  "Submit for review?": {
+    "es": "¿Enviar a revisión?",
+    "th": "ส่งเพื่อตรวจสอบไหม?",
+    "ar": "إرسال للمراجعة؟",
+    "vi": "Gửi xét duyệt?",
+    "ko": "검토를 요청할까요?"
+  },
+  "Submit · 10 coins": {
+    "es": "Enviar · 10 monedas",
+    "th": "ส่ง · 10 เหรียญ",
+    "ar": "إرسال · 10 عملات",
+    "vi": "Gửi · 10 xu",
+    "ko": "제출 · 10 코인"
+  },
+  "Post saved for review": {
+    "es": "Publicación guardada para revisión",
+    "th": "บันทึกโพสต์รอตรวจสอบแล้ว",
+    "ar": "حُفظ المنشور للمراجعة",
+    "vi": "Đã lưu bài để xét duyệt",
+    "ko": "검토 대기 게시물 저장됨"
+  },
+  "Posts stay private until approved. No moderation server is connected yet; pending posts are never approved automatically.": {
+    "es": "Los posts son privados hasta aprobarse. Sin servidor de moderación, nunca se aprueban automáticamente.",
+    "th": "โพสต์เป็นส่วนตัวจนอนุมัติ ยังไม่มีเซิร์ฟเวอร์ตรวจสอบและไม่อนุมัติอัตโนมัติ",
+    "ar": "تبقى المنشورات خاصة حتى اعتمادها. لا يوجد خادم إشراف ولن تُعتمد تلقائيًا.",
+    "vi": "Bài viết riêng tư đến khi được duyệt. Chưa có máy chủ kiểm duyệt; không tự duyệt bài.",
+    "ko": "게시물은 승인 전까지 비공개예요. 관리 서버가 없어 자동 승인하지 않아요."
+  },
+  "10 coins are used when this post is saved to your private review queue. It appears in the feed only after approval.": {
+    "es": "Se usan 10 monedas al guardar en tu cola privada. Solo aparece en el feed tras aprobarse.",
+    "th": "ใช้ 10 เหรียญเมื่อบันทึกในคิวตรวจสอบส่วนตัว จะแสดงในฟีดหลังอนุมัติเท่านั้น",
+    "ar": "تُستخدم 10 عملات عند الحفظ في قائمة المراجعة الخاصة. يظهر في الموجز بعد الموافقة فقط.",
+    "vi": "Dùng 10 xu khi lưu vào hàng đợi riêng. Chỉ xuất hiện trên bảng tin sau khi duyệt.",
+    "ko": "비공개 검토 대기열 저장 시 10 코인을 사용해요. 승인 후에만 피드에 표시돼요."
+  },
+  "Your post is saved privately in the review queue. It will appear only after approval. No moderation server is connected yet.": {
+    "es": "Post guardado en la cola privada. Aparecerá solo al aprobarse. Aún no hay servidor de moderación.",
+    "th": "บันทึกโพสต์ในคิวส่วนตัวแล้ว จะแสดงหลังอนุมัติเท่านั้น ยังไม่เชื่อมเซิร์ฟเวอร์ตรวจสอบ",
+    "ar": "حُفظ المنشور في قائمة خاصة. لن يظهر إلا بعد الموافقة. خادم الإشراف غير متصل بعد.",
+    "vi": "Đã lưu bài trong hàng đợi riêng. Chỉ hiển thị khi duyệt. Chưa kết nối máy chủ kiểm duyệt.",
+    "ko": "비공개 검토 대기열에 저장됐어요. 승인 후에만 표시되며 관리 서버는 아직 연결되지 않았어요."
+  },
+  "Local account deleted": {
+    "es": "Cuenta local eliminada",
+    "th": "ลบบัญชีในเครื่องแล้ว",
+    "ar": "حُذف الحساب المحلي",
+    "vi": "Đã xóa tài khoản trên máy",
+    "ko": "로컬 계정 삭제됨"
+  },
+  "Logged out": {
+    "es": "Sesión cerrada",
+    "th": "ออกจากระบบแล้ว",
+    "ar": "تم تسجيل الخروج",
+    "vi": "Đã đăng xuất",
+    "ko": "로그아웃됨"
+  },
+  "Logging out…": {
+    "es": "Cerrando sesión…",
+    "th": "กำลังออกจากระบบ…",
+    "ar": "جارٍ تسجيل الخروج…",
+    "vi": "Đang đăng xuất…",
+    "ko": "로그아웃 중…"
+  },
+  "Removing local account…": {
+    "es": "Eliminando cuenta local…",
+    "th": "กำลังลบบัญชีในเครื่อง…",
+    "ar": "جارٍ حذف الحساب المحلي…",
+    "vi": "Đang xóa tài khoản trên máy…",
+    "ko": "로컬 계정 삭제 중…"
+  },
+  "Could not log out": {
+    "es": "No se pudo cerrar sesión",
+    "th": "ออกจากระบบไม่ได้",
+    "ar": "تعذّر تسجيل الخروج",
+    "vi": "Không thể đăng xuất",
+    "ko": "로그아웃할 수 없어요"
+  },
+  "Deletion needs attention": {
+    "es": "La eliminación necesita atención",
+    "th": "การลบต้องตรวจสอบ",
+    "ar": "الحذف يحتاج إلى متابعة",
+    "vi": "Cần kiểm tra việc xóa",
+    "ko": "삭제 확인이 필요해요"
+  },
+  "Your local profile and media have been removed. You can start again from the introduction.": {
+    "es": "Perfil y medios locales eliminados. Puedes empezar desde la introducción.",
+    "th": "ลบโปรไฟล์และสื่อในเครื่องแล้ว เริ่มใหม่จากหน้าแนะนำได้",
+    "ar": "حُذف الملف والوسائط المحلية. يمكنك البدء من المقدمة مجددًا.",
+    "vi": "Đã xóa hồ sơ và phương tiện trên máy. Bạn có thể bắt đầu lại từ giới thiệu.",
+    "ko": "기기 프로필과 미디어가 삭제됐어요. 소개 화면에서 다시 시작할 수 있어요."
+  },
+  "Your saved profile, messages and drafts will be here when you return.": {
+    "es": "Tu perfil, mensajes y borradores estarán aquí cuando vuelvas.",
+    "th": "โปรไฟล์ ข้อความและร่างที่บันทึกจะยังอยู่เมื่อคุณกลับมา",
+    "ar": "سيبقى ملفك ورسائلك ومسوداتك عند عودتك.",
+    "vi": "Hồ sơ, tin nhắn và bản nháp đã lưu vẫn ở đây khi bạn quay lại.",
+    "ko": "다시 돌아오면 프로필, 메시지, 초안이 그대로 남아 있어요."
+  },
+  "Updated 22 October 2026": {
+    "es": "Actualizado el 22 de octubre de 2026",
+    "th": "อัปเดต 22 ตุลาคม 2026",
+    "ar": "حُدّث في 22 أكتوبر 2026",
+    "vi": "Cập nhật ngày 22 tháng 10 năm 2026",
+    "ko": "2026년 10월 22일 업데이트"
+  },
+  "Community Guidelines": {
+    "es": "Normas de la comunidad",
+    "th": "กฎชุมชน",
+    "ar": "إرشادات المجتمع",
+    "vi": "Quy định cộng đồng",
+    "ko": "커뮤니티 규칙"
+  },
+  "A welcoming coffee table": {
+    "es": "Una mesa acogedora",
+    "th": "โต๊ะกาแฟที่อบอุ่น",
+    "ar": "طاولة قهوة مرحّبة",
+    "vi": "Bàn cà phê thân thiện",
+    "ko": "모두를 환영하는 커피 테이블"
+  },
+  "Keep the community safe": {
+    "es": "Protege la comunidad",
+    "th": "รักษาชุมชนให้ปลอดภัย",
+    "ar": "حافظ على أمان المجتمع",
+    "vi": "Giữ cộng đồng an toàn",
+    "ko": "안전한 커뮤니티"
+  },
+  "Real consent, real connections": {
+    "es": "Consentimiento y conexiones reales",
+    "th": "ความยินยอมและความสัมพันธ์จริง",
+    "ar": "موافقة حقيقية وعلاقات حقيقية",
+    "vi": "Đồng ý thật, kết nối thật",
+    "ko": "실제 동의와 연결"
+  },
+  "Share only what is yours": {
+    "es": "Comparte lo que te pertenece",
+    "th": "แบ่งปันเฉพาะสิ่งที่มีสิทธิ์",
+    "ar": "شارك ما يحق لك فقط",
+    "vi": "Chỉ chia sẻ nội dung bạn có quyền",
+    "ko": "권한이 있는 콘텐츠만 공유"
+  },
+  "Review before visibility": {
+    "es": "Revisión antes de publicar",
+    "th": "ตรวจสอบก่อนแสดง",
+    "ar": "مراجعة قبل الظهور",
+    "vi": "Xét duyệt trước khi hiển thị",
+    "ko": "표시 전 검토"
+  },
+  "Report and control your space": {
+    "es": "Denuncia y controla tu espacio",
+    "th": "รายงานและควบคุมพื้นที่ของคุณ",
+    "ar": "أبلغ وتحكم في مساحتك",
+    "vi": "Báo cáo và quản lý không gian",
+    "ko": "신고와 내 공간 관리"
+  },
+  "Camera and microphone consent": {
+    "es": "Permisos de cámara y micrófono",
+    "th": "การยินยอมใช้กล้องและไมโครโฟน",
+    "ar": "موافقة الكاميرا والميكروفون",
+    "vi": "Đồng ý dùng camera và mic",
+    "ko": "카메라와 마이크 동의"
+  },
+  "Moderation and support": {
+    "es": "Moderación y soporte",
+    "th": "การดูแลและสนับสนุน",
+    "ar": "الإشراف والدعم",
+    "vi": "Kiểm duyệt và hỗ trợ",
+    "ko": "관리와 지원"
+  },
+  "Share coffee rituals, café discoveries and thoughtful conversation. Respect different cultures, preferences and brewing experience. Do not harass, threaten, bully, discriminate against or shame another person.": {
+    "es": "Comparte rituales de café, descubrimientos y buenas conversaciones. Respeta culturas, gustos y experiencia. No acoses, amenaces, intimides, discrimines ni humilles.",
+    "th": "แบ่งปันกิจวัตรกาแฟ คาเฟ่และบทสนทนาดีๆ เคารพวัฒนธรรม ความชอบและประสบการณ์ที่ต่างกัน ห้ามคุกคาม ข่มขู่ กลั่นแกล้ง เลือกปฏิบัติหรือทำให้อับอาย",
+    "ar": "شارك طقوس القهوة واكتشافات المقاهي والحديث الهادف. احترم اختلاف الثقافات والأذواق والخبرة. لا تضايق أو تهدد أو تتنمر أو تميز أو تهين.",
+    "vi": "Chia sẻ thói quen cà phê, khám phá quán và trò chuyện ý nghĩa. Tôn trọng văn hóa, sở thích và kinh nghiệm khác nhau. Không quấy rối, đe dọa, bắt nạt, phân biệt hay làm nhục người khác.",
+    "ko": "커피 습관, 카페 발견, 의미 있는 대화를 나누세요. 문화, 취향, 경험의 차이를 존중하세요. 괴롭힘, 위협, 따돌림, 차별, 모욕을 금지해요."
+  },
+  "Pornography, sexual exploitation, child endangerment, hateful content, graphic violence, illegal activity and threats are prohibited. Do not publish another person's private information or intimate media without consent.": {
+    "es": "Se prohíben pornografía, explotación sexual, daño a menores, odio, violencia gráfica, actividades ilegales y amenazas. No publiques datos privados ni contenido íntimo ajeno sin consentimiento.",
+    "th": "ห้ามสื่อลามก การแสวงหาประโยชน์ทางเพศ การคุกคามเด็ก เนื้อหาเกลียดชัง ความรุนแรงร้ายแรง กิจกรรมผิดกฎหมายและคำขู่ ห้ามเผยข้อมูลส่วนตัวหรือสื่อส่วนบุคคลโดยไม่ได้ยินยอม",
+    "ar": "تُحظر الإباحية والاستغلال الجنسي وتعريض الأطفال للخطر والكراهية والعنف الصريح والأنشطة غير القانونية والتهديدات. لا تنشر معلومات خاصة أو وسائط حميمة للآخرين دون موافقة.",
+    "vi": "Cấm khiêu dâm, bóc lột tình dục, gây hại trẻ em, thù ghét, bạo lực trực diện, hành vi trái pháp luật và đe dọa. Không đăng thông tin riêng hay nội dung thân mật của người khác khi chưa được đồng ý.",
+    "ko": "음란물, 성적 착취, 아동 위해, 혐오, 잔혹한 폭력, 불법 행위, 위협을 금지해요. 동의 없이 타인의 개인정보나 사적인 미디어를 게시하지 마세요."
+  },
+  "Chat messages and video-call actions require mutual following. Friendship requires the other person's acceptance. Do not impersonate someone, create fake relationships or use Papi for random or anonymous chat. You may withdraw a follow at any time.": {
+    "es": "Mensajes y videollamadas requieren seguimiento mutuo. La amistad necesita aceptación de la otra persona. No suplantes identidades ni crees relaciones falsas o chats aleatorios o anónimos. Puedes dejar de seguir cuando quieras.",
+    "th": "ข้อความและวิดีโอคอลต้องติดตามกัน การเป็นเพื่อนต้องให้อีกฝ่ายยอมรับ ห้ามปลอมตัว สร้างความสัมพันธ์ปลอม หรือใช้แชทสุ่ม/นิรนาม เลิกติดตามได้ทุกเมื่อ",
+    "ar": "الرسائل ومكالمات الفيديو تتطلب متابعة متبادلة، والصداقة قبول الطرف الآخر. لا تنتحل هوية أو تنشئ علاقات وهمية أو تستخدم Papi للدردشة العشوائية أو المجهولة. يمكنك إلغاء المتابعة متى شئت.",
+    "vi": "Nhắn tin và gọi video cần theo dõi nhau. Kết bạn cần đối phương chấp nhận. Không giả mạo, tạo quan hệ giả hay dùng Papi để chat ngẫu nhiên hoặc ẩn danh. Có thể bỏ theo dõi bất cứ lúc nào.",
+    "ko": "메시지와 영상 통화는 서로 팔로우해야 해요. 친구가 되려면 상대의 수락이 필요해요. 사칭, 가짜 관계, 무작위·익명 채팅을 금지해요. 언제든 팔로우를 취소할 수 있어요."
+  },
+  "Post only photos, videos, audio and text you have the right to share. Get permission from identifiable people. Avoid scams, spam, misleading promotions and dangerous advice. Never pressure someone to send money or gifts.": {
+    "es": "Publica solo fotos, vídeos, audio y textos que tengas derecho a compartir. Pide permiso a las personas identificables. Evita estafas, spam, promociones engañosas y consejos peligrosos. No presiones para recibir dinero o regalos.",
+    "th": "โพสต์เฉพาะรูป วิดีโอ เสียงและข้อความที่มีสิทธิ์แบ่งปัน ขออนุญาตบุคคลที่ระบุตัวได้ หลีกเลี่ยงหลอกลวง สแปม โปรโมชั่นเท็จและคำแนะนำอันตราย ห้ามกดดันให้ส่งเงินหรือของขวัญ",
+    "ar": "انشر صورًا وفيديو وصوتًا ونصًا يحق لك مشاركتها فقط، واستأذن الأشخاص الممكن التعرف عليهم. تجنب الاحتيال والإزعاج والترويج المضلل والنصائح الخطرة. لا تضغط على أحد لإرسال مال أو هدايا.",
+    "vi": "Chỉ đăng ảnh, video, âm thanh và văn bản bạn có quyền chia sẻ. Xin phép người có thể nhận diện. Tránh lừa đảo, spam, quảng cáo sai và lời khuyên nguy hiểm. Không ép gửi tiền hoặc quà.",
+    "ko": "공유 권한이 있는 사진, 영상, 음성, 글만 게시하고 식별 가능한 사람의 허락을 받으세요. 사기, 스팸, 허위 홍보, 위험한 조언을 피하세요. 돈이나 선물을 강요하지 마세요."
+  },
+  "New posts remain private until approved. In this local edition, submissions wait on your device until a moderation service is connected. There is no automatic approval or fabricated moderator response.": {
+    "es": "Los posts nuevos son privados hasta su aprobación. En esta edición esperan en el dispositivo hasta conectar moderación. No hay aprobación automática ni respuestas inventadas.",
+    "th": "โพสต์ใหม่เป็นส่วนตัวจนอนุมัติ เวอร์ชันนี้รอในเครื่องจนเชื่อมบริการตรวจสอบ ไม่มีการอนุมัติอัตโนมัติหรือคำตอบผู้ดูแลปลอม",
+    "ar": "تبقى المنشورات الجديدة خاصة حتى اعتمادها. في هذه النسخة تنتظر على جهازك حتى اتصال الإشراف. لا يوجد اعتماد تلقائي أو رد إشراف مختلق.",
+    "vi": "Bài mới riêng tư đến khi duyệt. Bản trên máy giữ bài chờ kết nối dịch vụ kiểm duyệt. Không tự duyệt hay tạo phản hồi kiểm duyệt giả.",
+    "ko": "새 게시물은 승인 전까지 비공개예요. 이 로컬 버전에서는 관리 서비스가 연결될 때까지 기기에 대기해요. 자동 승인이나 가짜 관리자 응답은 없어요."
+  },
+  "Use the safety menu on a profile, post, comment, message or room. Choose a report reason and confirm. Saved reports hide the item immediately on this device. Blocking a user hides their profile, posts, comments, rooms and chats. Manage blocks in Settings; unblocking never restores follows or friendship automatically.": {
+    "es": "Usa el menú de seguridad del perfil, post, nota, mensaje o sala. Elige un motivo y confirma. Al guardar, el elemento se oculta en este dispositivo. Bloquear oculta perfil, posts, notas, salas y chats. Gestiona bloqueos en Ajustes; desbloquear no restaura relaciones.",
+    "th": "ใช้เมนูความปลอดภัยบนโปรไฟล์ โพสต์ ความคิดเห็น ข้อความหรือห้อง เลือกเหตุผลและยืนยัน บันทึกแล้วซ่อนทันทีในเครื่อง บล็อกผู้ใช้จะซ่อนโปรไฟล์และเนื้อหาทั้งหมด จัดการได้ในการตั้งค่า เลิกบล็อกไม่คืนความสัมพันธ์อัตโนมัติ",
+    "ar": "استخدم قائمة الأمان في الملف أو المنشور أو التعليق أو الرسالة أو الغرفة. اختر سببًا وأكد. يُخفى العنصر فور حفظ البلاغ محليًا. حظر المستخدم يخفي ملفه ومحتواه وغرفه ودردشاته. أدر الحظر في الإعدادات؛ إلغاؤه لا يعيد العلاقات تلقائيًا.",
+    "vi": "Dùng menu an toàn trên hồ sơ, bài, bình luận, tin hoặc phòng. Chọn lý do và xác nhận. Lưu báo cáo sẽ ẩn ngay trên máy. Chặn người dùng ẩn hồ sơ và mọi nội dung, phòng, trò chuyện. Quản lý trong Cài đặt; bỏ chặn không tự khôi phục quan hệ.",
+    "ko": "프로필, 게시물, 댓글, 메시지, 방의 안전 메뉴에서 사유를 선택하고 신고하세요. 저장 즉시 기기에서 숨겨져요. 사용자 차단은 프로필, 콘텐츠, 방, 채팅을 숨겨요. 설정에서 관리하며 차단 해제 시 관계를 자동 복구하지 않아요."
+  },
+  "Camera preview starts only after you choose it and grant camera and microphone access. This local edition does not connect a call or send your camera or microphone to another person. Stop preview or leave the page to stop capture.": {
+    "es": "La vista previa empieza cuando la eliges y permites cámara y micrófono. Esta edición no conecta llamadas ni envía imagen o audio. Detén la vista o sal para parar la captura.",
+    "th": "ตัวอย่างกล้องเริ่มเมื่อคุณเลือกและให้สิทธิ์กล้องกับไมโครโฟน เวอร์ชันนี้ไม่เชื่อมสายหรือส่งภาพและเสียงให้ใคร หยุดตัวอย่างหรือออกจากหน้าเพื่อหยุดกล้อง",
+    "ar": "تبدأ المعاينة بعد اختيارك ومنح إذن الكاميرا والميكروفون. لا تتصل هذه النسخة بمكالمة ولا ترسل الصورة أو الصوت لأحد. أوقف المعاينة أو غادر الصفحة لإيقاف الالتقاط.",
+    "vi": "Chỉ bắt đầu xem trước khi bạn chọn và cấp quyền camera, mic. Bản này không kết nối cuộc gọi hoặc gửi hình, tiếng cho ai. Dừng xem hoặc rời trang để dừng quay.",
+    "ko": "직접 선택하고 카메라와 마이크 권한을 허용해야 미리 보기가 시작돼요. 이 로컬 버전은 통화를 연결하거나 영상·음성을 전송하지 않아요. 미리 보기를 종료하거나 페이지를 나가면 촬영이 멈춰요."
+  },
+  "A live community must provide content filtering, timely handling of reports and a published way to contact its operator. These services and a public support contact are not connected in this local edition. Local hiding is not a substitute for server moderation; online sharing stays unavailable until those services are ready.": {
+    "es": "Una comunidad en línea debe filtrar contenido, atender denuncias y publicar un contacto. Esta edición aún no tiene esos servicios ni contacto público. Ocultar localmente no sustituye moderación; compartir en línea seguirá desactivado hasta configurarlos.",
+    "th": "ชุมชนออนไลน์ต้องกรองเนื้อหา จัดการรายงานทันเวลาและมีช่องทางติดต่อ เวอร์ชันนี้ยังไม่เชื่อมบริการหรือช่องทางสาธารณะ การซ่อนในเครื่องไม่แทนการดูแลเซิร์ฟเวอร์ จึงยังไม่เปิดแบ่งปันออนไลน์",
+    "ar": "يجب أن يوفر المجتمع المتصل تصفية المحتوى ومعالجة البلاغات بسرعة وجهة اتصال منشورة. هذه الخدمات والدعم العام غير متصلة هنا. الإخفاء المحلي لا يحل محل إشراف الخادم، وتبقى المشاركة عبر الإنترنت معطلة حتى تجهز الخدمات.",
+    "vi": "Cộng đồng trực tuyến phải lọc nội dung, xử lý báo cáo kịp thời và công khai liên hệ vận hành. Bản này chưa có các dịch vụ và liên hệ đó. Ẩn trên máy không thay kiểm duyệt máy chủ; chia sẻ trực tuyến chờ dịch vụ sẵn sàng.",
+    "ko": "온라인 커뮤니티는 콘텐츠 필터링, 신속한 신고 처리, 공개 연락 수단을 제공해야 해요. 이 버전에는 아직 연결되지 않았어요. 기기 숨김은 서버 관리를 대신하지 않으며 서비스가 준비될 때까지 온라인 공유는 비활성화돼요."
+  },
+  "Cancel friend request": {
+    "es": "Cancelar solicitud",
+    "th": "ยกเลิกคำขอเป็นเพื่อน",
+    "ar": "إلغاء طلب الصداقة",
+    "vi": "Hủy yêu cầu kết bạn",
+    "ko": "친구 요청 취소"
+  },
+  "Chat and review": {
+    "es": "Chat y revisión",
+    "th": "แชทและการตรวจสอบ",
+    "ar": "الدردشة والمراجعة",
+    "vi": "Trò chuyện và xét duyệt",
+    "ko": "채팅과 검토"
+  },
+  "Papi creates a guest identifier on this device. Profile details, message history, follows, local notes, reports, review submissions, check-ins, wallet records, drafts and gift collections are kept in device-protected storage. Selected photos and videos are copied to the app's private media folder.": {
+    "es": "Papi crea un identificador local. Perfil, historial de mensajes, seguimientos, notas, denuncias, envíos a revisión, registros diarios, cartera, borradores y regalos se guardan en almacenamiento protegido. Los medios elegidos se copian a la carpeta privada de la app.",
+    "th": "Papi สร้างรหัสผู้เยี่ยมชมในเครื่อง โปรไฟล์ ประวัติข้อความ การติดตาม บันทึก รายงาน รายการตรวจสอบ เช็คอิน กระเป๋าเงิน ร่างและของขวัญถูกเก็บในพื้นที่ป้องกันของอุปกรณ์ รูปและวิดีโอที่เลือกคัดลอกไปโฟลเดอร์ส่วนตัว",
+    "ar": "ينشئ Papi معرّف ضيف محليًا. يُحفظ الملف وسجل الرسائل والمتابعات والملاحظات والبلاغات والمشاركات قيد المراجعة والحضور والمحفظة والمسودات والهدايا في تخزين محمي بالجهاز. تُنسخ الوسائط المختارة إلى مجلد التطبيق الخاص.",
+    "vi": "Papi tạo mã khách trên máy. Hồ sơ, lịch sử tin, theo dõi, ghi chú, báo cáo, bài chờ duyệt, điểm danh, sổ ví, bản nháp và quà được lưu trong vùng bảo vệ của thiết bị. Ảnh và video được chọn được sao chép vào thư mục riêng.",
+    "ko": "Papi는 기기에 게스트 ID를 만들어요. 프로필, 메시지 기록, 팔로우, 메모, 신고, 검토 제출물, 출석, 지갑, 초안, 선물은 기기로 보호되는 저장소에 보관돼요. 선택한 사진과 동영상은 앱의 개인 폴더로 복사돼요."
+  },
+  "Both people must choose to follow each other before messaging or video-call actions. Friendship requires the other person's acceptance. New posts remain private until approved. This local edition stores messages and submissions on your device without remote delivery or automatic approval.": {
+    "es": "Ambos deben seguirse para mensajes o videollamadas. La amistad requiere aceptación. Los posts son privados hasta aprobarse. Esta edición guarda mensajes y envíos en el dispositivo, sin entrega remota ni aprobación automática.",
+    "th": "ทั้งสองฝ่ายต้องติดตามกันก่อนข้อความหรือวิดีโอคอล การเป็นเพื่อนต้องให้อีกฝ่ายยอมรับ โพสต์ใหม่เป็นส่วนตัวจนอนุมัติ เวอร์ชันนี้บันทึกข้อความและรายการในเครื่องโดยไม่ส่งระยะไกลหรืออนุมัติอัตโนมัติ",
+    "ar": "يجب تبادل المتابعة قبل المراسلة أو مكالمة الفيديو، والصداقة تحتاج قبول الآخر. تبقى المنشورات خاصة حتى اعتمادها. تخزن هذه النسخة الرسائل والمشاركات على جهازك دون تسليم عن بُعد أو اعتماد تلقائي.",
+    "vi": "Hai bên phải tự theo dõi nhau trước khi nhắn tin hoặc gọi video. Kết bạn cần đối phương chấp nhận. Bài mới riêng tư đến khi duyệt. Bản này lưu tin và bài trên máy, không gửi từ xa hay tự duyệt.",
+    "ko": "메시지나 영상 통화 전 서로 팔로우해야 해요. 친구는 상대의 수락이 필요하며 새 게시물은 승인 전까지 비공개예요. 이 버전은 원격 전달이나 자동 승인 없이 메시지와 제출물을 기기에 저장해요."
+  },
+  "Coffee reserve": {
+    "es": "Reserva de café",
+    "th": "คลังเหรียญกาแฟ",
+    "ar": "رصيد القهوة",
+    "vi": "Quỹ cà phê",
+    "ko": "커피 잔고"
+  },
+  "Live balance": {
+    "es": "Saldo actual",
+    "th": "ยอดคงเหลือปัจจุบัน",
+    "ar": "الرصيد الحالي",
+    "vi": "Số dư hiện tại",
+    "ko": "실시간 잔액"
+  },
+  "Choose your next pour": {
+    "es": "Elige tu próxima taza",
+    "th": "เลือกแพ็กสำหรับแก้วถัดไป",
+    "ar": "اختر رصيد فنجانك القادم",
+    "vi": "Chọn gói cho tách tiếp theo",
+    "ko": "다음 한 잔을 골라보세요"
+  },
+  "Reference prices are in USD. Apple confirms your local price before payment.": {
+    "es": "Los precios de referencia están en USD. Apple confirma el precio local antes del pago.",
+    "th": "ราคาอ้างอิงเป็น USD Apple จะยืนยันราคาในสกุลเงินท้องถิ่นก่อนชำระ",
+    "ar": "الأسعار المرجعية بالدولار الأمريكي. تؤكد Apple السعر المحلي قبل الدفع.",
+    "vi": "Giá tham khảo tính bằng USD. Apple xác nhận giá địa phương trước khi thanh toán.",
+    "ko": "참고 가격은 USD 기준입니다. 결제 전 Apple이 현지 가격을 확인합니다."
+  },
+  "Connecting to Apple…": {
+    "es": "Conectando con Apple…",
+    "th": "กำลังเชื่อมต่อ Apple…",
+    "ar": "جارٍ الاتصال بـ Apple…",
+    "vi": "Đang kết nối Apple…",
+    "ko": "Apple에 연결 중…"
+  },
+  "Buy {0} coins": {
+    "es": "Comprar {0} monedas",
+    "th": "ซื้อ {0} เหรียญ",
+    "ar": "شراء {0} عملة",
+    "vi": "Mua {0} xu",
+    "ko": "코인 {0}개 구매"
+  },
+  "Apple confirms the price · No coins before verified payment": {
+    "es": "Apple confirma el precio · Monedas solo tras verificar el pago",
+    "th": "Apple ยืนยันราคา · เพิ่มเหรียญหลังตรวจสอบการชำระเงินเท่านั้น",
+    "ar": "تؤكد Apple السعر · لا تُضاف العملات قبل التحقق من الدفع",
+    "vi": "Apple xác nhận giá · Chỉ cộng xu sau khi xác minh thanh toán",
+    "ko": "Apple 가격 확인 · 결제 검증 후 코인 지급"
+  },
+  "Price from Apple": {
+    "es": "Precio de Apple",
+    "th": "ราคาจาก Apple",
+    "ar": "السعر من Apple",
+    "vi": "Giá từ Apple",
+    "ko": "Apple 제공 가격"
+  },
+  "USD reference ${0}": {
+    "es": "Referencia USD ${0}",
+    "th": "ราคาอ้างอิง USD ${0}",
+    "ar": "السعر المرجعي بالدولار الأمريكي ${0}",
+    "vi": "Giá tham khảo USD ${0}",
+    "ko": "USD 참고 가격 ${0}"
+  },
+  "Select pack": {
+    "es": "Elegir paquete",
+    "th": "เลือกแพ็ก",
+    "ar": "اختيار الباقة",
+    "vi": "Chọn gói",
+    "ko": "패키지 선택"
+  },
+  "Where your coins go": {
+    "es": "En qué usar tus monedas",
+    "th": "เหรียญใช้ทำอะไรได้บ้าง",
+    "ar": "أين تُستخدم عملاتك",
+    "vi": "Các tính năng dùng xu",
+    "ko": "코인 사용 안내"
+  },
+  "Photo review submission": {
+    "es": "Foto en la cola de revisión",
+    "th": "บันทึกรูปภาพในคิวตรวจสอบ",
+    "ar": "حفظ صورة في قائمة المراجعة",
+    "vi": "Lưu bài ảnh chờ duyệt",
+    "ko": "사진 심사 대기 등록"
+  },
+  "Video review submission": {
+    "es": "Vídeo en la cola de revisión",
+    "th": "บันทึกวิดีโอในคิวตรวจสอบ",
+    "ar": "حفظ فيديو في قائمة المراجعة",
+    "vi": "Lưu bài video chờ duyệt",
+    "ko": "동영상 심사 대기 등록"
+  },
+  "Submission coins pay for saving to the private queue, not approval. No moderation server is connected; posts remain private.": {
+    "es": "Las monedas permiten guardar en la cola privada, sin comprar la aprobación. No hay servidor de moderación conectado; las publicaciones siguen siendo privadas.",
+    "th": "เหรียญใช้บันทึกในคิวส่วนตัว ไม่ได้รับประกันการอนุมัติ ยังไม่ได้เชื่อมต่อเซิร์ฟเวอร์ตรวจสอบ โพสต์จึงยังเป็นส่วนตัว",
+    "ar": "تُستخدم العملات للحفظ في القائمة الخاصة ولا تضمن الموافقة. لا يوجد خادم إشراف متصل، لذا تبقى المنشورات خاصة.",
+    "vi": "Xu dùng để lưu vào hàng đợi riêng, không mua sự phê duyệt. Chưa kết nối máy chủ kiểm duyệt nên bài viết vẫn riêng tư.",
+    "ko": "코인은 비공개 대기열 저장에 사용되며 승인을 보장하지 않습니다. 심사 서버가 연결되지 않아 게시물은 비공개로 유지됩니다."
+  },
+  "Gifts are optional backpack collectibles. Displaying an owned gift and gift previews are free.": {
+    "es": "Los regalos son coleccionables opcionales de la mochila. Mostrar regalos propios y ver vistas previas es gratis.",
+    "th": "ของขวัญเป็นของสะสมในกระเป๋าที่เลือกซื้อได้ การแสดงของที่มีและดูตัวอย่างไม่เสียเหรียญ",
+    "ar": "الهدايا مقتنيات اختيارية للحقيبة. عرض الهدايا المملوكة ومعاينتها مجانيان.",
+    "vi": "Quà là vật phẩm sưu tầm tùy chọn trong ba lô. Trưng bày quà đã có và xem trước đều miễn phí.",
+    "ko": "선물은 선택 구매하는 배낭 수집품입니다. 보유 선물 전시와 미리보기는 무료입니다."
+  },
+  "Conversation is always free": {
+    "es": "Conversar siempre es gratis",
+    "th": "สนทนาได้ฟรีเสมอ",
+    "ar": "المحادثة مجانية دائمًا",
+    "vi": "Trò chuyện luôn miễn phí",
+    "ko": "대화는 언제나 무료"
+  },
+  "Text, photos, voice messages, video calls, follows and friend requests never cost coins. Mutual consent still applies.": {
+    "es": "Los textos, fotos, mensajes de voz, videollamadas, seguimientos y solicitudes de amistad nunca cuestan monedas. Sigue siendo necesario el consentimiento mutuo.",
+    "th": "ข้อความ รูปในแชต ข้อความเสียง วิดีโอคอล การติดตามและคำขอเป็นเพื่อนไม่เสียเหรียญ แต่ยังต้องได้รับความยินยอมจากทั้งสองฝ่าย",
+    "ar": "النصوص والصور والرسائل الصوتية ومكالمات الفيديو والمتابعة وطلبات الصداقة لا تستهلك عملات. وتبقى الموافقة المتبادلة مطلوبة.",
+    "vi": "Tin nhắn, ảnh trong chat, tin thoại, gọi video, theo dõi và kết bạn không tốn xu. Vẫn cần sự đồng ý của cả hai.",
+    "ko": "문자, 채팅 사진, 음성 메시지, 영상 통화, 팔로우, 친구 요청은 코인을 사용하지 않습니다. 상호 동의 조건은 유지됩니다."
+  },
+  "Daily check-in is free and adds coins to this balance.": {
+    "es": "El registro diario es gratis y añade monedas a este saldo.",
+    "th": "เช็กอินรายวันฟรีและเพิ่มเหรียญในยอดคงเหลือนี้",
+    "ar": "تسجيل الحضور اليومي مجاني ويضيف عملات إلى هذا الرصيد.",
+    "vi": "Điểm danh hằng ngày miễn phí và cộng xu vào số dư này.",
+    "ko": "매일 출석은 무료이며 이 잔액에 코인이 추가됩니다."
+  },
+  "FIRST BREW / WELCOME TICKET": {
+    "es": "PRIMER CAFÉ / TICKET DE BIENVENIDA",
+    "th": "กาแฟแก้วแรก / บัตรต้อนรับ",
+    "ar": "أول فنجان / تذكرة ترحيب",
+    "vi": "TÁCH ĐẦU TIÊN / PHIẾU CHÀO MỪNG",
+    "ko": "첫 커피 / 환영 티켓"
+  },
+  "Your first brew is on Papi": {
+    "es": "Tu primer café lo invita Papi",
+    "th": "กาแฟแก้วแรก Papi เลี้ยงเอง",
+    "ar": "فنجانك الأول على حساب Papi",
+    "vi": "Tách đầu tiên Papi mời bạn",
+    "ko": "첫 커피는 Papi가 드려요"
+  },
+  "Welcome coins · Already added": {
+    "es": "Monedas de bienvenida · Ya añadidas",
+    "th": "เหรียญต้อนรับ · เพิ่มแล้ว",
+    "ar": "عملات الترحيب · أُضيفت بالفعل",
+    "vi": "Xu chào mừng · Đã cộng",
+    "ko": "환영 코인 · 지급 완료"
+  },
+  "A first cup, a few coffee moments, something for your collection. Make this corner yours.": {
+    "es": "Una primera taza, unos momentos de café y algo para tu colección. Haz tuyo este rincón.",
+    "th": "เริ่มด้วยกาแฟแก้วแรก แบ่งปันช่วงเวลาดี ๆ และเลือกของสะสม ทำให้มุมนี้เป็นของคุณ",
+    "ar": "فنجان أول، ولحظات قهوة، وشيء لمجموعتك. اجعل هذه الزاوية لك.",
+    "vi": "Một tách đầu tiên, vài khoảnh khắc cà phê, một món để sưu tầm. Biến góc nhỏ này thành của bạn.",
+    "ko": "첫 한 잔, 소소한 커피 기록, 나만의 수집품. 이 공간을 당신의 취향으로 채워보세요."
+  },
+  "Saved to this guest · Once only": {
+    "es": "Guardado para este invitado · Una sola vez",
+    "th": "บันทึกให้ผู้ใช้คนนี้ · เพียงครั้งเดียว",
+    "ar": "محفوظ لهذا الضيف · مرة واحدة فقط",
+    "vi": "Đã lưu cho khách này · Chỉ một lần",
+    "ko": "이 게스트에 저장 · 최초 1회"
+  },
+  "Chat, voice and video calls are always free.": {
+    "es": "El chat y las llamadas de voz y vídeo siempre son gratis.",
+    "th": "แชต การโทรเสียงและวิดีโอคอลฟรีเสมอ",
+    "ar": "الدردشة والمكالمات الصوتية والمرئية مجانية دائمًا.",
+    "vi": "Chat, gọi thoại và video luôn miễn phí.",
+    "ko": "채팅, 음성 통화, 영상 통화는 언제나 무료입니다."
+  },
+  "Start my coffee ritual": {
+    "es": "Empezar mi ritual del café",
+    "th": "เริ่มช่วงเวลากาแฟของฉัน",
+    "ar": "ابدأ طقوس قهوتي",
+    "vi": "Bắt đầu nghi thức cà phê",
+    "ko": "나만의 커피 시간 시작"
+  },
+  "First brew welcome gift": {
+    "es": "Regalo de bienvenida del primer café",
+    "th": "ของขวัญต้อนรับแก้วแรก",
+    "ar": "هدية ترحيب الفنجان الأول",
+    "vi": "Quà chào mừng tách đầu tiên",
+    "ko": "첫 커피 환영 선물"
+  },
+  "{0} welcome coins are already in your wallet.": {
+    "es": "Ya tienes {0} monedas de bienvenida en tu cartera.",
+    "th": "เพิ่มเหรียญต้อนรับ {0} เหรียญในกระเป๋าแล้ว",
+    "ar": "أُضيفت {0} عملة ترحيب إلى محفظتك بالفعل.",
+    "vi": "Đã cộng {0} xu chào mừng vào ví của bạn.",
+    "ko": "환영 코인 {0}개가 지갑에 지급되었습니다."
+  },
+  "A little more for your coffee reserve": {
+    "es": "Un poco más para tu reserva de café",
+    "th": "เติมคลังเหรียญกาแฟอีกนิด",
+    "ar": "المزيد لرصيد قهوتك",
+    "vi": "Thêm một chút cho quỹ cà phê",
+    "ko": "커피 잔고를 조금 더 채워주세요"
+  },
+  "This needs {0} coins. Your balance is {1}. Your draft and selections are kept; recharge to continue.": {
+    "es": "Necesitas {0} monedas y tienes {1}. Conservamos tu borrador y selección; recarga para continuar.",
+    "th": "ต้องใช้ {0} เหรียญ ยอดคงเหลือของคุณคือ {1} เราเก็บร่างและสิ่งที่เลือกไว้ เติมเหรียญเพื่อทำต่อ",
+    "ar": "تحتاج إلى {0} عملة ورصيدك {1}. حُفظت المسودة واختياراتك؛ اشحن الرصيد للمتابعة.",
+    "vi": "Cần {0} xu, số dư hiện tại là {1}. Bản nháp và lựa chọn vẫn được giữ; nạp xu để tiếp tục.",
+    "ko": "{0}코인이 필요하며 현재 잔액은 {1}입니다. 초안과 선택 사항은 유지됩니다. 충전 후 계속하세요."
+  },
+  "Apple is contacted only when you tap Buy. The Apple sheet confirms the local price.": {
+    "es": "Solo contactamos con Apple al pulsar Comprar. Su pantalla confirma el precio local.",
+    "th": "ติดต่อ Apple เมื่อแตะซื้อเท่านั้น หน้าชำระเงินของ Apple จะยืนยันราคาท้องถิ่น",
+    "ar": "يتم الاتصال بـ Apple فقط عند الضغط على شراء. تؤكد شاشة Apple السعر المحلي.",
+    "vi": "Chỉ liên hệ Apple khi bạn nhấn Mua. Màn hình Apple xác nhận giá địa phương.",
+    "ko": "구매를 누를 때만 Apple에 연결합니다. Apple 결제 화면에서 현지 가격을 확인합니다."
+  },
+  "Asking Apple for this product…": {
+    "es": "Consultando este producto en Apple…",
+    "th": "กำลังขอข้อมูลสินค้านี้จาก Apple…",
+    "ar": "جارٍ طلب هذا المنتج من Apple…",
+    "vi": "Đang lấy sản phẩm này từ Apple…",
+    "ko": "Apple에서 이 상품을 조회 중…"
+  },
+  "This product is not available from Apple. Please try again later.": {
+    "es": "Este producto no está disponible en Apple. Inténtalo más tarde.",
+    "th": "สินค้านี้ยังไม่พร้อมจำหน่ายบน Apple โปรดลองภายหลัง",
+    "ar": "هذا المنتج غير متاح من Apple. حاول لاحقًا.",
+    "vi": "Sản phẩm này chưa có trên Apple. Vui lòng thử lại sau.",
+    "ko": "Apple에서 이 상품을 제공하지 않습니다. 나중에 다시 시도하세요."
+  },
+  "Apple could not load this product. No purchase was started. Please try again.": {
+    "es": "Apple no pudo cargar este producto. No se inició ninguna compra. Inténtalo de nuevo.",
+    "th": "Apple โหลดสินค้านี้ไม่ได้ ยังไม่ได้เริ่มซื้อ โปรดลองอีกครั้ง",
+    "ar": "تعذّر على Apple تحميل هذا المنتج. لم تبدأ أي عملية شراء. حاول مجددًا.",
+    "vi": "Apple không tải được sản phẩm này. Chưa bắt đầu giao dịch. Vui lòng thử lại.",
+    "ko": "Apple에서 상품을 불러오지 못했습니다. 구매는 시작되지 않았습니다. 다시 시도하세요."
+  },
+  "A purchase needs attention. Use Recover purchases before trying again.": {
+    "es": "Hay una compra que requiere atención. Usa Recuperar compras antes de reintentar.",
+    "th": "มีรายการซื้อที่ต้องตรวจสอบ โปรดกู้คืนรายการซื้อก่อนลองอีกครั้ง",
+    "ar": "تحتاج عملية شراء إلى مراجعة. استخدم استرداد المشتريات قبل المحاولة مجددًا.",
+    "vi": "Có giao dịch cần xử lý. Hãy khôi phục giao dịch trước khi thử lại.",
+    "ko": "확인이 필요한 구매가 있습니다. 다시 시도하기 전에 구매 복구를 이용하세요."
+  },
+  "Confirm your purchase with Apple.": {
+    "es": "Confirma tu compra con Apple.",
+    "th": "ยืนยันการซื้อผ่าน Apple",
+    "ar": "أكّد عملية الشراء لدى Apple.",
+    "vi": "Xác nhận giao dịch với Apple.",
+    "ko": "Apple에서 구매를 확인하세요."
+  },
+  "Awaiting Apple's approval. Coins arrive only after a verified transaction.": {
+    "es": "Esperando la aprobación de Apple. Las monedas llegan tras verificar la transacción.",
+    "th": "กำลังรอ Apple อนุมัติ จะได้รับเหรียญหลังยืนยันธุรกรรมเท่านั้น",
+    "ar": "بانتظار موافقة Apple. تُضاف العملات بعد التحقق من المعاملة فقط.",
+    "vi": "Đang chờ Apple phê duyệt. Xu chỉ được cộng sau khi giao dịch được xác minh.",
+    "ko": "Apple 승인을 기다리고 있습니다. 거래 검증 후에만 코인이 지급됩니다."
+  },
+  "Awaiting Apple approval": {
+    "es": "Esperando aprobación de Apple",
+    "th": "กำลังรอ Apple อนุมัติ",
+    "ar": "بانتظار موافقة Apple",
+    "vi": "Đang chờ Apple phê duyệt",
+    "ko": "Apple 승인 대기 중"
+  },
+  "Purchase cancelled. No coins were added.": {
+    "es": "Compra cancelada. No se añadieron monedas.",
+    "th": "ยกเลิกการซื้อแล้ว ไม่ได้เพิ่มเหรียญ",
+    "ar": "أُلغي الشراء. لم تُضف أي عملات.",
+    "vi": "Đã hủy giao dịch. Không có xu nào được cộng.",
+    "ko": "구매가 취소되었습니다. 코인은 지급되지 않았습니다."
+  },
+  "Apple has not confirmed this purchase. Its owner and coin amount are saved for recovery.": {
+    "es": "Apple no ha confirmado esta compra. Guardamos su propietario y cantidad de monedas para recuperarla.",
+    "th": "Apple ยังไม่ยืนยันการซื้อนี้ เราบันทึกเจ้าของและจำนวนเหรียญไว้เพื่อกู้คืน",
+    "ar": "لم تؤكد Apple هذا الشراء. حُفظ المالك وعدد العملات للاسترداد.",
+    "vi": "Apple chưa xác nhận giao dịch. Chủ sở hữu và số xu được lưu để khôi phục.",
+    "ko": "Apple이 구매를 확인하지 않았습니다. 복구를 위해 소유자와 코인 수량을 저장했습니다."
+  },
+  "Apple could not complete this purchase. No coins were added. Please try again.": {
+    "es": "Apple no pudo completar la compra. No se añadieron monedas. Inténtalo de nuevo.",
+    "th": "Apple ทำรายการซื้อไม่สำเร็จ ไม่ได้เพิ่มเหรียญ โปรดลองอีกครั้ง",
+    "ar": "تعذّر على Apple إتمام الشراء. لم تُضف عملات. حاول مجددًا.",
+    "vi": "Apple không hoàn tất được giao dịch. Không cộng xu. Vui lòng thử lại.",
+    "ko": "Apple 구매를 완료하지 못했습니다. 코인은 지급되지 않았습니다. 다시 시도하세요."
+  },
+  "Purchase interrupted. Its owner and coin amount are saved. Use Recover purchases before trying again.": {
+    "es": "Compra interrumpida. Guardamos su propietario y cantidad de monedas. Usa Recuperar compras antes de reintentar.",
+    "th": "การซื้อหยุดชะงัก บันทึกเจ้าของและจำนวนเหรียญแล้ว โปรดกู้คืนรายการซื้อก่อนลองอีกครั้ง",
+    "ar": "انقطع الشراء. حُفظ المالك وعدد العملات. استخدم استرداد المشتريات قبل المحاولة مجددًا.",
+    "vi": "Giao dịch bị gián đoạn. Đã lưu chủ sở hữu và số xu. Hãy khôi phục trước khi thử lại.",
+    "ko": "구매가 중단되었습니다. 소유자와 코인 수량이 저장되었습니다. 다시 시도하기 전에 구매 복구를 이용하세요."
+  },
+  "The original delivery needs review before a refund adjustment can be saved.": {
+    "es": "Hay que revisar la entrega original antes de guardar el ajuste del reembolso.",
+    "th": "ต้องตรวจสอบยอดที่เคยได้รับก่อนบันทึกการปรับคืนเงิน",
+    "ar": "يجب مراجعة التسليم الأصلي قبل حفظ تسوية الاسترداد.",
+    "vi": "Cần kiểm tra lần cộng xu ban đầu trước khi lưu điều chỉnh hoàn tiền.",
+    "ko": "환불 조정을 저장하기 전에 최초 지급 내역 확인이 필요합니다."
+  },
+  "A refund adjustment could not be saved. Recovery will retry.": {
+    "es": "No se pudo guardar el ajuste del reembolso. Se reintentará al recuperar.",
+    "th": "บันทึกการปรับคืนเงินไม่ได้ ระบบกู้คืนจะลองอีกครั้ง",
+    "ar": "تعذّر حفظ تسوية الاسترداد. ستُعاد المحاولة عند الاسترداد.",
+    "vi": "Không lưu được điều chỉnh hoàn tiền. Quá trình khôi phục sẽ thử lại.",
+    "ko": "환불 조정을 저장하지 못했습니다. 복구 시 다시 시도합니다."
+  },
+  "This balance needs review before delivery can continue.": {
+    "es": "Hay que revisar este saldo antes de continuar la entrega.",
+    "th": "ต้องตรวจสอบยอดคงเหลือก่อนเพิ่มเหรียญต่อ",
+    "ar": "يجب مراجعة هذا الرصيد قبل متابعة التسليم.",
+    "vi": "Cần kiểm tra số dư này trước khi tiếp tục cộng xu.",
+    "ko": "코인 지급을 계속하기 전에 잔액 확인이 필요합니다."
+  },
+  "This transaction was revoked. No coins were added.": {
+    "es": "Esta transacción fue revocada. No se añadieron monedas.",
+    "th": "ธุรกรรมนี้ถูกเพิกถอน ไม่ได้เพิ่มเหรียญ",
+    "ar": "أُلغيت هذه المعاملة. لم تُضف عملات.",
+    "vi": "Giao dịch này đã bị thu hồi. Không cộng xu.",
+    "ko": "거래가 취소 처리되었습니다. 코인은 지급되지 않았습니다."
+  },
+  "Purchase revoked": {
+    "es": "Compra revocada",
+    "th": "การซื้อถูกเพิกถอน",
+    "ar": "أُلغي الشراء",
+    "vi": "Giao dịch bị thu hồi",
+    "ko": "구매 취소 처리"
+  },
+  "Your coffee reserve is topped up": {
+    "es": "Tu reserva de café está recargada",
+    "th": "เติมคลังเหรียญกาแฟแล้ว",
+    "ar": "تم شحن رصيد قهوتك",
+    "vi": "Đã nạp quỹ cà phê của bạn",
+    "ko": "커피 잔고가 충전되었어요"
+  },
+  "Checking unfinished purchases with Apple…": {
+    "es": "Consultando compras pendientes con Apple…",
+    "th": "กำลังตรวจสอบรายการซื้อค้างกับ Apple…",
+    "ar": "جارٍ التحقق من المشتريات غير المكتملة لدى Apple…",
+    "vi": "Đang kiểm tra giao dịch chưa hoàn tất với Apple…",
+    "ko": "Apple에서 미완료 구매를 확인 중…"
+  },
+  "Apple sync complete. Saved deliveries are never credited twice. Finished consumable coins cannot be restored to a new guest.": {
+    "es": "Sincronización con Apple completada. Las entregas guardadas no se duplican. Las monedas consumibles ya entregadas no se pueden restaurar a otro invitado.",
+    "th": "ซิงค์กับ Apple แล้ว ไม่เพิ่มเหรียญรายการเดิมซ้ำ เหรียญใช้แล้วหมดไปที่ส่งมอบเสร็จไม่สามารถกู้คืนให้ผู้ใช้ใหม่ได้",
+    "ar": "اكتملت المزامنة مع Apple. لا تتكرر إضافة التسليمات المحفوظة. لا يمكن استعادة العملات الاستهلاكية المكتملة لضيف جديد.",
+    "vi": "Đã đồng bộ Apple. Không cộng lại giao dịch đã lưu. Xu tiêu hao đã giao không thể khôi phục cho khách mới.",
+    "ko": "Apple 동기화 완료. 저장된 지급 내역은 중복 반영되지 않습니다. 지급 완료된 소모성 코인은 새 게스트로 복구할 수 없습니다."
+  },
+  "An order is still awaiting Apple's result. No second purchase has been started.": {
+    "es": "Un pedido sigue esperando el resultado de Apple. No se ha iniciado otra compra.",
+    "th": "ยังมีรายการรอผลจาก Apple ยังไม่ได้เริ่มซื้อรายการใหม่",
+    "ar": "لا يزال طلب ينتظر نتيجة Apple. لم تبدأ عملية شراء ثانية.",
+    "vi": "Một đơn vẫn đang chờ kết quả từ Apple. Chưa bắt đầu giao dịch thứ hai.",
+    "ko": "Apple 결과를 기다리는 주문이 있습니다. 추가 구매는 시작되지 않았습니다."
+  },
+  "{0} coins are used when this post is saved to your private review queue. It appears in the feed only after approval.": {
+    "es": "Se usan {0} monedas para guardar esta publicación en tu cola privada. Solo aparecerá en el inicio tras aprobarse.",
+    "th": "ใช้ {0} เหรียญเมื่อบันทึกโพสต์ในคิวตรวจสอบส่วนตัว โพสต์จะแสดงในฟีดเมื่ออนุมัติแล้วเท่านั้น",
+    "ar": "تُستخدم {0} عملة لحفظ المنشور في قائمة المراجعة الخاصة. يظهر في الصفحة الرئيسية بعد الموافقة فقط.",
+    "vi": "Dùng {0} xu khi lưu bài vào hàng đợi riêng. Bài chỉ hiển thị trên bảng tin sau khi được duyệt.",
+    "ko": "비공개 심사 대기열에 저장할 때 {0}코인을 사용합니다. 승인 후에만 피드에 표시됩니다."
+  },
+  "Submit · {0} coins": {
+    "es": "Enviar · {0} monedas",
+    "th": "ส่งตรวจสอบ · {0} เหรียญ",
+    "ar": "إرسال · {0} عملة",
+    "vi": "Gửi duyệt · {0} xu",
+    "ko": "제출 · {0}코인"
+  },
+  "Apple handles payments through its own confirmation sheet. Papi stores transaction identifiers, the original local owner and the coin amount for delivery and recovery. Product details are requested only when you tap Buy. Papi does not receive your payment card details.": {
+    "es": "Apple gestiona los pagos en su propia pantalla de confirmación. Papi guarda identificadores de transacción, propietario local original y cantidad de monedas para la entrega y recuperación. Los productos se consultan solo al pulsar Comprar. Papi no recibe datos de tu tarjeta.",
+    "th": "Apple จัดการชำระเงินผ่านหน้าระบบของตน Papi เก็บรหัสธุรกรรม เจ้าของเดิมในเครื่องและจำนวนเหรียญเพื่อส่งมอบและกู้คืน ขอข้อมูลสินค้าเมื่อแตะซื้อเท่านั้น Papi ไม่ได้รับข้อมูลบัตรชำระเงิน",
+    "ar": "تدير Apple الدفع عبر شاشة تأكيد خاصة بها. يحفظ Papi معرّفات المعاملات والمالك المحلي الأصلي وعدد العملات للتسليم والاسترداد. تُطلب تفاصيل المنتج عند الضغط على شراء فقط. لا يتلقى Papi بيانات بطاقتك.",
+    "vi": "Apple xử lý thanh toán qua màn hình xác nhận riêng. Papi lưu mã giao dịch, chủ sở hữu cục bộ ban đầu và số xu để cấp xu và khôi phục. Chỉ lấy chi tiết sản phẩm khi nhấn Mua. Papi không nhận thông tin thẻ của bạn.",
+    "ko": "Apple이 자체 확인 화면에서 결제를 처리합니다. Papi는 지급과 복구를 위해 거래 ID, 최초 로컬 소유자, 코인 수량을 저장합니다. 구매를 누를 때만 상품 정보를 조회합니다. Papi는 카드 정보를 받지 않습니다."
+  },
+  "A new local guest receives 800 welcome coins once. Daily check-ins also provide coins. Saving a photo submission costs 40 coins; a video submission costs 80. This saves a private review entry and does not buy approval or public visibility. Optional backpack gifts cost the displayed amount. Gift previews and displaying owned gifts are free. Chat, photos in chat, voice messages and video calls never cost coins.": {
+    "es": "Un nuevo invitado local recibe 800 monedas de bienvenida una sola vez. El registro diario también da monedas. Guardar una foto cuesta 40 y un vídeo 80. Solo se guarda una entrada privada, sin comprar aprobación ni publicación. Los regalos opcionales cuestan lo indicado. Las vistas previas y mostrar regalos propios son gratis. El chat, sus fotos, audios y videollamadas nunca cuestan monedas.",
+    "th": "ผู้ใช้ใหม่ในเครื่องได้รับ 800 เหรียญต้อนรับครั้งเดียว เช็กอินรายวันรับเหรียญได้ด้วย บันทึกโพสต์รูปใช้ 40 เหรียญ วิดีโอ 80 เหรียญ เป็นการบันทึกรายการส่วนตัว ไม่ได้รับประกันอนุมัติหรือเผยแพร่ ของขวัญสะสมคิดตามราคาที่แสดง การดูตัวอย่างและแสดงของที่มีฟรี แชต รูปในแชต ข้อความเสียงและวิดีโอคอลไม่เสียเหรียญ",
+    "ar": "يحصل الضيف المحلي الجديد على 800 عملة ترحيب مرة واحدة. ويوفر الحضور اليومي عملات أيضًا. حفظ صورة للمراجعة يكلف 40 عملة وفيديو 80. هذا يحفظ سجلًا خاصًا ولا يشتري الموافقة أو النشر. الهدايا الاختيارية بسعرها المعروض. المعاينة وعرض المقتنيات مجانيان. الدردشة وصورها والرسائل الصوتية ومكالمات الفيديو لا تستهلك عملات.",
+    "vi": "Khách cục bộ mới nhận 800 xu chào mừng một lần. Điểm danh cũng tặng xu. Lưu bài ảnh tốn 40 xu, video 80 xu. Đây là lưu bản ghi riêng, không mua phê duyệt hay hiển thị công khai. Quà tùy chọn có giá niêm yết. Xem trước và trưng bày quà đã có miễn phí. Chat, ảnh chat, tin thoại và gọi video không tốn xu.",
+    "ko": "새 로컬 게스트에게 최초 1회 800코인을 지급합니다. 출석으로도 코인을 받습니다. 사진 제출 저장은 40코인, 동영상은 80코인입니다. 비공개 기록 저장이며 승인이나 공개를 보장하지 않습니다. 선택형 배낭 선물은 표시된 가격을 사용합니다. 미리보기와 보유 선물 전시는 무료입니다. 채팅, 채팅 사진, 음성 메시지, 영상 통화는 코인을 사용하지 않습니다."
+  },
+  "Purchases require products configured for this app in App Store Connect. The Apple sheet provides the final local price. Real-time community services and a public support contact still need configuration before online distribution. Coins stay with this device's guest and cannot be transferred or redeemed for cash.": {
+    "es": "Las compras requieren productos configurados para esta app en App Store Connect. Apple muestra el precio local final. Los servicios comunitarios y el contacto público de soporte aún deben configurarse antes de la distribución en línea. Las monedas pertenecen al invitado de este dispositivo y no se transfieren ni se canjean por dinero.",
+    "th": "ต้องตั้งค่าสินค้าของแอปนี้ใน App Store Connect จึงซื้อได้ หน้าของ Apple แสดงราคาท้องถิ่นสุดท้าย บริการชุมชนและช่องทางช่วยเหลือสาธารณะยังต้องตั้งค่าก่อนเผยแพร่ออนไลน์ เหรียญเป็นของผู้ใช้ในอุปกรณ์นี้ โอนหรือแลกเงินไม่ได้",
+    "ar": "تتطلب المشتريات إعداد منتجات لهذا التطبيق في App Store Connect. تعرض شاشة Apple السعر المحلي النهائي. ما زالت خدمات المجتمع ووسيلة الدعم العامة تحتاج إلى إعداد قبل التوزيع عبر الإنترنت. تبقى العملات لضيف هذا الجهاز ولا تُنقل أو تُستبدل بالنقد.",
+    "vi": "Mua hàng cần sản phẩm được cấu hình cho ứng dụng này trên App Store Connect. Apple hiển thị giá địa phương cuối cùng. Cần cấu hình dịch vụ cộng đồng và liên hệ hỗ trợ công khai trước khi phát hành trực tuyến. Xu gắn với khách trên thiết bị này, không chuyển nhượng hay đổi tiền.",
+    "ko": "구매하려면 App Store Connect에서 이 앱의 상품을 설정해야 합니다. Apple 화면에 최종 현지 가격이 표시됩니다. 온라인 배포 전 실시간 커뮤니티 서비스와 공개 지원 연락처를 설정해야 합니다. 코인은 이 기기의 게스트에 귀속되며 양도하거나 현금으로 교환할 수 없습니다."
+  },
+  "Apple's USD price does not match this pack's configured price. No purchase was started.": {
+    "es": "El precio en USD de Apple no coincide con el configurado para este paquete. No se inició ninguna compra.",
+    "th": "ราคา USD จาก Apple ไม่ตรงกับราคาที่กำหนดสำหรับแพ็กนี้ ยังไม่ได้เริ่มซื้อ",
+    "ar": "سعر Apple بالدولار لا يطابق السعر المحدد لهذه الباقة. لم تبدأ أي عملية شراء.",
+    "vi": "Giá USD từ Apple không khớp giá đã cấu hình cho gói này. Chưa bắt đầu giao dịch.",
+    "ko": "Apple의 USD 가격이 이 패키지의 설정 가격과 다릅니다. 구매는 시작되지 않았습니다."
+  },
+  "Brew bench": {
+    "es": "Mesa de preparación",
+    "th": "โต๊ะชงกาแฟ",
+    "ar": "ركن التحضير",
+    "vi": "Bàn pha cà phê",
+    "ko": "브루 벤치"
+  },
+  "My brew book": {
+    "es": "Mi cuaderno de café",
+    "th": "สมุดชงกาแฟของฉัน",
+    "ar": "دفتر قهوتي",
+    "vi": "Sổ pha cà phê",
+    "ko": "나의 커피 노트"
+  },
+  "One cup. Your own recipe.": {
+    "es": "Una taza. Tu propia receta.",
+    "th": "หนึ่งแก้ว สูตรของคุณเอง",
+    "ar": "فنجان واحد. وصفتك الخاصة.",
+    "vi": "Một tách. Công thức của riêng bạn.",
+    "ko": "한 잔, 나만의 레시피."
+  },
+  "Return to your pour": {
+    "es": "Volver a tu preparación",
+    "th": "กลับไปชงต่อ",
+    "ar": "عُد إلى تحضيرك",
+    "vi": "Quay lại lượt pha",
+    "ko": "진행 중인 추출로 돌아가기"
+  },
+  "The recipe shelf": {
+    "es": "El estante de recetas",
+    "th": "ชั้นวางสูตรกาแฟ",
+    "ar": "رف الوصفات",
+    "vi": "Kệ công thức",
+    "ko": "레시피 선반"
+  },
+  "Two recipes are yours from the start. Unlock another once, then brew it as often as you like.": {
+    "es": "Empiezas con dos recetas. Desbloquea otra una sola vez y úsala cuantas veces quieras.",
+    "th": "เริ่มต้นด้วยสองสูตร ปลดล็อกสูตรเพิ่มครั้งเดียวแล้วชงได้บ่อยตามต้องการ",
+    "ar": "تبدأ بوصفتين. افتح وصفة أخرى مرة واحدة واستخدمها متى شئت.",
+    "vi": "Bạn có sẵn hai công thức. Mở thêm một lần rồi pha bao nhiêu lần tùy thích.",
+    "ko": "두 가지 레시피로 시작하세요. 추가 레시피는 한 번만 잠금 해제하면 언제든 사용할 수 있어요."
+  },
+  "Included": {
+    "es": "Incluida",
+    "th": "มีให้แล้ว",
+    "ar": "متاحة",
+    "vi": "Có sẵn",
+    "ko": "기본 제공"
+  },
+  "On your shelf": {
+    "es": "En tu estante",
+    "th": "อยู่บนชั้นของคุณแล้ว",
+    "ar": "على رفك",
+    "vi": "Đã có trên kệ",
+    "ko": "내 선반에 보관됨"
+  },
+  "{0} g coffee · {1} g hot water · {2} °C": {
+    "es": "{0} g de café · {1} g de agua caliente · {2} °C",
+    "th": "กาแฟ {0} กรัม · น้ำร้อน {1} กรัม · {2} °C",
+    "ar": "{0} غ قهوة · {1} غ ماء ساخن · {2} °م",
+    "vi": "{0} g cà phê · {1} g nước nóng · {2} °C",
+    "ko": "커피 {0}g · 온수 {1}g · {2}°C"
+  },
+  "Two cups, side by side": {
+    "es": "Dos tazas, lado a lado",
+    "th": "สองแก้วเคียงกัน",
+    "ar": "فنجانان جنبًا إلى جنب",
+    "vi": "Hai tách đặt cạnh nhau",
+    "ko": "두 잔을 나란히"
+  },
+  "Free": {
+    "es": "Gratis",
+    "th": "ฟรี",
+    "ar": "مجاني",
+    "vi": "Miễn phí",
+    "ko": "무료"
+  },
+  "Taste your own brews. Compare sweetness, brightness and body, then keep the pairing in your book.": {
+    "es": "Prueba tus cafés. Compara dulzor, acidez y cuerpo, y guarda la pareja en tu cuaderno.",
+    "th": "ชิมกาแฟที่คุณชง เปรียบเทียบความหวาน ความสดใสและบอดี้ แล้วเก็บคู่นี้ไว้ในสมุด",
+    "ar": "تذوّق قهوتك وقارن الحلاوة والإشراق والقوام، ثم احفظ المقارنة في دفترك.",
+    "vi": "Nếm cà phê bạn pha, so sánh độ ngọt, độ sáng vị và độ đậm rồi lưu cặp này vào sổ.",
+    "ko": "직접 내린 커피의 단맛, 산뜻함, 바디감을 비교하고 노트에 남겨보세요."
+  },
+  "Open my brew book": {
+    "es": "Abrir mi cuaderno",
+    "th": "เปิดสมุดชงกาแฟ",
+    "ar": "افتح دفتر قهوتي",
+    "vi": "Mở sổ pha cà phê",
+    "ko": "커피 노트 열기"
+  },
+  "Begin this pour": {
+    "es": "Empezar a preparar",
+    "th": "เริ่มชงแก้วนี้",
+    "ar": "ابدأ التحضير",
+    "vi": "Bắt đầu lượt pha",
+    "ko": "추출 시작"
+  },
+  "Another pour is running. Return to it from the brew bench.": {
+    "es": "Hay otra preparación en marcha. Vuelve a ella desde la mesa de preparación.",
+    "th": "มีการชงอีกแก้วกำลังดำเนินอยู่ กลับไปได้จากโต๊ะชงกาแฟ",
+    "ar": "يوجد تحضير آخر جارٍ. عُد إليه من ركن التحضير.",
+    "vi": "Một lượt pha khác đang chạy. Quay lại từ bàn pha cà phê.",
+    "ko": "다른 추출이 진행 중입니다. 브루 벤치에서 돌아가세요."
+  },
+  "Unlock once for {0} coins. Brewing, saving cups and tasting comparisons stay free.": {
+    "es": "Desbloquea una vez por {0} monedas. Preparar, guardar tazas y comparar sabores sigue siendo gratis.",
+    "th": "ปลดล็อกครั้งเดียว {0} เหรียญ การชง บันทึกแก้วและเปรียบเทียบรสชาติยังฟรี",
+    "ar": "افتحها مرة واحدة مقابل {0} عملة. التحضير وحفظ الفناجين والمقارنات مجانية.",
+    "vi": "Mở một lần với {0} xu. Pha, lưu tách và so sánh hương vị vẫn miễn phí.",
+    "ko": "{0}코인으로 한 번만 잠금 해제하세요. 추출, 기록 저장, 시음 비교는 계속 무료입니다."
+  },
+  "Add recipe · {0} coins": {
+    "es": "Añadir receta · {0} monedas",
+    "th": "เพิ่มสูตร · {0} เหรียญ",
+    "ar": "إضافة الوصفة · {0} عملة",
+    "vi": "Thêm công thức · {0} xu",
+    "ko": "레시피 추가 · {0}코인"
+  },
+  "Keep hot water away from children. Use a stable brewer and a heat-safe server. Times are a starting point; let your own taste guide adjustments.": {
+    "es": "Mantén el agua caliente fuera del alcance de los niños. Usa un soporte estable y una jarra resistente al calor. Los tiempos son orientativos; ajusta según tu gusto.",
+    "th": "เก็บน้ำร้อนให้พ้นมือเด็ก ใช้อุปกรณ์ที่มั่นคงและเหยือกทนความร้อน เวลาเป็นเพียงจุดเริ่มต้น ปรับตามรสชาติที่คุณชอบ",
+    "ar": "أبعد الماء الساخن عن الأطفال. استخدم أداة ثابتة ووعاءً مقاومًا للحرارة. الأوقات إرشادية؛ عدّلها حسب ذوقك.",
+    "vi": "Để nước nóng xa trẻ em. Dùng dụng cụ vững và bình chịu nhiệt. Thời gian chỉ là điểm khởi đầu; hãy điều chỉnh theo khẩu vị.",
+    "ko": "뜨거운 물은 어린이의 손이 닿지 않게 두세요. 안정적인 추출 도구와 내열 서버를 사용하세요. 시간은 시작 기준이며 취향에 맞게 조절하세요."
+  },
+  "Make room on your recipe shelf?": {
+    "es": "¿Un hueco para esta receta?",
+    "th": "เพิ่มสูตรบนชั้นของคุณไหม",
+    "ar": "هل تضيفها إلى رف وصفاتك؟",
+    "vi": "Thêm vào kệ công thức?",
+    "ko": "레시피 선반에 추가할까요?"
+  },
+  "Spend {0} coins to unlock this recipe for this account. Future brews using it cost no coins.": {
+    "es": "Usa {0} monedas para desbloquear esta receta en esta cuenta. Volver a prepararla no cuesta monedas.",
+    "th": "ใช้ {0} เหรียญเพื่อปลดล็อกสูตรสำหรับบัญชีนี้ การชงครั้งต่อไปด้วยสูตรนี้ไม่เสียเหรียญ",
+    "ar": "استخدم {0} عملة لفتح الوصفة لهذا الحساب. لا تستهلك التحضيرات اللاحقة بها أي عملات.",
+    "vi": "Dùng {0} xu để mở công thức cho tài khoản này. Những lần pha sau không tốn xu.",
+    "ko": "이 계정에서 {0}코인으로 레시피를 잠금 해제합니다. 이후 이 레시피로 추출할 때는 코인이 들지 않습니다."
+  },
+  "Unlock recipe": {
+    "es": "Desbloquear receta",
+    "th": "ปลดล็อกสูตร",
+    "ar": "فتح الوصفة",
+    "vi": "Mở công thức",
+    "ko": "레시피 잠금 해제"
+  },
+  "Keep browsing": {
+    "es": "Seguir explorando",
+    "th": "ดูต่อ",
+    "ar": "متابعة التصفح",
+    "vi": "Xem tiếp",
+    "ko": "계속 둘러보기"
+  },
+  "A new recipe for your shelf": {
+    "es": "Una nueva receta en tu estante",
+    "th": "สูตรใหม่บนชั้นของคุณ",
+    "ar": "وصفة جديدة على رفك",
+    "vi": "Công thức mới trên kệ",
+    "ko": "선반에 새 레시피가 놓였어요"
+  },
+  "Your recipe is ready. Every future pour with it is free.": {
+    "es": "Tu receta está lista. Todas las preparaciones futuras con ella son gratis.",
+    "th": "สูตรพร้อมแล้ว ชงด้วยสูตรนี้ครั้งต่อไปได้ฟรี",
+    "ar": "وصفتك جاهزة. كل تحضير لاحق بها مجاني.",
+    "vi": "Công thức đã sẵn sàng. Mọi lượt pha sau với công thức này đều miễn phí.",
+    "ko": "레시피가 준비됐어요. 앞으로 이 레시피로 내리는 커피는 모두 무료입니다."
+  },
+  "Keep this cup?": {
+    "es": "¿Guardar esta taza?",
+    "th": "เก็บบันทึกแก้วนี้ไหม",
+    "ar": "هل تحفظ هذا الفنجان؟",
+    "vi": "Lưu tách này?",
+    "ko": "이 한 잔을 남길까요?"
+  },
+  "Save the elapsed brew time and recipe to your book. Add tasting notes after the cup has cooled. Saving costs no coins.": {
+    "es": "Guarda el tiempo transcurrido y la receta en tu cuaderno. Añade notas al enfriarse la taza. Guardar es gratis.",
+    "th": "บันทึกเวลาชงและสูตรลงสมุด เพิ่มบันทึกการชิมเมื่อกาแฟเย็นลง การบันทึกไม่เสียเหรียญ",
+    "ar": "احفظ مدة التحضير والوصفة في دفترك، ثم أضف ملاحظات التذوق بعد أن يبرد الفنجان. الحفظ مجاني.",
+    "vi": "Lưu thời gian pha đã trôi qua và công thức vào sổ. Thêm ghi chú khi cà phê nguội bớt. Lưu không tốn xu.",
+    "ko": "경과한 추출 시간과 레시피를 노트에 저장합니다. 식은 뒤 시음 메모를 추가하세요. 저장은 무료입니다."
+  },
+  "Save this cup": {
+    "es": "Guardar esta taza",
+    "th": "บันทึกแก้วนี้",
+    "ar": "حفظ الفنجان",
+    "vi": "Lưu tách này",
+    "ko": "이 한 잔 저장"
+  },
+  "Keep brewing": {
+    "es": "Seguir preparando",
+    "th": "ชงต่อ",
+    "ar": "متابعة التحضير",
+    "vi": "Tiếp tục pha",
+    "ko": "계속 추출"
+  },
+  "Clear this pour?": {
+    "es": "¿Borrar esta preparación?",
+    "th": "ล้างการชงนี้ไหม",
+    "ar": "هل تمسح هذا التحضير؟",
+    "vi": "Xóa lượt pha này?",
+    "ko": "이 추출을 지울까요?"
+  },
+  "This removes the running timer. Your bean details and unlocked recipes stay in your book.": {
+    "es": "Se elimina el temporizador actual. Tus datos del café y recetas desbloqueadas siguen en tu cuaderno.",
+    "th": "ลบตัวจับเวลาที่กำลังทำงาน ข้อมูลเมล็ดและสูตรที่ปลดล็อกยังอยู่ในสมุด",
+    "ar": "سيُحذف المؤقت الجاري. تبقى بيانات البن والوصفات المفتوحة في دفترك.",
+    "vi": "Xóa bộ đếm đang chạy. Thông tin hạt và công thức đã mở vẫn ở trong sổ.",
+    "ko": "실행 중인 타이머를 지웁니다. 원두 정보와 잠금 해제한 레시피는 노트에 남습니다."
+  },
+  "Clear pour": {
+    "es": "Borrar preparación",
+    "th": "ล้างการชง",
+    "ar": "مسح التحضير",
+    "vi": "Xóa lượt pha",
+    "ko": "추출 지우기"
+  },
+  "Recipe unavailable": {
+    "es": "Receta no disponible",
+    "th": "ไม่พบสูตร",
+    "ar": "الوصفة غير متاحة",
+    "vi": "Không có công thức",
+    "ko": "레시피를 사용할 수 없음"
+  },
+  "Beans on the bench": {
+    "es": "Café en la mesa",
+    "th": "เมล็ดกาแฟบนโต๊ะ",
+    "ar": "البن على الطاولة",
+    "vi": "Hạt cà phê trên bàn",
+    "ko": "오늘의 원두"
+  },
+  "Roaster, origin or coffee name": {
+    "es": "Tostador, origen o nombre del café",
+    "th": "โรงคั่ว แหล่งปลูกหรือชื่อกาแฟ",
+    "ar": "المحمصة أو المنشأ أو اسم القهوة",
+    "vi": "Nhà rang, xuất xứ hoặc tên cà phê",
+    "ko": "로스터, 산지 또는 커피 이름"
+  },
+  "Grinder and setting (optional)": {
+    "es": "Molinillo y ajuste (opcional)",
+    "th": "เครื่องบดและระดับบด (ไม่บังคับ)",
+    "ar": "المطحنة وإعدادها (اختياري)",
+    "vi": "Máy xay và mức xay (tùy chọn)",
+    "ko": "그라인더와 분쇄 설정 (선택)"
+  },
+  "{0} g coffee": {
+    "es": "{0} g de café",
+    "th": "กาแฟ {0} กรัม",
+    "ar": "{0} غ قهوة",
+    "vi": "{0} g cà phê",
+    "ko": "커피 {0}g"
+  },
+  "Water: {0} g · {1} °C": {
+    "es": "Agua: {0} g · {1} °C",
+    "th": "น้ำ: {0} กรัม · {1} °C",
+    "ar": "الماء: {0} غ · {1} °م",
+    "vi": "Nước: {0} g · {1} °C",
+    "ko": "물: {0}g · {1}°C"
+  },
+  "Ice in the server: {0} g": {
+    "es": "Hielo en la jarra: {0} g",
+    "th": "น้ำแข็งในเหยือก: {0} กรัม",
+    "ar": "الثلج في الوعاء: {0} غ",
+    "vi": "Đá trong bình: {0} g",
+    "ko": "서버의 얼음: {0}g"
+  },
+  "Elapsed brew time": {
+    "es": "Tiempo transcurrido",
+    "th": "เวลาชงที่ผ่านไป",
+    "ar": "مدة التحضير المنقضية",
+    "vi": "Thời gian pha đã trôi qua",
+    "ko": "경과한 추출 시간"
+  },
+  "Let the last drops settle": {
+    "es": "Deja caer las últimas gotas",
+    "th": "รอให้หยดสุดท้ายไหลลง",
+    "ar": "دع القطرات الأخيرة تستقر",
+    "vi": "Đợi những giọt cuối cùng",
+    "ko": "마지막 방울을 기다려주세요"
+  },
+  "Water on the scale: {0} g": {
+    "es": "Agua en la báscula: {0} g",
+    "th": "น้ำบนเครื่องชั่ง: {0} กรัม",
+    "ar": "الماء على الميزان: {0} غ",
+    "vi": "Nước trên cân: {0} g",
+    "ko": "저울 위의 물: {0}g"
+  },
+  "Resume pour": {
+    "es": "Reanudar preparación",
+    "th": "ชงต่อ",
+    "ar": "استئناف التحضير",
+    "vi": "Tiếp tục lượt pha",
+    "ko": "추출 재개"
+  },
+  "Pause timer": {
+    "es": "Pausar temporizador",
+    "th": "หยุดเวลาชั่วคราว",
+    "ar": "إيقاف المؤقت مؤقتًا",
+    "vi": "Tạm dừng bộ đếm",
+    "ko": "타이머 일시 정지"
+  },
+  "Keep this cup": {
+    "es": "Guardar esta taza",
+    "th": "เก็บแก้วนี้",
+    "ar": "احفظ هذا الفنجان",
+    "vi": "Lưu tách này",
+    "ko": "이 한 잔 남기기"
+  },
+  "The timer follows elapsed time while Papi is away. It does not play a background alarm.": {
+    "es": "El temporizador cuenta el tiempo aunque salgas de Papi. No suena una alarma en segundo plano.",
+    "th": "เวลายังนับต่อเมื่อออกจาก Papi แต่จะไม่มีเสียงเตือนเบื้องหลัง",
+    "ar": "يستمر احتساب الوقت عند مغادرة Papi، من دون تنبيه صوتي في الخلفية.",
+    "vi": "Bộ đếm vẫn tính thời gian khi rời Papi, nhưng không phát báo thức nền.",
+    "ko": "Papi를 떠나도 경과 시간은 계속 반영됩니다. 백그라운드 알람은 울리지 않습니다."
+  },
+  "Clear this pour": {
+    "es": "Borrar esta preparación",
+    "th": "ล้างการชงนี้",
+    "ar": "امسح هذا التحضير",
+    "vi": "Xóa lượt pha này",
+    "ko": "이 추출 지우기"
+  },
+  "Your pour sequence": {
+    "es": "Tu secuencia de vertido",
+    "th": "ลำดับการรินของคุณ",
+    "ar": "تسلسل الصب",
+    "vi": "Các bước rót của bạn",
+    "ko": "나만의 푸어 순서"
+  },
+  "Total water {0} g": {
+    "es": "Agua total {0} g",
+    "th": "น้ำรวม {0} กรัม",
+    "ar": "إجمالي الماء {0} غ",
+    "vi": "Tổng nước {0} g",
+    "ko": "누적 물 {0}g"
+  },
+  "Aim to finish around {0}:{1}.": {
+    "es": "Intenta terminar hacia {0}:{1}.",
+    "th": "ตั้งเป้าชงเสร็จประมาณ {0}:{1}",
+    "ar": "حاول الإنهاء قرب {0}:{1}.",
+    "vi": "Cố gắng kết thúc khoảng {0}:{1}.",
+    "ko": "약 {0}:{1}에 마치는 것을 기준으로 삼으세요."
+  },
+  "A record of your own cups.": {
+    "es": "Un registro de tus propias tazas.",
+    "th": "บันทึกกาแฟที่คุณชงเอง",
+    "ar": "سجل فناجينك الخاصة.",
+    "vi": "Ghi lại những tách của riêng bạn.",
+    "ko": "직접 내린 커피의 기록."
+  },
+  "The first page is yours": {
+    "es": "La primera página es tuya",
+    "th": "หน้าแรกเป็นของคุณ",
+    "ar": "الصفحة الأولى لك",
+    "vi": "Trang đầu tiên là của bạn",
+    "ko": "첫 페이지는 당신의 것"
+  },
+  "Begin a pour on the brew bench, then keep the cup here.": {
+    "es": "Empieza a preparar en la mesa y guarda la taza aquí.",
+    "th": "เริ่มชงที่โต๊ะชงกาแฟแล้วเก็บบันทึกแก้วไว้ที่นี่",
+    "ar": "ابدأ تحضيرًا في الركن، ثم احفظ الفنجان هنا.",
+    "vi": "Bắt đầu pha trên bàn pha rồi lưu tách ở đây.",
+    "ko": "브루 벤치에서 추출을 시작하고 이곳에 한 잔을 남겨보세요."
+  },
+  "Compare two cups": {
+    "es": "Comparar dos tazas",
+    "th": "เปรียบเทียบสองแก้ว",
+    "ar": "قارن فنجانين",
+    "vi": "So sánh hai tách",
+    "ko": "두 잔 비교"
+  },
+  "Tastings to remember": {
+    "es": "Catas para recordar",
+    "th": "บันทึกการชิมที่น่าจดจำ",
+    "ar": "تذوقات تستحق التذكر",
+    "vi": "Những lần nếm đáng nhớ",
+    "ko": "기억하고 싶은 시음"
+  },
+  "{0} g coffee · {1} g hot water · {2} s": {
+    "es": "{0} g de café · {1} g de agua caliente · {2} s",
+    "th": "กาแฟ {0} กรัม · น้ำร้อน {1} กรัม · {2} วินาที",
+    "ar": "{0} غ قهوة · {1} غ ماء ساخن · {2} ث",
+    "vi": "{0} g cà phê · {1} g nước nóng · {2} giây",
+    "ko": "커피 {0}g · 온수 {1}g · {2}초"
+  },
+  "Tasting notes added": {
+    "es": "Notas de cata añadidas",
+    "th": "เพิ่มบันทึกการชิมแล้ว",
+    "ar": "أُضيفت ملاحظات التذوق",
+    "vi": "Đã thêm ghi chú nếm",
+    "ko": "시음 메모가 있어요"
+  },
+  "Ready for tasting notes": {
+    "es": "Lista para notas de cata",
+    "th": "พร้อมเพิ่มบันทึกการชิม",
+    "ar": "جاهز لملاحظات التذوق",
+    "vi": "Sẵn sàng để ghi chú nếm",
+    "ko": "시음 메모를 남겨보세요"
+  },
+  "Taste this cup": {
+    "es": "Catar esta taza",
+    "th": "ชิมแก้วนี้",
+    "ar": "تذوق هذا الفنجان",
+    "vi": "Nếm tách này",
+    "ko": "이 커피 시음"
+  },
+  "Delete brew record": {
+    "es": "Eliminar registro",
+    "th": "ลบบันทึกการชง",
+    "ar": "حذف سجل التحضير",
+    "vi": "Xóa bản ghi pha",
+    "ko": "추출 기록 삭제"
+  },
+  "Let the cup cool. Take a sip.": {
+    "es": "Deja enfriar la taza. Da un sorbo.",
+    "th": "รอให้กาแฟเย็นลง แล้วจิบสักนิด",
+    "ar": "دع الفنجان يبرد. خذ رشفة.",
+    "vi": "Để cà phê nguội bớt. Nhấp một ngụm.",
+    "ko": "조금 식힌 뒤 한 모금."
+  },
+  "Your impressions, from subtle to pronounced. These are tasting notes, not laboratory measurements.": {
+    "es": "Tus impresiones, de sutiles a intensas. Son notas de cata, no mediciones de laboratorio.",
+    "th": "ความรู้สึกของคุณ จากเบาบางถึงชัดเจน เป็นบันทึกการชิม ไม่ใช่การวัดในห้องแล็บ",
+    "ar": "انطباعاتك من الخفيف إلى الواضح. هذه ملاحظات تذوق وليست قياسات مخبرية.",
+    "vi": "Cảm nhận của bạn từ nhẹ đến rõ nét. Đây là ghi chú nếm, không phải phép đo phòng thí nghiệm.",
+    "ko": "은은함부터 뚜렷함까지, 직접 느낀 인상입니다. 실험실 측정값이 아닌 시음 메모예요."
+  },
+  "Sweetness": {
+    "es": "Dulzor",
+    "th": "ความหวาน",
+    "ar": "الحلاوة",
+    "vi": "Độ ngọt",
+    "ko": "단맛"
+  },
+  "Brightness": {
+    "es": "Acidez viva",
+    "th": "ความสดใสของรส",
+    "ar": "الإشراق",
+    "vi": "Độ sáng vị",
+    "ko": "산뜻함"
+  },
+  "Body": {
+    "es": "Cuerpo",
+    "th": "บอดี้",
+    "ar": "القوام",
+    "vi": "Độ đậm",
+    "ko": "바디감"
+  },
+  "Aroma, finish, and what you would change…": {
+    "es": "Aroma, final y qué cambiarías…",
+    "th": "กลิ่น รสที่ค้างในปาก และสิ่งที่อยากปรับ…",
+    "ar": "الرائحة والنهاية وما تود تغييره…",
+    "vi": "Hương, hậu vị và điều bạn muốn thay đổi…",
+    "ko": "향, 여운, 다음에 바꾸고 싶은 점…"
+  },
+  "Save tasting notes": {
+    "es": "Guardar notas de cata",
+    "th": "บันทึกการชิม",
+    "ar": "حفظ ملاحظات التذوق",
+    "vi": "Lưu ghi chú nếm",
+    "ko": "시음 메모 저장"
+  },
+  "Tasting notes kept": {
+    "es": "Notas de cata guardadas",
+    "th": "บันทึกการชิมแล้ว",
+    "ar": "حُفظت ملاحظات التذوق",
+    "vi": "Đã lưu ghi chú nếm",
+    "ko": "시음 메모를 남겼어요"
+  },
+  "Your cup is ready for a side-by-side tasting.": {
+    "es": "Tu taza está lista para comparar.",
+    "th": "แก้วของคุณพร้อมสำหรับการชิมเปรียบเทียบ",
+    "ar": "فنجانك جاهز للمقارنة جنبًا إلى جنب.",
+    "vi": "Tách của bạn đã sẵn sàng để nếm so sánh.",
+    "ko": "이제 두 잔을 나란히 비교할 수 있어요."
+  },
+  "Cup unavailable": {
+    "es": "Taza no disponible",
+    "th": "ไม่พบแก้วนี้",
+    "ar": "الفنجان غير متاح",
+    "vi": "Không có tách này",
+    "ko": "커피 기록을 찾을 수 없음"
+  },
+  "Remove this cup from the book?": {
+    "es": "¿Quitar esta taza del cuaderno?",
+    "th": "ลบแก้วนี้ออกจากสมุดไหม",
+    "ar": "هل تزيل الفنجان من الدفتر؟",
+    "vi": "Xóa tách này khỏi sổ?",
+    "ko": "노트에서 이 한 잔을 지울까요?"
+  },
+  "Its tasting notes and comparisons containing this cup will also be removed. Unlocked recipes stay on your shelf.": {
+    "es": "También se eliminarán sus notas y comparaciones. Tus recetas desbloqueadas seguirán en el estante.",
+    "th": "บันทึกการชิมและการเปรียบเทียบที่มีแก้วนี้จะถูกลบด้วย สูตรที่ปลดล็อกยังอยู่บนชั้น",
+    "ar": "ستُحذف ملاحظاته والمقارنات التي تتضمنه أيضًا. تبقى الوصفات المفتوحة على رفك.",
+    "vi": "Ghi chú nếm và các so sánh có tách này cũng sẽ bị xóa. Công thức đã mở vẫn ở trên kệ.",
+    "ko": "해당 시음 메모와 이 커피가 포함된 비교도 지워집니다. 잠금 해제한 레시피는 선반에 남습니다."
+  },
+  "Remove cup": {
+    "es": "Quitar taza",
+    "th": "ลบแก้วนี้",
+    "ar": "إزالة الفنجان",
+    "vi": "Xóa tách",
+    "ko": "커피 기록 지우기"
+  },
+  "Keep cup": {
+    "es": "Conservar taza",
+    "th": "เก็บแก้วนี้ไว้",
+    "ar": "الاحتفاظ بالفنجان",
+    "vi": "Giữ tách",
+    "ko": "기록 유지"
+  },
+  "Two-cup tasting": {
+    "es": "Cata de dos tazas",
+    "th": "ชิมกาแฟสองแก้ว",
+    "ar": "تذوق فنجانين",
+    "vi": "Nếm hai tách",
+    "ko": "두 잔 시음"
+  },
+  "Same beans? Change one thing.": {
+    "es": "¿Mismo café? Cambia una cosa.",
+    "th": "เมล็ดเดียวกัน ลองเปลี่ยนอย่างหนึ่ง",
+    "ar": "البن نفسه؟ غيّر شيئًا واحدًا.",
+    "vi": "Cùng hạt? Thay đổi một điều.",
+    "ko": "같은 원두라면 한 가지만 바꿔보세요."
+  },
+  "Choose two cups from your book. Similar beans make it easier to notice what a different pour changed.": {
+    "es": "Elige dos tazas de tu cuaderno. Un café parecido ayuda a notar lo que cambia con otra preparación.",
+    "th": "เลือกสองแก้วจากสมุด เมล็ดที่ใกล้เคียงกันช่วยให้สังเกตความต่างจากวิธีชงได้ง่ายขึ้น",
+    "ar": "اختر فنجانين من دفترك. يساعد تشابه البن على ملاحظة أثر تغيير الصب.",
+    "vi": "Chọn hai tách trong sổ. Hạt tương tự giúp nhận ra thay đổi do cách rót rõ hơn.",
+    "ko": "노트에서 두 잔을 고르세요. 비슷한 원두를 사용하면 추출 방식의 차이를 알아보기 쉬워요."
+  },
+  "First cup": {
+    "es": "Primera taza",
+    "th": "แก้วแรก",
+    "ar": "الفنجان الأول",
+    "vi": "Tách thứ nhất",
+    "ko": "첫 번째 잔"
+  },
+  "Second cup": {
+    "es": "Segunda taza",
+    "th": "แก้วที่สอง",
+    "ar": "الفنجان الثاني",
+    "vi": "Tách thứ hai",
+    "ko": "두 번째 잔"
+  },
+  "Choose a cup": {
+    "es": "Elegir una taza",
+    "th": "เลือกแก้ว",
+    "ar": "اختر فنجانًا",
+    "vi": "Chọn một tách",
+    "ko": "커피 선택"
+  },
+  "Which would you brew again?": {
+    "es": "¿Cuál volverías a preparar?",
+    "th": "คุณอยากชงแก้วไหนอีก",
+    "ar": "أيّهما تحضّر مجددًا؟",
+    "vi": "Bạn muốn pha lại tách nào?",
+    "ko": "어느 쪽을 다시 내리고 싶나요?"
+  },
+  "Add tasting notes to both cups before saving a comparison.": {
+    "es": "Añade notas a ambas tazas antes de guardar la comparación.",
+    "th": "เพิ่มบันทึกการชิมให้ทั้งสองแก้วก่อนบันทึกการเปรียบเทียบ",
+    "ar": "أضف ملاحظات التذوق لكلا الفنجانين قبل حفظ المقارنة.",
+    "vi": "Thêm ghi chú nếm cho cả hai tách trước khi lưu so sánh.",
+    "ko": "비교를 저장하기 전에 두 잔 모두 시음 메모를 추가하세요."
+  },
+  "What changed between these cups?": {
+    "es": "¿Qué cambió entre estas tazas?",
+    "th": "สองแก้วนี้ต่างกันอย่างไร",
+    "ar": "ما الذي اختلف بين الفنجانين؟",
+    "vi": "Điều gì thay đổi giữa hai tách?",
+    "ko": "두 잔 사이에 무엇이 달랐나요?"
+  },
+  "Keep this tasting": {
+    "es": "Guardar esta cata",
+    "th": "บันทึกการชิมครั้งนี้",
+    "ar": "حفظ هذا التذوق",
+    "vi": "Lưu lần nếm này",
+    "ko": "이번 시음 남기기"
+  },
+  "Brew records and two-cup tastings are free. No coins are used here.": {
+    "es": "Los registros y las catas de dos tazas son gratis. Aquí no se usan monedas.",
+    "th": "บันทึกการชงและชิมสองแก้วฟรี ไม่ใช้เหรียญในหน้านี้",
+    "ar": "سجلات التحضير وتذوق الفنجانين مجانية. لا تُستخدم عملات هنا.",
+    "vi": "Ghi chép pha và nếm hai tách đều miễn phí. Không dùng xu ở đây.",
+    "ko": "추출 기록과 두 잔 시음은 무료입니다. 여기서는 코인을 사용하지 않아요."
+  },
+  "Brew a cup first": {
+    "es": "Prepara una taza primero",
+    "th": "ชงกาแฟสักแก้วก่อน",
+    "ar": "حضّر فنجانًا أولًا",
+    "vi": "Pha một tách trước",
+    "ko": "먼저 한 잔 내려보세요"
+  },
+  "Your own saved cups will appear here. Start with a recipe on the brew bench.": {
+    "es": "Tus propias tazas aparecerán aquí. Empieza con una receta de la mesa.",
+    "th": "แก้วที่คุณบันทึกเองจะแสดงที่นี่ เริ่มจากสูตรบนโต๊ะชงกาแฟ",
+    "ar": "ستظهر فناجينك المحفوظة هنا. ابدأ بوصفة من ركن التحضير.",
+    "vi": "Những tách bạn tự lưu sẽ ở đây. Bắt đầu từ công thức trên bàn pha.",
+    "ko": "직접 저장한 커피가 여기에 표시됩니다. 브루 벤치의 레시피로 시작하세요."
+  },
+  "The first cup": {
+    "es": "La primera taza",
+    "th": "แก้วแรก",
+    "ar": "الفنجان الأول",
+    "vi": "Tách thứ nhất",
+    "ko": "첫 번째 잔"
+  },
+  "The second cup": {
+    "es": "La segunda taza",
+    "th": "แก้วที่สอง",
+    "ar": "الفنجان الثاني",
+    "vi": "Tách thứ hai",
+    "ko": "두 번째 잔"
+  },
+  "Both, for different mornings": {
+    "es": "Ambas, para mañanas distintas",
+    "th": "ทั้งสองแก้ว สำหรับเช้าที่ต่างกัน",
+    "ar": "كلاهما لصباحين مختلفين",
+    "vi": "Cả hai, cho những buổi sáng khác nhau",
+    "ko": "서로 다른 아침에 두 잔 모두"
+  },
+  "Still exploring": {
+    "es": "Sigo explorando",
+    "th": "ยังอยากลองต่อ",
+    "ar": "ما زلت أستكشف",
+    "vi": "Vẫn đang khám phá",
+    "ko": "아직 탐색 중"
+  },
+  "The morning cone": {
+    "es": "El cono de la mañana",
+    "th": "ดริปยามเช้า",
+    "ar": "مخروط الصباح",
+    "vi": "Phễu buổi sáng",
+    "ko": "아침의 콘 드립"
+  },
+  "Cone dripper": {
+    "es": "Filtro cónico",
+    "th": "ดริปเปอร์ทรงกรวย",
+    "ar": "مرشح مخروطي",
+    "vi": "Phễu lọc hình nón",
+    "ko": "콘 드리퍼"
+  },
+  "A gentle bloom and two steady pours. Keep the kettle low and let the bed drain naturally.": {
+    "es": "Una preinfusión suave y dos vertidos constantes. Mantén la tetera baja y deja drenar de forma natural.",
+    "th": "บลูมอย่างนุ่มนวลแล้วรินสม่ำเสมอสองครั้ง ถือกาต่ำและปล่อยให้กาแฟไหลตามธรรมชาติ",
+    "ar": "ترطيب لطيف وصبتان ثابتتان. أبقِ الإبريق منخفضًا ودع الماء يتصفى طبيعيًا.",
+    "vi": "Ủ nở nhẹ rồi rót đều hai lần. Giữ vòi thấp và để bột thoát nước tự nhiên.",
+    "ko": "부드러운 뜸 들이기와 두 번의 일정한 푸어. 주전자를 낮게 두고 자연스럽게 물이 빠지도록 하세요."
+  },
+  "Bloom the grounds": {
+    "es": "Preinfusionar el café",
+    "th": "บลูมผงกาแฟ",
+    "ar": "رطّب البن المطحون",
+    "vi": "Ủ nở bột cà phê",
+    "ko": "뜸 들이기"
+  },
+  "Pour in slow circles": {
+    "es": "Verter en círculos lentos",
+    "th": "รินวนช้า ๆ",
+    "ar": "صبّ بدوائر بطيئة",
+    "vi": "Rót vòng tròn chậm",
+    "ko": "천천히 원을 그리며 붓기"
+  },
+  "Finish the final pour": {
+    "es": "Completar el último vertido",
+    "th": "รินครั้งสุดท้ายให้ครบ",
+    "ar": "أكمل الصبة الأخيرة",
+    "vi": "Hoàn thành lượt rót cuối",
+    "ko": "마지막 푸어 마무리"
+  },
+  "A quiet immersion": {
+    "es": "Una inmersión tranquila",
+    "th": "แช่กาแฟอย่างสงบ",
+    "ar": "نقع هادئ",
+    "vi": "Một lần ngâm yên tĩnh",
+    "ko": "차분한 침출"
+  },
+  "Immersion brewer": {
+    "es": "Cafetera de inmersión",
+    "th": "อุปกรณ์ชงแบบแช่",
+    "ar": "أداة تحضير بالنقع",
+    "vi": "Dụng cụ pha ngâm",
+    "ko": "침출식 브루어"
+  },
+  "Wet all the grounds, give one gentle stir, then let time do the work. Release the brewer into a stable server.": {
+    "es": "Moja todo el café, remueve con suavidad una vez y deja actuar al tiempo. Abre el drenaje sobre una jarra estable.",
+    "th": "ทำให้ผงกาแฟเปียกทั่ว คนเบา ๆ หนึ่งครั้งแล้วรอ ปล่อยกาแฟลงเหยือกที่วางมั่นคง",
+    "ar": "بلّل البن كله وحرّكه برفق مرة، ثم اترك الوقت يعمل. افتح الأداة فوق وعاء ثابت.",
+    "vi": "Làm ướt toàn bộ bột, khuấy nhẹ một lần rồi chờ. Xả dụng cụ vào bình đặt vững.",
+    "ko": "원두를 고르게 적시고 한 번 부드럽게 저은 뒤 기다리세요. 안정적인 서버 위에서 배출하세요."
+  },
+  "Add water and stir gently": {
+    "es": "Añadir agua y remover suavemente",
+    "th": "เติมน้ำแล้วคนเบา ๆ",
+    "ar": "أضف الماء وحرّك برفق",
+    "vi": "Thêm nước và khuấy nhẹ",
+    "ko": "물을 붓고 부드럽게 젓기"
+  },
+  "Release and let it drain": {
+    "es": "Abrir y dejar drenar",
+    "th": "ปล่อยให้กาแฟไหลลง",
+    "ar": "افتح ودع الماء يتصفى",
+    "vi": "Mở xả và để ráo",
+    "ko": "배출하고 물 빠짐 기다리기"
+  },
+  "Four pours, brighter finish": {
+    "es": "Cuatro vertidos, final más vivo",
+    "th": "สี่ครั้งริน รสปลายสดใส",
+    "ar": "أربع صبات ونهاية مشرقة",
+    "vi": "Bốn lượt rót, hậu vị sáng hơn",
+    "ko": "네 번의 푸어, 산뜻한 여운"
+  },
+  "Four small pours make it easier to compare clarity. Try this with the same beans as your morning cone and record what changes.": {
+    "es": "Cuatro vertidos pequeños facilitan comparar la claridad. Usa el mismo café del cono de la mañana y anota los cambios.",
+    "th": "การรินทีละน้อยสี่ครั้งช่วยเปรียบเทียบความใสของรส ลองใช้เมล็ดเดียวกับดริปยามเช้าแล้วบันทึกความต่าง",
+    "ar": "تسهّل أربع صبات صغيرة مقارنة الصفاء. جرّب البن نفسه لوصفة الصباح ودوّن التغيير.",
+    "vi": "Bốn lượt rót nhỏ giúp so sánh độ rõ vị. Dùng cùng hạt với phễu buổi sáng và ghi lại thay đổi.",
+    "ko": "네 번의 작은 푸어로 깔끔함을 비교해보세요. 아침 콘 드립과 같은 원두를 사용하고 변화를 기록하세요."
+  },
+  "Begin the second pour": {
+    "es": "Iniciar el segundo vertido",
+    "th": "เริ่มรินครั้งที่สอง",
+    "ar": "ابدأ الصبة الثانية",
+    "vi": "Bắt đầu lượt rót thứ hai",
+    "ko": "두 번째 푸어 시작"
+  },
+  "Build the third pour": {
+    "es": "Hacer el tercer vertido",
+    "th": "รินครั้งที่สาม",
+    "ar": "تابع الصبة الثالثة",
+    "vi": "Thực hiện lượt rót thứ ba",
+    "ko": "세 번째 푸어 이어가기"
+  },
+  "A rounder cup": {
+    "es": "Una taza más redonda",
+    "th": "รสนุ่มกลมกล่อม",
+    "ar": "فنجان أكثر استدارة",
+    "vi": "Một tách tròn vị hơn",
+    "ko": "한층 둥근 맛"
+  },
+  "Flat-bottom dripper": {
+    "es": "Filtro de fondo plano",
+    "th": "ดริปเปอร์ก้นแบน",
+    "ar": "مرشح مسطح القاع",
+    "vi": "Phễu đáy phẳng",
+    "ko": "평저 드리퍼"
+  },
+  "A slightly shorter ratio and cooler water offer another starting point. Compare sweetness and texture after the cup cools.": {
+    "es": "Una proporción más corta y agua algo más fría ofrecen otro punto de partida. Compara dulzor y textura al enfriarse.",
+    "th": "อัตราส่วนที่เข้มขึ้นเล็กน้อยกับน้ำอุณหภูมิต่ำลงเป็นอีกจุดเริ่มต้น เปรียบเทียบความหวานและเนื้อสัมผัสเมื่อเย็นลง",
+    "ar": "نسبة أقصر قليلًا وماء أبرد قليلًا يمنحان بداية أخرى. قارن الحلاوة والقوام بعد أن يبرد الفنجان.",
+    "vi": "Tỷ lệ đậm hơn một chút và nước mát hơn là điểm bắt đầu khác. So sánh độ ngọt và kết cấu sau khi nguội.",
+    "ko": "조금 짧은 비율과 낮은 수온으로 시작해보세요. 커피가 식은 뒤 단맛과 질감을 비교하세요."
+  },
+  "The iced window pour": {
+    "es": "Café helado junto a la ventana",
+    "th": "ดริปเย็นริมหน้าต่าง",
+    "ar": "قهوة النافذة المثلجة",
+    "vi": "Lượt rót đá bên cửa sổ",
+    "ko": "창가의 아이스 푸어"
+  },
+  "Dripper over ice": {
+    "es": "Filtro sobre hielo",
+    "th": "ดริปลงบนน้ำแข็ง",
+    "ar": "مرشح فوق الثلج",
+    "vi": "Phễu rót trên đá",
+    "ko": "얼음 위 드리퍼"
+  },
+  "Place the measured ice in the server before brewing. Hot water is only part of the final drink; swirl gently to melt the ice.": {
+    "es": "Pon el hielo medido en la jarra antes de preparar. El agua caliente es solo parte de la bebida final; gira suavemente para derretir el hielo.",
+    "th": "ใส่น้ำแข็งที่ชั่งแล้วในเหยือกก่อนชง น้ำร้อนเป็นเพียงส่วนหนึ่งของเครื่องดื่ม ค่อย ๆ หมุนเหยือกให้น้ำแข็งละลาย",
+    "ar": "ضع الثلج الموزون في الوعاء أولًا. الماء الساخن جزء من المشروب النهائي فقط؛ حرّك بلطف لإذابة الثلج.",
+    "vi": "Cho đá đã cân vào bình trước khi pha. Nước nóng chỉ là một phần thức uống; xoay nhẹ để đá tan.",
+    "ko": "추출 전에 계량한 얼음을 서버에 넣으세요. 온수는 완성 음료의 일부입니다. 부드럽게 돌려 얼음을 녹이세요."
+  },
+  "Bloom over the ice-filled server": {
+    "es": "Preinfusionar sobre la jarra con hielo",
+    "th": "บลูมลงเหยือกที่ใส่น้ำแข็ง",
+    "ar": "رطّب البن فوق وعاء الثلج",
+    "vi": "Ủ nở trên bình đã có đá",
+    "ko": "얼음 든 서버 위에서 뜸 들이기"
+  },
+  "A pour is already on the bench": {
+    "es": "Ya hay una preparación en la mesa",
+    "th": "มีแก้วที่กำลังชงอยู่แล้ว",
+    "ar": "يوجد تحضير جارٍ بالفعل",
+    "vi": "Đã có lượt pha trên bàn",
+    "ko": "이미 진행 중인 추출이 있어요"
+  },
+  "Return to your current pour, or save it before starting another.": {
+    "es": "Vuelve a tu preparación actual o guárdala antes de empezar otra.",
+    "th": "กลับไปชงแก้วปัจจุบันหรือบันทึกก่อนเริ่มแก้วใหม่",
+    "ar": "عُد إلى التحضير الحالي أو احفظه قبل بدء آخر.",
+    "vi": "Quay lại lượt pha hiện tại hoặc lưu trước khi bắt đầu lượt khác.",
+    "ko": "진행 중인 추출로 돌아가거나 저장한 뒤 새로 시작하세요."
+  },
+  "Name these beans": {
+    "es": "Pon nombre a este café",
+    "th": "ตั้งชื่อเมล็ดกาแฟ",
+    "ar": "سمِّ هذا البن",
+    "vi": "Đặt tên cho hạt cà phê",
+    "ko": "원두 이름을 적어주세요"
+  },
+  "Add a roaster or coffee name so you can recognise this cup later.": {
+    "es": "Añade un tostador o nombre del café para reconocer esta taza más tarde.",
+    "th": "เพิ่มชื่อโรงคั่วหรือกาแฟ เพื่อจำแก้วนี้ได้ในภายหลัง",
+    "ar": "أضف اسم المحمصة أو القهوة لتتعرف على الفنجان لاحقًا.",
+    "vi": "Thêm tên nhà rang hoặc cà phê để nhận ra tách này sau đó.",
+    "ko": "나중에 이 커피를 알아볼 수 있도록 로스터나 커피 이름을 적어주세요."
+  },
+  "Two cups, two tasting notes": {
+    "es": "Dos tazas, dos notas de cata",
+    "th": "สองแก้ว สองบันทึกการชิม",
+    "ar": "فنجانان وملاحظتا تذوق",
+    "vi": "Hai tách, hai ghi chú nếm",
+    "ko": "두 잔, 두 개의 시음 메모"
+  },
+  "Choose two different cups and add tasting notes to each before saving a comparison.": {
+    "es": "Elige dos tazas distintas y añade notas a cada una antes de guardar la comparación.",
+    "th": "เลือกสองแก้วที่ต่างกันและเพิ่มบันทึกการชิมให้แต่ละแก้วก่อนบันทึกการเปรียบเทียบ",
+    "ar": "اختر فنجانين مختلفين وأضف ملاحظات لكل منهما قبل حفظ المقارنة.",
+    "vi": "Chọn hai tách khác nhau và thêm ghi chú cho từng tách trước khi lưu so sánh.",
+    "ko": "서로 다른 두 잔을 선택하고 각각 시음 메모를 추가한 뒤 비교를 저장하세요."
+  },
+  "From the coffee desk": {
+    "es": "Desde la mesa del café",
+    "th": "จากโต๊ะบรรณาธิการกาแฟ",
+    "ar": "من مكتب القهوة",
+    "vi": "Từ bàn cà phê",
+    "ko": "커피 데스크에서"
+  },
+  "From the Papi collection": {
+    "es": "De la colección Papi",
+    "th": "จากคอลเลกชัน Papi",
+    "ar": "من مجموعة Papi",
+    "vi": "Từ bộ sưu tập Papi",
+    "ko": "Papi 컬렉션에서"
+  },
+  "Cup notes": {
+    "es": "Notas de la taza",
+    "th": "บันทึกของแก้วนี้",
+    "ar": "ملاحظات الفنجان",
+    "vi": "Ghi chú tách cà phê",
+    "ko": "한 잔의 메모"
+  },
+  "Coffee desk": {
+    "es": "Mesa del café",
+    "th": "โต๊ะกาแฟ",
+    "ar": "مكتب القهوة",
+    "vi": "Bàn cà phê",
+    "ko": "커피 데스크"
+  },
+  "Your coffee passport": {
+    "es": "Tu pasaporte de café",
+    "th": "พาสปอร์ตกาแฟของคุณ",
+    "ar": "جواز قهوتك",
+    "vi": "Hộ chiếu cà phê của bạn",
+    "ko": "나의 커피 패스포트"
+  },
+  "My coffee corner": {
+    "es": "Mi rincón de café",
+    "th": "มุมกาแฟของฉัน",
+    "ar": "ركن قهوتي",
+    "vi": "Góc cà phê của tôi",
+    "ko": "나의 커피 코너"
+  },
+  "Keeping the cups I want to brew again.": {
+    "es": "Guardando las tazas que quiero volver a preparar.",
+    "th": "เก็บบันทึกแก้วที่อยากชงอีกครั้ง",
+    "ar": "أحتفظ بالفناجين التي أود تحضيرها مجددًا.",
+    "vi": "Giữ lại những tách tôi muốn pha lần nữa.",
+    "ko": "다시 내리고 싶은 커피를 기록해요."
+  },
+  "Your recent brews, collection and saved reports, gathered in one place.": {
+    "es": "Tus preparaciones recientes, colección e informes guardados, reunidos aquí.",
+    "th": "รวมกาแฟที่ชงล่าสุด ของสะสมและรายงานที่บันทึกไว้ในที่เดียว",
+    "ar": "تحضيراتك الأخيرة ومجموعتك وبلاغاتك المحفوظة في مكان واحد.",
+    "vi": "Các lượt pha gần đây, bộ sưu tập và báo cáo đã lưu, cùng một nơi.",
+    "ko": "최근 추출, 수집품, 저장한 신고를 한곳에 모았어요."
+  },
+  "Photo draft · Not sent": {
+    "es": "Borrador de foto · Sin enviar",
+    "th": "ร่างรูปภาพ · ยังไม่ส่ง",
+    "ar": "مسودة صورة · لم تُرسل",
+    "vi": "Ảnh nháp · Chưa gửi",
+    "ko": "사진 초안 · 전송 안 됨"
+  },
+  "Record a voice note": {
+    "es": "Grabar una nota de voz",
+    "th": "บันทึกเสียงโน้ต",
+    "ar": "سجّل ملاحظة صوتية",
+    "vi": "Ghi chú thoại",
+    "ko": "음성 메모 녹음"
+  },
+  "Choose a photo for this draft": {
+    "es": "Elegir una foto para el borrador",
+    "th": "เลือกรูปสำหรับร่างนี้",
+    "ar": "اختر صورة للمسودة",
+    "vi": "Chọn ảnh cho bản nháp",
+    "ko": "초안에 넣을 사진 선택"
+  },
+  "Delete account": {
+    "es": "Eliminar cuenta",
+    "th": "ลบบัญชี",
+    "ar": "حذف الحساب",
+    "vi": "Xóa tài khoản",
+    "ko": "계정 삭제"
+  },
+  "Delete this coffee account?": {
+    "es": "¿Eliminar esta cuenta de café?",
+    "th": "ลบบัญชีกาแฟนี้ไหม",
+    "ar": "هل تحذف حساب القهوة هذا؟",
+    "vi": "Xóa tài khoản cà phê này?",
+    "ko": "이 커피 계정을 삭제할까요?"
+  },
+  "Remove this coffee moment?": {
+    "es": "¿Quitar este momento de café?",
+    "th": "ลบช่วงเวลากาแฟนี้ไหม",
+    "ar": "هل تزيل لحظة القهوة هذه؟",
+    "vi": "Xóa khoảnh khắc cà phê này?",
+    "ko": "이 커피 순간을 지울까요?"
+  },
+  "A little shelf of coffee keepsakes": {
+    "es": "Un estante de recuerdos de café",
+    "th": "ชั้นเล็ก ๆ สำหรับของสะสมกาแฟ",
+    "ar": "رف صغير لتذكارات القهوة",
+    "vi": "Kệ nhỏ cho kỷ vật cà phê",
+    "ko": "커피 기념품을 위한 작은 선반"
+  },
+  "Collect a keepsake with coins, then display your favourite on your coffee passport.": {
+    "es": "Colecciona recuerdos con monedas y muestra tu favorito en tu pasaporte de café.",
+    "th": "สะสมของที่ระลึกด้วยเหรียญ แล้วแสดงชิ้นโปรดบนพาสปอร์ตกาแฟ",
+    "ar": "اجمع تذكارًا بالعملات ثم اعرض مفضلك على جواز قهوتك.",
+    "vi": "Sưu tầm kỷ vật bằng xu rồi trưng bày món yêu thích trên hộ chiếu cà phê.",
+    "ko": "코인으로 기념품을 모으고 마음에 드는 것을 커피 패스포트에 전시하세요."
+  },
+  "Your coffee account": {
+    "es": "Tu cuenta de café",
+    "th": "บัญชีกาแฟของคุณ",
+    "ar": "حساب قهوتك",
+    "vi": "Tài khoản cà phê của bạn",
+    "ko": "나의 커피 계정"
+  },
+  "Papi · Your coffee book": {
+    "es": "Papi · Tu cuaderno de café",
+    "th": "Papi · สมุดกาแฟของคุณ",
+    "ar": "Papi · دفتر قهوتك",
+    "vi": "Papi · Sổ cà phê của bạn",
+    "ko": "Papi · 나의 커피 노트"
+  },
+  "Papi 1.0 · Brew, taste, remember": {
+    "es": "Papi 1.0 · Preparar, probar, recordar",
+    "th": "Papi 1.0 · ชง ชิม จดจำ",
+    "ar": "Papi 1.0 · حضّر وتذوق وتذكّر",
+    "vi": "Papi 1.0 · Pha, nếm, ghi nhớ",
+    "ko": "Papi 1.0 · 추출하고, 맛보고, 기억하기"
+  },
+  "Your recipes, coffee moments and tasting notes, kept together.": {
+    "es": "Tus recetas, momentos de café y notas de cata, juntos.",
+    "th": "รวมสูตร ช่วงเวลากาแฟและบันทึกการชิมไว้ด้วยกัน",
+    "ar": "وصفاتك ولحظات القهوة وملاحظات التذوق معًا.",
+    "vi": "Công thức, khoảnh khắc cà phê và ghi chú nếm ở cùng nhau.",
+    "ko": "레시피, 커피 순간, 시음 메모를 한곳에."
+  },
+  "Coffee portrait": {
+    "es": "Retrato de café",
+    "th": "ภาพบุคคลในคอลเลกชันกาแฟ",
+    "ar": "صورة من مجموعة القهوة",
+    "vi": "Chân dung cà phê",
+    "ko": "커피 포트레이트"
+  },
+  "Account changed": {
+    "es": "La cuenta ha cambiado",
+    "th": "บัญชีเปลี่ยนแล้ว",
+    "ar": "تغيّر الحساب",
+    "vi": "Tài khoản đã thay đổi",
+    "ko": "계정이 변경됨"
+  },
+  "Reopen this page to edit the current coffee account.": {
+    "es": "Vuelve a abrir esta página para editar la cuenta actual.",
+    "th": "เปิดหน้านี้ใหม่เพื่อแก้ไขบัญชีกาแฟปัจจุบัน",
+    "ar": "أعد فتح الصفحة لتعديل حساب القهوة الحالي.",
+    "vi": "Mở lại trang này để sửa tài khoản cà phê hiện tại.",
+    "ko": "현재 커피 계정을 편집하려면 이 페이지를 다시 여세요."
+  },
+  "Use the plus button on Home to keep your first coffee moment.": {
+    "es": "Usa el botón más de Inicio para guardar tu primer momento de café.",
+    "th": "ใช้ปุ่มบวกบนหน้าแรกเพื่อเก็บช่วงเวลากาแฟแรกของคุณ",
+    "ar": "استخدم زر الإضافة في الرئيسية لحفظ أول لحظة قهوة.",
+    "vi": "Dùng nút cộng ở Trang chủ để lưu khoảnh khắc cà phê đầu tiên.",
+    "ko": "홈의 추가 버튼으로 첫 커피 순간을 남겨보세요."
+  },
+  "Tap Save to keep these changes.": {
+    "es": "Pulsa Guardar para conservar los cambios.",
+    "th": "แตะบันทึกเพื่อเก็บการแก้ไขนี้",
+    "ar": "اضغط حفظ للاحتفاظ بالتغييرات.",
+    "vi": "Nhấn Lưu để giữ các thay đổi này.",
+    "ko": "저장을 눌러 변경 내용을 남기세요."
+  },
+  "Your coffee journey stays with this account.": {
+    "es": "Tu recorrido del café queda en esta cuenta.",
+    "th": "เส้นทางกาแฟอยู่กับบัญชีนี้",
+    "ar": "تبقى رحلتك مع القهوة في هذا الحساب.",
+    "vi": "Hành trình cà phê gắn với tài khoản này.",
+    "ko": "커피 여정은 이 계정에 남아요."
+  },
+  "In your outbox · Not delivered": {
+    "es": "En tu bandeja de salida · Sin entregar",
+    "th": "อยู่ในกล่องขาออก · ยังไม่ส่งถึง",
+    "ar": "في الصادر · لم تُسلّم",
+    "vi": "Trong hộp thư đi · Chưa gửi tới",
+    "ko": "보낼 편지함 · 전달 안 됨"
+  },
+  "Saved report · Awaiting a connected moderation service": {
+    "es": "Informe guardado · Esperando servicio de moderación",
+    "th": "บันทึกรายงานแล้ว · รอเชื่อมต่อบริการตรวจสอบ",
+    "ar": "بلاغ محفوظ · بانتظار خدمة إشراف متصلة",
+    "vi": "Đã lưu báo cáo · Chờ kết nối dịch vụ kiểm duyệt",
+    "ko": "신고 저장됨 · 심사 서비스 연결 대기"
+  },
+  "Your coffee account, brew book and balance are stored on this device. Community sharing is not connected. Collection portraits are not available chat contacts.": {
+    "es": "Tu cuenta, cuaderno y saldo se guardan en este dispositivo. No hay conexión para compartir con la comunidad. Los retratos de la colección no son contactos de chat disponibles.",
+    "th": "บัญชี สมุดชงและยอดคงเหลือเก็บในอุปกรณ์นี้ ยังไม่เชื่อมต่อการแบ่งปันชุมชน บุคคลในคอลเลกชันไม่ใช่ผู้ติดต่อที่พร้อมแชต",
+    "ar": "يُحفظ حسابك ودفترك ورصيدك على هذا الجهاز. مشاركة المجتمع غير متصلة، وصور المجموعة ليست جهات اتصال متاحة للدردشة.",
+    "vi": "Tài khoản, sổ pha và số dư được lưu trên thiết bị này. Chưa kết nối chia sẻ cộng đồng. Chân dung trong bộ sưu tập không phải liên hệ đang sẵn sàng chat.",
+    "ko": "계정, 커피 노트, 잔액은 이 기기에 저장됩니다. 커뮤니티 공유는 연결되지 않았으며 컬렉션 인물은 채팅 가능한 연락처가 아닙니다."
+  },
+  "Your coffee book stays on this device. One-tap login reopens this account.": {
+    "es": "Tu cuaderno permanece en este dispositivo. El acceso con un toque vuelve a abrir esta cuenta.",
+    "th": "สมุดกาแฟยังอยู่ในอุปกรณ์นี้ เข้าสู่ระบบด้วยแตะเดียวเพื่อเปิดบัญชีเดิม",
+    "ar": "يبقى دفتر قهوتك على هذا الجهاز. الدخول بلمسة يعيد فتح الحساب نفسه.",
+    "vi": "Sổ cà phê vẫn trên thiết bị này. Đăng nhập một chạm sẽ mở lại tài khoản.",
+    "ko": "커피 노트는 이 기기에 남습니다. 한 번 눌러 로그인하면 이 계정이 다시 열립니다."
+  },
+  "This removes your passport, brew book, recipes, moments, media, coins and keepsakes. Purchase ownership records are retained to prevent duplicate delivery. This cannot be undone.": {
+    "es": "Esto elimina tu pasaporte, cuaderno, recetas, momentos, archivos, monedas y recuerdos. Se conservan registros de propiedad de compras para evitar entregas duplicadas. No se puede deshacer.",
+    "th": "การดำเนินการนี้ลบพาสปอร์ต สมุดชง สูตร ช่วงเวลา สื่อ เหรียญและของสะสม เก็บบันทึกเจ้าของรายการซื้อเพื่อป้องกันเพิ่มซ้ำ ไม่สามารถย้อนกลับได้",
+    "ar": "سيُحذف جوازك ودفترك ووصفاتك ولحظاتك ووسائطك وعملاتك وتذكاراتك. تُحفظ سجلات ملكية المشتريات لمنع التسليم المكرر. لا يمكن التراجع.",
+    "vi": "Thao tác này xóa hộ chiếu, sổ pha, công thức, khoảnh khắc, tệp, xu và kỷ vật. Giữ hồ sơ sở hữu giao dịch để tránh cộng trùng. Không thể hoàn tác.",
+    "ko": "패스포트, 노트, 레시피, 순간, 미디어, 코인, 기념품을 삭제합니다. 중복 지급을 막기 위한 구매 소유 기록은 유지됩니다. 되돌릴 수 없습니다."
+  },
+  "This moment will be removed from your coffee book. Coins already used are not refunded.": {
+    "es": "Este momento se quitará de tu cuaderno. Las monedas usadas no se reembolsan.",
+    "th": "ลบช่วงเวลานี้จากสมุดกาแฟ ไม่คืนเหรียญที่ใช้ไปแล้ว",
+    "ar": "ستُزال هذه اللحظة من دفترك. لا تُرد العملات المستخدمة.",
+    "vi": "Khoảnh khắc sẽ bị xóa khỏi sổ cà phê. Xu đã dùng không được hoàn lại.",
+    "ko": "이 순간을 커피 노트에서 지웁니다. 이미 사용한 코인은 반환되지 않습니다."
+  },
+  "Closing your coffee account…": {
+    "es": "Cerrando tu cuenta de café…",
+    "th": "กำลังปิดบัญชีกาแฟ…",
+    "ar": "جارٍ إغلاق حساب قهوتك…",
+    "vi": "Đang đóng tài khoản cà phê…",
+    "ko": "커피 계정을 닫는 중…"
+  },
+  "Coffee account deleted": {
+    "es": "Cuenta de café eliminada",
+    "th": "ลบบัญชีกาแฟแล้ว",
+    "ar": "حُذف حساب القهوة",
+    "vi": "Đã xóa tài khoản cà phê",
+    "ko": "커피 계정 삭제 완료"
+  },
+  "Your coffee account and its media have been removed. Start a fresh coffee book from the introduction.": {
+    "es": "Se han eliminado tu cuenta y sus archivos. Empieza un cuaderno nuevo desde la introducción.",
+    "th": "ลบบัญชีกาแฟและสื่อแล้ว เริ่มสมุดใหม่จากหน้าแนะนำ",
+    "ar": "حُذف حساب قهوتك ووسائطه. ابدأ دفترًا جديدًا من المقدمة.",
+    "vi": "Đã xóa tài khoản cà phê và tệp. Bắt đầu sổ mới từ phần giới thiệu.",
+    "ko": "커피 계정과 미디어가 삭제되었습니다. 소개 화면에서 새 노트를 시작하세요."
+  },
+  "Coffee topic": {
+    "es": "Tema de café",
+    "th": "หัวข้อกาแฟ",
+    "ar": "موضوع قهوة",
+    "vi": "Chủ đề cà phê",
+    "ko": "커피 주제"
+  },
+  "Coffee table concept · No live session": {
+    "es": "Concepto de mesa de café · Sin sesión en directo",
+    "th": "แนวคิดโต๊ะกาแฟ · ไม่มีเซสชันสด",
+    "ar": "تصور لطاولة قهوة · لا جلسة مباشرة",
+    "vi": "Ý tưởng bàn cà phê · Không có phiên trực tiếp",
+    "ko": "커피 테이블 구상 · 라이브 세션 없음"
+  },
+  "This is a coffee-table concept. Live audio and room messaging are not connected.": {
+    "es": "Este es un concepto de mesa de café. El audio en directo y los mensajes de sala no están conectados.",
+    "th": "นี่คือแนวคิดโต๊ะกาแฟ ยังไม่เชื่อมต่อเสียงสดหรือข้อความในห้อง",
+    "ar": "هذا تصور لطاولة قهوة. الصوت المباشر ورسائل الغرفة غير متصلين.",
+    "vi": "Đây là ý tưởng bàn cà phê. Chưa kết nối âm thanh trực tiếp và tin nhắn phòng.",
+    "ko": "커피 테이블 구상입니다. 실시간 오디오와 방 메시지는 연결되지 않았습니다."
+  },
+  "Open a coffee topic to keep it here.": {
+    "es": "Abre un tema de café para guardarlo aquí.",
+    "th": "เปิดหัวข้อกาแฟเพื่อเก็บไว้ที่นี่",
+    "ar": "افتح موضوع قهوة للاحتفاظ به هنا.",
+    "vi": "Mở chủ đề cà phê để lưu ở đây.",
+    "ko": "커피 주제를 열면 이곳에 남습니다."
+  },
+  "Café notebook · Concepts": {
+    "es": "Cuaderno de cafés · Conceptos",
+    "th": "สมุดคาเฟ่ · แนวคิด",
+    "ar": "دفتر المقاهي · تصورات",
+    "vi": "Sổ quán cà phê · Ý tưởng",
+    "ko": "카페 노트 · 구상"
+  },
+  "These café concepts are prompts for your notebook, not verified venues. Locations, reservations and opening hours are not provided.": {
+    "es": "Estos conceptos son ideas para tu cuaderno, no locales verificados. No se facilitan ubicaciones, reservas ni horarios.",
+    "th": "แนวคิดคาเฟ่เป็นไอเดียสำหรับสมุด ไม่ใช่ร้านที่ตรวจสอบแล้ว ไม่มีข้อมูลที่ตั้ง จองโต๊ะหรือเวลาเปิด",
+    "ar": "هذه أفكار لدفترك وليست مقاهي موثقة. لا تتوفر مواقع أو حجوزات أو ساعات عمل.",
+    "vi": "Các ý tưởng quán là gợi ý cho sổ, không phải địa điểm đã xác minh. Không cung cấp vị trí, đặt chỗ hay giờ mở cửa.",
+    "ko": "노트를 위한 카페 아이디어이며 검증된 매장 정보가 아닙니다. 위치, 예약, 영업시간을 제공하지 않습니다."
+  },
+  "Photo moment submission": {
+    "es": "Enviar un momento en foto",
+    "th": "ส่งช่วงเวลารูปภาพ",
+    "ar": "إرسال لحظة مصورة",
+    "vi": "Gửi khoảnh khắc ảnh",
+    "ko": "사진 순간 등록"
+  },
+  "Video moment submission": {
+    "es": "Enviar un momento en vídeo",
+    "th": "ส่งช่วงเวลาวิดีโอ",
+    "ar": "إرسال لحظة فيديو",
+    "vi": "Gửi khoảnh khắc video",
+    "ko": "동영상 순간 등록"
+  },
+  "A submission saves a private coffee moment. It does not buy approval or public visibility; community review is not connected.": {
+    "es": "Un envío guarda un momento privado. No compra aprobación ni publicación; la revisión comunitaria no está conectada.",
+    "th": "การส่งเป็นการบันทึกช่วงเวลากาแฟส่วนตัว ไม่ได้ซื้อการอนุมัติหรือเผยแพร่ ยังไม่เชื่อมต่อการตรวจสอบชุมชน",
+    "ar": "يحفظ الإرسال لحظة قهوة خاصة، ولا يشتري الموافقة أو النشر؛ مراجعة المجتمع غير متصلة.",
+    "vi": "Gửi bài là lưu khoảnh khắc cà phê riêng tư. Không mua phê duyệt hay công khai; chưa kết nối kiểm duyệt cộng đồng.",
+    "ko": "등록은 비공개 커피 순간 저장입니다. 승인이나 공개를 구매하는 것이 아니며 커뮤니티 심사는 연결되지 않았습니다."
+  },
+  "A topic to bring to your next coffee table": {
+    "es": "Un tema para tu próxima mesa de café",
+    "th": "หัวข้อสำหรับโต๊ะกาแฟครั้งหน้า",
+    "ar": "موضوع لطاولة قهوتك القادمة",
+    "vi": "Chủ đề cho buổi cà phê tới",
+    "ko": "다음 커피 테이블에 가져갈 이야기"
+  },
+  "Which beans are you brewing, and what changed in the cup?": {
+    "es": "¿Qué café preparas y qué cambió en la taza?",
+    "th": "คุณกำลังชงเมล็ดอะไร และรสในแก้วเปลี่ยนอย่างไร",
+    "ar": "أي بن تحضّر، وما الذي تغيّر في الفنجان؟",
+    "vi": "Bạn đang pha hạt nào và điều gì thay đổi trong tách?",
+    "ko": "어떤 원두를 내리고 있나요? 잔에서는 무엇이 달라졌나요?"
+  },
+  "Table notes": {
+    "es": "Notas de la mesa",
+    "th": "บันทึกโต๊ะกาแฟ",
+    "ar": "ملاحظات الطاولة",
+    "vi": "Ghi chú bàn cà phê",
+    "ko": "테이블 메모"
+  },
+  "A thought for the coffee table…": {
+    "es": "Una idea para la mesa del café…",
+    "th": "ความคิดสำหรับโต๊ะกาแฟ…",
+    "ar": "فكرة لطاولة القهوة…",
+    "vi": "Một suy nghĩ bên bàn cà phê…",
+    "ko": "커피 테이블에 남길 생각…"
+  },
+  "Keep table note": {
+    "es": "Guardar nota de la mesa",
+    "th": "เก็บบันทึกโต๊ะกาแฟ",
+    "ar": "حفظ ملاحظة الطاولة",
+    "vi": "Lưu ghi chú bàn",
+    "ko": "테이블 메모 저장"
+  },
+  "Table note kept": {
+    "es": "Nota de la mesa guardada",
+    "th": "เก็บบันทึกแล้ว",
+    "ar": "حُفظت ملاحظة الطاولة",
+    "vi": "Đã lưu ghi chú bàn",
+    "ko": "테이블 메모 저장됨"
+  },
+  "Your note is in your coffee book. It has not been sent to a room.": {
+    "es": "Tu nota está en tu cuaderno. No se ha enviado a una sala.",
+    "th": "บันทึกอยู่ในสมุดกาแฟแล้ว ยังไม่ได้ส่งไปยังห้อง",
+    "ar": "ملاحظتك في دفتر قهوتك ولم تُرسل إلى غرفة.",
+    "vi": "Ghi chú đã ở trong sổ cà phê. Chưa gửi vào phòng.",
+    "ko": "메모가 커피 노트에 남았습니다. 방에 전송되지는 않았습니다."
+  },
+  "A portrait in the coffee collection, not an available chat contact.": {
+    "es": "Un retrato de la colección de café, no un contacto disponible para chatear.",
+    "th": "ภาพบุคคลในคอลเลกชันกาแฟ ไม่ใช่ผู้ติดต่อที่พร้อมแชต",
+    "ar": "صورة من مجموعة القهوة وليست جهة اتصال متاحة للدردشة.",
+    "vi": "Chân dung trong bộ sưu tập cà phê, không phải liên hệ đang sẵn sàng chat.",
+    "ko": "커피 컬렉션의 인물 사진이며 채팅 가능한 연락처가 아닙니다."
+  },
+  "Content hidden after your report": {
+    "es": "Contenido oculto tras tu informe",
+    "th": "ซ่อนเนื้อหาหลังรายงานแล้ว",
+    "ar": "أُخفي المحتوى بعد بلاغك",
+    "vi": "Nội dung đã ẩn sau báo cáo",
+    "ko": "신고한 콘텐츠가 숨겨졌습니다"
+  },
+  "Coffee tables": {
+    "es": "Mesas de café",
+    "th": "โต๊ะกาแฟ",
+    "ar": "طاولات القهوة",
+    "vi": "Bàn cà phê",
+    "ko": "커피 테이블"
+  },
+  "Recipe unlocks are a one-time purchase for this account. Reusing recipes, saving brews and two-cup tastings are free.": {
+    "es": "Las recetas se desbloquean una sola vez para esta cuenta. Reutilizarlas, guardar cafés y catar dos tazas es gratis.",
+    "th": "ปลดล็อกสูตรครั้งเดียวสำหรับบัญชีนี้ ใช้สูตรซ้ำ บันทึกการชงและชิมสองแก้วฟรี",
+    "ar": "تُفتح الوصفات بشراء واحد لهذا الحساب. إعادة استخدامها وحفظ التحضيرات وتذوق الفنجانين مجانية.",
+    "vi": "Công thức chỉ cần mở một lần cho tài khoản này. Dùng lại, lưu lượt pha và nếm hai tách miễn phí.",
+    "ko": "레시피는 이 계정에서 한 번만 구매하면 됩니다. 재사용, 추출 저장, 두 잔 시음은 무료입니다."
+  },
+  "Keep the coffee table welcoming": {
+    "es": "Que la mesa sea acogedora",
+    "th": "ช่วยให้โต๊ะกาแฟอบอุ่นสำหรับทุกคน",
+    "ar": "لنبقِ طاولة القهوة مرحبة",
+    "vi": "Giữ bàn cà phê thân thiện",
+    "ko": "누구나 편안한 커피 테이블"
+  },
+  "Please revise wording that offers sexual services, exploits minors or threatens someone. Your draft is still here.": {
+    "es": "Revisa el texto que ofrezca servicios sexuales, explote a menores o amenace a alguien. Tu borrador se conserva.",
+    "th": "โปรดแก้ข้อความที่เสนอขายบริการทางเพศ แสวงประโยชน์จากผู้เยาว์หรือข่มขู่ผู้อื่น ร่างของคุณยังอยู่",
+    "ar": "راجع العبارات التي تعرض خدمات جنسية أو تستغل قاصرين أو تهدد الآخرين. مسودتك محفوظة.",
+    "vi": "Vui lòng sửa lời lẽ chào dịch vụ tình dục, bóc lột trẻ vị thành niên hoặc đe dọa người khác. Bản nháp vẫn được giữ.",
+    "ko": "성매매 제안, 미성년자 착취, 타인 위협에 해당하는 표현을 수정해주세요. 초안은 유지됩니다."
+  },
+  "Requesting camera access…": {
+    "es": "Solicitando acceso a la cámara…",
+    "th": "กำลังขอสิทธิ์ใช้กล้อง…",
+    "ar": "جارٍ طلب الوصول إلى الكاميرا…",
+    "vi": "Đang yêu cầu quyền camera…",
+    "ko": "카메라 권한 요청 중…"
+  },
+  "Camera access is required. You can allow it in iOS Settings.": {
+    "es": "Se necesita acceso a la cámara. Puedes permitirlo en Ajustes de iOS.",
+    "th": "ต้องมีสิทธิ์ใช้กล้อง คุณอนุญาตได้ในการตั้งค่า iOS",
+    "ar": "يلزم الوصول إلى الكاميرا. يمكنك السماح به في إعدادات iOS.",
+    "vi": "Cần quyền camera. Bạn có thể cho phép trong Cài đặt iOS.",
+    "ko": "카메라 권한이 필요합니다. iOS 설정에서 허용할 수 있습니다."
+  },
+  "Your camera is visible only to you. Video and microphone audio are not recorded or sent, and no call is connected.": {
+    "es": "Solo tú ves tu cámara. No se graba ni envía vídeo o audio, y no hay llamada conectada.",
+    "th": "มีเพียงคุณที่เห็นภาพกล้อง ไม่มีการบันทึกหรือส่งภาพและเสียง และยังไม่เชื่อมต่อสาย",
+    "ar": "الكاميرا ظاهرة لك وحدك. لا يُسجل أو يُرسل فيديو أو صوت ولا توجد مكالمة متصلة.",
+    "vi": "Chỉ bạn thấy camera của mình. Không ghi hay gửi video, âm thanh và chưa có cuộc gọi kết nối.",
+    "ko": "카메라는 나에게만 보입니다. 영상과 마이크 소리는 녹음·전송되지 않으며 연결된 통화도 없습니다."
+  },
+  "Recording your voice note. Tap Stop to keep it.": {
+    "es": "Grabando tu nota de voz. Pulsa Detener para guardarla.",
+    "th": "กำลังบันทึกเสียงโน้ต แตะหยุดเพื่อเก็บไว้",
+    "ar": "جارٍ تسجيل ملاحظتك الصوتية. اضغط إيقاف للاحتفاظ بها.",
+    "vi": "Đang ghi chú thoại. Nhấn Dừng để giữ lại.",
+    "ko": "음성 메모를 녹음 중입니다. 정지를 눌러 남기세요."
+  },
+  "Your voice note is ready to keep.": {
+    "es": "Tu nota de voz está lista para guardar.",
+    "th": "เสียงโน้ตพร้อมให้บันทึกแล้ว",
+    "ar": "ملاحظتك الصوتية جاهزة للحفظ.",
+    "vi": "Ghi chú thoại đã sẵn sàng để lưu.",
+    "ko": "음성 메모를 저장할 준비가 됐어요."
+  },
+  "Continuing opens your coffee passport on this device. It does not create an online community account.": {
+    "es": "Continuar abre tu pasaporte de café en este dispositivo. No crea una cuenta comunitaria en línea.",
+    "th": "เมื่อดำเนินการต่อจะเปิดพาสปอร์ตกาแฟในอุปกรณ์นี้ ไม่ได้สร้างบัญชีชุมชนออนไลน์",
+    "ar": "تفتح المتابعة جواز قهوتك على هذا الجهاز ولا تنشئ حساب مجتمع عبر الإنترنت.",
+    "vi": "Tiếp tục sẽ mở hộ chiếu cà phê trên thiết bị này, không tạo tài khoản cộng đồng trực tuyến.",
+    "ko": "계속하면 이 기기의 커피 패스포트가 열립니다. 온라인 커뮤니티 계정은 생성되지 않습니다."
+  },
+  "Brewing and tasting": {
+    "es": "Preparación y cata",
+    "th": "การชงและชิม",
+    "ar": "التحضير والتذوق",
+    "vi": "Pha và nếm",
+    "ko": "추출과 시음"
+  },
+  "The morning cone and quiet immersion recipes are included. Optional recipes unlock once for 120, 180 or 240 coins, as shown before confirmation. Reusing recipes, brew records and two-cup tastings are free. Unlocked recipes and notes belong to this device account and are removed when it is deleted. Recipe timings are guidance, and tasting scores are your own impressions.": {
+    "es": "Las recetas del cono de la mañana y la inmersión tranquila están incluidas. Las opcionales se desbloquean una vez por 120, 180 o 240 monedas, según se muestra antes de confirmar. Reutilizar recetas, guardar cafés y catar dos tazas es gratis. Las recetas y notas pertenecen a esta cuenta del dispositivo y se borran al eliminarla. Los tiempos son orientativos y las puntuaciones son tus impresiones.",
+    "th": "มีสูตรดริปยามเช้าและแช่กาแฟให้ฟรี สูตรเพิ่มเติมปลดล็อกครั้งเดียว 120, 180 หรือ 240 เหรียญตามที่แสดงก่อนยืนยัน ใช้สูตรซ้ำ บันทึกและชิมสองแก้วฟรี สูตรและบันทึกเป็นของบัญชีในอุปกรณ์นี้และถูกลบเมื่อลบบัญชี เวลาเป็นแนวทาง คะแนนชิมคือความรู้สึกของคุณ",
+    "ar": "وصفات مخروط الصباح والنقع الهادئ متاحة. تُفتح الوصفات الاختيارية مرة واحدة مقابل 120 أو 180 أو 240 عملة حسب السعر قبل التأكيد. إعادة الاستخدام والسجلات وتذوق الفنجانين مجانية. ترتبط الوصفات والملاحظات بحساب هذا الجهاز وتُحذف بحذفه. الأوقات إرشادية والتقييمات انطباعاتك الخاصة.",
+    "vi": "Có sẵn công thức phễu buổi sáng và ngâm yên tĩnh. Công thức tùy chọn mở một lần với 120, 180 hoặc 240 xu như hiển thị trước xác nhận. Dùng lại, ghi chép và nếm hai tách miễn phí. Công thức và ghi chú thuộc tài khoản thiết bị này và bị xóa khi xóa tài khoản. Thời gian là hướng dẫn, điểm nếm là cảm nhận của bạn.",
+    "ko": "아침 콘 드립과 차분한 침출 레시피는 기본 제공됩니다. 선택 레시피는 확인 전에 표시되는 120, 180, 240코인으로 한 번만 잠금 해제합니다. 재사용, 기록, 두 잔 시음은 무료입니다. 레시피와 메모는 이 기기 계정에 귀속되며 계정 삭제 시 지워집니다. 시간은 가이드이며 평점은 개인의 인상입니다."
+  },
+  "Community connections": {
+    "es": "Conexiones de la comunidad",
+    "th": "การเชื่อมต่อชุมชน",
+    "ar": "اتصالات المجتمع",
+    "vi": "Kết nối cộng đồng",
+    "ko": "커뮤니티 연결"
+  },
+  "This item is hidden from your lists and your report is kept in your coffee book. Community review is not connected, so the report has not been delivered to a team.": {
+    "es": "El elemento está oculto y tu informe queda en tu cuaderno. La revisión comunitaria no está conectada, así que el informe no ha llegado a ningún equipo.",
+    "th": "ซ่อนรายการนี้และเก็บรายงานไว้ในสมุดกาแฟแล้ว ยังไม่เชื่อมต่อการตรวจสอบชุมชน รายงานจึงยังไม่ส่งถึงทีม",
+    "ar": "أُخفي العنصر وحُفظ البلاغ في دفترك. مراجعة المجتمع غير متصلة، لذا لم يُسلّم البلاغ إلى فريق.",
+    "vi": "Mục đã ẩn và báo cáo được giữ trong sổ cà phê. Chưa kết nối kiểm duyệt nên báo cáo chưa tới đội xử lý.",
+    "ko": "항목을 목록에서 숨기고 신고를 커피 노트에 보관했습니다. 커뮤니티 심사가 연결되지 않아 처리팀에 전달되지는 않았습니다."
+  },
+  "This person's moments, replies, coffee tables and conversations are hidden from your lists. Manage blocked people in Settings.": {
+    "es": "Los momentos, respuestas, mesas y conversaciones de esta persona se ocultan de tus listas. Gestiona los bloqueos en Ajustes.",
+    "th": "ซ่อนช่วงเวลา ความคิดเห็น โต๊ะกาแฟและบทสนทนาของบุคคลนี้จากรายการ จัดการผู้ถูกบล็อกในการตั้งค่า",
+    "ar": "أُخفيت لحظات هذا الشخص وردوده وطاولاته ومحادثاته من قوائمك. أدر الحظر في الإعدادات.",
+    "vi": "Khoảnh khắc, phản hồi, bàn cà phê và hội thoại của người này được ẩn khỏi danh sách. Quản lý chặn trong Cài đặt.",
+    "ko": "이 사람의 순간, 댓글, 커피 테이블, 대화를 목록에서 숨깁니다. 설정에서 차단 목록을 관리하세요."
+  },
+  "What changed in the recipe?": {
+    "es": "¿Qué cambió en la receta?",
+    "th": "สูตรเปลี่ยนอะไรบ้าง",
+    "ar": "ما الذي تغيّر في الوصفة؟",
+    "vi": "Công thức đã thay đổi gì?",
+    "ko": "레시피에서 무엇이 달랐나요?"
+  },
+  "Different coffee names: enjoy the tasting without treating it as a controlled recipe comparison.": {
+    "es": "Son cafés con nombres distintos: disfruta la cata sin tratarla como una comparación controlada.",
+    "th": "ชื่อกาแฟต่างกัน ชิมเพื่อความเพลิดเพลินโดยไม่ถือว่าเป็นการทดลองสูตรแบบควบคุม",
+    "ar": "أسماء القهوة مختلفة؛ استمتع بالتذوق دون اعتباره مقارنة مضبوطة للوصفة.",
+    "vi": "Tên cà phê khác nhau: hãy thưởng thức, không xem đây là so sánh công thức có kiểm soát.",
+    "ko": "커피 이름이 다릅니다. 통제된 레시피 비교로 단정하지 말고 시음을 즐겨보세요."
+  },
+  "One recorded setting changed. Keep the other details steady when you try this pair again.": {
+    "es": "Cambió un ajuste registrado. Mantén los demás detalles al repetir esta pareja.",
+    "th": "มีค่าที่บันทึกเปลี่ยนหนึ่งอย่าง ลองรักษารายละเอียดอื่นให้เหมือนเดิมเมื่อชงคู่นี้อีก",
+    "ar": "تغيّر إعداد مسجّل واحد. أبقِ التفاصيل الأخرى ثابتة عند تجربة الزوج مجددًا.",
+    "vi": "Một thiết lập đã ghi thay đổi. Giữ các chi tiết khác ổn định khi thử lại cặp này.",
+    "ko": "기록된 설정 한 가지가 달랐습니다. 다시 비교할 때 다른 조건은 일정하게 유지하세요."
+  },
+  "The recorded settings match. Note changes in technique, freshness or the way the cup cools.": {
+    "es": "Los ajustes registrados coinciden. Anota cambios de técnica, frescura o enfriamiento.",
+    "th": "ค่าที่บันทึกเหมือนกัน ลองสังเกตเทคนิค ความสดหรือการเย็นตัวของกาแฟ",
+    "ar": "الإعدادات المسجلة متطابقة. دوّن تغيّر التقنية أو الطزاجة أو تبريد الفنجان.",
+    "vi": "Các thiết lập đã ghi giống nhau. Ghi lại thay đổi về kỹ thuật, độ tươi hay cách cà phê nguội.",
+    "ko": "기록된 설정은 같습니다. 추출 기술, 신선도, 식는 과정의 차이를 메모해보세요."
+  },
+  "Several recorded settings changed. Try changing just one next time to make the comparison easier.": {
+    "es": "Cambiaron varios ajustes. Prueba a cambiar solo uno la próxima vez para comparar mejor.",
+    "th": "มีหลายค่าที่เปลี่ยน ครั้งหน้าลองเปลี่ยนเพียงอย่างเดียวเพื่อเปรียบเทียบง่ายขึ้น",
+    "ar": "تغيّرت إعدادات عدة. جرّب تغيير واحد فقط في المرة القادمة لتسهيل المقارنة.",
+    "vi": "Nhiều thiết lập đã thay đổi. Lần sau thử đổi một điều để dễ so sánh hơn.",
+    "ko": "기록된 설정 여러 가지가 달랐습니다. 다음에는 한 가지만 바꾸면 비교하기 쉬워요."
+  },
+  "Coffee name": {
+    "es": "Nombre del café",
+    "th": "ชื่อกาแฟ",
+    "ar": "اسم القهوة",
+    "vi": "Tên cà phê",
+    "ko": "커피 이름"
+  },
+  "Brewer": {
+    "es": "Cafetera",
+    "th": "อุปกรณ์ชง",
+    "ar": "أداة التحضير",
+    "vi": "Dụng cụ pha",
+    "ko": "추출 도구"
+  },
+  "Coffee dose": {
+    "es": "Dosis de café",
+    "th": "ปริมาณกาแฟ",
+    "ar": "جرعة القهوة",
+    "vi": "Lượng cà phê",
+    "ko": "원두량"
+  },
+  "Hot water": {
+    "es": "Agua caliente",
+    "th": "น้ำร้อน",
+    "ar": "الماء الساخن",
+    "vi": "Nước nóng",
+    "ko": "온수"
+  },
+  "Ice": {
+    "es": "Hielo",
+    "th": "น้ำแข็ง",
+    "ar": "الثلج",
+    "vi": "Đá",
+    "ko": "얼음"
+  },
+  "Water temperature": {
+    "es": "Temperatura del agua",
+    "th": "อุณหภูมิน้ำ",
+    "ar": "حرارة الماء",
+    "vi": "Nhiệt độ nước",
+    "ko": "수온"
+  },
+  "Grind setting": {
+    "es": "Ajuste de molienda",
+    "th": "ระดับบด",
+    "ar": "إعداد الطحن",
+    "vi": "Mức xay",
+    "ko": "분쇄 설정"
+  },
+  "{0} cups in your book": {
+    "es": "{0} tazas en tu cuaderno",
+    "th": "{0} แก้วในสมุดของคุณ",
+    "ar": "{0} فنجان في دفترك",
+    "vi": "{0} tách trong sổ",
+    "ko": "내 노트의 커피 {0}잔"
+  },
+  "The home coffee corner": {
+    "es": "El rincón de café en casa",
+    "th": "มุมกาแฟในบ้าน",
+    "ar": "ركن القهوة المنزلي",
+    "vi": "Góc cà phê tại nhà",
+    "ko": "집 안의 커피 코너"
+  },
+  "Under the glass roof": {
+    "es": "Bajo el techo de cristal",
+    "th": "ใต้หลังคากระจก",
+    "ar": "تحت السقف الزجاجي",
+    "vi": "Dưới mái kính",
+    "ko": "유리 지붕 아래"
+  },
+  "A rose-coloured terrace": {
+    "es": "Una terraza color rosa",
+    "th": "ระเบียงสีกุหลาบ",
+    "ar": "شرفة بلون الورد",
+    "vi": "Sân hiên màu hồng",
+    "ko": "장밋빛 테라스"
+  },
+  "The courtyard table": {
+    "es": "La mesa del patio",
+    "th": "โต๊ะในลานบ้าน",
+    "ar": "طاولة الفناء",
+    "vi": "Bàn trong sân",
+    "ko": "안마당 테이블"
+  },
+  "Tools within reach, room for a careful pour": {
+    "es": "Todo a mano para un vertido cuidadoso",
+    "th": "อุปกรณ์อยู่ใกล้มือ พร้อมให้ค่อย ๆ ริน",
+    "ar": "الأدوات قريبة ومساحة لصبّ متأنٍ",
+    "vi": "Dụng cụ trong tầm tay cho lượt rót cẩn thận",
+    "ko": "손 닿는 곳의 도구와 차분한 푸어"
+  },
+  "Natural light across a busy coffee bar": {
+    "es": "Luz natural sobre una barra de café",
+    "th": "แสงธรรมชาติบนเคาน์เตอร์กาแฟ",
+    "ar": "ضوء طبيعي على ركن قهوة حيوي",
+    "vi": "Ánh sáng tự nhiên trên quầy cà phê",
+    "ko": "분주한 커피 바 위의 자연광"
+  },
+  "Outdoor tables and a quieter evening cup": {
+    "es": "Mesas al aire libre y una taza al atardecer",
+    "th": "โต๊ะกลางแจ้งกับกาแฟเย็นยามค่ำ",
+    "ar": "طاولات خارجية وفنجان مسائي هادئ",
+    "vi": "Bàn ngoài trời và tách cà phê chiều yên",
+    "ko": "야외 테이블과 차분한 저녁 커피"
+  },
+  "Coffee and pastry in the open air": {
+    "es": "Café y bollería al aire libre",
+    "th": "กาแฟและขนมท่ามกลางอากาศเปิด",
+    "ar": "قهوة ومعجنات في الهواء الطلق",
+    "vi": "Cà phê và bánh giữa trời thoáng",
+    "ko": "바깥 공기 속 커피와 페이스트리"
+  },
+  "Lv.{0}": {
+    "es": "Nv.{0}",
+    "th": "เลเวล {0}",
+    "ar": "المستوى {0}",
+    "vi": "Cấp {0}",
+    "ko": "레벨 {0}"
+  },
+  "{0}/100 EXP": {
+    "es": "{0}/100 EXP",
+    "th": "{0}/100 EXP",
+    "ar": "{0}/100 خبرة",
+    "vi": "{0}/100 EXP",
+    "ko": "경험치 {0}/100"
+  },
+  "Coffee brew": {
+    "es": "Preparación de café",
+    "th": "การชงกาแฟ",
+    "ar": "تحضير القهوة",
+    "vi": "Pha cà phê",
+    "ko": "커피 추출"
+  },
+  "Brew this again": {
+    "es": "Volver a preparar esta taza",
+    "th": "ชงแก้วนี้อีกครั้ง",
+    "ar": "حضّر هذا الفنجان مجددًا",
+    "vi": "Pha lại tách này",
+    "ko": "이 커피 다시 내리기"
+  },
+  "Rebrew the same coffee. Change one detail and keep a note; the two cups will be paired for tasting.": {
+    "es": "Prepara el mismo café. Cambia un detalle y anótalo; las dos tazas quedarán emparejadas para la cata.",
+    "th": "ชงกาแฟเดิม เปลี่ยนเพียงอย่างเดียวและจดไว้ ระบบจะจับคู่สองแก้วเพื่อชิม",
+    "ar": "حضّر القهوة نفسها وغيّر تفصيلًا واحدًا ودوّنه؛ سيُقرن الفنجانان للتذوق.",
+    "vi": "Pha lại cùng cà phê, đổi một chi tiết và ghi chú; hai tách sẽ được ghép để nếm.",
+    "ko": "같은 커피를 다시 내려보세요. 한 가지를 바꾸고 메모하면 두 잔이 시음용으로 연결됩니다."
+  },
+  "Use as a fresh cup": {
+    "es": "Empezar como una taza nueva",
+    "th": "เริ่มเป็นแก้วใหม่",
+    "ar": "ابدأ كفنجان جديد",
+    "vi": "Dùng như một tách mới",
+    "ko": "새 커피로 시작하기"
+  },
+  "Target on the scale: {0} g": {
+    "es": "Objetivo en la báscula: {0} g",
+    "th": "เป้าหมายบนเครื่องชั่ง: {0} กรัม",
+    "ar": "الهدف على الميزان: {0} غ",
+    "vi": "Mục tiêu trên cân: {0} g",
+    "ko": "저울 목표값: {0}g"
   }
 }

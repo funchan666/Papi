@@ -23,6 +23,9 @@ targets:
         excludes: [Resources]
       - path: Papi/Resources/Assets.xcassets
         buildPhase: resources
+      - path: Papi/Resources/Fonts
+        type: folder
+        buildPhase: resources
       - path: Papi/Resources/Media
         type: folder
         buildPhase: resources

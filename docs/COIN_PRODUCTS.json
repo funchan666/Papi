@@ -1,0 +1,104 @@
+{
+  "note": "Configuration reference only; not an App Store Connect import file. Apple supplies the final localized price.",
+  "products": [
+    {
+      "productID": "rkbybzkkqpeaxovi",
+      "productType": "Consumable",
+      "referenceCurrency": "USD",
+      "referencePrice": "0.99",
+      "coins": 480,
+      "displayName": "Papi 480 Coins",
+      "description": "480 coins for your coffee collection.",
+      "addedThisUpdate": false,
+      "appStoreConnectStatus": "Not verified; configure or confirm before distribution"
+    },
+    {
+      "productID": "yiyfivvjmkdiuqus",
+      "productType": "Consumable",
+      "referenceCurrency": "USD",
+      "referencePrice": "1.99",
+      "coins": 1000,
+      "displayName": "Papi 1,000 Coins",
+      "description": "1,000 coins for your coffee collection.",
+      "addedThisUpdate": false,
+      "appStoreConnectStatus": "Not verified; configure or confirm before distribution"
+    },
+    {
+      "productID": "mqtzlpvknayrxwce",
+      "productType": "Consumable",
+      "referenceCurrency": "USD",
+      "referencePrice": "2.99",
+      "coins": 1600,
+      "displayName": "Papi 1,600 Coins",
+      "description": "1,600 coins for your coffee collection.",
+      "addedThisUpdate": true,
+      "appStoreConnectStatus": "Not verified; configure or confirm before distribution"
+    },
+    {
+      "productID": "vguhlyrrsyfaswwv",
+      "productType": "Consumable",
+      "referenceCurrency": "USD",
+      "referencePrice": "4.99",
+      "coins": 2800,
+      "displayName": "Papi 2,800 Coins",
+      "description": "2,800 coins for your coffee collection.",
+      "addedThisUpdate": false,
+      "appStoreConnectStatus": "Not verified; configure or confirm before distribution"
+    },
+    {
+      "productID": "qqopbybcdridrsjl",
+      "productType": "Consumable",
+      "referenceCurrency": "USD",
+      "referencePrice": "9.99",
+      "coins": 6000,
+      "displayName": "Papi 6,000 Coins",
+      "description": "6,000 coins for your coffee collection.",
+      "addedThisUpdate": false,
+      "appStoreConnectStatus": "Not verified; configure or confirm before distribution"
+    },
+    {
+      "productID": "wspjnqfkxvmdlrya",
+      "productType": "Consumable",
+      "referenceCurrency": "USD",
+      "referencePrice": "14.99",
+      "coins": 9600,
+      "displayName": "Papi 9,600 Coins",
+      "description": "9,600 coins for your coffee collection.",
+      "addedThisUpdate": true,
+      "appStoreConnectStatus": "Not verified; configure or confirm before distribution"
+    },
+    {
+      "productID": "kokiljjwycwbpasa",
+      "productType": "Consumable",
+      "referenceCurrency": "USD",
+      "referencePrice": "19.99",
+      "coins": 13200,
+      "displayName": "Papi 13,200 Coins",
+      "description": "13,200 coins for your coffee collection.",
+      "addedThisUpdate": false,
+      "appStoreConnectStatus": "Not verified; configure or confirm before distribution"
+    },
+    {
+      "productID": "nylrtdzhiqgywsrh",
+      "productType": "Consumable",
+      "referenceCurrency": "USD",
+      "referencePrice": "49.99",
+      "coins": 36000,
+      "displayName": "Papi 36,000 Coins",
+      "description": "36,000 coins for your coffee collection.",
+      "addedThisUpdate": false,
+      "appStoreConnectStatus": "Not verified; configure or confirm before distribution"
+    },
+    {
+      "productID": "lkcdocdwdjjjmdfr",
+      "productType": "Consumable",
+      "referenceCurrency": "USD",
+      "referencePrice": "99.99",
+      "coins": 78000,
+      "displayName": "Papi 78,000 Coins",
+      "description": "78,000 coins for your coffee collection.",
+      "addedThisUpdate": false,
+      "appStoreConnectStatus": "Not verified; configure or confirm before distribution"
+    }
+  ]
+}

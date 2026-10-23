@@ -1,2 +1,2 @@
-"NSCameraUsageDescription" = "Take a coffee photo or video to save in your local Papi journal.";
-"NSMicrophoneUsageDescription" = "Record private voice drafts and audio for videos you choose to make.";
+"NSCameraUsageDescription" = "Photograph coffee moments or preview your camera before a video feature you choose to open.";
+"NSMicrophoneUsageDescription" = "Record voice notes and sound for coffee videos you choose to create. Access is requested when you start recording or prepare a video feature.";

@@ -1,54 +1,66 @@
 import SwiftUI
 
 @main struct PapiApp:App {
-    @StateObject private var store=PapiStore()
-    @StateObject private var commerce=PapiCommerce()
-    @StateObject private var router=PapiRouter()
+    @StateObject private var store=CoffeeHouse()
+    @StateObject private var commerce=AppleCoinCounter()
+    @StateObject private var router=CoffeeNavigation()
     @Environment(\.scenePhase) private var scenePhase
     var body:some Scene {
         WindowGroup {
             PapiDeviceContainer {
                 Group {
                     if store.state.signedIn { PapiRootView() }
-                    else { WelcomeView() }
+                    else { FirstCupWelcomeView() }
                 }.papiNotices()
             }
             .environmentObject(store).environmentObject(commerce).environmentObject(router)
             .environment(\.locale,Locale(identifier:store.state.language))
             .environment(\.layoutDirection,store.state.language == "ar" ? .rightToLeft:.leftToRight)
-            .tint(.coffee).preferredColorScheme(.light)
-            .task {commerce.start(store:store)}
-            .onChange(of:scenePhase) { _,phase in if phase == .active {Task {await commerce.recover()}} }
+            .font(CoffeeType.face(.body)).tint(.coffee).preferredColorScheme(.light)
+            .task {commerce.start(store:store);store.presentWelcomeIfNeeded()}
+            .onChange(of:scenePhase) { _,phase in if phase == .active {store.presentWelcomeIfNeeded();Task {await commerce.recover()}} }
             .onChange(of:store.state.signedIn) { _,_ in router.path=[];router.sheet=nil }
         }
     }
 }
-enum PapiRoute:Hashable {
-    case room(String),post(String),person(String),chat(String),beans,cafes,settings,editProfile,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,photo(String),gifts(String)
+enum CoffeeDestination:Hashable {
+    case room(String),post(String),person(String),chat(String),beans,cafes,settings,editProfile,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,photo(String),gifts(String),reviewQueue,tables,brewRecipe(String),brewArchive,brewCup(UUID),cuppingFlight,cupChoice(Int)
 }
-enum PapiSheet:Identifiable {
-    case compose,checkin,report(String),more(String),gifts(String)
+enum CoffeePresentation:Identifiable {
+    case compose,checkin,report(SafetyTarget),safety(SafetyTarget),more(String),gifts(String)
     var id:String {
         switch self {
         case .compose:return "compose"
         case .checkin:return "checkin"
-        case .report(let id):return "report-"+id
+        case .report(let target):return "report-"+target.id
+        case .safety(let target):return "safety-"+target.id
         case .more(let id):return "more-"+id
         case .gifts(let id):return "gifts-"+id
         }
     }
 }
-@MainActor final class PapiRouter:ObservableObject {
-    @Published var path:[PapiRoute]=[]
-    @Published var sheet:PapiSheet?
-    func go(_ route:PapiRoute) {path.append(route)}
+@MainActor final class CoffeeNavigation:ObservableObject {
+    @Published var path:[CoffeeDestination]=[]
+    @Published var sheet:CoffeePresentation?
+    func go(_ route:CoffeeDestination) {path.append(route)}
+    func openWallet() {sheet=nil;if path.last != .wallet {go(.wallet)}}
+    func removeHiddenDestinations(using store:CoffeeHouse) {
+        if let index=path.firstIndex(where:{route in
+            switch route {
+            case .post(let id):return store.post(id)==nil
+            case .person(let id),.chat(let id):return store.isUserHidden(id)
+            case .room(let id):return CoffeeTable.previews.first(where:{$0.id==id}).map{!store.isRoomVisible($0)} ?? true
+            default:return false
+            }
+        }) {path=Array(path.prefix(index))}
+    }
 }
 struct PapiRootView:View {
-    @EnvironmentObject private var store:PapiStore
-    @EnvironmentObject private var router:PapiRouter
+    @EnvironmentObject private var store:CoffeeHouse
+    @EnvironmentObject private var router:CoffeeNavigation
     var body:some View {
         NavigationStack(path:$router.path) {
-            PapiTabShell().navigationDestination(for:PapiRoute.self) { route in destination(route) }
+            PapiTabShell().navigationDestination(for:CoffeeDestination.self) { route in destination(route) }
                 .toolbar(.hidden,for:.navigationBar)
         }
         .sheet(item:$router.sheet) { sheet in
@@ -56,43 +68,54 @@ struct PapiRootView:View {
                 NavigationStack { sheetContent(sheet).papiNotices() }
             }.presentationDragIndicator(.hidden)
         }
-
+        .onChange(of:store.visibilityKeys){_,_ in router.removeHiddenDestinations(using:store)}
     }
-    @ViewBuilder private func destination(_ route:PapiRoute)->some View {
+    @ViewBuilder private func destination(_ route:CoffeeDestination)->some View {
         switch route {
         case .room(let id):
-            if let room=Room.previews.first(where:{$0.id==id}) {RoomDetailView(room:room)}
-        case .post(let id):PostDetailView(postID:id)
-        case .person(let id):PersonView(personID:id)
-        case .chat(let id):ChatView(personID:id)
-        case .beans:BeansView()
-        case .cafes:CafesView()
-        case .settings:SettingsView()
-        case .editProfile:EditProfileView()
-        case .wallet:WalletView()
-        case .backpack:BackpackView()
-        case .level:LevelView()
+            if let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {CoffeeTableView(room:room)}
+            else {PapiScreen {VStack{PapiHeader("Coffee tables");PapiEmpty(title:"This content is unavailable");Spacer()}}}
+        case .post(let id):CoffeeMomentView(momentID:id)
+        case .person(let id):
+            if id==store.state.passport.id.uuidString {VStack(spacing:0){PapiHeader("Profile").background(Color.cream).papiContainerMargins();MyCoffeePassportView()}}
+            else {MemberPassportView(memberID:id)}
+        case .chat(let id):CoffeeConversationView(memberID:id)
+        case .beans:BeanVarietyShelf()
+        case .cafes:CafeInspirationView()
+        case .settings:CoffeePreferencesView()
+        case .editProfile:EditCoffeePassportView()
+        case .wallet:CoinReserveView()
+        case .backpack:CoffeeCollectionView()
+        case .level:CoffeeJourneyView()
         case .relationships(let tab):RelationshipsView(initialTab:tab)
         case .blacklist:BlacklistView()
         case .language:LanguageView()
         case .legal(let type):LegalView(type:type)
-        case .notifications:NotificationView()
+        case .notifications:CoffeeDeskView()
         case .photo(let name):PhotoDetailView(name:name)
-        case .gifts(let context):GiftShopView(context:context)
+        case .gifts(let context):CollectibleCounterView(context:context)
+        case .reviewQueue:ReviewQueueView()
+        case .tables:VStack(spacing:0){PapiHeader("Coffee tables").papiContainerMargins();CoffeeTablesView()}
+        case .brewRecipe(let id):BrewRecipeView(recipeID:id)
+        case .brewArchive:BrewArchiveView()
+        case .brewCup(let id):CupTastingView(cupID:id)
+        case .cuppingFlight:CuppingFlightView()
+        case .cupChoice(let slot):BrewCupPicker(slot:slot)
         }
     }
-    @ViewBuilder private func sheetContent(_ sheet:PapiSheet)->some View {
+    @ViewBuilder private func sheetContent(_ sheet:CoffeePresentation)->some View {
         switch sheet {
-        case .compose:ComposeView()
-        case .checkin:CheckinView()
-        case .report(let id):ReportView(subjectID:id)
-        case .more(let id):MemberActionsView(personID:id)
-        case .gifts(let id):GiftShopView(context:id)
+        case .compose:CoffeeMomentComposer()
+        case .checkin:DailyRitualView()
+        case .report(let target):ReportView(target:target)
+        case .safety(let target):SafetyMenuView(target:target)
+        case .more(let id):SafetyMenuView(target:.user(id))
+        case .gifts(let id):CollectibleCounterView(context:id)
         }
     }
 }
 struct PapiTabShell:View {
-    @EnvironmentObject private var store:PapiStore
+    @EnvironmentObject private var store:CoffeeHouse
     @Environment(\.layoutDirection) private var direction
     var body:some View {
         #if PAPI_DUO_SDK
@@ -106,10 +129,10 @@ struct PapiTabShell:View {
         PapiShellLayout(side:side) {
             ZStack {
                 // Keep all tab roots mounted to preserve scroll positions and loaded state.
-                HomeView().opacity(store.selectedTab==0 ? 1:0).allowsHitTesting(store.selectedTab==0).accessibilityHidden(store.selectedTab != 0)
-                RoomsView().opacity(store.selectedTab==1 ? 1:0).allowsHitTesting(store.selectedTab==1).accessibilityHidden(store.selectedTab != 1)
-                MessagesView().opacity(store.selectedTab==2 ? 1:0).allowsHitTesting(store.selectedTab==2).accessibilityHidden(store.selectedTab != 2)
-                ProfileView().opacity(store.selectedTab==3 ? 1:0).allowsHitTesting(store.selectedTab==3).accessibilityHidden(store.selectedTab != 3)
+                CoffeeJournalView().opacity(store.selectedTab==0 ? 1:0).allowsHitTesting(store.selectedTab==0).accessibilityHidden(store.selectedTab != 0)
+                BrewBenchView().opacity(store.selectedTab==1 ? 1:0).allowsHitTesting(store.selectedTab==1).accessibilityHidden(store.selectedTab != 1)
+                CorrespondenceInbox().opacity(store.selectedTab==2 ? 1:0).allowsHitTesting(store.selectedTab==2).accessibilityHidden(store.selectedTab != 2)
+                MyCoffeePassportView().opacity(store.selectedTab==3 ? 1:0).allowsHitTesting(store.selectedTab==3).accessibilityHidden(store.selectedTab != 3)
             }.clipped()
             tabBar(vertical:side != nil)
         }.background(Color.cream)
@@ -121,8 +144,8 @@ struct PapiTabShell:View {
                 let asset=["home","voice","messages","me"][index]
                 Button {store.selectedTab=index} label:{
                     VStack(spacing:5) {
-                        Image(asset+(store.selectedTab==index ? "On":"Off")).resizable().scaledToFit().frame(width:30,height:30)
-                        PapiText(store.text(["Home","Voice","Messages","Me"][index])).font(.caption2).lineLimit(2).multilineTextAlignment(.center).foregroundStyle(store.selectedTab==index ? Color.cream:Color.cream.opacity(0.68))
+                        Image(index==1 ? "brewDripper":asset+(store.selectedTab==index ? "On":"Off")).resizable().scaledToFit().frame(width:30,height:30).opacity(store.selectedTab==index ? 1:0.65)
+                        PapiText(store.text(["Home","Brew bench","Messages","Me"][index])).font(CoffeeType.face(.caption2)).lineLimit(2).multilineTextAlignment(.center).foregroundStyle(store.selectedTab==index ? Color.cream:Color.cream.opacity(0.68))
                     }.frame(maxWidth:.infinity,minHeight:52).contentShape(Rectangle())
                 }.buttonStyle(.plain).accessibilityAddTraits(store.selectedTab==index ? .isSelected:[]).papiAvoidReserved()
             }
@@ -137,12 +160,19 @@ struct PapiTabShell:View {
 }
 #endif
 struct NoticeModifier:ViewModifier {
-    @EnvironmentObject private var store:PapiStore
+    @EnvironmentObject private var store:CoffeeHouse
+    @EnvironmentObject private var router:CoffeeNavigation
     func body(content:Content)->some View {
-        content.disabled(store.notice != nil).accessibilityHidden(store.notice != nil).overlay {
+        content.disabled(store.notice != nil || store.accountAction != nil).accessibilityHidden(store.notice != nil || store.accountAction != nil).overlay {
             if let notice=store.notice {
-                PapiDialog(title:notice.title,message:notice.message,action:{store.notice=nil},dismiss:{store.notice=nil})
+                if notice.kind == .welcome {WelcomeCoinsView(close:{store.acknowledgeWelcome()})}
+                else if notice.kind == .insufficient {
+                    PapiDialog(title:notice.title,message:notice.message,confirm:"Recharge",cancel:"Later",action:{store.notice=nil;router.openWallet()},dismiss:{store.notice=nil})
+                }
+                else if notice.kind == .information {PapiDialog(title:notice.title,message:notice.message,action:{store.notice=nil},dismiss:{store.notice=nil})}
+                else {CoffeeReceiptView(notice:notice,close:{store.notice=nil})}
             }
+            if let action=store.accountAction {AccountProgressView(action:action)}
         }
     }
 }

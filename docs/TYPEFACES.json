@@ -1,0 +1,56 @@
+[
+  {
+    "filename": "PapiCounter-Regular.ttf",
+    "postScriptName": "PapiCounter-Regular",
+    "source": "NunitoSans.ttf",
+    "family": "Papi Counter",
+    "style": "Regular",
+    "weight": 400,
+    "bytes": 49992
+  },
+  {
+    "filename": "PapiCounter-SemiBold.ttf",
+    "postScriptName": "PapiCounter-SemiBold",
+    "source": "NunitoSans.ttf",
+    "family": "Papi Counter",
+    "style": "SemiBold",
+    "weight": 600,
+    "bytes": 49980
+  },
+  {
+    "filename": "PapiCounter-Bold.ttf",
+    "postScriptName": "PapiCounter-Bold",
+    "source": "NunitoSans.ttf",
+    "family": "Papi Counter",
+    "style": "Bold",
+    "weight": 700,
+    "bytes": 49956
+  },
+  {
+    "filename": "PapiEditorial-Regular.ttf",
+    "postScriptName": "PapiEditorial-Regular",
+    "source": "Fraunces.ttf",
+    "family": "Papi Editorial",
+    "style": "Regular",
+    "weight": 400,
+    "bytes": 56940
+  },
+  {
+    "filename": "PapiEditorial-SemiBold.ttf",
+    "postScriptName": "PapiEditorial-SemiBold",
+    "source": "Fraunces.ttf",
+    "family": "Papi Editorial",
+    "style": "SemiBold",
+    "weight": 700,
+    "bytes": 56984
+  },
+  {
+    "filename": "PapiEditorial-Italic.ttf",
+    "postScriptName": "PapiEditorial-Italic",
+    "source": "Fraunces-Italic.ttf",
+    "family": "Papi Editorial",
+    "style": "Italic",
+    "weight": 600,
+    "bytes": 68488
+  }
+]

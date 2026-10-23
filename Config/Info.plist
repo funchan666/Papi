@@ -36,9 +36,9 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>Take a coffee photo or video to save in your local Papi journal.</string>
+	<string>Photograph coffee moments or preview your camera before a video feature you choose to open.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Record private voice drafts and audio for videos you choose to make.</string>
+	<string>Record voice notes and sound for coffee videos you choose to create. Access is requested when you start recording or prepare a video feature.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIUserInterfaceStyle</key>
@@ -53,6 +53,15 @@
 		<string>ar</string>
 		<string>vi</string>
 		<string>ko</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Fonts/PapiCounter-Bold.ttf</string>
+		<string>Fonts/PapiCounter-Regular.ttf</string>
+		<string>Fonts/PapiCounter-SemiBold.ttf</string>
+		<string>Fonts/PapiEditorial-Italic.ttf</string>
+		<string>Fonts/PapiEditorial-Regular.ttf</string>
+		<string>Fonts/PapiEditorial-SemiBold.ttf</string>
 	</array>
 </dict>
 </plist>

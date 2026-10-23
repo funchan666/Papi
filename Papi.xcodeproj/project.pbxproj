@@ -7,61 +7,87 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0159722EAB5AAD78226B643A /* PapiAdaptation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68ED41810D0AADB6009ED8C /* PapiAdaptation.swift */; };
-		0E29F0C434942245E71F3AA9 /* MediaFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96123FB812CA0DEB3D67C0B /* MediaFiles.swift */; };
+		099EEFA527F597BA007303BD /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 27A0CDF6DC8AD2039DB2FE42 /* Fonts */; };
+		0B435EA45CDD20FC21B39031 /* CoffeeTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D322BE2569BF299BC539 /* CoffeeTypography.swift */; };
 		16F44EFDB03632CEABE29F9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D3B1EEE617173D2D3D68807 /* Assets.xcassets */; };
-		1CA202D5B5DC5287B747EEB7 /* HomeAndPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870D896E82DAFD3F1C5BC1EB /* HomeAndPosts.swift */; };
-		2BACE5E34697460F194D6F04 /* PapiCommerce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D016D4712D6EC4DA82AA2BF /* PapiCommerce.swift */; };
-		314725B05C3AEBA1502133B9 /* GuestVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01ACEA8098A240AA0252A08 /* GuestVault.swift */; };
-		3CD6A4930315121AC1F53E64 /* PapiStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C4A93E3C7481BA445EE5E3 /* PapiStore.swift */; };
-		60B054EE82C7F28A6D19CC4C /* ProfileAndSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123D038D6F6C66954CC5D9B5 /* ProfileAndSettings.swift */; };
+		2520AE13974D6B5C3DB8A4EB /* CoffeeFilm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF811FCAEF1ED735B95C3FF /* CoffeeFilm.swift */; };
+		2CF489790ABCB636DC1C6785 /* CafeNotebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90289257D4B76CE26D0802FE /* CafeNotebook.swift */; };
+		4E36C84302EF5C383E6571D8 /* CommunityActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB7ED2E751C066C03DBC464 /* CommunityActions.swift */; };
+		511032DC01E8F8C6CADF47CF /* AppleCoinCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1F97BC92B7B11E080723B6 /* AppleCoinCounter.swift */; };
+		56E51BD446B372FDB67AC446 /* CoffeeCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB621FF2F2A5F301058B3F88 /* CoffeeCounter.swift */; };
+		638C89AA29723A0674CF3807 /* CoffeeMediaFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC58D9339AE955DD821BFC /* CoffeeMediaFiles.swift */; };
 		69B22EAE2A1E4331D9468053 /* Media in Resources */ = {isa = PBXBuildFile; fileRef = 7A9D7A9E9A9325A9158EB1B2 /* Media */; };
 		8388CEA6576E29EB95A694E8 /* Localization in Resources */ = {isa = PBXBuildFile; fileRef = A1446FB63CAE79B500D60548 /* Localization */; };
-		96D67F6277225BD0B2BB0745 /* PapiAudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572DFF2ADD40CC7016BCADAE /* PapiAudioSession.swift */; };
-		9AE1FA8A35934B527B01A076 /* CoffeePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6E179C381059EEA12C3FE5 /* CoffeePlayer.swift */; };
-		9CDB95AE867E43CF3B31080D /* VoiceDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EAF15E3E6BD47F441F790B /* VoiceDraft.swift */; };
-		A7AAEDC11AC989CC97AD7431 /* GiftsAndWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB3AAB5349665FEBE3D56E6 /* GiftsAndWallet.swift */; };
+		8482AC7F554B8B50D975FB57 /* CorrespondenceLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD11DBCE1B281A6D56507B /* CorrespondenceLedger.swift */; };
+		892614CFE3EB7A24617FBC31 /* CoffeeLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9069568E3AA3630D443D2E4 /* CoffeeLanguage.swift */; };
+		8E24760586698EBA1965D740 /* DisplayContinuity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292B452DC78B5297E8C106D1 /* DisplayContinuity.swift */; };
+		9236B90785DD6EDC3E80C91D /* FirstCupWelcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA99794A9B1AD0291B03BA15 /* FirstCupWelcome.swift */; };
+		9F0F2A7FDD40515B874A89EB /* BeanVarieties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4619181F2F97FACFEBE251F4 /* BeanVarieties.swift */; };
+		9F54B17C724C5D5408A20FDE /* CommunityContentPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96201DB40B08691770833E6F /* CommunityContentPolicy.swift */; };
+		A599AEC09F1AF6DD75C3D38E /* BrewNotebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37AC883A000A1270BD4EE71 /* BrewNotebook.swift */; };
+		A690230FB3A543DAA3F94CD3 /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C615E93043C9CD0E094546 /* CameraPreview.swift */; };
 		A9F922DEAF929DFB8475820A /* PapiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE6287BB31A289666B11F62 /* PapiApp.swift */; };
-		BD62770F538C12BE0E377498 /* PapiModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBA676EBFDC7292B48BA2EB /* PapiModels.swift */; };
-		BF0B0F70F155FF7C14EDABB4 /* RoomsAndPeople.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9284E2F0B65A9FAB54E8B0 /* RoomsAndPeople.swift */; };
-		C163C4485722B1E521F2946F /* PapiLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6AECBAF7BEB77ADC4B6D6E /* PapiLocalization.swift */; };
-		D996ACF7D95BF9B6EBCA2DEA /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F6DCD9376E84ADF1920830 /* WelcomeView.swift */; };
-		E22EC3452695B224A08D97D4 /* PapiDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C22381DEB8FBC2A567220E /* PapiDesign.swift */; };
+		AE074CC02469347354C80E8F /* CoffeePassports.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB68BE6D78E9A2BDCE12C2AC /* CoffeePassports.swift */; };
+		B269C2CAB8CD2DD2E55376E7 /* VoiceNotebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510457C0818A3273480C41B5 /* VoiceNotebook.swift */; };
+		B36ED8B6B27138C1C348D471 /* CommunityCare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26AFA57E0E8BC5ECA91EE9D2 /* CommunityCare.swift */; };
+		C115BF7429837B4DEEA21E58 /* AudioFocus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1C0EE535BEC5711863F3B4 /* AudioFocus.swift */; };
+		C86D711D6C0065E918E4C4A8 /* CoffeeArchiveStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA18C600E2058DE7B4E223F /* CoffeeArchiveStore.swift */; };
+		CCB9CE514314976C7A5A4483 /* CoffeePalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5814D6C6773077CFD25DA8F2 /* CoffeePalette.swift */; };
+		DDCD640BC9A4D51333CBB890 /* CoffeeJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE91FAC9594117F3CB8D103 /* CoffeeJournal.swift */; };
+		DEC101A2E3C02CF48ACA9DC7 /* CoffeeTables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A8253097A5E3A09F0561AC /* CoffeeTables.swift */; };
+		E023E5A92486B2B5BDE5FDB1 /* BrewBench.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424F411E5C9DB77C72F41A60 /* BrewBench.swift */; };
+		E74562CFD6D871F941922D9D /* CoffeeLetters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FA9F6AFFFCAC005A949200 /* CoffeeLetters.swift */; };
 		EA0C59647DF047553ED2F531 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6411447FC6C756A3F81FCA89 /* PrivacyInfo.xcprivacy */; };
+		F15395E17DAAD80BBCF1C122 /* CoffeeArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508BA431178151FE01A4106 /* CoffeeArchive.swift */; };
+		F1C7454F481E2DE84844542C /* CoffeeVault.swift in Sources */ = {isa = PBXBuildFile; fileRef = A164A8CCFABAA0C95C60146A /* CoffeeVault.swift */; };
 		F60ADE5B1CF75CC5D8D380FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 564FB2D01F692E89A598CC1E /* InfoPlist.strings */; };
-		FC654748DB4A7FA77ED15258 /* MessagesAndExplore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3AF17B5EF7A39588161A392 /* MessagesAndExplore.swift */; };
+		F7853DB69E6EA932322B837E /* CoffeeArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199D1D6CF747B0A23DF0B7A5 /* CoffeeArtwork.swift */; };
+		F802D95A6235D96BAD26D901 /* BrewRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8419C26EF3D2FD156DEE6931 /* BrewRecords.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0CCC58D9339AE955DD821BFC /* CoffeeMediaFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeMediaFiles.swift; sourceTree = "<group>"; };
 		0E50E0C719AB1C74BBB4661B /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		123D038D6F6C66954CC5D9B5 /* ProfileAndSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAndSettings.swift; sourceTree = "<group>"; };
-		16C4A93E3C7481BA445EE5E3 /* PapiStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapiStore.swift; sourceTree = "<group>"; };
+		13FA9F6AFFFCAC005A949200 /* CoffeeLetters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeLetters.swift; sourceTree = "<group>"; };
 		18CF1E8D44CAD43B72461764 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		199D1D6CF747B0A23DF0B7A5 /* CoffeeArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeArtwork.swift; sourceTree = "<group>"; };
+		1FE91FAC9594117F3CB8D103 /* CoffeeJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeJournal.swift; sourceTree = "<group>"; };
 		2490428E5B01D926DF4013C2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		3C6AECBAF7BEB77ADC4B6D6E /* PapiLocalization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapiLocalization.swift; sourceTree = "<group>"; };
+		26AFA57E0E8BC5ECA91EE9D2 /* CommunityCare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityCare.swift; sourceTree = "<group>"; };
+		27A0CDF6DC8AD2039DB2FE42 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = Papi/Resources/Fonts; sourceTree = SOURCE_ROOT; };
+		292B452DC78B5297E8C106D1 /* DisplayContinuity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayContinuity.swift; sourceTree = "<group>"; };
+		3729D322BE2569BF299BC539 /* CoffeeTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeTypography.swift; sourceTree = "<group>"; };
+		424F411E5C9DB77C72F41A60 /* BrewBench.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrewBench.swift; sourceTree = "<group>"; };
 		42A248A52B0FC1E4CA949A43 /* Papi.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Papi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4619181F2F97FACFEBE251F4 /* BeanVarieties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeanVarieties.swift; sourceTree = "<group>"; };
 		4D3B1EEE617173D2D3D68807 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4E6E179C381059EEA12C3FE5 /* CoffeePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeePlayer.swift; sourceTree = "<group>"; };
-		4E9284E2F0B65A9FAB54E8B0 /* RoomsAndPeople.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsAndPeople.swift; sourceTree = "<group>"; };
-		50EAF15E3E6BD47F441F790B /* VoiceDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceDraft.swift; sourceTree = "<group>"; };
-		572DFF2ADD40CC7016BCADAE /* PapiAudioSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapiAudioSession.swift; sourceTree = "<group>"; };
-		5DB3AAB5349665FEBE3D56E6 /* GiftsAndWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftsAndWallet.swift; sourceTree = "<group>"; };
+		510457C0818A3273480C41B5 /* VoiceNotebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceNotebook.swift; sourceTree = "<group>"; };
+		5814D6C6773077CFD25DA8F2 /* CoffeePalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeePalette.swift; sourceTree = "<group>"; };
+		5DF811FCAEF1ED735B95C3FF /* CoffeeFilm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeFilm.swift; sourceTree = "<group>"; };
 		6411447FC6C756A3F81FCA89 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		6D016D4712D6EC4DA82AA2BF /* PapiCommerce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapiCommerce.swift; sourceTree = "<group>"; };
 		7660535BDFD0DDE1A202C132 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		76A8253097A5E3A09F0561AC /* CoffeeTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeTables.swift; sourceTree = "<group>"; };
 		7881B113CDDB9E5E029ADBA7 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7A9D7A9E9A9325A9158EB1B2 /* Media */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Media; path = Papi/Resources/Media; sourceTree = SOURCE_ROOT; };
-		870D896E82DAFD3F1C5BC1EB /* HomeAndPosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAndPosts.swift; sourceTree = "<group>"; };
+		8419C26EF3D2FD156DEE6931 /* BrewRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrewRecords.swift; sourceTree = "<group>"; };
+		90289257D4B76CE26D0802FE /* CafeNotebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeNotebook.swift; sourceTree = "<group>"; };
+		94C615E93043C9CD0E094546 /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
+		9508BA431178151FE01A4106 /* CoffeeArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeArchive.swift; sourceTree = "<group>"; };
+		96201DB40B08691770833E6F /* CommunityContentPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityContentPolicy.swift; sourceTree = "<group>"; };
 		96AA139620F10D1C56AF18ED /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A0F6DCD9376E84ADF1920830 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		9AB7ED2E751C066C03DBC464 /* CommunityActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityActions.swift; sourceTree = "<group>"; };
+		9E1F97BC92B7B11E080723B6 /* AppleCoinCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleCoinCounter.swift; sourceTree = "<group>"; };
 		A1446FB63CAE79B500D60548 /* Localization */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Localization; path = Papi/Resources/Localization; sourceTree = SOURCE_ROOT; };
-		A3AF17B5EF7A39588161A392 /* MessagesAndExplore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesAndExplore.swift; sourceTree = "<group>"; };
-		AEBA676EBFDC7292B48BA2EB /* PapiModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapiModels.swift; sourceTree = "<group>"; };
-		C4C22381DEB8FBC2A567220E /* PapiDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapiDesign.swift; sourceTree = "<group>"; };
-		D68ED41810D0AADB6009ED8C /* PapiAdaptation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapiAdaptation.swift; sourceTree = "<group>"; };
+		A164A8CCFABAA0C95C60146A /* CoffeeVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeVault.swift; sourceTree = "<group>"; };
+		BA99794A9B1AD0291B03BA15 /* FirstCupWelcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstCupWelcome.swift; sourceTree = "<group>"; };
+		C9069568E3AA3630D443D2E4 /* CoffeeLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeLanguage.swift; sourceTree = "<group>"; };
+		CF1C0EE535BEC5711863F3B4 /* AudioFocus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFocus.swift; sourceTree = "<group>"; };
+		DB68BE6D78E9A2BDCE12C2AC /* CoffeePassports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeePassports.swift; sourceTree = "<group>"; };
 		DDE6287BB31A289666B11F62 /* PapiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapiApp.swift; sourceTree = "<group>"; };
-		E01ACEA8098A240AA0252A08 /* GuestVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestVault.swift; sourceTree = "<group>"; };
-		E96123FB812CA0DEB3D67C0B /* MediaFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaFiles.swift; sourceTree = "<group>"; };
+		EB621FF2F2A5F301058B3F88 /* CoffeeCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeCounter.swift; sourceTree = "<group>"; };
+		F37AC883A000A1270BD4EE71 /* BrewNotebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrewNotebook.swift; sourceTree = "<group>"; };
+		FADD11DBCE1B281A6D56507B /* CorrespondenceLedger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorrespondenceLedger.swift; sourceTree = "<group>"; };
+		FFA18C600E2058DE7B4E223F /* CoffeeArchiveStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeArchiveStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -73,14 +99,68 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		1D2F6E9265C79ACC297914F9 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				9E1F97BC92B7B11E080723B6 /* AppleCoinCounter.swift */,
+				F37AC883A000A1270BD4EE71 /* BrewNotebook.swift */,
+				FFA18C600E2058DE7B4E223F /* CoffeeArchiveStore.swift */,
+				A164A8CCFABAA0C95C60146A /* CoffeeVault.swift */,
+				9AB7ED2E751C066C03DBC464 /* CommunityActions.swift */,
+				96201DB40B08691770833E6F /* CommunityContentPolicy.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		2B3EC41973803A61F3326A3B /* Arrival */ = {
+			isa = PBXGroup;
+			children = (
+				BA99794A9B1AD0291B03BA15 /* FirstCupWelcome.swift */,
+			);
+			path = Arrival;
+			sourceTree = "<group>";
+		};
+		337A9C585386B17ACD3497A4 /* Cafes */ = {
+			isa = PBXGroup;
+			children = (
+				90289257D4B76CE26D0802FE /* CafeNotebook.swift */,
+			);
+			path = Cafes;
+			sourceTree = "<group>";
+		};
+		42278DC9B077386E51E8C211 /* Brewing */ = {
+			isa = PBXGroup;
+			children = (
+				424F411E5C9DB77C72F41A60 /* BrewBench.swift */,
+			);
+			path = Brewing;
+			sourceTree = "<group>";
+		};
+		45A8F8E04278B4226D547C6C /* Correspondence */ = {
+			isa = PBXGroup;
+			children = (
+				13FA9F6AFFFCAC005A949200 /* CoffeeLetters.swift */,
+			);
+			path = Correspondence;
+			sourceTree = "<group>";
+		};
+		47EB348A7B5C344975BE616D /* Passports */ = {
+			isa = PBXGroup;
+			children = (
+				DB68BE6D78E9A2BDCE12C2AC /* CoffeePassports.swift */,
+			);
+			path = Passports;
+			sourceTree = "<group>";
+		};
 		49406E08711CB0B8B25A5A9F /* Papi */ = {
 			isa = PBXGroup;
 			children = (
 				0ACBCCD69E6506D13D239920 /* App */,
-				537D03D6CEF075FEAAF7F691 /* Design */,
-				921B3304FB732577B596DDA5 /* Features */,
-				95E3C2258B35CFCE61CCEF68 /* Models */,
-				6E3C9E733AD7C556EA6D23BF /* Services */,
+				72FEC155946DD8CA749D6B8F /* Appearance */,
+				601BE84A8EB56B641466B1FD /* CoffeeDomain */,
+				50D8BEF463014DFF8134D217 /* CoffeeHouse */,
+				D3B1F0CF6C253C93C553E3E8 /* Media */,
+				1D2F6E9265C79ACC297914F9 /* Persistence */,
 			);
 			path = Papi;
 			sourceTree = "<group>";
@@ -88,6 +168,7 @@
 		4CD2AF2FCA28F25DD32B7E28 = {
 			isa = PBXGroup;
 			children = (
+				27A0CDF6DC8AD2039DB2FE42 /* Fonts */,
 				A1446FB63CAE79B500D60548 /* Localization */,
 				7A9D7A9E9A9325A9158EB1B2 /* Media */,
 				C6BB4824B23223F3137D03A5 /* InfoPlistLocalizations */,
@@ -97,28 +178,59 @@
 			);
 			sourceTree = "<group>";
 		};
-		537D03D6CEF075FEAAF7F691 /* Design */ = {
+		50D8BEF463014DFF8134D217 /* CoffeeHouse */ = {
 			isa = PBXGroup;
 			children = (
-				D68ED41810D0AADB6009ED8C /* PapiAdaptation.swift */,
-				C4C22381DEB8FBC2A567220E /* PapiDesign.swift */,
-				3C6AECBAF7BEB77ADC4B6D6E /* PapiLocalization.swift */,
+				2B3EC41973803A61F3326A3B /* Arrival */,
+				58EBEB98A993021EB32EEE6C /* Beans */,
+				42278DC9B077386E51E8C211 /* Brewing */,
+				337A9C585386B17ACD3497A4 /* Cafes */,
+				C097CD1C90F54C8BEC3D5AE8 /* Community */,
+				45A8F8E04278B4226D547C6C /* Correspondence */,
+				9D16C16FA59910150D69F79A /* Counter */,
+				C7BE37A0F3827A84FB31B44D /* Journal */,
+				47EB348A7B5C344975BE616D /* Passports */,
+				8151AF33697DF3A8858BF048 /* Tables */,
 			);
-			path = Design;
+			path = CoffeeHouse;
 			sourceTree = "<group>";
 		};
-		6E3C9E733AD7C556EA6D23BF /* Services */ = {
+		58EBEB98A993021EB32EEE6C /* Beans */ = {
 			isa = PBXGroup;
 			children = (
-				4E6E179C381059EEA12C3FE5 /* CoffeePlayer.swift */,
-				E01ACEA8098A240AA0252A08 /* GuestVault.swift */,
-				E96123FB812CA0DEB3D67C0B /* MediaFiles.swift */,
-				572DFF2ADD40CC7016BCADAE /* PapiAudioSession.swift */,
-				6D016D4712D6EC4DA82AA2BF /* PapiCommerce.swift */,
-				16C4A93E3C7481BA445EE5E3 /* PapiStore.swift */,
-				50EAF15E3E6BD47F441F790B /* VoiceDraft.swift */,
+				4619181F2F97FACFEBE251F4 /* BeanVarieties.swift */,
 			);
-			path = Services;
+			path = Beans;
+			sourceTree = "<group>";
+		};
+		601BE84A8EB56B641466B1FD /* CoffeeDomain */ = {
+			isa = PBXGroup;
+			children = (
+				8419C26EF3D2FD156DEE6931 /* BrewRecords.swift */,
+				9508BA431178151FE01A4106 /* CoffeeArchive.swift */,
+				FADD11DBCE1B281A6D56507B /* CorrespondenceLedger.swift */,
+			);
+			path = CoffeeDomain;
+			sourceTree = "<group>";
+		};
+		72FEC155946DD8CA749D6B8F /* Appearance */ = {
+			isa = PBXGroup;
+			children = (
+				199D1D6CF747B0A23DF0B7A5 /* CoffeeArtwork.swift */,
+				C9069568E3AA3630D443D2E4 /* CoffeeLanguage.swift */,
+				5814D6C6773077CFD25DA8F2 /* CoffeePalette.swift */,
+				3729D322BE2569BF299BC539 /* CoffeeTypography.swift */,
+				292B452DC78B5297E8C106D1 /* DisplayContinuity.swift */,
+			);
+			path = Appearance;
+			sourceTree = "<group>";
+		};
+		8151AF33697DF3A8858BF048 /* Tables */ = {
+			isa = PBXGroup;
+			children = (
+				76A8253097A5E3A09F0561AC /* CoffeeTables.swift */,
+			);
+			path = Tables;
 			sourceTree = "<group>";
 		};
 		8B96218223829754B01E5E78 /* Resources */ = {
@@ -131,25 +243,12 @@
 			path = Papi/Resources;
 			sourceTree = "<group>";
 		};
-		921B3304FB732577B596DDA5 /* Features */ = {
+		9D16C16FA59910150D69F79A /* Counter */ = {
 			isa = PBXGroup;
 			children = (
-				5DB3AAB5349665FEBE3D56E6 /* GiftsAndWallet.swift */,
-				870D896E82DAFD3F1C5BC1EB /* HomeAndPosts.swift */,
-				A3AF17B5EF7A39588161A392 /* MessagesAndExplore.swift */,
-				123D038D6F6C66954CC5D9B5 /* ProfileAndSettings.swift */,
-				4E9284E2F0B65A9FAB54E8B0 /* RoomsAndPeople.swift */,
-				A0F6DCD9376E84ADF1920830 /* WelcomeView.swift */,
+				EB621FF2F2A5F301058B3F88 /* CoffeeCounter.swift */,
 			);
-			path = Features;
-			sourceTree = "<group>";
-		};
-		95E3C2258B35CFCE61CCEF68 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				AEBA676EBFDC7292B48BA2EB /* PapiModels.swift */,
-			);
-			path = Models;
+			path = Counter;
 			sourceTree = "<group>";
 		};
 		BD570509DE963615CF95D209 /* Products */ = {
@@ -160,6 +259,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		C097CD1C90F54C8BEC3D5AE8 /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				26AFA57E0E8BC5ECA91EE9D2 /* CommunityCare.swift */,
+			);
+			path = Community;
+			sourceTree = "<group>";
+		};
 		C6BB4824B23223F3137D03A5 /* InfoPlistLocalizations */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +274,26 @@
 			);
 			name = InfoPlistLocalizations;
 			path = Papi/Resources/InfoPlistLocalizations;
+			sourceTree = "<group>";
+		};
+		C7BE37A0F3827A84FB31B44D /* Journal */ = {
+			isa = PBXGroup;
+			children = (
+				1FE91FAC9594117F3CB8D103 /* CoffeeJournal.swift */,
+			);
+			path = Journal;
+			sourceTree = "<group>";
+		};
+		D3B1F0CF6C253C93C553E3E8 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				CF1C0EE535BEC5711863F3B4 /* AudioFocus.swift */,
+				94C615E93043C9CD0E094546 /* CameraPreview.swift */,
+				5DF811FCAEF1ED735B95C3FF /* CoffeeFilm.swift */,
+				0CCC58D9339AE955DD821BFC /* CoffeeMediaFiles.swift */,
+				510457C0818A3273480C41B5 /* VoiceNotebook.swift */,
+			);
+			path = Media;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,6 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				16F44EFDB03632CEABE29F9B /* Assets.xcassets in Resources */,
+				099EEFA527F597BA007303BD /* Fonts in Resources */,
 				F60ADE5B1CF75CC5D8D380FA /* InfoPlist.strings in Resources */,
 				8388CEA6576E29EB95A694E8 /* Localization in Resources */,
 				69B22EAE2A1E4331D9468053 /* Media in Resources */,
@@ -249,24 +377,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AE1FA8A35934B527B01A076 /* CoffeePlayer.swift in Sources */,
-				A7AAEDC11AC989CC97AD7431 /* GiftsAndWallet.swift in Sources */,
-				314725B05C3AEBA1502133B9 /* GuestVault.swift in Sources */,
-				1CA202D5B5DC5287B747EEB7 /* HomeAndPosts.swift in Sources */,
-				0E29F0C434942245E71F3AA9 /* MediaFiles.swift in Sources */,
-				FC654748DB4A7FA77ED15258 /* MessagesAndExplore.swift in Sources */,
-				0159722EAB5AAD78226B643A /* PapiAdaptation.swift in Sources */,
+				511032DC01E8F8C6CADF47CF /* AppleCoinCounter.swift in Sources */,
+				C115BF7429837B4DEEA21E58 /* AudioFocus.swift in Sources */,
+				9F0F2A7FDD40515B874A89EB /* BeanVarieties.swift in Sources */,
+				E023E5A92486B2B5BDE5FDB1 /* BrewBench.swift in Sources */,
+				A599AEC09F1AF6DD75C3D38E /* BrewNotebook.swift in Sources */,
+				F802D95A6235D96BAD26D901 /* BrewRecords.swift in Sources */,
+				2CF489790ABCB636DC1C6785 /* CafeNotebook.swift in Sources */,
+				A690230FB3A543DAA3F94CD3 /* CameraPreview.swift in Sources */,
+				F15395E17DAAD80BBCF1C122 /* CoffeeArchive.swift in Sources */,
+				C86D711D6C0065E918E4C4A8 /* CoffeeArchiveStore.swift in Sources */,
+				F7853DB69E6EA932322B837E /* CoffeeArtwork.swift in Sources */,
+				56E51BD446B372FDB67AC446 /* CoffeeCounter.swift in Sources */,
+				2520AE13974D6B5C3DB8A4EB /* CoffeeFilm.swift in Sources */,
+				DDCD640BC9A4D51333CBB890 /* CoffeeJournal.swift in Sources */,
+				892614CFE3EB7A24617FBC31 /* CoffeeLanguage.swift in Sources */,
+				E74562CFD6D871F941922D9D /* CoffeeLetters.swift in Sources */,
+				638C89AA29723A0674CF3807 /* CoffeeMediaFiles.swift in Sources */,
+				CCB9CE514314976C7A5A4483 /* CoffeePalette.swift in Sources */,
+				AE074CC02469347354C80E8F /* CoffeePassports.swift in Sources */,
+				DEC101A2E3C02CF48ACA9DC7 /* CoffeeTables.swift in Sources */,
+				0B435EA45CDD20FC21B39031 /* CoffeeTypography.swift in Sources */,
+				F1C7454F481E2DE84844542C /* CoffeeVault.swift in Sources */,
+				4E36C84302EF5C383E6571D8 /* CommunityActions.swift in Sources */,
+				B36ED8B6B27138C1C348D471 /* CommunityCare.swift in Sources */,
+				9F54B17C724C5D5408A20FDE /* CommunityContentPolicy.swift in Sources */,
+				8482AC7F554B8B50D975FB57 /* CorrespondenceLedger.swift in Sources */,
+				8E24760586698EBA1965D740 /* DisplayContinuity.swift in Sources */,
+				9236B90785DD6EDC3E80C91D /* FirstCupWelcome.swift in Sources */,
 				A9F922DEAF929DFB8475820A /* PapiApp.swift in Sources */,
-				96D67F6277225BD0B2BB0745 /* PapiAudioSession.swift in Sources */,
-				2BACE5E34697460F194D6F04 /* PapiCommerce.swift in Sources */,
-				E22EC3452695B224A08D97D4 /* PapiDesign.swift in Sources */,
-				C163C4485722B1E521F2946F /* PapiLocalization.swift in Sources */,
-				BD62770F538C12BE0E377498 /* PapiModels.swift in Sources */,
-				3CD6A4930315121AC1F53E64 /* PapiStore.swift in Sources */,
-				60B054EE82C7F28A6D19CC4C /* ProfileAndSettings.swift in Sources */,
-				BF0B0F70F155FF7C14EDABB4 /* RoomsAndPeople.swift in Sources */,
-				9CDB95AE867E43CF3B31080D /* VoiceDraft.swift in Sources */,
-				D996ACF7D95BF9B6EBCA2DEA /* WelcomeView.swift in Sources */,
+				B269C2CAB8CD2DD2E55376E7 /* VoiceNotebook.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,16 +1,17 @@
 {
-  "sourceFiles": 18,
-  "imageSets": 106,
-  "bundledVideos": 21,
-  "resourceBytes": 93302568,
+  "sourceFiles": 30,
+  "imageSets": 101,
+  "bundledVideos": 17,
+  "resourceBytes": 49739357,
   "resourcePhase": [
     "Assets.xcassets",
     "InfoPlist.strings",
+    "Papi/Resources/Fonts",
     "Papi/Resources/Localization",
     "Papi/Resources/Media",
     "PrivacyInfo.xcprivacy"
   ],
-  "translationEntries": 408,
+  "translationEntries": 771,
   "uiLanguages": [
     "en",
     "ar",
@@ -19,8 +20,23 @@
     "th",
     "vi"
   ],
+  "typefaceFamilies": 2,
+  "fontStyles": 6,
+  "fontBytes": 332340,
+  "coinPacks": 9,
+  "protectedCoinProductIDs": 7,
+  "addedCoinPacks": 2,
+  "brewRecipes": 5,
+  "freeBrewRecipes": 2,
+  "paidRecipeCoins": [
+    120,
+    180,
+    240
+  ],
   "findings": [],
   "buildExecuted": false,
   "testsExecuted": false,
-  "appLaunched": false
+  "appLaunched": false,
+  "storeKitExecuted": false,
+  "binarySimilarityMeasured": false
 }

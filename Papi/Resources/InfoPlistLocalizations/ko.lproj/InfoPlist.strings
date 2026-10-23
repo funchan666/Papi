@@ -1,2 +1,2 @@
-"NSCameraUsageDescription" = "커피 사진이나 동영상을 촬영해 기기의 Papi 일지에 저장해요.";
-"NSMicrophoneUsageDescription" = "개인 음성 초안과 직접 촬영하는 동영상의 오디오를 녹음해요.";
+"NSCameraUsageDescription" = "커피 순간을 촬영하거나 직접 선택한 영상 기능을 열기 전에 카메라를 미리 봅니다.";
+"NSMicrophoneUsageDescription" = "직접 만드는 커피 영상의 소리와 음성 메모를 녹음합니다. 녹음을 시작하거나 영상 기능을 준비할 때 권한을 요청합니다.";

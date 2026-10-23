@@ -1,0 +1,1561 @@
+{
+  "originalTaskResourceBytes": 93389434,
+  "beforeOptimizationBytes": 94106915,
+  "images": [
+    {
+      "asset": "moreLight",
+      "beforeBytes": 1413,
+      "afterBytes": 994,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "canal-coffee",
+      "beforeBytes": 243207,
+      "afterBytes": 243207,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "giftHeadphones",
+      "beforeBytes": 31843,
+      "afterBytes": 27619,
+      "dimensionsBefore": [
+        140,
+        140
+      ],
+      "dimensionsAfter": [
+        140,
+        140
+      ]
+    },
+    {
+      "asset": "portrait-ren",
+      "beforeBytes": 77709,
+      "afterBytes": 77709,
+      "dimensionsBefore": [
+        1080,
+        1350
+      ],
+      "dimensionsAfter": [
+        1080,
+        1350
+      ]
+    },
+    {
+      "asset": "chevron",
+      "beforeBytes": 465,
+      "afterBytes": 385,
+      "dimensionsBefore": [
+        28,
+        28
+      ],
+      "dimensionsAfter": [
+        28,
+        28
+      ]
+    },
+    {
+      "asset": "globe",
+      "beforeBytes": 2731,
+      "afterBytes": 2198,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "dialogBackground",
+      "beforeBytes": 34586,
+      "afterBytes": 21011,
+      "dimensionsBefore": [
+        520,
+        624
+      ],
+      "dimensionsAfter": [
+        520,
+        624
+      ]
+    },
+    {
+      "asset": "comment",
+      "beforeBytes": 1987,
+      "afterBytes": 1514,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "meOn",
+      "beforeBytes": 2757,
+      "afterBytes": 2152,
+      "dimensionsBefore": [
+        60,
+        60
+      ],
+      "dimensionsAfter": [
+        60,
+        60
+      ]
+    },
+    {
+      "asset": "coffee-and-dates",
+      "beforeBytes": 312755,
+      "afterBytes": 131115,
+      "dimensionsBefore": [
+        1600,
+        2133
+      ],
+      "dimensionsAfter": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "asset": "brandMark",
+      "beforeBytes": 74433,
+      "afterBytes": 55546,
+      "dimensionsBefore": [
+        200,
+        200
+      ],
+      "dimensionsAfter": [
+        200,
+        200
+      ]
+    },
+    {
+      "asset": "mic",
+      "beforeBytes": 3105,
+      "afterBytes": 2380,
+      "dimensionsBefore": [
+        88,
+        88
+      ],
+      "dimensionsAfter": [
+        88,
+        88
+      ]
+    },
+    {
+      "asset": "systemNotice",
+      "beforeBytes": 3839,
+      "afterBytes": 0,
+      "dimensionsBefore": [
+        100,
+        100
+      ],
+      "dimensionsAfter": [
+        100,
+        100
+      ],
+      "removedFromBundle": true
+    },
+    {
+      "asset": "roomBackground",
+      "beforeBytes": 1413781,
+      "afterBytes": 63264,
+      "dimensionsBefore": [
+        853,
+        1844
+      ],
+      "dimensionsAfter": [
+        740,
+        1600
+      ]
+    },
+    {
+      "asset": "handheld-cold-brew",
+      "beforeBytes": 167385,
+      "afterBytes": 167385,
+      "dimensionsBefore": [
+        1349,
+        1687
+      ],
+      "dimensionsAfter": [
+        1349,
+        1687
+      ]
+    },
+    {
+      "asset": "messagesOn",
+      "beforeBytes": 2452,
+      "afterBytes": 1875,
+      "dimensionsBefore": [
+        60,
+        60
+      ],
+      "dimensionsAfter": [
+        60,
+        60
+      ]
+    },
+    {
+      "asset": "giftUmbrella",
+      "beforeBytes": 27848,
+      "afterBytes": 24599,
+      "dimensionsBefore": [
+        140,
+        140
+      ],
+      "dimensionsAfter": [
+        140,
+        140
+      ]
+    },
+    {
+      "asset": "walletCard",
+      "beforeBytes": 248308,
+      "afterBytes": 0,
+      "dimensionsBefore": [
+        732,
+        240
+      ],
+      "dimensionsAfter": [
+        732,
+        240
+      ],
+      "removedFromBundle": true
+    },
+    {
+      "asset": "report",
+      "beforeBytes": 5599,
+      "afterBytes": 4377,
+      "dimensionsBefore": [
+        180,
+        160
+      ],
+      "dimensionsAfter": [
+        180,
+        160
+      ]
+    },
+    {
+      "asset": "pastry-ritual",
+      "beforeBytes": 125039,
+      "afterBytes": 125039,
+      "dimensionsBefore": [
+        1080,
+        1350
+      ],
+      "dimensionsAfter": [
+        1080,
+        1350
+      ]
+    },
+    {
+      "asset": "levelCard",
+      "beforeBytes": 338709,
+      "afterBytes": 221806,
+      "dimensionsBefore": [
+        728,
+        398
+      ],
+      "dimensionsAfter": [
+        728,
+        398
+      ]
+    },
+    {
+      "asset": "home-espresso-corner",
+      "beforeBytes": 233052,
+      "afterBytes": 253495,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "giftCake",
+      "beforeBytes": 29724,
+      "afterBytes": 25030,
+      "dimensionsBefore": [
+        140,
+        140
+      ],
+      "dimensionsAfter": [
+        140,
+        140
+      ]
+    },
+    {
+      "asset": "croissant-table",
+      "beforeBytes": 213136,
+      "afterBytes": 213136,
+      "dimensionsBefore": [
+        1080,
+        1433
+      ],
+      "dimensionsAfter": [
+        1080,
+        1433
+      ]
+    },
+    {
+      "asset": "portrait-jun",
+      "beforeBytes": 84120,
+      "afterBytes": 84120,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "homeOff",
+      "beforeBytes": 3807,
+      "afterBytes": 3121,
+      "dimensionsBefore": [
+        60,
+        60
+      ],
+      "dimensionsAfter": [
+        60,
+        60
+      ]
+    },
+    {
+      "asset": "onboardingChill",
+      "beforeBytes": 1464137,
+      "afterBytes": 1013274,
+      "dimensionsBefore": [
+        780,
+        1688
+      ],
+      "dimensionsAfter": [
+        780,
+        1688
+      ]
+    },
+    {
+      "asset": "courtyard-brunch",
+      "beforeBytes": 242010,
+      "afterBytes": 242010,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "coffeeUpdates",
+      "beforeBytes": 5059,
+      "afterBytes": 4355,
+      "dimensionsBefore": [
+        52,
+        54
+      ],
+      "dimensionsAfter": [
+        52,
+        54
+      ]
+    },
+    {
+      "asset": "window-americano",
+      "beforeBytes": 128318,
+      "afterBytes": 128318,
+      "dimensionsBefore": [
+        1080,
+        1350
+      ],
+      "dimensionsAfter": [
+        1080,
+        1350
+      ]
+    },
+    {
+      "asset": "calendar",
+      "beforeBytes": 1428,
+      "afterBytes": 1178,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "blocked",
+      "beforeBytes": 2606,
+      "afterBytes": 2079,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "portrait-theo",
+      "beforeBytes": 108338,
+      "afterBytes": 89493,
+      "dimensionsBefore": [
+        1080,
+        810
+      ],
+      "dimensionsAfter": [
+        1080,
+        810
+      ]
+    },
+    {
+      "asset": "back",
+      "beforeBytes": 1568,
+      "afterBytes": 1294,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "walletBanner",
+      "beforeBytes": 74685,
+      "afterBytes": 51066,
+      "dimensionsBefore": [
+        348,
+        160
+      ],
+      "dimensionsAfter": [
+        348,
+        160
+      ]
+    },
+    {
+      "asset": "checkinBackground",
+      "beforeBytes": 264654,
+      "afterBytes": 0,
+      "dimensionsBefore": [
+        780,
+        1188
+      ],
+      "dimensionsAfter": [
+        780,
+        1188
+      ],
+      "removedFromBundle": true
+    },
+    {
+      "asset": "voiceOn",
+      "beforeBytes": 2660,
+      "afterBytes": 2251,
+      "dimensionsBefore": [
+        60,
+        60
+      ],
+      "dimensionsAfter": [
+        60,
+        60
+      ]
+    },
+    {
+      "asset": "giftCrown",
+      "beforeBytes": 29644,
+      "afterBytes": 25812,
+      "dimensionsBefore": [
+        140,
+        140
+      ],
+      "dimensionsAfter": [
+        140,
+        140
+      ]
+    },
+    {
+      "asset": "messagesOff",
+      "beforeBytes": 2376,
+      "afterBytes": 1800,
+      "dimensionsBefore": [
+        60,
+        60
+      ],
+      "dimensionsAfter": [
+        60,
+        60
+      ]
+    },
+    {
+      "asset": "street-espresso",
+      "beforeBytes": 566254,
+      "afterBytes": 169238,
+      "dimensionsBefore": [
+        3072,
+        4096
+      ],
+      "dimensionsAfter": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "asset": "tastingFlightArtwork",
+      "beforeBytes": 160136,
+      "afterBytes": 156488,
+      "dimensionsBefore": [
+        1200,
+        800
+      ],
+      "dimensionsAfter": [
+        1200,
+        800
+      ]
+    },
+    {
+      "asset": "marbled-latte",
+      "beforeBytes": 186015,
+      "afterBytes": 168329,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "breakfast-tray",
+      "beforeBytes": 281837,
+      "afterBytes": 281837,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "beanPacamara",
+      "beforeBytes": 85308,
+      "afterBytes": 73732,
+      "dimensionsBefore": [
+        352,
+        296
+      ],
+      "dimensionsAfter": [
+        352,
+        296
+      ]
+    },
+    {
+      "asset": "plus",
+      "beforeBytes": 1576,
+      "afterBytes": 1172,
+      "dimensionsBefore": [
+        56,
+        56
+      ],
+      "dimensionsAfter": [
+        56,
+        56
+      ]
+    },
+    {
+      "asset": "beanRobusta",
+      "beforeBytes": 91982,
+      "afterBytes": 78964,
+      "dimensionsBefore": [
+        354,
+        294
+      ],
+      "dimensionsAfter": [
+        354,
+        294
+      ]
+    },
+    {
+      "asset": "beanSL28",
+      "beforeBytes": 93042,
+      "afterBytes": 80452,
+      "dimensionsBefore": [
+        354,
+        296
+      ],
+      "dimensionsAfter": [
+        354,
+        296
+      ]
+    },
+    {
+      "asset": "brewBenchArtwork",
+      "beforeBytes": 190955,
+      "afterBytes": 187069,
+      "dimensionsBefore": [
+        1200,
+        800
+      ],
+      "dimensionsAfter": [
+        1200,
+        800
+      ]
+    },
+    {
+      "asset": "block",
+      "beforeBytes": 5113,
+      "afterBytes": 3815,
+      "dimensionsBefore": [
+        180,
+        160
+      ],
+      "dimensionsAfter": [
+        180,
+        160
+      ]
+    },
+    {
+      "asset": "beansBanner",
+      "beforeBytes": 69598,
+      "afterBytes": 49165,
+      "dimensionsBefore": [
+        354,
+        176
+      ],
+      "dimensionsAfter": [
+        354,
+        176
+      ]
+    },
+    {
+      "asset": "pageBackground",
+      "beforeBytes": 370886,
+      "afterBytes": 154417,
+      "dimensionsBefore": [
+        780,
+        1688
+      ],
+      "dimensionsAfter": [
+        780,
+        1688
+      ]
+    },
+    {
+      "asset": "onboardingRoast",
+      "beforeBytes": 1429716,
+      "afterBytes": 978024,
+      "dimensionsBefore": [
+        780,
+        1688
+      ],
+      "dimensionsAfter": [
+        780,
+        1688
+      ]
+    },
+    {
+      "asset": "close",
+      "beforeBytes": 1465,
+      "afterBytes": 1023,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "homeOn",
+      "beforeBytes": 3911,
+      "afterBytes": 3366,
+      "dimensionsBefore": [
+        60,
+        60
+      ],
+      "dimensionsAfter": [
+        60,
+        60
+      ]
+    },
+    {
+      "asset": "bag",
+      "beforeBytes": 1472,
+      "afterBytes": 1227,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "sunlit-cup",
+      "beforeBytes": 815702,
+      "afterBytes": 500224,
+      "dimensionsBefore": [
+        1440,
+        1625
+      ],
+      "dimensionsAfter": [
+        1418,
+        1600
+      ]
+    },
+    {
+      "asset": "portrait-clara",
+      "beforeBytes": 1134387,
+      "afterBytes": 319726,
+      "dimensionsBefore": [
+        3125,
+        4096
+      ],
+      "dimensionsAfter": [
+        1221,
+        1600
+      ]
+    },
+    {
+      "asset": "giftLove",
+      "beforeBytes": 25786,
+      "afterBytes": 21654,
+      "dimensionsBefore": [
+        140,
+        140
+      ],
+      "dimensionsAfter": [
+        140,
+        140
+      ]
+    },
+    {
+      "asset": "brewDripper",
+      "beforeBytes": 24724,
+      "afterBytes": 24724,
+      "dimensionsBefore": [
+        160,
+        160
+      ],
+      "dimensionsAfter": [
+        160,
+        160
+      ]
+    },
+    {
+      "asset": "beanArabica",
+      "beforeBytes": 85694,
+      "afterBytes": 71637,
+      "dimensionsBefore": [
+        352,
+        294
+      ],
+      "dimensionsAfter": [
+        352,
+        294
+      ]
+    },
+    {
+      "asset": "clean",
+      "beforeBytes": 1480,
+      "afterBytes": 1218,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "giftPeach",
+      "beforeBytes": 31630,
+      "afterBytes": 27887,
+      "dimensionsBefore": [
+        140,
+        140
+      ],
+      "dimensionsAfter": [
+        140,
+        140
+      ]
+    },
+    {
+      "asset": "meOff",
+      "beforeBytes": 2654,
+      "afterBytes": 2079,
+      "dimensionsBefore": [
+        60,
+        60
+      ],
+      "dimensionsAfter": [
+        60,
+        60
+      ]
+    },
+    {
+      "asset": "roomListBackground",
+      "beforeBytes": 503819,
+      "afterBytes": 340701,
+      "dimensionsBefore": [
+        780,
+        1688
+      ],
+      "dimensionsAfter": [
+        780,
+        1688
+      ]
+    },
+    {
+      "asset": "voiceOff",
+      "beforeBytes": 2630,
+      "afterBytes": 2125,
+      "dimensionsBefore": [
+        60,
+        60
+      ],
+      "dimensionsAfter": [
+        60,
+        60
+      ]
+    },
+    {
+      "asset": "glasshouse-cafe",
+      "beforeBytes": 161646,
+      "afterBytes": 139008,
+      "dimensionsBefore": [
+        720,
+        960
+      ],
+      "dimensionsAfter": [
+        720,
+        960
+      ]
+    },
+    {
+      "asset": "gift",
+      "beforeBytes": 3920,
+      "afterBytes": 2814,
+      "dimensionsBefore": [
+        88,
+        88
+      ],
+      "dimensionsAfter": [
+        88,
+        88
+      ]
+    },
+    {
+      "asset": "rose-front-cafe",
+      "beforeBytes": 176066,
+      "afterBytes": 274023,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "more",
+      "beforeBytes": 1121,
+      "afterBytes": 909,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "garden-coffee-seat",
+      "beforeBytes": 283375,
+      "afterBytes": 283375,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "interactionNotice",
+      "beforeBytes": 3764,
+      "afterBytes": 3071,
+      "dimensionsBefore": [
+        100,
+        100
+      ],
+      "dimensionsAfter": [
+        100,
+        100
+      ]
+    },
+    {
+      "asset": "portrait-dae",
+      "beforeBytes": 84424,
+      "afterBytes": 70863,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "homeTitle",
+      "beforeBytes": 18880,
+      "afterBytes": 0,
+      "dimensionsBefore": [
+        424,
+        100
+      ],
+      "dimensionsAfter": [
+        424,
+        100
+      ],
+      "removedFromBundle": true
+    },
+    {
+      "asset": "hot",
+      "beforeBytes": 7598,
+      "afterBytes": 5566,
+      "dimensionsBefore": [
+        160,
+        96
+      ],
+      "dimensionsAfter": [
+        160,
+        96
+      ]
+    },
+    {
+      "asset": "onboardingPour",
+      "beforeBytes": 1457202,
+      "afterBytes": 1018230,
+      "dimensionsBefore": [
+        780,
+        1688
+      ],
+      "dimensionsAfter": [
+        780,
+        1688
+      ]
+    },
+    {
+      "asset": "round-cafe-table",
+      "beforeBytes": 149056,
+      "afterBytes": 126793,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "welcomeBackground",
+      "beforeBytes": 597896,
+      "afterBytes": 356636,
+      "dimensionsBefore": [
+        780,
+        1688
+      ],
+      "dimensionsAfter": [
+        780,
+        1688
+      ]
+    },
+    {
+      "asset": "check",
+      "beforeBytes": 1271,
+      "afterBytes": 1118,
+      "dimensionsBefore": [
+        26,
+        26
+      ],
+      "dimensionsAfter": [
+        26,
+        26
+      ]
+    },
+    {
+      "asset": "uploadImage",
+      "beforeBytes": 16813,
+      "afterBytes": 9588,
+      "dimensionsBefore": [
+        120,
+        120
+      ],
+      "dimensionsAfter": [
+        120,
+        120
+      ]
+    },
+    {
+      "asset": "followedButton",
+      "beforeBytes": 6010,
+      "afterBytes": 0,
+      "dimensionsBefore": [
+        332,
+        100
+      ],
+      "dimensionsAfter": [
+        332,
+        100
+      ],
+      "removedFromBundle": true
+    },
+    {
+      "asset": "coin",
+      "beforeBytes": 5013,
+      "afterBytes": 3962,
+      "dimensionsBefore": [
+        65,
+        65
+      ],
+      "dimensionsAfter": [
+        65,
+        65
+      ]
+    },
+    {
+      "asset": "exploreBanner",
+      "beforeBytes": 72447,
+      "afterBytes": 49676,
+      "dimensionsBefore": [
+        350,
+        176
+      ],
+      "dimensionsAfter": [
+        350,
+        176
+      ]
+    },
+    {
+      "asset": "like",
+      "beforeBytes": 1413,
+      "afterBytes": 1012,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "giftCar",
+      "beforeBytes": 41133,
+      "afterBytes": 35528,
+      "dimensionsBefore": [
+        140,
+        140
+      ],
+      "dimensionsAfter": [
+        140,
+        140
+      ]
+    },
+    {
+      "asset": "portrait-kai",
+      "beforeBytes": 185975,
+      "afterBytes": 158738,
+      "dimensionsBefore": [
+        720,
+        960
+      ],
+      "dimensionsAfter": [
+        720,
+        960
+      ]
+    },
+    {
+      "asset": "star",
+      "beforeBytes": 1308,
+      "afterBytes": 1022,
+      "dimensionsBefore": [
+        40,
+        40
+      ],
+      "dimensionsAfter": [
+        40,
+        40
+      ]
+    },
+    {
+      "asset": "chatPhoto",
+      "beforeBytes": 2741,
+      "afterBytes": 2083,
+      "dimensionsBefore": [
+        88,
+        88
+      ],
+      "dimensionsAfter": [
+        88,
+        88
+      ]
+    },
+    {
+      "asset": "levelBanner",
+      "beforeBytes": 75094,
+      "afterBytes": 49303,
+      "dimensionsBefore": [
+        352,
+        160
+      ],
+      "dimensionsAfter": [
+        352,
+        160
+      ]
+    },
+    {
+      "asset": "corner-latte",
+      "beforeBytes": 182723,
+      "afterBytes": 182723,
+      "dimensionsBefore": [
+        1440,
+        1754
+      ],
+      "dimensionsAfter": [
+        1440,
+        1754
+      ]
+    },
+    {
+      "asset": "edit",
+      "beforeBytes": 1755,
+      "afterBytes": 1317,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "portrait-mateo",
+      "beforeBytes": 149396,
+      "afterBytes": 127972,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "followButton",
+      "beforeBytes": 5665,
+      "afterBytes": 0,
+      "dimensionsBefore": [
+        332,
+        100
+      ],
+      "dimensionsAfter": [
+        332,
+        100
+      ],
+      "removedFromBundle": true
+    },
+    {
+      "asset": "beanBourbon",
+      "beforeBytes": 91476,
+      "afterBytes": 78162,
+      "dimensionsBefore": [
+        354,
+        294
+      ],
+      "dimensionsAfter": [
+        354,
+        294
+      ]
+    },
+    {
+      "asset": "two-iced-lattes",
+      "beforeBytes": 173723,
+      "afterBytes": 173723,
+      "dimensionsBefore": [
+        1080,
+        1350
+      ],
+      "dimensionsAfter": [
+        1080,
+        1350
+      ]
+    },
+    {
+      "asset": "settings",
+      "beforeBytes": 1753,
+      "afterBytes": 1314,
+      "dimensionsBefore": [
+        48,
+        48
+      ],
+      "dimensionsAfter": [
+        48,
+        48
+      ]
+    },
+    {
+      "asset": "matcha-and-cookie",
+      "beforeBytes": 176037,
+      "afterBytes": 155587,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "speaker",
+      "beforeBytes": 3121,
+      "afterBytes": 2410,
+      "dimensionsBefore": [
+        88,
+        88
+      ],
+      "dimensionsAfter": [
+        88,
+        88
+      ]
+    },
+    {
+      "asset": "photo",
+      "beforeBytes": 2904,
+      "afterBytes": 0,
+      "dimensionsBefore": [
+        112,
+        112
+      ],
+      "dimensionsAfter": [
+        112,
+        112
+      ],
+      "removedFromBundle": true
+    },
+    {
+      "asset": "trash",
+      "beforeBytes": 1498,
+      "afterBytes": 1093,
+      "dimensionsBefore": [
+        52,
+        52
+      ],
+      "dimensionsAfter": [
+        52,
+        52
+      ]
+    },
+    {
+      "asset": "chatButton",
+      "beforeBytes": 7729,
+      "afterBytes": 0,
+      "dimensionsBefore": [
+        332,
+        100
+      ],
+      "dimensionsAfter": [
+        332,
+        100
+      ],
+      "removedFromBundle": true
+    },
+    {
+      "asset": "soundWave",
+      "beforeBytes": 377,
+      "afterBytes": 267,
+      "dimensionsBefore": [
+        40,
+        40
+      ],
+      "dimensionsAfter": [
+        40,
+        40
+      ]
+    },
+    {
+      "asset": "emptyCup",
+      "beforeBytes": 5135,
+      "afterBytes": 3627,
+      "dimensionsBefore": [
+        160,
+        160
+      ],
+      "dimensionsAfter": [
+        160,
+        160
+      ]
+    },
+    {
+      "asset": "profileTitle",
+      "beforeBytes": 8943,
+      "afterBytes": 6625,
+      "dimensionsBefore": [
+        254,
+        98
+      ],
+      "dimensionsAfter": [
+        254,
+        98
+      ]
+    },
+    {
+      "asset": "beanGeisha",
+      "beforeBytes": 92788,
+      "afterBytes": 79597,
+      "dimensionsBefore": [
+        352,
+        294
+      ],
+      "dimensionsAfter": [
+        352,
+        294
+      ]
+    },
+    {
+      "asset": "send",
+      "beforeBytes": 1315,
+      "afterBytes": 1025,
+      "dimensionsBefore": [
+        52,
+        52
+      ],
+      "dimensionsAfter": [
+        52,
+        52
+      ]
+    },
+    {
+      "asset": "portrait-elise",
+      "beforeBytes": 116535,
+      "afterBytes": 116535,
+      "dimensionsBefore": [
+        1080,
+        1440
+      ],
+      "dimensionsAfter": [
+        1080,
+        1440
+      ]
+    },
+    {
+      "asset": "giftBird",
+      "beforeBytes": 29582,
+      "afterBytes": 25963,
+      "dimensionsBefore": [
+        140,
+        140
+      ],
+      "dimensionsAfter": [
+        140,
+        140
+      ]
+    },
+    {
+      "asset": "onboardNext",
+      "beforeBytes": 1972,
+      "afterBytes": 1537,
+      "dimensionsBefore": [
+        144,
+        76
+      ],
+      "dimensionsAfter": [
+        144,
+        76
+      ]
+    },
+    {
+      "asset": "chatTitle",
+      "beforeBytes": 7073,
+      "afterBytes": 5307,
+      "dimensionsBefore": [
+        176,
+        98
+      ],
+      "dimensionsAfter": [
+        176,
+        98
+      ]
+    }
+  ],
+  "films": [
+    {
+      "asset": "bar-counter-iced-latte",
+      "beforeBytes": 10107375,
+      "afterBytes": 6715657
+    },
+    {
+      "asset": "blue-cup-pour",
+      "beforeBytes": 3279306,
+      "afterBytes": 1954423
+    },
+    {
+      "asset": "cappuccino-rosetta",
+      "beforeBytes": 2672944,
+      "afterBytes": 1550688
+    },
+    {
+      "asset": "caramel-swirl-glass",
+      "beforeBytes": 5608174,
+      "afterBytes": 3532699
+    },
+    {
+      "asset": "citrus-iced-coffee",
+      "beforeBytes": 5849271,
+      "afterBytes": 4039629
+    },
+    {
+      "asset": "coffee-over-ice",
+      "beforeBytes": 3685253,
+      "afterBytes": 2368073
+    },
+    {
+      "asset": "espresso-on-off",
+      "beforeBytes": 674636,
+      "afterBytes": 511802
+    },
+    {
+      "asset": "ghost-latte-art",
+      "beforeBytes": 2510923,
+      "afterBytes": 1661025
+    },
+    {
+      "asset": "grinder-to-espresso",
+      "beforeBytes": 2029012,
+      "afterBytes": 1000727
+    },
+    {
+      "asset": "heart-latte-workshop",
+      "beforeBytes": 1177930,
+      "afterBytes": 979970
+    },
+    {
+      "asset": "iced-espresso-glass",
+      "beforeBytes": 2238421,
+      "afterBytes": 1628574
+    },
+    {
+      "asset": "iced-milk-rosetta",
+      "beforeBytes": 5343776,
+      "afterBytes": 3688181
+    },
+    {
+      "asset": "moka-orange-peel",
+      "beforeBytes": 2310260,
+      "afterBytes": 1543694
+    },
+    {
+      "asset": "rosetta-practice",
+      "beforeBytes": 1853443,
+      "afterBytes": 1515748
+    },
+    {
+      "asset": "spiral-dessert-coffee",
+      "beforeBytes": 2136477,
+      "afterBytes": 1642253
+    },
+    {
+      "asset": "stirred-caramel-latte",
+      "beforeBytes": 1821288,
+      "afterBytes": 1274279
+    },
+    {
+      "asset": "tulip-latte-pour",
+      "beforeBytes": 1652547,
+      "afterBytes": 1278143
+    }
+  ],
+  "excludedFilms": [
+    {
+      "legacyAsset": "coffeeVideo02",
+      "source": "ProjectMaterials/ContentVideos/AQMjB1uEvbHyxAl8nY8qeri5bkDbfWG-bS3cTzZehRSzulwOYjSQWYgn0ThuHfrtGzAEmhA0G54DZ-94mTWawly8UTBE9N2IXzJ0rYc.mp4",
+      "reason": "Not coffee-focused; original remains in ProjectMaterials."
+    },
+    {
+      "legacyAsset": "coffeeVideo03",
+      "source": "ProjectMaterials/ContentVideos/AQMmC0sIQ4NmgrJy9YygZSitQmNKxrpjIUlfE6DbfifbFKexSOENdWBXQeoJ_IngCJGUZ58pDlx_og7X5zpZvqkmB4jgkPHyBJRx5xI.mp4",
+      "reason": "Not coffee-focused; original remains in ProjectMaterials."
+    },
+    {
+      "legacyAsset": "coffeeVideo10",
+      "source": "ProjectMaterials/ContentVideos/AQOATF2y8Ss6N0_xp4paeEtHO9_3fzt2XBVGlnSLdBG30R4fJuOoz9KFGeA3T09Q-36wDtMZr3OlEQctiC7Q1OIldYMD01U7w4ARlAo.mp4",
+      "reason": "Not coffee-focused; original remains in ProjectMaterials."
+    },
+    {
+      "legacyAsset": "coffeeVideo12",
+      "source": "ProjectMaterials/ContentVideos/AQOVTD7Qw3rvUbflEsPfqAUEJg6Y_Tp2xOdZT8CGd32GagGQxZhh_LyIsYpr5P4wQUXCYlMA8i3nfXCmO_Jehyvea_Wa21BvDa-PJCI.mp4",
+      "reason": "Not coffee-focused; original remains in ProjectMaterials."
+    }
+  ],
+  "originalsPreserved": true,
+  "policy": "Optimize bundled copies only. Domain names describe visible coffee content, not fingerprint evasion.",
+  "afterOptimizationBytes": 49739357,
+  "additionalProcessing": [
+    "AppIcon PNG lossless optimization",
+    "Six static OFL font styles, metadata normalized and offline subset",
+    "Remaining WebP converted to JPEG for asset catalog packaging",
+    "Runtime strings extended to six languages"
+  ],
+  "sourceVideoInspection": "All 21 original videos sampled at 10%, 50%, 90%; 4 off-theme originals excluded from bundle.",
+  "appIconBytes": 1009648,
+  "unusedArtworkExcluded": [
+    "chatButton",
+    "checkinBackground",
+    "followButton",
+    "followedButton",
+    "homeTitle",
+    "photo",
+    "systemNotice",
+    "walletCard"
+  ]
+}

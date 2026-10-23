@@ -1,2 +1,2 @@
-"NSCameraUsageDescription" = "Chụp ảnh hoặc quay video cà phê để lưu vào nhật ký Papi trên máy.";
-"NSMicrophoneUsageDescription" = "Ghi bản nháp thoại riêng và âm thanh cho video bạn chọn quay.";
+"NSCameraUsageDescription" = "Chụp khoảnh khắc cà phê hoặc xem trước camera trước khi mở tính năng video bạn chọn.";
+"NSMicrophoneUsageDescription" = "Ghi chú thoại và âm thanh cho video cà phê bạn tạo. Chỉ yêu cầu quyền khi bắt đầu ghi âm hoặc chuẩn bị tính năng video.";
