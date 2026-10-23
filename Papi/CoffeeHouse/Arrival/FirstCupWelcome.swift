@@ -11,7 +11,7 @@ struct FirstCupWelcomeView:View {
                     ForEach(0..<3) { index in
                         PapiBackground(asset:["onboardingPour","onboardingChill","onboardingRoast"][index]).tag(index)
                     }
-                }.tabViewStyle(.page(indexDisplayMode:.never))
+                }.tabViewStyle(.page(indexDisplayMode:.never)).ignoresSafeArea(.container)
                 VStack {
                     HStack {Spacer();PapiTextButton(store.text("Skip")) {finishIntro()}.font(CoffeeType.face(.subheadline,weight:.bold)).padding(12).background(Color.cream.opacity(0.9),in:Capsule())}.padding(20)
                     Spacer()
@@ -55,6 +55,7 @@ struct FirstCupWelcomeView:View {
             if !store.storageAvailable && !store.state.sawOnboarding {PapiTextButton("Retry local storage"){store.reload()}.buttonStyle(PapiButtonStyle(light:true,wide:true)).padding(16).background(Color.cream)}
         }.sheet(isPresented:Binding(get:{legal != nil},set:{if !$0 {legal=nil}})) {
             PapiDeviceContainer {NavigationStack {LegalView(type:legal ?? "privacy")}}
+                .presentationBackground {PapiBackground()}.presentationDragIndicator(.hidden)
         }
     }
     private func finishIntro(){_ = store.commit{$0.sawOnboarding=true}}

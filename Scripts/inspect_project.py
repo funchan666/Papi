@@ -1,4 +1,4 @@
-"""Static resource/configuration inspection only. Does not build, test or launch Papi."""
+"""Static source/resource/configuration inspection only. Does not build, test or launch Papi."""
 from pathlib import Path
 from PIL import Image
 from fontTools.ttLib import TTFont
@@ -22,6 +22,7 @@ for p in source_files:
  if 'Image(systemName:' in source or 'UIScreen.main' in source:errors.append(f'{p.name}: forbidden image or global-screen pattern')
  for number,line in enumerate(source.splitlines(),1):
   if line.rstrip()!=line:errors.append(f'{p.name}:{number}: trailing whitespace')
+  if re.search(r'(?<!\\)(?:\\\\)*\\u[0-9A-Fa-f]{4}',line):errors.append(f'{p.name}:{number}: JSON-style Unicode escape; use UTF-8 or Swift Unicode braces')
 # Only coffee-focused films selected by the reviewed manifest are bundled.
 manifest=json.loads((root/'docs/ASSET_MANIFEST.json').read_text())
 films=[row for row in manifest if row.get('kind')=='film' and row.get('bundled',True)]

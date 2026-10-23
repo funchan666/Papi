@@ -32,6 +32,8 @@ struct PapiDeviceContainer<Content:View>:View {
                 .environment(\.papiRegions,regions(proxy))
                 .environment(\.papiBounds,CGRect(origin:.zero,size:proxy.size))
         }.coordinateSpace(name:"PapiContainer")
+            // Paint outside the measured foreground without disabling keyboard or camera cutout avoidance.
+            .background {PapiBackground()}
     }
     private func regions(_ proxy:GeometryProxy)->[CGRect] {
         #if PAPI_DUO_SDK

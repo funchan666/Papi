@@ -66,7 +66,7 @@ struct PapiRootView:View {
         .sheet(item:$router.sheet) { sheet in
             PapiDeviceContainer {
                 NavigationStack { sheetContent(sheet).papiNotices() }
-            }.presentationDragIndicator(.hidden)
+            }.presentationBackground {PapiBackground()}.presentationDragIndicator(.hidden)
         }
         .onChange(of:store.visibilityKeys){_,_ in router.removeHiddenDestinations(using:store)}
     }
@@ -77,7 +77,7 @@ struct PapiRootView:View {
             else {PapiScreen {VStack{PapiHeader("Coffee tables");PapiEmpty(title:"This content is unavailable");Spacer()}}}
         case .post(let id):CoffeeMomentView(momentID:id)
         case .person(let id):
-            if id==store.state.passport.id.uuidString {VStack(spacing:0){PapiHeader("Profile").background(Color.cream).papiContainerMargins();MyCoffeePassportView()}}
+            if id==store.state.passport.id.uuidString {VStack(spacing:0){PapiHeader("Profile").background(Color.cream).papiContainerMargins();MyCoffeePassportView()}.background {PapiBackground()}}
             else {MemberPassportView(memberID:id)}
         case .chat(let id):CoffeeConversationView(memberID:id)
         case .beans:BeanVarietyShelf()
@@ -95,7 +95,7 @@ struct PapiRootView:View {
         case .photo(let name):PhotoDetailView(name:name)
         case .gifts(let context):CollectibleCounterView(context:context)
         case .reviewQueue:ReviewQueueView()
-        case .tables:VStack(spacing:0){PapiHeader("Coffee tables").papiContainerMargins();CoffeeTablesView()}
+        case .tables:VStack(spacing:0){PapiHeader("Coffee tables").papiContainerMargins();CoffeeTablesView()}.background {PapiBackground()}
         case .brewRecipe(let id):BrewRecipeView(recipeID:id)
         case .brewArchive:BrewArchiveView()
         case .brewCup(let id):CupTastingView(cupID:id)
@@ -133,7 +133,7 @@ struct PapiTabShell:View {
                 BrewBenchView().opacity(store.selectedTab==1 ? 1:0).allowsHitTesting(store.selectedTab==1).accessibilityHidden(store.selectedTab != 1)
                 CorrespondenceInbox().opacity(store.selectedTab==2 ? 1:0).allowsHitTesting(store.selectedTab==2).accessibilityHidden(store.selectedTab != 2)
                 MyCoffeePassportView().opacity(store.selectedTab==3 ? 1:0).allowsHitTesting(store.selectedTab==3).accessibilityHidden(store.selectedTab != 3)
-            }.clipped()
+            }
             tabBar(vertical:side != nil)
         }.background(Color.cream)
     }
@@ -150,7 +150,10 @@ struct PapiTabShell:View {
                 }.buttonStyle(.plain).accessibilityAddTraits(store.selectedTab==index ? .isSelected:[]).papiAvoidReserved()
             }
         }.padding(.horizontal,10).padding(.vertical,12).frame(maxHeight:vertical ? .infinity:nil)
-            .background(Color.coffee,in:UnevenRoundedRectangle(topLeadingRadius:24,topTrailingRadius:24))
+            .background {
+                UnevenRoundedRectangle(topLeadingRadius:24,topTrailingRadius:24).fill(Color.coffee)
+                    .ignoresSafeArea(.container,edges:vertical ? .all:.bottom)
+            }
     }
 }
 #if PAPI_DUO_SDK

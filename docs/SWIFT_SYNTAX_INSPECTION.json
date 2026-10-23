@@ -1,0 +1,190 @@
+{
+  "reviewDate": "2026-10-23",
+  "method": "Tree-sitter Swift source parsing plus static Unicode scalar, conditional directive, conflict marker and control-character inspection. No Swift compiler invoked.",
+  "parserVersions": {
+    "tree-sitter": "0.26.0",
+    "tree-sitter-swift": "0.7.4"
+  },
+  "fileCount": 30,
+  "lineCount": 4129,
+  "regularStringLiterals": 1400,
+  "rawStringLiterals": 10,
+  "stringInterpolations": 78,
+  "unicodeEscapes": 2,
+  "inMemoryGrammarNormalisations": [
+    {
+      "file": "Papi/Appearance/DisplayContinuity.swift",
+      "line": 24,
+      "original": "$0.width*$0.height < $1.width*$1.height",
+      "reason": "Tree-sitter ambiguity around multiplication and shorthand closure arguments; whitespace only, in memory."
+    },
+    {
+      "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
+      "line": 254,
+      "original": "scale*$0",
+      "reason": "Tree-sitter ambiguity around multiplication and shorthand closure arguments; whitespace only, in memory."
+    }
+  ],
+  "findings": [],
+  "files": [
+    {
+      "file": "Papi/App/PapiApp.swift",
+      "lines": 182,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Appearance/CoffeeArtwork.swift",
+      "lines": 94,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Appearance/CoffeeLanguage.swift",
+      "lines": 79,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Appearance/CoffeePalette.swift",
+      "lines": 184,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Appearance/CoffeeTypography.swift",
+      "lines": 37,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Appearance/DisplayContinuity.swift",
+      "lines": 112,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeDomain/BrewRecords.swift",
+      "lines": 156,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeDomain/CoffeeArchive.swift",
+      "lines": 292,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeDomain/CorrespondenceLedger.swift",
+      "lines": 76,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeHouse/Arrival/FirstCupWelcome.swift",
+      "lines": 62,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeHouse/Beans/BeanVarieties.swift",
+      "lines": 21,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeHouse/Brewing/BrewBench.swift",
+      "lines": 342,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeHouse/Cafes/CafeNotebook.swift",
+      "lines": 28,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeHouse/Community/CommunityCare.swift",
+      "lines": 168,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeHouse/Correspondence/CoffeeLetters.swift",
+      "lines": 138,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeHouse/Counter/CoffeeCounter.swift",
+      "lines": 292,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
+      "lines": 264,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeHouse/Passports/CoffeePassports.swift",
+      "lines": 270,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/CoffeeHouse/Tables/CoffeeTables.swift",
+      "lines": 146,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Media/AudioFocus.swift",
+      "lines": 20,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Media/CameraPreview.swift",
+      "lines": 108,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Media/CoffeeFilm.swift",
+      "lines": 100,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Media/CoffeeMediaFiles.swift",
+      "lines": 137,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Media/VoiceNotebook.swift",
+      "lines": 124,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Persistence/AppleCoinCounter.swift",
+      "lines": 198,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Persistence/BrewNotebook.swift",
+      "lines": 92,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Persistence/CoffeeArchiveStore.swift",
+      "lines": 193,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Persistence/CoffeeVault.swift",
+      "lines": 41,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Persistence/CommunityActions.swift",
+      "lines": 137,
+      "syntaxTreeComplete": true
+    },
+    {
+      "file": "Papi/Persistence/CommunityContentPolicy.swift",
+      "lines": 36,
+      "syntaxTreeComplete": true
+    }
+  ],
+  "swiftSourcesChangedByThisReview": true,
+  "compilerInvoked": false,
+  "testsExecuted": false,
+  "appLaunched": false,
+  "limitations": [
+    "Independent parser grammar is not the Swift compiler.",
+    "No type checking, SwiftUI result-builder overload resolution, SDK availability or runtime verification.",
+    "Two valid tightly spaced multiplication expressions required whitespace normalisation only in the parser input; original Swift files were preserved."
+  ]
+}

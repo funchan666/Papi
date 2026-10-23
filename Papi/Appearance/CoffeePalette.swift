@@ -38,7 +38,7 @@ struct PapiBackground: View {
             } else {
                 Image(asset).resizable().scaledToFill().frame(width:proxy.size.width,height:proxy.size.height).clipped()
             }
-        }.ignoresSafeArea().accessibilityHidden(true)
+        }.ignoresSafeArea().allowsHitTesting(false).accessibilityHidden(true)
     }
 }
 struct PapiButtonStyle: ButtonStyle {
@@ -174,8 +174,11 @@ struct PapiScreen<Content:View>: View {
     var background = "pageBackground"
     @ViewBuilder var content:()->Content
     var body:some View {
-        ZStack { PapiBackground(asset:background);content() }
+        // Only foreground content receives container margins; artwork extends to every screen edge.
+        content().frame(maxWidth:.infinity,maxHeight:.infinity)
+            .papiContainerMargins()
+            .background {PapiBackground(asset:background)}
             .foregroundStyle(Color.coffee).toolbar(.hidden,for:.navigationBar)
-            .background(SwipeBackBridge()).papiContainerMargins()
+            .background(SwipeBackBridge())
     }
 }
