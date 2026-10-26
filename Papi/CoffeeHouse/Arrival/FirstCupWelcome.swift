@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FirstCupWelcomeView:View {
     @EnvironmentObject private var store:CoffeeHouse
+    @EnvironmentObject private var router:CoffeeNavigation
     @State private var page=0
     @State private var legal:String?
     var body:some View {
@@ -32,7 +33,7 @@ struct FirstCupWelcomeView:View {
                                 PapiIconButton(asset:"back",label:"Back") {_ = store.commit{$0.sawOnboarding=false}}
                                 Spacer()
                                 PapiText("Papi").font(CoffeeType.display(size:23,weight:.bold))
-                            }.foregroundStyle(Color.coffee).padding(.horizontal,16).frame(height:52)
+                            }.foregroundStyle(Color.coffee).padding(.horizontal,16).frame(minHeight:52).papiAvoidReserved()
                             Color.clear.frame(height:max(120,proxy.size.height*0.72-52))
                             PapiTextButton(store.text("Log in")) {store.login()}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:12)).frame(maxWidth:.infinity)
                                 .disabled(!store.storageAvailable).padding(.horizontal,16)
@@ -41,10 +42,9 @@ struct FirstCupWelcomeView:View {
                             Spacer(minLength:30)
                             VStack(spacing:4) {
                                 PapiText(store.text("By continuing, you agree to our")).font(CoffeeType.face(.caption))
-                                HStack(spacing:4) {
-                                    PapiTextButton(store.text("User Agreement")){legal="terms"}
-                                    PapiText("&")
-                                    PapiTextButton(store.text("Privacy Policy")){legal="privacy"}
+                                PapiActionGroup {
+                                    PapiTextButton(store.text("User Agreement")){legal="terms"}.frame(minHeight:44)
+                                    PapiTextButton(store.text("Privacy Policy")){legal="privacy"}.frame(minHeight:44)
                                 }.font(CoffeeType.face(.caption,weight:.medium))
                             }.foregroundStyle(Color.mutedCoffee).padding(.bottom,20)
                         }.frame(maxWidth:520).frame(minHeight:proxy.size.height).frame(maxWidth:.infinity)
@@ -55,7 +55,7 @@ struct FirstCupWelcomeView:View {
             if !store.storageAvailable && !store.state.sawOnboarding {PapiTextButton("Retry local storage"){store.reload()}.buttonStyle(PapiButtonStyle(light:true,wide:true)).padding(16).background(Color.cream)}
         }.sheet(isPresented:Binding(get:{legal != nil},set:{if !$0 {legal=nil}})) {
             PapiDeviceContainer {NavigationStack {LegalView(type:legal ?? "privacy")}}
-                .presentationBackground {PapiBackground()}.presentationDragIndicator(.hidden)
+                .presentationBackground {PapiBackground()}.presentationDragIndicator(.hidden).interactiveDismissDisabled(router.hasBlockingModal)
         }
     }
     private func finishIntro(){_ = store.commit{$0.sawOnboarding=true}}

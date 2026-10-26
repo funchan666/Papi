@@ -42,6 +42,8 @@ SwiftUI 环境的 PurchaseAction 提供真实系统支付 UI 与所属 scene 上
 
 Transaction.updates 常驻监听，启动/回前台扫描 unfinished。已验证交易按 ID 幂等，余额、原始金币数和流水经 Keychain 写入并读回后才 finish。退款从当笔真实入账数回收，后续调整档位不会改写历史交付量。退出/删除与支付发起互斥；删号保留旧访客和交易归属记录，新访客不能继承旧购买。Recover purchases 不会恢复已经 finish 的消耗型余额到新访客，也不承诺跨设备同步。
 
+2026-10-23 持久化补强：新订单同时保存对应 Apple 交易 ID，同一订单 token 不能再绑定第二个交易入账；旧字段缺失时保持兼容，仅依据后续匹配的已验证回调补存关联。存储恢复、重新登录及账号操作结束会补扫 unfinished，重叠请求合并。已有快照缺失时停止写入，不用新账号覆盖；首登增加欢迎流水去重。完整边界与静态证据见 [PERSISTENCE_REVIEW.md](PERSISTENCE_REVIEW.md)。
+
 ## 仍需 App Store Connect / 签名配置
 
 源码已能发起真实购买，但未登录或修改 App Store Connect，也未创建/验证任何商品。当前 Bundle ID 仍为暂定 `com.papi.coffee`，开发者 Team 为空。需确认该 App 的真实 Bundle ID/签名团队，在同一 App 下核对原 7 款、创建新增 2 款消耗型商品，并按表设置参考定价、显示名称、说明、审核截图和销售地区；完成协议、税务及银行相关要求。若参考币种并非 USD，需要在商店侧按实际参考币种确认定价，原给定数值和 ID 不擅自改变。

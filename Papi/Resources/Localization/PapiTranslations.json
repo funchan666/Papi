@@ -5395,5 +5395,26 @@
     "ar": "الهدف على الميزان: {0} غ",
     "vi": "Mục tiêu trên cân: {0} g",
     "ko": "저울 목표값: {0}g"
+  },
+  "Your saved coffee account could not be found. Local changes are paused to protect your balance. Please try again later.": {
+    "es": "No se ha encontrado tu cuenta de café guardada. Los cambios locales están en pausa para proteger tu saldo. Inténtalo de nuevo más tarde.",
+    "th": "ไม่พบบัญชีกาแฟที่บันทึกไว้ ระบบหยุดการเปลี่ยนแปลงในเครื่องเพื่อปกป้องยอดคงเหลือของคุณ โปรดลองอีกครั้งภายหลัง",
+    "ar": "تعذر العثور على حساب القهوة المحفوظ. تم إيقاف التغييرات المحلية مؤقتًا لحماية رصيدك. يُرجى المحاولة لاحقًا.",
+    "vi": "Không tìm thấy tài khoản cà phê đã lưu. Các thay đổi trên thiết bị đang tạm dừng để bảo vệ số dư của bạn. Vui lòng thử lại sau.",
+    "ko": "저장된 커피 계정을 찾을 수 없습니다. 잔액을 보호하기 위해 기기의 변경 사항 저장을 일시 중단했습니다. 나중에 다시 시도해 주세요."
+  },
+  "Your local data could not be verified. Unlock this device and retry local storage before making more changes.": {
+    "es": "No se han podido verificar tus datos locales. Desbloquea este dispositivo y vuelve a intentar acceder al almacenamiento local antes de hacer más cambios.",
+    "th": "ไม่สามารถตรวจสอบข้อมูลในเครื่องได้ โปรดปลดล็อกอุปกรณ์นี้แล้วลองเข้าถึงพื้นที่จัดเก็บในเครื่องอีกครั้งก่อนเปลี่ยนแปลงข้อมูลเพิ่มเติม",
+    "ar": "تعذر التحقق من بياناتك المحلية. افتح قفل الجهاز وأعد محاولة الوصول إلى التخزين المحلي قبل إجراء المزيد من التغييرات.",
+    "vi": "Không thể xác minh dữ liệu trên thiết bị. Hãy mở khóa thiết bị và thử truy cập bộ nhớ cục bộ lại trước khi thực hiện thêm thay đổi.",
+    "ko": "기기 데이터를 확인할 수 없습니다. 추가로 변경하기 전에 기기의 잠금을 해제하고 로컬 저장소에 다시 접근해 주세요."
+  },
+  "This order is already linked to another Apple transaction. No coins were added; purchase recovery needs review.": {
+    "es": "Este pedido ya está vinculado a otra transacción de Apple. No se han añadido monedas; es necesario revisar la recuperación de la compra.",
+    "th": "คำสั่งซื้อนี้เชื่อมกับธุรกรรม Apple อื่นแล้ว ไม่มีการเพิ่มเหรียญ ต้องตรวจสอบการกู้คืนรายการซื้อ",
+    "ar": "هذا الطلب مرتبط بالفعل بمعاملة أخرى من Apple. لم تُضف أي عملات؛ تتطلب استعادة عملية الشراء مراجعة.",
+    "vi": "Đơn hàng này đã được liên kết với một giao dịch Apple khác. Không có xu nào được cộng; cần kiểm tra việc khôi phục giao dịch mua.",
+    "ko": "이 주문은 이미 다른 Apple 거래에 연결되어 있습니다. 코인은 추가되지 않았으며 구매 복구 내역을 확인해야 합니다."
   }
 }

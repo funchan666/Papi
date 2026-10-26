@@ -48,6 +48,7 @@ struct PapiButtonStyle: ButtonStyle {
     var cornerRadius:CGFloat = 26
     func makeBody(configuration: Configuration) -> some View {
         configuration.label.font(CoffeeType.face(.body,weight:.semibold))
+            .multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
             .foregroundStyle(light ? Color.coffee : .white)
             .padding(.horizontal,22).padding(.vertical,14).frame(maxWidth:wide ? .infinity:nil,minHeight:48)
             .background(light ? Color.butter : Color.coffee,in:RoundedRectangle(cornerRadius:cornerRadius))
@@ -75,24 +76,28 @@ struct Avatar: View {
 }
 struct PapiHeader<Trailing: View>: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.papiBounds) private var bounds
+    @ScaledMetric(relativeTo:.headline) private var titleLineHeight:CGFloat=24
     var title: String
     var back = true
+    var backAction:(()->Void)?
     var titleAction:(()->Void)?
     @ViewBuilder var trailing: () -> Trailing
-    init(_ title: String, back: Bool = true, titleAction:(()->Void)?=nil, @ViewBuilder trailing:@escaping ()->Trailing) { self.title=title;self.back=back;self.titleAction=titleAction;self.trailing=trailing }
+    init(_ title: String, back: Bool = true, backAction:(()->Void)?=nil, titleAction:(()->Void)?=nil, @ViewBuilder trailing:@escaping ()->Trailing) { self.title=title;self.back=back;self.backAction=backAction;self.titleAction=titleAction;self.trailing=trailing }
     var body: some View {
         HStack(spacing:8) {
-            if back { PapiIconButton(asset:"back",label:"Back") { dismiss() } }
-            else { EmptyView() }
+            if back { PapiIconButton(asset:"back",label:"Back") { if let backAction {backAction()} else {dismiss()} }.fixedSize().layoutPriority(1) }
+            else { Color.clear.frame(width:44,height:44).accessibilityHidden(true) }
             Group {
                 if let titleAction {PapiTextButton(title,action:titleAction)} else {PapiText(title)}
-            }.font(CoffeeType.face(.headline)).frame(maxWidth:.infinity).multilineTextAlignment(.center)
-            trailing().frame(minWidth:44,minHeight:44)
-        }.foregroundStyle(Color.coffee).padding(.horizontal,8).padding(.vertical,4)
+            }.font(CoffeeType.face(.headline)).lineLimit(bounds.height>0 && bounds.height<titleLineHeight*6 ? 1:2).fixedSize(horizontal:false,vertical:true)
+                .frame(maxWidth:.infinity).multilineTextAlignment(.center)
+            trailing().frame(minWidth:44,minHeight:44).fixedSize(horizontal:true,vertical:false).layoutPriority(1)
+        }.foregroundStyle(Color.coffee).padding(.horizontal,8).padding(.vertical,4).papiAvoidReserved()
     }
 }
 extension PapiHeader where Trailing == EmptyView {
-    init(_ title:String,back:Bool=true) { self.init(title,back:back) { EmptyView() } }
+    init(_ title:String,back:Bool=true,backAction:(()->Void)?=nil) { self.init(title,back:back,backAction:backAction) { EmptyView() } }
 }
 struct PapiEmpty: View {
     var title: String
@@ -141,33 +146,88 @@ struct PapiTextField: View {
         PapiInput(prompt,text:$text,axis:.vertical).lineLimit(1...5).padding(15).background(Color.white,in:RoundedRectangle(cornerRadius:15)).foregroundStyle(Color.coffee)
     }
 }
-struct PapiDialog: View {
-    var title: String
-    var message: String
-    var confirm = "OK"
-    var cancel: String? = nil
-    var action: ()->Void
-    var dismiss: ()->Void
+/// For stateless actions only; text inputs use the identity-preserving composer layout below.
+struct PapiActionGroup<Content:View>:View {
+    @ViewBuilder var content:()->Content
+    var body:some View {
+        ViewThatFits(in:.horizontal) {
+            HStack(spacing:12,content:content).fixedSize(horizontal:true,vertical:false)
+            VStack(spacing:12,content:content).frame(maxWidth:.infinity)
+        }.frame(maxWidth:.infinity)
+    }
+}
+struct PapiInputBar<Field:View,Actions:View>:View {
+    @ScaledMetric(relativeTo:.body) private var inputWidth:CGFloat=140
+    @ScaledMetric(relativeTo:.body) private var lineHeight:CGFloat=24
+    @Environment(\.papiBounds) private var bounds
+    @ViewBuilder var field:()->Field
+    @ViewBuilder var actions:()->Actions
+    var body:some View {
+        let compact=bounds.height>0 && bounds.height<lineHeight*10
+        PapiComposerLayout(minimumInputWidth:compact ? 60:inputWidth) {
+            field().frame(maxWidth:.infinity)
+            actions()
+        }.environment(\.papiComposerLines,compact ? 1:3)
+            .padding(10).background {Color.coffee.ignoresSafeArea(.container,edges:.bottom)}.papiAvoidReserved()
+    }
+}
+private struct CoffeeModalHeightKey:PreferenceKey {
+    static var defaultValue:CGFloat=0
+    static func reduce(value:inout CGFloat,nextValue:()->CGFloat) {value=max(value,nextValue())}
+}
+struct CoffeeModal<Content:View>:View {
+    var maximumWidth:CGFloat=360
+    var maximumHeight:CGFloat=460
+    var shade:Color=Color.black.opacity(0.48)
+    @ViewBuilder var content:()->Content
     @Environment(\.papiRegions) private var regions
-    var body: some View {
-        GeometryReader { proxy in
-            let origin = proxy.frame(in:.named("PapiContainer")).origin
-            let localRegions = regions.map {$0.offsetBy(dx:-origin.x,dy:-origin.y)}
-            let rect = PapiRegionGeometry.largestArea(in:CGRect(origin:.zero,size:proxy.size),excluding:localRegions)
+    @EnvironmentObject private var router:CoffeeNavigation
+    @State private var contentHeight:CGFloat=0
+    @State private var presentationID=UUID()
+    var body:some View {
+        GeometryReader {proxy in
+            let origin=proxy.frame(in:.named("PapiContainer")).origin
+            let rect=PapiRegionGeometry.largestArea(in:CGRect(origin:.zero,size:proxy.size),excluding:regions.map{$0.offsetBy(dx:-origin.x,dy:-origin.y)})
+            let width=max(0,min(maximumWidth,rect.width-24))
+            let height=max(0,min(maximumHeight,rect.height-24))
             ZStack {
-                Color.black.opacity(0.48).ignoresSafeArea().onTapGesture {}
+                shade.ignoresSafeArea().onTapGesture{}
                 ScrollView {
-                    VStack(spacing:20) {
-                        PapiText(title).font(CoffeeType.face(.title3,weight:.bold)).multilineTextAlignment(.center)
-                        PapiText(message).font(CoffeeType.face(.body)).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
-                        PapiTextButton(confirm,action:action).buttonStyle(PapiButtonStyle()).frame(maxWidth:.infinity)
-                        if let cancel { PapiTextButton(cancel,action:dismiss).buttonStyle(PapiButtonStyle(light:true)) }
-                    }.padding(30).frame(maxWidth:350)
-                        .background { Image("dialogBackground").resizable() }
-                }.frame(width:min(360,max(44,rect.width-24)),height:min(460,max(44,rect.height-24)))
-                    .position(x:rect.midX,y:rect.midY)
+                    content().padding(width<280 ? 16:26).frame(maxWidth:.infinity)
+                        .background {GeometryReader {geometry in Color.clear.preference(key:CoffeeModalHeightKey.self,value:geometry.size.height)}}
+                        .background {Image("dialogBackground").resizable()}
+                }.frame(width:width,height:min(height,contentHeight>0 ? contentHeight:height))
+                    .clipShape(RoundedRectangle(cornerRadius:22)).position(x:rect.midX,y:rect.midY)
             }.foregroundStyle(Color.coffee)
-        }.accessibilityAddTraits(.isModal)
+        }.onPreferenceChange(CoffeeModalHeightKey.self){if abs(contentHeight-$0)>0.5 {contentHeight=$0}}
+            .onAppear {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),to:nil,from:nil,for:nil)
+                router.beginModal(presentationID)
+            }.onDisappear {router.endModal(presentationID)}
+            .accessibilityAddTraits(.isModal)
+    }
+}
+struct PapiDialog: View {
+    var title:String
+    var message:String
+    var confirm="OK"
+    var cancel:String? = nil
+    var action:()->Void
+    var dismiss:()->Void
+    @State private var resolving=false
+    var body:some View {
+        CoffeeModal {
+            VStack(spacing:20) {
+                PapiText(title).font(CoffeeType.face(.title3,weight:.bold)).multilineTextAlignment(.center)
+                PapiText(message).font(CoffeeType.face(.body)).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
+                PapiTextButton(confirm){resolve(action)}.buttonStyle(PapiButtonStyle(wide:true)).disabled(resolving)
+                if let cancel {PapiTextButton(cancel){resolve(dismiss)}.buttonStyle(PapiButtonStyle(light:true,wide:true)).disabled(resolving)}
+            }
+        }
+    }
+    private func resolve(_ choice:()->Void) {
+        guard !resolving else{return}
+        resolving=true;choice()
     }
 }
 struct PapiScreen<Content:View>: View {

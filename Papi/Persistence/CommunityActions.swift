@@ -3,7 +3,7 @@ import Foundation
 @MainActor extension CoffeeHouse {
     var community:CorrespondenceLedger {state.community ?? CorrespondenceLedger()}
     var hiddenKeys:Set<String> {
-        community.hiddenTargets.union(state.communityReports.compactMap{SafetyTarget.legacy($0.contentReference)?.id})
+        community.hiddenTargets.union(state.communityReports.compactMap{$0.target?.id ?? SafetyTarget.legacy($0.contentReference)?.id})
     }
     var visibilityKeys:[String] {(hiddenKeys.union(state.blockedMembers.map{"blocked:"+$0})).sorted()}
     func person(_ id:String)->CoffeeMember? {
@@ -62,7 +62,7 @@ import Foundation
         let comment=target.kind == .comment ? state.tastingReplies.first{$0.id==target.contentReference}:nil
         let excerpt=comment?.text ?? (target.kind == .post ? (state.ownMoments+CoffeeMoment.editorial).first{$0.id==target.contentReference}?.caption:nil)
         let saved=commit {value in
-            if !value.communityReports.contains(where:{$0.contentReference==target.id}) {value.communityReports.append(.init(contentReference:target.id,reason:reason,target:target,parentID:comment?.momentID,excerpt:excerpt.map{String($0.prefix(500))}))}
+            if !value.communityReports.contains(where:{($0.target?.id ?? SafetyTarget.legacy($0.contentReference)?.id)==target.id}) {value.communityReports.append(.init(contentReference:target.id,reason:reason,target:target,parentID:comment?.momentID,excerpt:excerpt.map{String($0.prefix(500))}))}
             var data=value.community ?? CorrespondenceLedger()
             data.hiddenTargets.insert(target.id)
             value.community=data

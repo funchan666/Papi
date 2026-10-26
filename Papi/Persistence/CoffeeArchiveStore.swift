@@ -17,8 +17,9 @@ struct CoffeeReceipt: Identifiable {
     @Published var roomMicRequested = false
     @Published private(set) var accountAction:AccountTransition?
     @Published private(set) var checkoutActive = false
+    private var savedSnapshotExpected=false
     init() {
-        do { state = try CoffeeVault.read() ?? CoffeeArchive() }
+        do {let saved=try CoffeeVault.read();state=saved ?? CoffeeArchive();savedSnapshotExpected=saved != nil}
         catch { state = CoffeeArchive(); storageAvailable = false
             notice = .init(title: "Local data unavailable", message: error.localizedDescription) }
         if storageAvailable {cleanupPendingMedia()}
@@ -30,22 +31,31 @@ struct CoffeeReceipt: Identifiable {
         do {
             try mutate(&next)
             try CoffeeVault.write(next)
+            savedSnapshotExpected=true
             state = next
             return true
-        } catch { storageAvailable = false; inform("Could not save", error.localizedDescription + " Reopen the app or retry local storage before making more changes."); return false }
+        } catch {
+            if let vaultError=error as? CoffeeVault.VaultError,case .verification=vaultError {savedSnapshotExpected=true}
+            storageAvailable = false; inform("Could not save", error.localizedDescription + " Reopen the app or retry local storage before making more changes."); return false
+        }
     }
     func reload() {
-        do { if let saved = try CoffeeVault.read() { state = saved }; storageAvailable = true;cleanupPendingMedia() }
-        catch { inform("Local data unavailable", error.localizedDescription) }
+        guard accountAction==nil,!checkoutActive else{return}
+        do {
+            if let saved=try CoffeeVault.read() {state=saved;savedSnapshotExpected=true}
+            else if savedSnapshotExpected {throw CoffeeVault.VaultError.missingSnapshot}
+            storageAvailable=true;cleanupPendingMedia()
+        } catch {storageAvailable=false;inform("Local data unavailable",error.localizedDescription)}
     }
     func inform(_ title: String, _ message: String) { notice = .init(title:title,message:message) }
     func login() {
         guard commit({
-            if $0.acceptedPolicyVersion == nil, $0.welcomeGrant == nil {
+            let welcomeID="welcome-"+$0.passport.id.uuidString
+            if $0.acceptedPolicyVersion == nil, $0.welcomeGrant == nil,!$0.coinMovements.contains(where:{$0.id==welcomeID}) {
                 let reward = CoffeeEconomy.welcomeCoins
                 $0.coinBalance += reward
                 $0.welcomeGrant = WelcomeGrant(coins:reward)
-                $0.coinMovements.insert(.init(id:"welcome-"+$0.passport.id.uuidString,delta:reward,reason:"First brew welcome gift"),at:0)
+                $0.coinMovements.insert(.init(id:welcomeID,delta:reward,reason:"First brew welcome gift"),at:0)
             }
             $0.signedIn = true; $0.acceptedPolicyVersion = "2026-10-22"
         }) else {return}
@@ -87,6 +97,7 @@ struct CoffeeReceipt: Identifiable {
         let snapshot=next
         do {
             try await Task.detached(priority:.userInitiated) {try CoffeeVault.write(snapshot)}.value
+            savedSnapshotExpected=true
             state=next;activeRoomID=nil;roomMicRequested=false;selectedTab=0
             if action == .delete {
                 let owners=next.pendingMediaDeletion

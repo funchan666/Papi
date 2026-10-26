@@ -58,23 +58,25 @@ struct VoiceDraftView:View {
     @State private var owner:UUID?
     @State private var recordingTask:Task<Void,Never>?
     var body:some View {
-        PapiScreen {VStack(spacing:24){
+        PapiScreen {VStack(spacing:0){
             PapiHeader("Voice draft")
-            Spacer()
-            Image("mic").resizable().scaledToFit().frame(width:90,height:90)
-            PapiText(recorder.message).font(CoffeeType.face(.body)).multilineTextAlignment(.center).padding(.horizontal,28)
-            PapiTextButton(recorder.recording ? "Stop recording":"Record") {
-                if recorder.recording {recorder.stop()}
-                else {requesting=true;let guest=store.state.passport.id;owner=guest;recordingTask=Task{await recorder.start(owner:guest);requesting=false}}
-            }.buttonStyle(PapiButtonStyle()).disabled(requesting)
-            if let name=recorder.savedName,!recorder.recording {
-                VoiceNotePlayer(name:name)
-                PapiTextButton("Keep draft") {
-                    guard owner==store.state.passport.id else{return}
-                    if store.commit({$0.letterVoiceNotes[memberID]=name}){dismiss()}
-                }.buttonStyle(PapiButtonStyle(light:true))
+            ScrollView {
+                VStack(spacing:24) {
+                    Image("mic").resizable().scaledToFit().frame(width:90,height:90)
+                    PapiText(recorder.message).font(CoffeeType.face(.body)).multilineTextAlignment(.center).padding(.horizontal,28)
+                    PapiTextButton(recorder.recording ? "Stop recording":"Record") {
+                        if recorder.recording {recorder.stop()}
+                        else {requesting=true;let guest=store.state.passport.id;owner=guest;recordingTask=Task{await recorder.start(owner:guest);requesting=false}}
+                    }.buttonStyle(PapiButtonStyle()).disabled(requesting)
+                    if let name=recorder.savedName,!recorder.recording {
+                        VoiceNotePlayer(name:name)
+                        PapiTextButton("Keep draft") {
+                            guard owner==store.state.passport.id else{return}
+                            if store.commit({$0.letterVoiceNotes[memberID]=name}){dismiss()}
+                        }.buttonStyle(PapiButtonStyle(light:true))
+                    }
+                }.padding(20).frame(maxWidth:620).frame(maxWidth:.infinity)
             }
-            Spacer()
         }}.onDisappear{recordingTask?.cancel();recorder.stop()}.onChange(of:phase){_,p in if p == .background {recordingTask?.cancel();recorder.stop()}}
     }
 }

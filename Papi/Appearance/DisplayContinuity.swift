@@ -3,9 +3,13 @@ import UIKit
 
 private struct PapiBoundsKey: EnvironmentKey { static let defaultValue: CGRect = .zero }
 private struct PapiRegionsKey: EnvironmentKey { static let defaultValue: [CGRect] = [] }
+private struct PapiAvoidanceGroupKey:EnvironmentKey {static let defaultValue=false}
+private struct PapiComposerLinesKey:EnvironmentKey {static let defaultValue:Int? = nil}
 extension EnvironmentValues {
     var papiBounds: CGRect { get {self[PapiBoundsKey.self]} set {self[PapiBoundsKey.self]=newValue} }
     var papiRegions: [CGRect] { get {self[PapiRegionsKey.self]} set {self[PapiRegionsKey.self]=newValue} }
+    var papiAvoidanceGroup:Bool {get {self[PapiAvoidanceGroupKey.self]} set {self[PapiAvoidanceGroupKey.self]=newValue}}
+    var papiComposerLines:Int? {get {self[PapiComposerLinesKey.self]} set {self[PapiComposerLinesKey.self]=newValue}}
 }
 struct PapiRegionGeometry {
     static func largestArea(in bounds:CGRect, excluding regions:[CGRect]) -> CGRect {
@@ -52,11 +56,16 @@ private struct ControlFrameKey:PreferenceKey {
 private struct AvoidRegionModifier:ViewModifier {
     @Environment(\.papiRegions) private var regions
     @Environment(\.papiBounds) private var bounds
+    @Environment(\.papiAvoidanceGroup) private var grouped
     @State private var frame:CGRect = .zero
     func body(content:Content)->some View {
-        // Measurement is outside the translated child, so offsets do not feed back into geometry.
-        content.offset(translation).background(GeometryReader { p in Color.clear.preference(key:ControlFrameKey.self,value:p.frame(in:.named("PapiContainer"))) })
-            .onPreferenceChange(ControlFrameKey.self) {frame=$0}
+        if grouped {content}
+        else {
+            // Move a control group once; its children must not shift into one another independently.
+            content.environment(\.papiAvoidanceGroup,true).offset(translation)
+                .background(GeometryReader { p in Color.clear.preference(key:ControlFrameKey.self,value:p.frame(in:.named("PapiContainer"))) })
+                .onPreferenceChange(ControlFrameKey.self) {frame=$0}
+        }
     }
     private var translation:CGSize {
         guard frame.width > 0 else {return .zero}
@@ -98,15 +107,43 @@ struct PapiShellLayout:Layout {
         }
     }
 }
+/// The input and actions retain identity when a narrow container needs two rows.
+struct PapiComposerLayout:Layout {
+    var minimumInputWidth:CGFloat
+    private func measure(_ width:CGFloat?,_ subviews:Subviews)->(width:CGFloat,field:CGSize,actions:CGSize,stacked:Bool) {
+        let ideal=subviews[1].sizeThatFits(.unspecified)
+        let available=max(0,width.flatMap{$0.isFinite ? $0:nil} ?? minimumInputWidth+8+ideal.width)
+        let stacked=available<minimumInputWidth+8+ideal.width
+        let actions=subviews[1].sizeThatFits(ProposedViewSize(width:min(available,ideal.width),height:nil))
+        let field=subviews[0].sizeThatFits(ProposedViewSize(width:stacked ? available:max(0,available-actions.width-8),height:nil))
+        return (available,field,actions,stacked)
+    }
+    func sizeThatFits(proposal:ProposedViewSize,subviews:Subviews,cache:inout ())->CGSize {
+        guard subviews.count==2 else{return .zero}
+        let result=measure(proposal.width,subviews)
+        return CGSize(width:result.width,height:result.stacked ? result.field.height+8+result.actions.height:max(result.field.height,result.actions.height))
+    }
+    func placeSubviews(in bounds:CGRect,proposal:ProposedViewSize,subviews:Subviews,cache:inout ()) {
+        guard subviews.count==2 else{return}
+        let result=measure(bounds.width,subviews)
+        subviews[0].place(at:CGPoint(x:bounds.minX,y:result.stacked ? bounds.minY:bounds.midY-result.field.height/2),anchor:.topLeading,proposal:ProposedViewSize(result.field))
+        subviews[1].place(at:CGPoint(x:bounds.maxX-result.actions.width,y:result.stacked ? bounds.minY+result.field.height+8:bounds.midY-result.actions.height/2),anchor:.topLeading,proposal:ProposedViewSize(result.actions))
+    }
+}
 struct SwipeBackBridge:UIViewControllerRepresentable {
+    @EnvironmentObject private var router:CoffeeNavigation
     func makeUIViewController(context:Context)->Controller {Controller()}
-    func updateUIViewController(_ controller:Controller,context:Context) {}
+    func updateUIViewController(_ controller:Controller,context:Context) {controller.blocksBack=router.hasBlockingModal;controller.updateBackGesture()}
     final class Controller:UIViewController {
+        var blocksBack=false
         override func viewDidAppear(_ animated:Bool) {
             super.viewDidAppear(animated)
-            guard let nav=navigationController, nav.viewControllers.count > 1 else{return}
-            nav.interactivePopGestureRecognizer?.isEnabled=true
-            nav.interactivePopGestureRecognizer?.delegate=nil
+            updateBackGesture()
+        }
+        func updateBackGesture() {
+            guard let nav=navigationController,nav.viewControllers.count>1 else{return}
+            nav.interactivePopGestureRecognizer?.isEnabled = !blocksBack
+            if !blocksBack {nav.interactivePopGestureRecognizer?.delegate=nil}
         }
     }
 }

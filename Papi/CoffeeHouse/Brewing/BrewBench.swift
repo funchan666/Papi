@@ -47,9 +47,11 @@ struct BrewFrontispiece:View {
     let title:String
     @Environment(\.layoutDirection) private var direction
     @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.papiBounds) private var bounds
+    @ScaledMetric(relativeTo:.title2) private var artworkTextWidth:CGFloat=320
     var body:some View {
         Group {
-            if direction == .rightToLeft || typeSize.isAccessibilitySize {
+            if direction == .rightToLeft || typeSize.isAccessibilitySize || (bounds.width>0 && bounds.width<artworkTextWidth+40) {
                 VStack(alignment:.leading,spacing:16) {
                     Image(artwork).resizable().scaledToFit().clipShape(RoundedRectangle(cornerRadius:22))
                     PapiText(title).font(CoffeeType.display(.title2,weight:.bold))
@@ -101,7 +103,7 @@ struct BrewRecipeView:View {
                     if confirmSave {PapiDialog(title:"Keep this cup?",message:"Save the elapsed brew time and recipe to your book. Add tasting notes after the cup has cooled. Saving costs no coins.",confirm:"Save this cup",cancel:"Keep brewing",action:{confirmSave=false;if store.saveBrew(){router.go(.brewArchive)}},dismiss:{confirmSave=false})}
                     if confirmDiscard {PapiDialog(title:"Clear this pour?",message:"This removes the running timer. Your bean details and unlocked recipes stay in your book.",confirm:"Clear pour",cancel:"Keep brewing",action:{confirmDiscard=false;store.discardPour()},dismiss:{confirmDiscard=false})}
                 }
-            } else {VStack {PapiHeader("Brew bench");PapiEmpty(title:"Recipe unavailable");Spacer()}}
+            } else {VStack(spacing:0){PapiHeader("Brew bench");ScrollView {PapiEmpty(title:"Recipe unavailable")}}}
         }
     }
     private func brewSetup(_ recipe:BrewRecipe)->some View {
@@ -113,9 +115,9 @@ struct BrewRecipeView:View {
             }
             PapiInput("Roaster, origin or coffee name",text:draft(\.coffeeLot)).padding(16).background(Color.white,in:RoundedRectangle(cornerRadius:14))
             PapiInput("Grinder and setting (optional)",text:draft(\.grindNote)).padding(16).background(Color.white,in:RoundedRectangle(cornerRadius:14))
-            HStack {
+            PapiActionGroup {
                 PapiTextButton("Less"){store.updateBrewBook{$0.draft.doseGrams=max(8,$0.draft.doseGrams-1)}}.buttonStyle(PapiButtonStyle(light:true)).disabled(store.brewBook.draft.doseGrams<=8)
-                Spacer();PapiText("\(store.brewBook.draft.doseGrams) g coffee").font(CoffeeType.face(.headline)).monospacedDigit();Spacer()
+                PapiText("\(store.brewBook.draft.doseGrams) g coffee").font(CoffeeType.face(.headline)).monospacedDigit()
                 PapiTextButton("More"){store.updateBrewBook{$0.draft.doseGrams=min(40,$0.draft.doseGrams+1)}}.buttonStyle(PapiButtonStyle(light:true)).disabled(store.brewBook.draft.doseGrams>=40)
             }
             PapiText("Water: \(recipe.water(for:store.brewBook.draft.doseGrams)) g · \(recipe.waterCelsius) °C").font(CoffeeType.face(.headline))
@@ -131,7 +133,7 @@ struct BrewRecipeView:View {
                 Text(String(format:"%02d:%02d",seconds/60,seconds%60)).font(CoffeeType.counter(size:60,weight:.bold)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.65).papiAccessibilityLabel("Elapsed brew time")
                 PapiText(seconds>=recipe.drawdownSeconds ? "Let the last drops settle":current.cue).font(CoffeeType.face(.title2,weight:.bold))
                 PapiText("Target on the scale: \(Int((Double(recipe.water(for:pour.doseGrams))*current.cumulativeWaterFraction).rounded())) g").font(CoffeeType.face(.headline))
-                HStack {
+                PapiActionGroup {
                     PapiTextButton(pour.resumedAt==nil ? "Resume pour":"Pause timer"){store.togglePourClock()}.buttonStyle(PapiButtonStyle(light:true))
                     PapiTextButton("Keep this cup"){confirmSave=true}.buttonStyle(PapiButtonStyle()).disabled(seconds==0)
                 }

@@ -97,6 +97,8 @@ struct CoinPurchaseTerms: Codable {
     let productID: String
     let coins: Int
     var createdAt = Date()
+    // Each new checkout token can settle only one Apple transaction.
+    var transactionID: String? = nil
 }
 enum CoffeeEconomy {
     static let welcomeCoins = 800

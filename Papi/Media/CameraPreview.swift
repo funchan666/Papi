@@ -63,21 +63,27 @@ struct CameraPreviewView:View {
     @Environment(\.scenePhase) private var phase
     var body:some View {
         PapiScreen(background:"roomBackground") {
-            VStack(spacing:18) {
-                PapiHeader("My camera preview").background(Color.cream,in:RoundedRectangle(cornerRadius:16))
-                ZStack {
-                    Color.black
-                    CameraSurface(session:model.engine.session)
-                    if !model.running {PapiText(model.status).multilineTextAlignment(.center).padding(25).foregroundStyle(.white)}
-                }.clipShape(RoundedRectangle(cornerRadius:22)).frame(maxHeight:.infinity)
-                PapiText(model.status).font(CoffeeType.face(.headline)).multilineTextAlignment(.center)
-                PapiText("Your camera is visible only to you. Video and microphone audio are not recorded or sent, and no call is connected.").font(CoffeeType.face(.caption)).multilineTextAlignment(.center)
-                if model.denied {
-                    PapiTextButton("Open iOS Settings") {if let url=URL(string:UIApplication.openSettingsURLString){UIApplication.shared.open(url)}}.buttonStyle(PapiButtonStyle(light:true))
-                } else if !model.running {
-                    PapiTextButton("Retry"){Task{await model.start(requestMicrophone:requestMicrophone)}}.buttonStyle(PapiButtonStyle(light:true))
+            VStack(spacing:0) {
+                PapiHeader("My camera preview").background(Color.cream,in:RoundedRectangle(cornerRadius:16)).padding(.horizontal,20).padding(.top,12)
+                GeometryReader {geometry in
+                    ScrollView {
+                        VStack(spacing:18) {
+                            ZStack {
+                                Color.black
+                                CameraSurface(session:model.engine.session)
+                                if !model.running {PapiText(model.status).multilineTextAlignment(.center).padding(25).foregroundStyle(.white)}
+                            }.frame(height:max(120,min(420,geometry.size.height*0.6))).clipShape(RoundedRectangle(cornerRadius:22))
+                            PapiText(model.status).font(CoffeeType.face(.headline)).multilineTextAlignment(.center)
+                            PapiText("Your camera is visible only to you. Video and microphone audio are not recorded or sent, and no call is connected.").font(CoffeeType.face(.caption)).multilineTextAlignment(.center)
+                            if model.denied {
+                                PapiTextButton("Open iOS Settings") {if let url=URL(string:UIApplication.openSettingsURLString){UIApplication.shared.open(url)}}.buttonStyle(PapiButtonStyle(light:true,wide:true))
+                            } else if !model.running {
+                                PapiTextButton("Retry"){Task{await model.start(requestMicrophone:requestMicrophone)}}.buttonStyle(PapiButtonStyle(light:true,wide:true))
+                            }
+                        }.padding(20).frame(maxWidth:700).frame(maxWidth:.infinity)
+                    }
                 }
-            }.padding(20).foregroundStyle(Color.cream)
+            }.foregroundStyle(Color.cream)
         }.task(id:phase) {if phase == .active {await model.start(requestMicrophone:requestMicrophone)} else {model.stop()}}
             .onReceive(NotificationCenter.default.publisher(for:AVCaptureSession.runtimeErrorNotification,object:model.engine.session).receive(on:DispatchQueue.main)){_ in model.stop()}
             .onReceive(NotificationCenter.default.publisher(for:AVCaptureSession.wasInterruptedNotification,object:model.engine.session).receive(on:DispatchQueue.main)){_ in model.stop()}

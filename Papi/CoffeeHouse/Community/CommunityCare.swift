@@ -9,7 +9,7 @@ struct PapiUserLink:View {
     @EnvironmentObject private var router:CoffeeNavigation
     var body:some View {
         if let person=store.person(userID),!store.isUserHidden(userID) {
-            Button {router.sheet=nil;router.go(.person(userID))} label:{
+            Button {router.goAfterClosingSheet(.person(userID))} label:{
                 HStack(spacing:10) {
                     Avatar(name:person.portrait,size:size)
                     if showsName {PapiText(verbatim:person.name).font(size<=32 ? .caption:.headline).multilineTextAlignment(.leading).lineLimit(2)}
@@ -27,22 +27,24 @@ struct SafetyMenuView:View {
     @State private var confirmBlock=false
     var body:some View {
         Group {
-            if reporting {ReportView(target:target)}
+            if reporting {ReportView(target:target,onBack:{reporting=false})}
             else {
                 PapiScreen {
                     VStack(spacing:24) {
                         PapiHeader("Safety options")
-                        Spacer(minLength:20)
-                        if let author=target.authorID {PapiUserLink(userID:author,size:64)}
-                        HStack(spacing:24) {
-                            Button {reporting=true} label:{Image("report").resizable().scaledToFit().frame(width:100,height:100)}.papiAccessibilityLabel("Report")
-                            Button {confirmBlock=true} label:{Image("block").resizable().scaledToFit().frame(width:100,height:100)}.papiAccessibilityLabel(target.kind == .user ? "Block user":"Hide content")
-                        }.buttonStyle(.plain)
-                        PapiText("Choose a report reason, or hide this item from your lists.").font(CoffeeType.face(.subheadline)).multilineTextAlignment(.center)
-                        if target.kind != .user,let author=target.authorID,author != store.state.passport.id.uuidString {
-                            PapiTextButton("Block author") {if store.block(author){dismiss()}}.buttonStyle(PapiButtonStyle(light:true))
+                        ScrollView {
+                            VStack(spacing:24) {
+                                if let author=target.authorID {PapiUserLink(userID:author,size:64)}
+                                PapiActionGroup {
+                                    Button {reporting=true} label:{Image("report").resizable().scaledToFit().frame(width:100,height:100)}.papiAccessibilityLabel("Report")
+                                    Button {confirmBlock=true} label:{Image("block").resizable().scaledToFit().frame(width:100,height:100)}.papiAccessibilityLabel(target.kind == .user ? "Block user":"Hide content")
+                                }.buttonStyle(.plain)
+                                PapiText("Choose a report reason, or hide this item from your lists.").font(CoffeeType.face(.subheadline)).multilineTextAlignment(.center)
+                                if target.kind != .user,let author=target.authorID,author != store.state.passport.id.uuidString {
+                                    PapiTextButton("Block author") {if store.block(author){dismiss()}}.buttonStyle(PapiButtonStyle(light:true))
+                                }
+                            }.padding(.bottom,20)
                         }
-                        Spacer(minLength:20)
                     }.padding(22).frame(maxWidth:600).frame(maxWidth:.infinity)
                     .overlay {
                         if confirmBlock {
@@ -56,6 +58,7 @@ struct SafetyMenuView:View {
 }
 struct ReportView:View {
     var target:SafetyTarget
+    var onBack:(()->Void)? = nil
     @EnvironmentObject private var store:CoffeeHouse
     @Environment(\.dismiss) private var dismiss
     @State private var reason:String?
@@ -63,7 +66,7 @@ struct ReportView:View {
     var body:some View {
         PapiScreen {
             VStack(spacing:16) {
-                PapiHeader("Report Type")
+                PapiHeader("Report Type",backAction:onBack)
                 ScrollView {
                     VStack(spacing:13) {
                         PapiText("Choose a reason").font(CoffeeType.face(.title3,weight:.bold))
@@ -85,33 +88,25 @@ struct ReportView:View {
 struct CoffeeReceiptView:View {
     let notice:CoffeeReceipt
     var close:()->Void
-    @Environment(\.papiRegions) private var regions
     var body:some View {
-        GeometryReader {proxy in
-            let origin=proxy.frame(in:.named("PapiContainer")).origin
-            let rect=PapiRegionGeometry.largestArea(in:CGRect(origin:.zero,size:proxy.size),excluding:regions.map{$0.offsetBy(dx:-origin.x,dy:-origin.y)})
-            ZStack {
-                Color.black.opacity(0.5).ignoresSafeArea().onTapGesture{}
-                ScrollView {
-                    VStack(alignment:.leading,spacing:18) {
-                        HStack(alignment:.center) {
-                            Image(notice.kind == .review ? "coffeeUpdates":"brandMark").resizable().scaledToFit().frame(width:58,height:58)
-                            Spacer()
-                            PapiText("Papi").font(CoffeeType.display(size:25,weight:.bold)).italic()
-                        }
-                        Divider().overlay(Color.coffee.opacity(0.25))
-                        PapiText(notice.title).font(CoffeeType.display(.title2,weight:.bold))
-                        PapiText(notice.message).font(CoffeeType.face(.subheadline)).lineSpacing(4)
-                        if notice.kind == .review {
-                            status("Saved privately",asset:"check")
-                            status("Awaiting moderation connection",asset:"coffeeUpdates")
-                            PapiText("Visible only after approval").font(CoffeeType.face(.caption,weight:.bold)).padding(13).frame(maxWidth:.infinity,alignment:.leading).background(Color.butter,in:RoundedRectangle(cornerRadius:12))
-                        } else if notice.kind == .safety {status("Saved on this device",asset:"check")}
-                        PapiTextButton("Got it",action:close).buttonStyle(PapiButtonStyle(wide:true,cornerRadius:12)).padding(.top,4)
-                    }.padding(26).background{Image("dialogBackground").resizable()}
-                }.frame(width:min(370,max(44,rect.width-24)),height:min(570,max(44,rect.height-24))).position(x:rect.midX,y:rect.midY)
-            }.foregroundStyle(Color.coffee)
-        }.accessibilityAddTraits(.isModal)
+        CoffeeModal(maximumWidth:370,maximumHeight:570,shade:Color.black.opacity(0.5)) {
+            VStack(alignment:.leading,spacing:18) {
+                HStack(alignment:.center) {
+                    Image(notice.kind == .review ? "coffeeUpdates":"brandMark").resizable().scaledToFit().frame(width:58,height:58)
+                    Spacer()
+                    PapiText("Papi").font(CoffeeType.display(size:25,weight:.bold)).italic()
+                }
+                Divider().overlay(Color.coffee.opacity(0.25))
+                PapiText(notice.title).font(CoffeeType.display(.title2,weight:.bold))
+                PapiText(notice.message).font(CoffeeType.face(.subheadline)).lineSpacing(4)
+                if notice.kind == .review {
+                    status("Saved privately",asset:"check")
+                    status("Awaiting moderation connection",asset:"coffeeUpdates")
+                    PapiText("Visible only after approval").font(CoffeeType.face(.caption,weight:.bold)).padding(13).frame(maxWidth:.infinity,alignment:.leading).background(Color.butter,in:RoundedRectangle(cornerRadius:12))
+                } else if notice.kind == .safety {status("Saved on this device",asset:"check")}
+                PapiTextButton("Got it",action:close).buttonStyle(PapiButtonStyle(wide:true,cornerRadius:12)).padding(.top,4)
+            }
+        }
     }
     private func status(_ title:String,asset:String)->some View {
         HStack(spacing:10) {Image(asset).resizable().scaledToFit().frame(width:22,height:22);PapiText(title).font(CoffeeType.face(.caption))}
@@ -122,13 +117,12 @@ struct AccountProgressView:View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var animate=false
     var body:some View {
-        ZStack {
-            Color.coffee.opacity(0.6).ignoresSafeArea()
+        CoffeeModal(maximumWidth:350,maximumHeight:300,shade:Color.coffee.opacity(0.6)) {
             VStack(spacing:20) {
                 Image("coffeeUpdates").resizable().scaledToFit().frame(width:54,height:64).rotationEffect(.degrees(animate && !reduceMotion ? 8:-8))
-                PapiText(action == .delete ? "Closing your coffee account…":"Logging out…").font(CoffeeType.face(.headline))
-            }.padding(32).background(Color.cream,in:RoundedRectangle(cornerRadius:24)).papiAvoidReserved()
-        }.onAppear{if !reduceMotion {withAnimation(.easeInOut(duration:0.6).repeatForever(autoreverses:true)){animate=true}}}.accessibilityAddTraits(.isModal)
+                PapiText(action == .delete ? "Closing your coffee account…":"Logging out…").font(CoffeeType.face(.headline)).multilineTextAlignment(.center)
+            }
+        }.onAppear{if !reduceMotion {withAnimation(.easeInOut(duration:0.6).repeatForever(autoreverses:true)){animate=true}}}
     }
 }
 struct ReviewQueueView:View {

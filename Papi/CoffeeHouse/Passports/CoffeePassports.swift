@@ -12,11 +12,11 @@ struct MyCoffeePassportView:View {
                     ZStack(alignment:.top) {
                         PapiImage(name:store.state.passport.cover).frame(height:260).clipped()
                         HStack {
-                            Image("profileTitle").resizable().scaledToFit().frame(width:145,height:55)
+                            Image("profileTitle").resizable().scaledToFit().frame(maxWidth:145).frame(height:55)
                             Spacer()
-                            PapiIconButton(asset:"edit",label:"Edit profile"){router.go(.editProfile)}
-                            PapiIconButton(asset:"settings",label:store.text("Settings")){router.go(.settings)}
-                        }.padding(18)
+                            PapiIconButton(asset:"edit",label:"Edit profile"){router.go(.editProfile)}.background(Color.cream.opacity(0.94),in:RoundedRectangle(cornerRadius:12))
+                            PapiIconButton(asset:"settings",label:store.text("Settings")){router.go(.settings)}.background(Color.cream.opacity(0.94),in:RoundedRectangle(cornerRadius:12))
+                        }.padding(18).papiAvoidReserved()
                     }
                     VStack(alignment:.leading,spacing:12) {
                         HStack {
@@ -89,7 +89,7 @@ struct EditCoffeePassportView:View {
                 ScrollView {
                     VStack(spacing:18) {
                         PapiImage(name:passport.cover).frame(height:210).clipped().clipShape(RoundedRectangle(cornerRadius:20))
-                        HStack {pickButton("Change background",kind:"cover");Spacer();pickButton("Change avatar",kind:"avatar")}
+                        PapiActionGroup {pickButton("Change background",kind:"cover");pickButton("Change avatar",kind:"avatar")}
                         HStack {Avatar(name:passport.avatar,size:64);PapiText("Your coffee passport").font(CoffeeType.face(.headline));Spacer()}
                         VStack(alignment:.leading,spacing:8) {
                             PapiText("Name").font(CoffeeType.face(.caption,weight:.semibold));PapiTextField(prompt:"Please enter the name…",text:$passport.name)
@@ -119,7 +119,7 @@ struct EditCoffeePassportView:View {
             .onChange(of:picker){_,item in if let item {let destination=target;Task {await importPhoto(item,destination:destination)}}}
     }
     private func pickButton(_ label:String,kind:String)->some View {
-        Button {target=kind;picker=nil;showPicker=true} label:{PapiText(label).font(CoffeeType.face(.subheadline,weight:.medium)).padding(.vertical,8)}.buttonStyle(.plain).disabled(importing)
+        Button {target=kind;picker=nil;showPicker=true} label:{PapiText(label).font(CoffeeType.face(.subheadline,weight:.medium)).padding(.vertical,8).frame(minHeight:44)}.buttonStyle(.plain).disabled(importing)
     }
     @MainActor private func importPhoto(_ item:PhotosPickerItem,destination:String) async {
         importing=true;defer{importing=false}
@@ -161,7 +161,7 @@ struct BlacklistView:View {
                 if store.state.blockedMembers.isEmpty {PapiEmpty(title:"Your blacklist is empty")}
                 ForEach(store.state.blockedMembers.sorted(),id:\.self){id in
                     let person=store.person(id)
-                    HStack {Avatar(name:person?.portrait ?? "brandMark");PapiText(verbatim:person?.name ?? "Hidden profile");Spacer();PapiTextButton("Unblock"){store.unblock(id)}.font(CoffeeType.face(.caption,weight:.bold)).padding(10).background(Color.butter,in:Capsule())}.padding(16).background(Color.white,in:RoundedRectangle(cornerRadius:15)).padding(.horizontal,18).padding(.bottom,8)
+                    HStack {Avatar(name:person?.portrait ?? "brandMark");PapiText(verbatim:person?.name ?? "Hidden profile");Spacer();PapiTextButton("Unblock"){store.unblock(id)}.font(CoffeeType.face(.caption,weight:.bold)).padding(10).frame(minHeight:44).background(Color.butter,in:Capsule())}.padding(16).background(Color.white,in:RoundedRectangle(cornerRadius:15)).padding(.horizontal,18).padding(.bottom,8)
                 }
             }
         }}

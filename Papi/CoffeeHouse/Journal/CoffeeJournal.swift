@@ -5,6 +5,7 @@ import AVFoundation
 struct CoffeeJournalView:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
+    @Environment(\.dynamicTypeSize) private var typeSize
     var body:some View {
         PapiScreen {
             GeometryReader { geo in
@@ -33,7 +34,7 @@ struct CoffeeJournalView:View {
                             PapiText("From the coffee desk").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
                         }
                         let width=min(1200,geo.size.width)
-                        let count=max(2,Int(width/180))
+                        let count=typeSize.isAccessibilitySize ? 1:max(1,Int((width-20)/180))
                         let tileWidth=max(44,(width-32-CGFloat(count-1)*12)/CGFloat(count))
                         HStack(alignment:.top,spacing:12) {
                             ForEach(0..<count,id:\.self) { column in
@@ -128,14 +129,18 @@ struct CoffeeMomentView:View {
                             }
                         }.padding(.bottom,20).frame(maxWidth:760).frame(maxWidth:.infinity)
                     }
-                    HStack {
-                        PapiInput("Tell your opinion…",text:$comment,axis:.vertical).lineLimit(1...4).foregroundStyle(.white).tint(.white).padding(.leading,18)
-                        PapiTextButton("SAVE") {if store.addComment(momentID:momentID,text:comment) {comment=""}}.font(CoffeeType.face(.caption,weight:.bold)).padding(12).background(Color.cream,in:Capsule()).disabled(comment.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
-                    }.padding(6).background(Color.coffee,in:Capsule()).padding(.horizontal,16).padding(.vertical,10)
+                    .scrollDismissesKeyboard(.interactively)
+                    .safeAreaInset(edge:.bottom,spacing:0) {
+                        PapiInputBar {
+                            PapiInput("Tell your opinion…",text:$comment,axis:.vertical).lineLimit(1...3).foregroundStyle(.white).tint(.white).padding(12).background(Color.white.opacity(0.12),in:RoundedRectangle(cornerRadius:18))
+                        } actions: {
+                            PapiTextButton("SAVE") {if store.addComment(momentID:momentID,text:comment) {comment=""}}.font(CoffeeType.face(.caption,weight:.bold)).padding(12).frame(minHeight:44).background(Color.cream,in:Capsule()).disabled(comment.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
+                        }
+                    }
                 }.overlay {
                     if confirmDelete {PapiDialog(title:"Remove this coffee moment?",message:"This moment will be removed from your coffee book. Coins already used are not refunded.",confirm:"Delete post",cancel:"Keep post",action:{store.deletePost(momentID);confirmDelete=false;dismiss()},dismiss:{confirmDelete=false})}
                 }
-            } else {VStack {PapiHeader("Coffee moment");PapiEmpty(title:"This content is unavailable");Spacer()}}
+            } else {VStack(spacing:0){PapiHeader("Coffee moment");ScrollView {PapiEmpty(title:"This content is unavailable")}}}
         }
     }
 }
@@ -168,7 +173,7 @@ struct CoffeeMomentComposer:View {
                             PapiTextButton("Take photo"){openCamera(movie:false)}
                             Spacer()
                             PapiTextButton("Record video"){openCamera(movie:true)}
-                        }.font(CoffeeType.face(.subheadline,weight:.medium))
+                        }.font(CoffeeType.face(.subheadline,weight:.medium)).disabled(importing)
                         PapiInput("Say something about your coffee…",text:caption,axis:.vertical).lineLimit(4...10).padding(18).background(Color.white,in:RoundedRectangle(cornerRadius:20))
                         HStack {PapiText("Saved only on this device");Spacer();PapiText("\(store.state.momentDraft.text.count)/2000")}.font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                         HStack {PapiText("Save a post for");CoinLabel(value:CoffeeEconomy.postCost(isVideo:store.state.momentDraft.isVideo));PapiText("coins")}.font(CoffeeType.face(.subheadline)).padding(.top,20)
@@ -179,7 +184,11 @@ struct CoffeeMomentComposer:View {
             }.overlay {
                 if confirm {PapiDialog(title:"Submit for review?",message:"\(CoffeeEconomy.postCost(isVideo:store.state.momentDraft.isVideo)) coins are used when this post is saved to your private review queue. It appears in the feed only after approval.",confirm:"Submit · \(CoffeeEconomy.postCost(isVideo:store.state.momentDraft.isVideo)) coins",cancel:"Keep editing",action:{confirm=false;if store.publish(){dismiss();store.notice = .init(title:"Post saved for review",message:"Your post is saved privately in the review queue. It will appear only after approval. No moderation server is connected yet.",kind:.review)}},dismiss:{confirm=false})}
             }
-        }.onChange(of:item) {_,value in if let value {Task {await importItem(value)}}}
+        }.onChange(of:item) {_,value in
+            guard let value,!importing else{return}
+            let owner=store.state.passport.id;importing=true
+            Task {await importItem(value,owner:owner)}
+        }
         .fullScreenCover(isPresented:$camera) {
             CameraPicker(movie:movieCamera) {result in
                 camera=false
@@ -195,12 +204,13 @@ struct CoffeeMomentComposer:View {
         }
     }
     private func openCamera(movie:Bool) {
+        guard !importing else{return}
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {store.inform("Camera unavailable","Choose an existing photo or video instead.");return}
         movieCamera=movie;camera=true
     }
-    @MainActor private func importItem(_ selection:PhotosPickerItem) async {
-        guard !importing else{return};importing=true;defer {importing=false}
-        let owner=store.state.passport.id
+    @MainActor private func importItem(_ selection:PhotosPickerItem,owner:UUID) async {
+        defer {importing=false;item=nil}
+        guard store.state.signedIn,store.state.passport.id==owner else{return}
         do {
             let name:String;let video=selection.supportedContentTypes.contains{$0.conforms(to:.movie)}
             if video {

@@ -33,6 +33,7 @@ struct CoinPack: Identifiable {
     private var processing: Set<UInt64> = []
     private var unresolvedIDs: Set<UInt64> = []
     private var recovering = false
+    private var recoveryRequested=false
     func start(store: CoffeeHouse) {
         guard listener == nil else { return }
         self.store = store
@@ -45,12 +46,16 @@ struct CoinPack: Identifiable {
         Task { await recover() }
     }
     func recover() async {
-        guard store?.storageAvailable == true, !recovering else { return }
+        guard let store,store.storageAvailable,store.accountAction==nil else{return}
+        if recovering {recoveryRequested=true;return}
         recovering=true;defer {recovering=false}
-        for await result in Transaction.unfinished { await receive(result) }
+        repeat {
+            recoveryRequested=false
+            for await result in Transaction.unfinished {await receive(result)}
+        } while recoveryRequested && store.storageAvailable && store.accountAction==nil
     }
-    func buy(_ pack: CoinPack, purchase: @MainActor (Product, Set<Product.PurchaseOption>) async throws -> Product.PurchaseResult) async {
-        guard !busy,let store,store.state.signedIn else{return}
+    func buy(_ pack: CoinPack, canPresent: @MainActor ()->Bool, purchase: @MainActor (Product, Set<Product.PurchaseOption>) async throws -> Product.PurchaseResult) async {
+        guard !busy,let store,store.state.signedIn,canPresent() else{return}
         guard !unresolved, store.state.purchaseIntents.isEmpty, store.state.activePurchaseToken==nil else {
             store.inform("Purchase pending", "An existing purchase is awaiting approval or recovery. No second purchase has been started.");return
         }
@@ -62,12 +67,17 @@ struct CoinPack: Identifiable {
         let product:Product
         do {
             // This is the sole product request. No catalog request runs on launch or page entry.
-            guard let fetched=try await Product.products(for:[pack.id]).first(where:{$0.id==pack.id}), fetched.type == .consumable else {
+            let availableProducts=try await Product.products(for:[pack.id])
+            guard canPresent() else {status="Purchase cancelled. No coins were added.";return}
+            guard let fetched=availableProducts.first(where:{$0.id==pack.id}), fetched.type == .consumable else {
                 fail("This product is not available from Apple. Please try again later.");return
             }
             product=fetched
             products.removeAll{$0.id==pack.id};products.append(product)
-        } catch {fail("Apple could not load this product. No purchase was started. Please try again.");return}
+        } catch {
+            guard canPresent() else {status="Purchase cancelled. No coins were added.";return}
+            fail("Apple could not load this product. No purchase was started. Please try again.");return
+        }
         if product.priceFormatStyle.currencyCode == "USD", let expected=Decimal(string:pack.referenceUSD), product.price != expected {
             fail("Apple's USD price does not match this pack's configured price. No purchase was started.");return
         }
@@ -130,17 +140,33 @@ struct CoinPack: Identifiable {
             guard !processing.contains(transaction.id) else{return}
             processing.insert(transaction.id);defer {processing.remove(transaction.id)}
             let id=String(transaction.id)
+            let terms=store.state.coinPurchaseTerms?.first(where:{$0.token==transaction.appAccountToken && $0.productID==transaction.productID})
+            if let settledID=terms?.transactionID,settledID != id {
+                hold(transaction,"This order is already linked to another Apple transaction. No coins were added; purchase recovery needs review.");return
+            }
             if store.state.creditedTransactions.contains(id) {
-                if transaction.revocationDate != nil, !store.state.revokedTransactions.contains(id) {
+                let needsRevocation=transaction.revocationDate != nil && !store.state.revokedTransactions.contains(id)
+                let needsBinding=terms != nil && terms?.transactionID==nil
+                var revokedCoins=0
+                if needsRevocation {
                     // Refund the actual original delivery, never today's catalog amount.
                     guard let delivery=store.state.coinMovements.first(where:{$0.id=="apple-"+id}),delivery.delta>0 else {
                         hold(transaction,"The original delivery needs review before a refund adjustment can be saved.");return
                     }
+                    guard !store.state.coinBalance.subtractingReportingOverflow(delivery.delta).overflow else {
+                        hold(transaction,"This balance needs review before delivery can continue.");return
+                    }
+                    revokedCoins=delivery.delta
+                }
+                if needsRevocation || needsBinding {
                     guard store.commit({
-                        $0.coinBalance -= delivery.delta
-                        $0.revokedTransactions.insert(id)
-                        $0.coinMovements.insert(.init(id:"revocation-"+id,delta:-delivery.delta,reason:"Apple purchase revoked"),at:0)
-                    }) else {hold(transaction,"A refund adjustment could not be saved. Recovery will retry.");return}
+                        if let token=terms?.token,let index=$0.coinPurchaseTerms?.firstIndex(where:{$0.token==token && $0.productID==transaction.productID}) {$0.coinPurchaseTerms?[index].transactionID=id}
+                        if needsRevocation {
+                            $0.coinBalance -= revokedCoins
+                            $0.revokedTransactions.insert(id)
+                            $0.coinMovements.insert(.init(id:"revocation-"+id,delta:-revokedCoins,reason:"Apple purchase revoked"),at:0)
+                        }
+                    }) else {hold(transaction,"Payment verification succeeded, but local delivery has not been saved. Recovery will retry.");return}
                 }
                 await transaction.finish()
                 unresolvedIDs.remove(transaction.id);unresolved = !unresolvedIDs.isEmpty
@@ -151,7 +177,6 @@ struct CoinPack: Identifiable {
                 unresolvedIDs.remove(transaction.id);unresolved = !unresolvedIDs.isEmpty
                 return
             }
-            let terms=store.state.coinPurchaseTerms?.first(where:{$0.token==transaction.appAccountToken && $0.productID==transaction.productID})
             let legacyOwner=transaction.appAccountToken==store.state.passport.id ? transaction.appAccountToken:nil
             let owner=terms?.owner ?? legacyOwner
             let coins=terms?.coins ?? (legacyOwner != nil ? CoinPack.legacyCoins[transaction.productID]:nil)
@@ -163,6 +188,7 @@ struct CoinPack: Identifiable {
             let addition=store.state.coinBalance.addingReportingOverflow(revoked ? 0:coins)
             guard !addition.overflow else {hold(transaction,"This balance needs review before delivery can continue.");return}
             guard store.commit({
+                if let token=terms?.token,let index=$0.coinPurchaseTerms?.firstIndex(where:{$0.token==token && $0.productID==transaction.productID}) {$0.coinPurchaseTerms?[index].transactionID=id}
                 $0.creditedTransactions.insert(id)
                 if revoked {$0.revokedTransactions.insert(id)}
                 else {

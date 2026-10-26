@@ -65,6 +65,7 @@ import AVFoundation
 }
 struct CoffeePlayerView:View {
     let media:String
+    @ScaledMetric(relativeTo:.body) private var seekWidth:CGFloat=120
     @StateObject private var playback=CoffeeFilmPlayback()
     @Environment(\.scenePhase) private var scenePhase
     var body:some View {
@@ -73,14 +74,16 @@ struct CoffeePlayerView:View {
                 Color.black
                 PlayerSurface(player:playback.player)
                 if let failure=playback.failure {
-                    VStack(spacing:14) {PapiText(failure);PapiTextButton("Retry"){playback.load(media,force:true)}}
-                        .foregroundStyle(.white).multilineTextAlignment(.center).padding(20)
+                    ScrollView {VStack(spacing:14) {PapiText(failure);PapiTextButton("Retry"){playback.load(media,force:true)}.frame(minHeight:44)}
+                        .foregroundStyle(.white).multilineTextAlignment(.center).padding(20)}
                 }
             }
-            HStack(spacing:12) {
-                PapiTextButton(playback.playing ? "Pause":"Play"){playback.toggle()}.font(CoffeeType.face(.subheadline,weight:.bold)).frame(minWidth:52,minHeight:44)
+            PapiComposerLayout(minimumInputWidth:seekWidth) {
                 Slider(value:Binding(get:{min(playback.position,max(1,playback.duration))},set:{playback.seek($0)}),in:0...max(1,playback.duration)).tint(.peach).papiAccessibilityLabel("Playback position").disabled(playback.duration<=0)
-                PapiText(time(playback.position)).font(CoffeeType.face(.caption)).monospacedDigit()
+                HStack(spacing:12) {
+                    PapiTextButton(playback.playing ? "Pause":"Play"){playback.toggle()}.font(CoffeeType.face(.subheadline,weight:.bold)).frame(minWidth:52,minHeight:44)
+                    PapiText(time(playback.position)).font(CoffeeType.face(.caption)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
+                }
             }.padding(.horizontal,14).background(Color.coffee).foregroundStyle(.white)
         }.clipShape(RoundedRectangle(cornerRadius:18)).onAppear{playback.load(media)}.onDisappear{playback.pause()}
             .onChange(of:media){_,value in playback.load(value)}

@@ -63,11 +63,15 @@ struct PapiTextButton:View {
 }
 struct PapiInput:View {
     @Environment(\.locale) private var locale
+    @Environment(\.papiComposerLines) private var composerLines
     private let prompt:String
     @Binding private var text:String
     private let axis:Axis
     init(_ prompt:String,text:Binding<String>,axis:Axis = .horizontal) {self.prompt=prompt;self._text=text;self.axis=axis}
-    var body:some View {TextField(PapiStrings.text(prompt,language:locale.identifier),text:$text,axis:axis)}
+    var body:some View {
+        if let composerLines {TextField(PapiStrings.text(prompt,language:locale.identifier),text:$text,axis:axis).lineLimit(1...composerLines)}
+        else {TextField(PapiStrings.text(prompt,language:locale.identifier),text:$text,axis:axis)}
+    }
 }
 private struct PapiAccessibleLabel:ViewModifier {
     @Environment(\.locale) private var locale
