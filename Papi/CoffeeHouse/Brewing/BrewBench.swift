@@ -6,7 +6,7 @@ struct BrewBenchView:View {
     var body:some View {
         PapiScreen {
             VStack(spacing:0) {
-                HStack {PapiText("Brew bench").font(CoffeeType.display(.largeTitle,weight:.bold));Spacer();PapiIconButton(asset:"brewDripper",label:"My brew book"){router.go(.brewArchive)}}.padding(.horizontal,20).padding(.vertical,8).papiAvoidReserved()
+                PapiHeader("Brew bench") {PapiIconButton(asset:"brewDripper",label:"My brew book"){router.go(.brewArchive)}}
                 ScrollView {
                     VStack(alignment:.leading,spacing:24) {
                         BrewFrontispiece(artwork:"brewBenchArtwork",title:"One cup. Your own recipe.")

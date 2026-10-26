@@ -292,7 +292,7 @@ struct CoffeeJourneyView:View {
                             PapiText("Lv.\(store.state.experience/100+1)").font(CoffeeType.counter(size:32,weight:.heavy))
                             ProgressView(value:Double(store.state.experience%100),total:100).tint(.coffee)
                             PapiText("\(store.state.experience%100)/100 EXP").font(CoffeeType.face(.caption))
-                        }.padding(24).frame(minHeight:205).background{Image("levelCard").resizable()}.padding(.horizontal,20)
+                        }.padding(24).frame(minHeight:205).background{PapiArtworkFill(asset:"levelCard")}.padding(.horizontal,20)
                         PapiText("Your Coffee Journey").font(CoffeeType.face(.title3,weight:.bold))
                         PapiText("Check in for 20 EXP. Save a local coffee post for 10 EXP. Every 100 EXP brings a new level.").font(CoffeeType.face(.subheadline)).multilineTextAlignment(.center).padding(.horizontal,30)
                         PapiText("Your coffee journey stays with this account.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)

@@ -31,7 +31,7 @@ struct CoffeeJournalView:View {
                             Image("coffeeUpdates").resizable().scaledToFit().frame(width:22,height:26)
                             PapiText("Coffee Updates").font(CoffeeType.face(.headline))
                             Spacer()
-                            PapiText("From the coffee desk").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
+                            PapiText("Collection preview").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
                         }
                         let width=min(1200,geo.size.width)
                         let count=typeSize.isAccessibilitySize ? 1:max(1,Int((width-20)/180))
@@ -64,15 +64,40 @@ struct CoffeeMomentTile:View {
                     if post.isVideo {PapiText("Video").font(CoffeeType.face(.caption,weight:.bold)).padding(7).background(Color.coffee.opacity(0.85),in:Capsule()).foregroundStyle(.white).padding(8)}
                 }
             }.buttonStyle(.plain)
-            HStack {PapiUserLink(userID:post.authorID,size:28);Spacer();PapiIconButton(asset:"more",label:"Safety options",size:20){router.sheet = .safety(.post(post))}}
+            HStack(spacing:4) {PapiUserLink(userID:post.authorID,size:32);Spacer(minLength:0);PapiIconButton(asset:"more",label:"Safety options",size:20){router.sheet = .safety(.post(post))}}
                 .padding(.horizontal,9).padding(.vertical,5).background(Color.cream)
-            HStack(spacing:1) {
-                PapiText(post.category).font(CoffeeType.face(.caption2,weight:.medium)).lineLimit(1).padding(.horizontal,8).padding(.vertical,5).background(Color.coffee,in:Capsule()).foregroundStyle(.white)
-                Spacer(minLength:0)
-                Button {store.toggleLike(post.id)} label:{Image("like").resizable().scaledToFit().frame(width:27,height:27).opacity(store.state.appreciatedMoments.contains(post.id) ? 1:0.48).frame(width:44,height:44)}.papiAccessibilityLabel(store.state.appreciatedMoments.contains(post.id) ? "Unlike":"Like")
-                Button {router.go(.post(post.id))} label:{Image("comment").resizable().scaledToFit().frame(width:27,height:27).frame(width:44,height:44)}.papiAccessibilityLabel("Open comments")
-            }.padding(.horizontal,7).background(Color.peach.opacity(0.55))
+            VStack(alignment:.leading,spacing:0) {
+                PapiText(post.category).font(CoffeeType.face(.caption2,weight:.medium)).fixedSize(horizontal:false,vertical:true).padding(.top,7)
+                CoffeeMomentReactions(post:post,openComments:{router.go(.post(post.id))})
+            }.padding(.horizontal,10).background(Color.peach.opacity(0.55))
         }.clipShape(RoundedRectangle(cornerRadius:18)).buttonStyle(.plain)
+    }
+}
+struct CoffeeMomentReactions:View {
+    @EnvironmentObject private var store:CoffeeHouse
+    let post:CoffeeMoment
+    var showsBookmark=false
+    var openComments:()->Void
+    var body:some View {
+        HStack(spacing:12) {
+            Button {store.toggleLike(post.id)} label:{
+                HStack(spacing:4) {
+                    Image("like").resizable().scaledToFit().frame(width:22,height:22).opacity(store.state.appreciatedMoments.contains(post.id) ? 1:0.48)
+                    Text(store.appreciationCount(for:post),format:.number).monospacedDigit().fixedSize()
+                }.frame(minWidth:44,minHeight:44)
+            }.papiAccessibilityLabel(store.state.appreciatedMoments.contains(post.id) ? "Unlike":"Like")
+                .accessibilityValue(Text(store.appreciationCount(for:post),format:.number))
+            Button(action:openComments) {
+                HStack(spacing:4) {
+                    Image("comment").resizable().scaledToFit().frame(width:22,height:22)
+                    Text(store.visibleComments(post.id).count,format:.number).monospacedDigit().fixedSize()
+                }.frame(minWidth:44,minHeight:44)
+            }.papiAccessibilityLabel("Open comments").accessibilityValue(Text(store.visibleComments(post.id).count,format:.number))
+            if showsBookmark {
+                PapiIconButton(asset:"star",label:"Save coffee moment",size:24){store.toggleBookmark(post.id)}.opacity(store.state.keptMoments.contains(post.id) ? 1:0.45)
+            }
+            Spacer(minLength:0)
+        }.font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.coffee).buttonStyle(.plain)
     }
 }
 struct CoffeeMomentView:View {
@@ -91,50 +116,47 @@ struct CoffeeMomentView:View {
                             if post.isOwnMoment {confirmDelete=true} else {router.sheet = .safety(.post(post))}
                         }
                     }
-                    ScrollView {
-                        VStack(alignment:.leading,spacing:18) {
-                            if post.isVideo {CoffeePlayerView(media:post.media).frame(height:380)}
-                            else {Button {router.go(.photo(post.media))} label:{PapiImage(name:post.media).frame(height:350).clipped()}.buttonStyle(.plain)}
-                            VStack(alignment:.leading,spacing:12) {
-                                HStack {
-                                    PapiUserLink(userID:post.authorID,size:44,showsName:false)
-                                    VStack(alignment:.leading,spacing:3) {
-                                        Button {router.go(.person(post.authorID))} label:{PapiText(verbatim:store.person(post.authorID)?.name ?? "Papi coffee journal").font(CoffeeType.face(.headline))}.buttonStyle(.plain)
-                                        PapiText(post.isOwnMoment ? "Saved on this device":"From the Papi collection").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                    ScrollViewReader {reader in
+                        ScrollView {
+                            VStack(alignment:.leading,spacing:18) {
+                                if post.isVideo {CoffeePlayerView(media:post.media).frame(height:380)}
+                                else {Button {router.go(.photo(post.media))} label:{PapiImage(name:post.media).frame(height:350).clipped()}.buttonStyle(.plain)}
+                                VStack(alignment:.leading,spacing:12) {
+                                    HStack {
+                                        PapiUserLink(userID:post.authorID,size:44,showsName:false)
+                                        VStack(alignment:.leading,spacing:3) {
+                                            Button {router.go(.person(post.authorID))} label:{PapiText(verbatim:store.person(post.authorID)?.name ?? "Papi coffee journal").font(CoffeeType.face(.headline))}.buttonStyle(.plain)
+                                            PapiText(post.isOwnMoment ? "Saved on this device":"Collection preview").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                                        }
+                                        Spacer()
                                     }
-                                    Spacer()
+                                    PapiText(verbatim:post.caption).font(CoffeeType.face(.body))
+                                    CoffeeMomentReactions(post:post,showsBookmark:true,openComments:{withAnimation{reader.scrollTo("cup-notes",anchor:.top)}})
+                                }.padding(16).background(Color.peach.opacity(0.25),in:RoundedRectangle(cornerRadius:20)).padding(.horizontal,16)
+                                PapiText("Cup notes").font(CoffeeType.face(.headline)).padding(.horizontal,20).id("cup-notes")
+                                let tastingReplies=store.visibleComments(momentID)
+                                if tastingReplies.isEmpty {PapiText("Keep a tasting note or thought about this moment.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).padding(.horizontal,20)}
+                                ForEach(tastingReplies) { note in
+                                    HStack(alignment:.top,spacing:10) {
+                                        PapiUserLink(userID:note.authorID ?? store.state.passport.id.uuidString,size:34,showsName:false)
+                                        VStack(alignment:.leading,spacing:4) {
+                                            Button {router.go(.person(note.authorID ?? store.state.passport.id.uuidString))} label:{PapiText(verbatim:store.person(note.authorID ?? store.state.passport.id.uuidString)?.name ?? "My coffee corner").font(CoffeeType.face(.caption,weight:.bold))}.buttonStyle(.plain)
+                                            PapiText(verbatim:note.text);Text(note.createdAt,style:.date).font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
+                                        }
+                                        Spacer()
+                                        PapiIconButton(asset:"more",label:"Comment options",size:19) {router.sheet = .safety(.comment(note,owner:store.state.passport.id.uuidString))}
+                                        if note.authorID==nil || note.authorID==store.state.passport.id.uuidString {PapiIconButton(asset:"trash",label:"Delete note",size:19) {_ = store.commit{$0.tastingReplies.removeAll{$0.id==note.id}}}}
+                                    }.padding(14).background(Color.white,in:RoundedRectangle(cornerRadius:15)).padding(.horizontal,16)
                                 }
-                                PapiText(verbatim:post.caption).font(CoffeeType.face(.body))
-                                HStack(spacing:18) {
-                                    Button {store.toggleLike(post.id)} label:{HStack {Image("like").resizable().scaledToFit().frame(width:24,height:24).opacity(store.state.appreciatedMoments.contains(post.id) ? 1:0.5);PapiText(store.state.appreciatedMoments.contains(post.id) ? "1":"0")}}
-                                    HStack {Image("comment").resizable().scaledToFit().frame(width:24,height:24);PapiText("\(store.visibleComments(momentID).count)")}
-                                    Button {store.toggleBookmark(post.id)} label:{Image("star").resizable().scaledToFit().frame(width:25,height:25).opacity(store.state.keptMoments.contains(post.id) ? 1:0.4)}.papiAccessibilityLabel("Save coffee moment")
-                                    Spacer()
-                                }.buttonStyle(.plain).font(CoffeeType.face(.caption))
-                            }.padding(16).background(Color.peach.opacity(0.25),in:RoundedRectangle(cornerRadius:20)).padding(.horizontal,16)
-                            PapiText("Cup notes").font(CoffeeType.face(.headline)).padding(.horizontal,20)
-                            let tastingReplies=store.visibleComments(momentID)
-                            if tastingReplies.isEmpty {PapiText("Keep a tasting note or thought about this moment.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).padding(.horizontal,20)}
-                            ForEach(tastingReplies) { note in
-                                HStack(alignment:.top,spacing:10) {
-                                    PapiUserLink(userID:note.authorID ?? store.state.passport.id.uuidString,size:34,showsName:false)
-                                    VStack(alignment:.leading,spacing:4) {
-                                        Button {router.go(.person(note.authorID ?? store.state.passport.id.uuidString))} label:{PapiText(verbatim:store.person(note.authorID ?? store.state.passport.id.uuidString)?.name ?? "My coffee corner").font(CoffeeType.face(.caption,weight:.bold))}.buttonStyle(.plain)
-                                        PapiText(verbatim:note.text);Text(note.createdAt,style:.date).font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
-                                    }
-                                    Spacer()
-                                    PapiIconButton(asset:"more",label:"Comment options",size:19) {router.sheet = .safety(.comment(note,owner:store.state.passport.id.uuidString))}
-                                    if note.authorID==nil || note.authorID==store.state.passport.id.uuidString {PapiIconButton(asset:"trash",label:"Delete note",size:19) {_ = store.commit{$0.tastingReplies.removeAll{$0.id==note.id}}}}
-                                }.padding(14).background(Color.white,in:RoundedRectangle(cornerRadius:15)).padding(.horizontal,16)
+                            }.padding(.bottom,20).frame(maxWidth:760).frame(maxWidth:.infinity)
+                        }
+                        .scrollDismissesKeyboard(.interactively)
+                        .safeAreaInset(edge:.bottom,spacing:0) {
+                            PapiInputBar {
+                                PapiInput("Tell your opinion…",text:$comment,axis:.vertical).lineLimit(1...3).foregroundStyle(.white).tint(.white).padding(12).background(Color.white.opacity(0.12),in:RoundedRectangle(cornerRadius:18))
+                            } actions: {
+                                PapiTextButton("SAVE") {if store.addComment(momentID:momentID,text:comment) {comment=""}}.font(CoffeeType.face(.caption,weight:.bold)).padding(12).frame(minHeight:44).background(Color.cream,in:Capsule()).disabled(comment.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
                             }
-                        }.padding(.bottom,20).frame(maxWidth:760).frame(maxWidth:.infinity)
-                    }
-                    .scrollDismissesKeyboard(.interactively)
-                    .safeAreaInset(edge:.bottom,spacing:0) {
-                        PapiInputBar {
-                            PapiInput("Tell your opinion…",text:$comment,axis:.vertical).lineLimit(1...3).foregroundStyle(.white).tint(.white).padding(12).background(Color.white.opacity(0.12),in:RoundedRectangle(cornerRadius:18))
-                        } actions: {
-                            PapiTextButton("SAVE") {if store.addComment(momentID:momentID,text:comment) {comment=""}}.font(CoffeeType.face(.caption,weight:.bold)).padding(12).frame(minHeight:44).background(Color.cream,in:Capsule()).disabled(comment.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
                         }
                     }
                 }.overlay {

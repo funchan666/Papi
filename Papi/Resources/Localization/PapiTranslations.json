@@ -5416,5 +5416,19 @@
     "ar": "هذا الطلب مرتبط بالفعل بمعاملة أخرى من Apple. لم تُضف أي عملات؛ تتطلب استعادة عملية الشراء مراجعة.",
     "vi": "Đơn hàng này đã được liên kết với một giao dịch Apple khác. Không có xu nào được cộng; cần kiểm tra việc khôi phục giao dịch mua.",
     "ko": "이 주문은 이미 다른 Apple 거래에 연결되어 있습니다. 코인은 추가되지 않았으며 구매 복구 내역을 확인해야 합니다."
+  },
+  "Opening your coffee book…": {
+    "es": "Abriendo tu cuaderno de café…",
+    "th": "กำลังเปิดสมุดกาแฟของคุณ…",
+    "ar": "جارٍ فتح دفتر قهوتك…",
+    "vi": "Đang mở sổ cà phê của bạn…",
+    "ko": "커피 노트를 여는 중…"
+  },
+  "Collection preview": {
+    "es": "Vista de la colección",
+    "th": "ตัวอย่างจากคอลเลกชัน",
+    "ar": "معاينة المجموعة",
+    "vi": "Xem trước bộ sưu tập",
+    "ko": "컬렉션 미리보기"
   }
 }

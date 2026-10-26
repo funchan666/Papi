@@ -17,6 +17,7 @@ struct CoffeeReceipt: Identifiable {
     @Published var roomMicRequested = false
     @Published private(set) var accountAction:AccountTransition?
     @Published private(set) var checkoutActive = false
+    @Published private(set) var loginInProgress=false
     private var savedSnapshotExpected=false
     init() {
         do {let saved=try CoffeeVault.read();state=saved ?? CoffeeArchive();savedSnapshotExpected=saved != nil}
@@ -25,7 +26,7 @@ struct CoffeeReceipt: Identifiable {
         if storageAvailable {cleanupPendingMedia()}
     }
     @discardableResult func commit(_ mutate: (inout CoffeeArchive) throws -> Void) -> Bool {
-        guard accountAction==nil else {return false}
+        guard accountAction==nil,!loginInProgress else {return false}
         guard storageAvailable else { inform("Local data unavailable", "Unlock the device and use Retry in Settings. Your saved data will not be overwritten."); return false }
         var next = state
         do {
@@ -40,7 +41,7 @@ struct CoffeeReceipt: Identifiable {
         }
     }
     func reload() {
-        guard accountAction==nil,!checkoutActive else{return}
+        guard accountAction==nil,!checkoutActive,!loginInProgress else{return}
         do {
             if let saved=try CoffeeVault.read() {state=saved;savedSnapshotExpected=true}
             else if savedSnapshotExpected {throw CoffeeVault.VaultError.missingSnapshot}
@@ -48,19 +49,32 @@ struct CoffeeReceipt: Identifiable {
         } catch {storageAvailable=false;inform("Local data unavailable",error.localizedDescription)}
     }
     func inform(_ title: String, _ message: String) { notice = .init(title:title,message:message) }
-    func login() {
-        guard commit({
-            let welcomeID="welcome-"+$0.passport.id.uuidString
-            if $0.acceptedPolicyVersion == nil, $0.welcomeGrant == nil,!$0.coinMovements.contains(where:{$0.id==welcomeID}) {
-                let reward = CoffeeEconomy.welcomeCoins
-                $0.coinBalance += reward
-                $0.welcomeGrant = WelcomeGrant(coins:reward)
-                $0.coinMovements.insert(.init(id:welcomeID,delta:reward,reason:"First brew welcome gift"),at:0)
-            }
-            $0.signedIn = true; $0.acceptedPolicyVersion = "2026-10-22"
-        }) else {return}
-        selectedTab = 0
-        presentWelcomeIfNeeded()
+    func login() async {
+        guard !loginInProgress,!state.signedIn,accountAction==nil,storageAvailable else{return}
+        loginInProgress=true;defer{loginInProgress=false}
+        let clock=ContinuousClock()
+        let transitionEnd=clock.now.advanced(by:.milliseconds(450))
+        var next=state
+        let welcomeID="welcome-"+next.passport.id.uuidString
+        if next.acceptedPolicyVersion==nil,next.welcomeGrant==nil,!next.coinMovements.contains(where:{$0.id==welcomeID}) {
+            let reward=CoffeeEconomy.welcomeCoins
+            next.coinBalance += reward
+            next.welcomeGrant=WelcomeGrant(coins:reward)
+            next.coinMovements.insert(.init(id:welcomeID,delta:reward,reason:"First brew welcome gift"),at:0)
+        }
+        next.signedIn=true;next.acceptedPolicyVersion="2026-10-22"
+        let snapshot=next
+        do {
+            try await Task.detached(priority:.userInitiated){try CoffeeVault.write(snapshot)}.value
+            savedSnapshotExpected=true
+            // Keep the visual transition legible without delaying a slower save any further.
+            try? await clock.sleep(until:transitionEnd)
+            state=next;selectedTab=0;presentWelcomeIfNeeded()
+        } catch {
+            if let vaultError=error as? CoffeeVault.VaultError,case .verification=vaultError {savedSnapshotExpected=true}
+            storageAvailable=false
+            inform("Could not save",error.localizedDescription + " Reopen the app or retry local storage before making more changes.")
+        }
     }
     func presentWelcomeIfNeeded() {
         guard state.signedIn, let grant=state.welcomeGrant, !grant.acknowledged, notice == nil else{return}
@@ -70,7 +84,7 @@ struct CoffeeReceipt: Identifiable {
         if commit({$0.welcomeGrant?.acknowledged=true}) {notice=nil}
     }
     func beginCheckout() -> Bool {
-        guard !checkoutActive,accountAction==nil,storageAvailable,state.signedIn else{return false}
+        guard !checkoutActive,accountAction==nil,!loginInProgress,storageAvailable,state.signedIn else{return false}
         checkoutActive=true;return true
     }
     func endCheckout() {checkoutActive=false}
@@ -78,7 +92,7 @@ struct CoffeeReceipt: Identifiable {
         notice = .init(title:"A little more for your coffee reserve",message:"This needs \(cost) coins. Your balance is \(state.coinBalance). Your draft and selections are kept; recharge to continue.",kind:.insufficient)
     }
     func performAccountAction(_ action:AccountTransition) async {
-        guard accountAction==nil,storageAvailable else{return}
+        guard accountAction==nil,!loginInProgress,storageAvailable else{return}
         guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil else {
             inform("Purchase awaiting review","Resolve the purchase before changing this local guest.");return
         }

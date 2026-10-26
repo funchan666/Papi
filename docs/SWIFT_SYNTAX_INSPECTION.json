@@ -1,15 +1,15 @@
 {
-  "reviewDate": "2026-10-23",
+  "reviewDate": "2026-10-26",
   "method": "Independent tree-sitter Swift parsing and source inspection only; no Swift compiler invoked.",
   "parserVersions": {
     "tree-sitter": "0.26.0",
     "tree-sitter-swift": "0.7.4"
   },
   "fileCount": 30,
-  "lineCount": 4383,
-  "regularStringLiterals": 1402,
+  "lineCount": 4510,
+  "regularStringLiterals": 1490,
   "rawStringLiterals": 10,
-  "stringInterpolations": 78,
+  "stringInterpolations": 79,
   "unicodeEscapes": 2,
   "inMemoryGrammarNormalisations": [
     {
@@ -20,7 +20,7 @@
     },
     {
       "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
-      "line": 264,
+      "line": 286,
       "original": "scale*$0",
       "reason": "Parser grammar ambiguity; equivalent spaces in memory only."
     }
@@ -29,7 +29,7 @@
   "files": [
     {
       "file": "Papi/App/PapiApp.swift",
-      "lines": 219,
+      "lines": 221,
       "syntaxTreeComplete": true
     },
     {
@@ -64,7 +64,7 @@
     },
     {
       "file": "Papi/CoffeeDomain/CoffeeArchive.swift",
-      "lines": 294,
+      "lines": 352,
       "syntaxTreeComplete": true
     },
     {
@@ -74,7 +74,7 @@
     },
     {
       "file": "Papi/CoffeeHouse/Arrival/FirstCupWelcome.swift",
-      "lines": 62,
+      "lines": 78,
       "syntaxTreeComplete": true
     },
     {
@@ -94,7 +94,7 @@
     },
     {
       "file": "Papi/CoffeeHouse/Community/CommunityCare.swift",
-      "lines": 162,
+      "lines": 166,
       "syntaxTreeComplete": true
     },
     {
@@ -109,17 +109,17 @@
     },
     {
       "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
-      "lines": 274,
+      "lines": 296,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Passports/CoffeePassports.swift",
-      "lines": 270,
+      "lines": 273,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Tables/CoffeeTables.swift",
-      "lines": 157,
+      "lines": 158,
       "syntaxTreeComplete": true
     },
     {
@@ -159,7 +159,7 @@
     },
     {
       "file": "Papi/Persistence/CoffeeArchiveStore.swift",
-      "lines": 204,
+      "lines": 218,
       "syntaxTreeComplete": true
     },
     {
@@ -169,7 +169,7 @@
     },
     {
       "file": "Papi/Persistence/CommunityActions.swift",
-      "lines": 137,
+      "lines": 144,
       "syntaxTreeComplete": true
     },
     {

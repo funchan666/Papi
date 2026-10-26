@@ -29,7 +29,7 @@ import SwiftUI
     }
 }
 enum CoffeeDestination:Hashable {
-    case room(String),post(String),person(String),chat(String),beans,cafes,settings,editProfile,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,photo(String),gifts(String),reviewQueue,tables,brewRecipe(String),brewArchive,brewCup(UUID),cuppingFlight,cupChoice(Int)
+    case room(String),post(String),person(String),chat(String),beans,cafes,settings,editProfile,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,photo(String),gifts(String),reviewQueue,tables,brewBench,brewRecipe(String),brewArchive,brewCup(UUID),cuppingFlight,cupChoice(Int)
 }
 enum CoffeePresentation:Identifiable {
     case compose,checkin,report(SafetyTarget),safety(SafetyTarget),more(String),gifts(String)
@@ -119,6 +119,7 @@ struct PapiRootView:View {
         case .gifts(let context):CollectibleCounterView(context:context)
         case .reviewQueue:ReviewQueueView()
         case .tables:VStack(spacing:0){PapiHeader("Coffee tables").papiContainerMargins();CoffeeTablesView()}.background {PapiBackground()}
+        case .brewBench:BrewBenchView()
         case .brewRecipe(let id):BrewRecipeView(recipeID:id)
         case .brewArchive:BrewArchiveView()
         case .brewCup(let id):CupTastingView(cupID:id)
@@ -154,7 +155,7 @@ struct PapiTabShell:View {
             ZStack {
                 // Keep all tab roots mounted to preserve scroll positions and loaded state.
                 CoffeeJournalView().opacity(store.selectedTab==0 ? 1:0).allowsHitTesting(store.selectedTab==0).accessibilityHidden(store.selectedTab != 0)
-                BrewBenchView().opacity(store.selectedTab==1 ? 1:0).allowsHitTesting(store.selectedTab==1).accessibilityHidden(store.selectedTab != 1)
+                CoffeeTablesView().opacity(store.selectedTab==1 ? 1:0).allowsHitTesting(store.selectedTab==1).accessibilityHidden(store.selectedTab != 1)
                 CorrespondenceInbox().opacity(store.selectedTab==2 ? 1:0).allowsHitTesting(store.selectedTab==2).accessibilityHidden(store.selectedTab != 2)
                 MyCoffeePassportView().opacity(store.selectedTab==3 ? 1:0).allowsHitTesting(store.selectedTab==3).accessibilityHidden(store.selectedTab != 3)
             }
@@ -178,8 +179,8 @@ struct PapiTabShell:View {
                 let asset=["home","voice","messages","me"][index]
                 Button {store.selectedTab=index} label:{
                     VStack(spacing:5) {
-                        Image(index==1 ? "brewDripper":asset+(store.selectedTab==index ? "On":"Off")).resizable().scaledToFit().frame(width:30,height:30).opacity(store.selectedTab==index ? 1:0.65)
-                        PapiText(store.text(["Home","Brew bench","Messages","Me"][index])).font(CoffeeType.face(.caption2)).fixedSize(horizontal:false,vertical:true).multilineTextAlignment(.center).foregroundStyle(store.selectedTab==index ? Color.cream:Color.cream.opacity(0.68))
+                        Image(asset+(store.selectedTab==index ? "On":"Off")).resizable().scaledToFit().frame(width:30,height:30).opacity(store.selectedTab==index ? 1:0.65)
+                        PapiText(store.text(["Home","Voice","Messages","Me"][index])).font(CoffeeType.face(.caption2)).fixedSize(horizontal:false,vertical:true).multilineTextAlignment(.center).foregroundStyle(store.selectedTab==index ? Color.cream:Color.cream.opacity(0.68))
                     }.frame(maxWidth:.infinity,minHeight:52).contentShape(Rectangle())
                 }.buttonStyle(.plain).accessibilityAddTraits(store.selectedTab==index ? .isSelected:[]).papiAvoidReserved()
             }
@@ -197,7 +198,8 @@ struct NoticeModifier:ViewModifier {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
     func body(content:Content)->some View {
-        content.disabled(store.notice != nil || store.accountAction != nil).accessibilityHidden(store.notice != nil || store.accountAction != nil).overlay {
+        content.disabled(store.notice != nil || store.accountAction != nil || store.loginInProgress).accessibilityHidden(store.notice != nil || store.accountAction != nil || store.loginInProgress).overlay {
+            if store.loginInProgress {FirstCupLoadingView()}
             if let notice=store.notice {
                 Group {
                     if notice.kind == .welcome {WelcomeCoinsView(close:{if store.notice?.id==notice.id {store.acknowledgeWelcome()}})}

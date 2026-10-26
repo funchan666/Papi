@@ -35,8 +35,8 @@ struct FirstCupWelcomeView:View {
                                 PapiText("Papi").font(CoffeeType.display(size:23,weight:.bold))
                             }.foregroundStyle(Color.coffee).padding(.horizontal,16).frame(minHeight:52).papiAvoidReserved()
                             Color.clear.frame(height:max(120,proxy.size.height*0.72-52))
-                            PapiTextButton(store.text("Log in")) {store.login()}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:12)).frame(maxWidth:.infinity)
-                                .disabled(!store.storageAvailable).padding(.horizontal,16)
+                            PapiTextButton(store.text("Log in")) {Task{await store.login()}}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:12)).frame(maxWidth:.infinity)
+                                .disabled(!store.storageAvailable || store.loginInProgress).padding(.horizontal,16)
                             PapiText("Your recipes, coffee moments and tasting notes, kept together.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).padding(.top,10).padding(.horizontal,20).multilineTextAlignment(.center)
                             if !store.storageAvailable {PapiTextButton("Retry local storage"){store.reload()}.buttonStyle(PapiButtonStyle(light:true))}
                             Spacer(minLength:30)
@@ -59,4 +59,20 @@ struct FirstCupWelcomeView:View {
         }
     }
     private func finishIntro(){_ = store.commit{$0.sawOnboarding=true}}
+}
+
+struct FirstCupLoadingView:View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var breathing=false
+    var body:some View {
+        CoffeeModal(maximumWidth:280,maximumHeight:260,shade:Color.coffee.opacity(0.38)) {
+            VStack(spacing:18) {
+                Image("brandMark").resizable().scaledToFit().frame(width:68,height:68)
+                    .scaleEffect(breathing && !reduceMotion ? 1.04:0.96).accessibilityHidden(true)
+                PapiText("Opening your coffee book…").font(CoffeeType.face(.headline)).multilineTextAlignment(.center)
+            }.padding(.vertical,8)
+        }.onAppear {
+            if !reduceMotion {withAnimation(.easeInOut(duration:0.7).repeatForever(autoreverses:true)){breathing=true}}
+        }
+    }
 }

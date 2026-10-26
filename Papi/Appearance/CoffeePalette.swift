@@ -28,18 +28,18 @@ struct PapiImage: View {
         }
     }
 }
-struct PapiBackground: View {
-    var asset = "pageBackground"
+struct PapiArtworkFill:View {
+    var asset:String
     var body: some View {
         GeometryReader { proxy in
-            if asset == "welcomeBackground" || asset.hasPrefix("onboarding") {
-                Color.cream
-                Image(asset).resizable().scaledToFit().frame(width:proxy.size.width,height:proxy.size.height)
-            } else {
-                Image(asset).resizable().scaledToFill().frame(width:proxy.size.width,height:proxy.size.height).clipped()
-            }
-        }.ignoresSafeArea().allowsHitTesting(false).accessibilityHidden(true)
+            Image(asset).resizable().scaledToFill()
+                .frame(width:proxy.size.width,height:proxy.size.height).clipped()
+        }.allowsHitTesting(false).accessibilityHidden(true)
     }
+}
+struct PapiBackground: View {
+    var asset = "pageBackground"
+    var body:some View {PapiArtworkFill(asset:asset).ignoresSafeArea()}
 }
 struct PapiButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var enabled
@@ -195,7 +195,7 @@ struct CoffeeModal<Content:View>:View {
                 ScrollView {
                     content().padding(width<280 ? 16:26).frame(maxWidth:.infinity)
                         .background {GeometryReader {geometry in Color.clear.preference(key:CoffeeModalHeightKey.self,value:geometry.size.height)}}
-                        .background {Image("dialogBackground").resizable()}
+                        .background {PapiArtworkFill(asset:"dialogBackground")}
                 }.frame(width:width,height:min(height,contentHeight>0 ? contentHeight:height))
                     .clipShape(RoundedRectangle(cornerRadius:22)).position(x:rect.midX,y:rect.midY)
             }.foregroundStyle(Color.coffee)

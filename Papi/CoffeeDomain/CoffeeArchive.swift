@@ -264,7 +264,8 @@ extension CoffeeMoment {
             30:"A street-side espresso, carried into the rest of the day."
         ]
         let photographs=(Array(0..<18)+[30]).map {index in
-            CoffeeMoment(id:"editorial-photo-\(index)",authorID:"papi-editorial",media:CoffeeArtwork.photoNames[index] ?? "emptyCup",caption:captions[index] ?? "A coffee moment from the Papi journal.",category:"Café journal",createdAt:Date(timeIntervalSince1970:1_790_000_000+Double(index)*3600))
+            let id="editorial-photo-\(index)"
+            return CoffeeMoment(id:id,authorID:CollectionConversation.entry(id)?.contributorID ?? CoffeeMember.editorial.id,media:CoffeeArtwork.photoNames[index] ?? "emptyCup",caption:captions[index] ?? "A coffee moment from the Papi journal.",category:"Café journal",createdAt:Date(timeIntervalSince1970:1_790_000_000+Double(index)*3600))
         }
         let filmNotes:[Int:String] = [
             0:"A little ghost appears in the milk foam, one careful pour at a time.",
@@ -287,8 +288,65 @@ extension CoffeeMoment {
         ]
         let films=CoffeeArtwork.filmNames.keys.sorted().compactMap {index -> CoffeeMoment? in
             guard let reference=CoffeeArtwork.filmNames[index],let caption=filmNotes[index] else{return nil}
-            return CoffeeMoment(id:"editorial-video-\(index)",authorID:"papi-editorial",media:reference,isVideo:true,caption:caption,category:"Coffee films",createdAt:Date(timeIntervalSince1970:1_790_000_000+Double(index)*3600))
+            let id="editorial-video-\(index)"
+            return CoffeeMoment(id:id,authorID:CollectionConversation.entry(id)?.contributorID ?? CoffeeMember.editorial.id,media:reference,isVideo:true,caption:caption,category:"Coffee films",createdAt:Date(timeIntervalSince1970:1_790_000_000+Double(index)*3600))
         }
         return Array(photographs.prefix(4))+films+Array(photographs.dropFirst(4))
     }()
+}
+
+/// Fixed conversation samples for the supplied collection, never messages or relationship records.
+struct CollectionConversation {
+    let momentID:String
+    let contributorIndex:Int
+    let appreciationCount:Int
+    let cupNotes:[String]
+    var contributorID:String {CoffeeMember.portraits[contributorIndex].id}
+    static func entry(_ momentID:String)->Self? {entries.first{$0.momentID==momentID}}
+    static let entries:[CollectionConversation] = [
+        .init(momentID:"editorial-photo-0",contributorIndex:0,appreciationCount:9,cupNotes:["That little cookie beside the cup is a lovely detail.","I'd pick the window seat for this one."]),
+        .init(momentID:"editorial-photo-1",contributorIndex:4,appreciationCount:14,cupNotes:["Coffee first, then a slow breakfast. A good order of things."]),
+        .init(momentID:"editorial-photo-2",contributorIndex:2,appreciationCount:6,cupNotes:["I like how the light comes through the americano."]),
+        .init(momentID:"editorial-photo-3",contributorIndex:6,appreciationCount:17,cupNotes:["The canal reflection makes this feel so still.","Two cups and nowhere to rush."]),
+        .init(momentID:"editorial-photo-4",contributorIndex:1,appreciationCount:8,cupNotes:["That croissant looks like it needs a second napkin."]),
+        .init(momentID:"editorial-photo-5",contributorIndex:7,appreciationCount:12,cupNotes:["Round tables always seem to make a café feel friendlier."]),
+        .init(momentID:"editorial-photo-6",contributorIndex:3,appreciationCount:5,cupNotes:["The pastry layers caught my eye before the foam did.","A little contrast between crisp and creamy."]),
+        .init(momentID:"editorial-photo-7",contributorIndex:5,appreciationCount:11,cupNotes:["A cold brew for the walk home sounds right."]),
+        .init(momentID:"editorial-photo-8",contributorIndex:0,appreciationCount:7,cupNotes:["I'd stay outside until that patch of sun moved."]),
+        .init(momentID:"editorial-photo-9",contributorIndex:1,appreciationCount:16,cupNotes:["Everything within reach of the grinder. A tidy little setup.","The cups make the counter feel lived in."]),
+        .init(momentID:"editorial-photo-10",contributorIndex:4,appreciationCount:4,cupNotes:["Just enough morning light for one quiet cup."]),
+        .init(momentID:"editorial-photo-11",contributorIndex:5,appreciationCount:10,cupNotes:["Those iced lattes won't stay cold for long in that sun."]),
+        .init(momentID:"editorial-photo-12",contributorIndex:7,appreciationCount:13,cupNotes:["I always pause before stirring the milk through.","The marble pattern changes with every pour."]),
+        .init(momentID:"editorial-photo-13",contributorIndex:2,appreciationCount:6,cupNotes:["Breakfast in a courtyard feels like a small holiday."]),
+        .init(momentID:"editorial-photo-14",contributorIndex:3,appreciationCount:15,cupNotes:["A cookie with a milk drink is a pairing I keep coming back to."]),
+        .init(momentID:"editorial-photo-15",contributorIndex:6,appreciationCount:8,cupNotes:["That glass roof would make a rainy coffee break interesting too.","So many soft reflections in this corner."]),
+        .init(momentID:"editorial-photo-16",contributorIndex:7,appreciationCount:12,cupNotes:["Dates bring their own sweetness to a small strong coffee."]),
+        .init(momentID:"editorial-photo-17",contributorIndex:4,appreciationCount:5,cupNotes:["The rose chairs are a good reason to take the long way home."]),
+        .init(momentID:"editorial-photo-30",contributorIndex:2,appreciationCount:9,cupNotes:["A quick street-side espresso, then back to the day.","Small cup, good pause."]),
+        .init(momentID:"editorial-video-0",contributorIndex:0,appreciationCount:18,cupNotes:["The tiny ghost only appears at the very end.","That last pour takes a steady hand."]),
+        .init(momentID:"editorial-video-1",contributorIndex:1,appreciationCount:11,cupNotes:["The rosetta opens so neatly when the pitcher comes closer."]),
+        .init(momentID:"editorial-video-4",contributorIndex:5,appreciationCount:7,cupNotes:["I could watch espresso slipping between ice cubes for a while."]),
+        .init(momentID:"editorial-video-5",contributorIndex:3,appreciationCount:13,cupNotes:["The ice goes in first and everything else follows.","I like seeing the whole glass come together."]),
+        .init(momentID:"editorial-video-6",contributorIndex:6,appreciationCount:6,cupNotes:["That blue saucer makes the milk pour stand out."]),
+        .init(momentID:"editorial-video-7",contributorIndex:4,appreciationCount:15,cupNotes:["The caramel trails stay visible until the first stir."]),
+        .init(momentID:"editorial-video-8",contributorIndex:0,appreciationCount:19,cupNotes:["A small drop at the end gives the heart its point.","Getting the pitcher low seems to make all the difference."]),
+        .init(momentID:"editorial-video-9",contributorIndex:2,appreciationCount:8,cupNotes:["Orange peel with a moka pot is an aroma combination I'd remember."]),
+        .init(momentID:"editorial-video-11",contributorIndex:1,appreciationCount:14,cupNotes:["One little layer at a time, then the tulip comes through."]),
+        .init(momentID:"editorial-video-13",contributorIndex:3,appreciationCount:5,cupNotes:["That first espresso of the morning deserves a clean cup.","A short extraction, a long pause afterward."]),
+        .init(momentID:"editorial-video-14",contributorIndex:4,appreciationCount:10,cupNotes:["The caramel disappears slowly around the spoon."]),
+        .init(momentID:"editorial-video-15",contributorIndex:5,appreciationCount:16,cupNotes:["Citrus over ice makes this feel like an afternoon cup."]),
+        .init(momentID:"editorial-video-16",contributorIndex:6,appreciationCount:12,cupNotes:["The rosetta fills almost the whole cappuccino.","The edges of the leaves stay so clear."]),
+        .init(momentID:"editorial-video-17",contributorIndex:7,appreciationCount:6,cupNotes:["The spiral dessert catches a little coffee in every fold."]),
+        .init(momentID:"editorial-video-18",contributorIndex:3,appreciationCount:17,cupNotes:["From grinder to cup is my favourite part of the routine."]),
+        .init(momentID:"editorial-video-19",contributorIndex:5,appreciationCount:9,cupNotes:["The layers don't last long, but they're worth a look.","I'd stir this just before the first sip."]),
+        .init(momentID:"editorial-video-20",contributorIndex:2,appreciationCount:7,cupNotes:["Pouring straight over ice makes the glass wake up."])
+    ]
+}
+extension TastingReply {
+    static let collectionSamples:[TastingReply] = CollectionConversation.entries.flatMap {entry -> [TastingReply] in
+        guard let post=CoffeeMoment.editorial.first(where:{$0.id==entry.momentID}) else{return []}
+        return entry.cupNotes.enumerated().map {offset,note in
+            TastingReply(id:"collection-\(entry.momentID)-reply-\(offset)",momentID:entry.momentID,text:note,createdAt:post.createdAt.addingTimeInterval(Double(offset+1)*420),authorID:CoffeeMember.portraits[(entry.contributorIndex+offset+1)%CoffeeMember.portraits.count].id)
+        }
+    }
 }

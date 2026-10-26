@@ -16,13 +16,20 @@ import Foundation
     }
     func isPostVisible(_ value:CoffeeMoment)->Bool {
         let approved = !value.isOwnMoment || value.moderation == .approved
+        // Keep previous coffee-desk blocks effective after collection portraits were assigned.
+        if !value.isOwnMoment,CollectionConversation.entry(value.id) != nil,isUserHidden(CoffeeMember.editorial.id) {return false}
         return approved && isTargetVisible(.post(value))
     }
     var visiblePosts:[CoffeeMoment] {(state.ownMoments+CoffeeMoment.editorial).filter{isPostVisible($0)}}
     func post(_ id:String)->CoffeeMoment? {visiblePosts.first{$0.id==id}}
+    func appreciationCount(for post:CoffeeMoment)->Int {
+        let sample=post.isOwnMoment ? 0:(CollectionConversation.entry(post.id)?.appreciationCount ?? 0)
+        return sample+(state.appreciatedMoments.contains(post.id) ? 1:0)
+    }
+    var tastingNotes:[TastingReply] {TastingReply.collectionSamples+state.tastingReplies}
     func visibleComments(_ momentID:String)->[TastingReply] {
         guard post(momentID) != nil else{return []}
-        return state.tastingReplies.filter{$0.momentID==momentID && isTargetVisible(.comment($0,owner:state.passport.id.uuidString))}
+        return tastingNotes.filter{$0.momentID==momentID && isTargetVisible(.comment($0,owner:state.passport.id.uuidString))}.sorted{$0.createdAt<$1.createdAt}
     }
     func isRoomVisible(_ room:CoffeeTable)->Bool {isTargetVisible(.init(kind:.room,contentReference:room.id,authorID:room.hostMemberID))}
     func isMutual(_ id:String)->Bool {
@@ -59,7 +66,7 @@ import Foundation
     }
     @discardableResult func report(_ target:SafetyTarget,reason:String)->Bool {
         guard !reason.isEmpty else{return false}
-        let comment=target.kind == .comment ? state.tastingReplies.first{$0.id==target.contentReference}:nil
+        let comment=target.kind == .comment ? tastingNotes.first{$0.id==target.contentReference}:nil
         let excerpt=comment?.text ?? (target.kind == .post ? (state.ownMoments+CoffeeMoment.editorial).first{$0.id==target.contentReference}?.caption:nil)
         let saved=commit {value in
             if !value.communityReports.contains(where:{($0.target?.id ?? SafetyTarget.legacy($0.contentReference)?.id)==target.id}) {value.communityReports.append(.init(contentReference:target.id,reason:reason,target:target,parentID:comment?.momentID,excerpt:excerpt.map{String($0.prefix(500))}))}

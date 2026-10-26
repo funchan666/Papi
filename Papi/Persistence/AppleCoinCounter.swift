@@ -46,13 +46,13 @@ struct CoinPack: Identifiable {
         Task { await recover() }
     }
     func recover() async {
-        guard let store,store.storageAvailable,store.accountAction==nil else{return}
+        guard let store,store.storageAvailable,store.accountAction==nil,!store.loginInProgress else{return}
         if recovering {recoveryRequested=true;return}
         recovering=true;defer {recovering=false}
         repeat {
             recoveryRequested=false
             for await result in Transaction.unfinished {await receive(result)}
-        } while recoveryRequested && store.storageAvailable && store.accountAction==nil
+        } while recoveryRequested && store.storageAvailable && store.accountAction==nil && !store.loginInProgress
     }
     func buy(_ pack: CoinPack, canPresent: @MainActor ()->Bool, purchase: @MainActor (Product, Set<Product.PurchaseOption>) async throws -> Product.PurchaseResult) async {
         guard !busy,let store,store.state.signedIn,canPresent() else{return}

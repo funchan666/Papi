@@ -33,3 +33,15 @@
 静态检查不等于运行验收。未做 Swift 类型检查、构建、测试、模拟器、真机点击、键盘/弹窗运行验证、Duo 设备验证或 StoreKit 沙盒/真实支付验证；本地版本也未新增远端聊天和审核服务。
 
 参考：[Apple DismissAction](https://developer.apple.com/documentation/swiftui/dismissaction)、[sheet 的 onDismiss](https://developer.apple.com/documentation/swiftui/view/sheet(item:ondismiss:content:))、[StoreKit PurchaseAction](https://developer.apple.com/documentation/storekit/purchaseaction)。
+
+## 2026-10-26 登录加载反馈
+
+点击登录后显示原 Papi 图标的轻微呼吸动效与主题纸张弹层，文字为 `Opening your coffee book…`，沿用当前语言。减少动态效果时停用呼吸动效，背景继续全屏 Fill，弹层沿用可用区域测量与滚动规则。
+
+登录保存放到后台任务，至少保留 450ms 的可读过渡；较慢写入不再额外等待。完成 Keychain 写入及读回后才发布登录状态和首页。加载状态由 store 单独管理且不持久化，防止重复点击；期间暂停普通提交、重载、账号变更和新购买，避免异步快照被并发更新覆盖。保存失败结束加载并使用原有错误提示与存储重试，欢迎奖励、唯一流水和协议字段仍与登录状态一次保存，不模拟网络认证。
+
+登录方法的唯一调用点已更新为异步调用；本轮仅执行资源/配置检查、独立 Swift 语法树解析和差异检查，未编译、测试或运行验证动效与 Keychain。非阻塞时钟接口参考 [Apple ContinuousClock.sleep](https://developer.apple.com/documentation/swift/continuousclock/sleep(until:tolerance:))。
+
+## 2026-10-26 第二个 Tab 纠正
+
+与原 `ProjectMaterials/DesignReferences/Lanhu/tab栏.png` 对照，第二项恢复 `Voice`、`voiceOn`/`voiceOff` 咖啡杯图标和 `CoffeeTablesView`。横向底栏与 Duo 侧栏共用这套映射，移除彩色滤杯的特例。Brew bench 改为“我的”中的独立目的地，并补上返回按钮；My brew book 等已有入口保留。已搜索全部相关 Tab 赋值和冲煮入口，没有遗留将“去冲煮台”指向 Tab 1 的动作；未修改配方、时间锚点、购买或持久化数据。

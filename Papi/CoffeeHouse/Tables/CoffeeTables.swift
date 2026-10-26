@@ -118,6 +118,7 @@ struct MemberPassportView:View {
     let memberID:String
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
+    @Environment(\.dynamicTypeSize) private var typeSize
     var body:some View {
         PapiScreen {
             if let person=store.person(memberID),!store.isUserHidden(memberID) {
@@ -147,7 +148,7 @@ struct MemberPassportView:View {
                             PapiText("Posts").font(CoffeeType.face(.headline))
                             let posts=store.visiblePosts.filter{$0.authorID==person.id}
                             if posts.isEmpty {PapiEmpty(title:"No published posts",detail:"Explore coffee moments in the Papi collection.")}
-                            LazyVGrid(columns:[GridItem(.adaptive(minimum:145))],spacing:12){ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}
+                            LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170))],spacing:12){ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}
                         }.padding(.horizontal,20)
                     }.padding(.bottom,25).frame(maxWidth:720).frame(maxWidth:.infinity)
                 }

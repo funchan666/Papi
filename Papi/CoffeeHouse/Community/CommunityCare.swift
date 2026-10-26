@@ -25,6 +25,7 @@ struct SafetyMenuView:View {
     @Environment(\.dismiss) private var dismiss
     @State private var reporting=false
     @State private var confirmBlock=false
+    @State private var authorToBlock:String?
     var body:some View {
         Group {
             if reporting {ReportView(target:target,onBack:{reporting=false})}
@@ -41,7 +42,7 @@ struct SafetyMenuView:View {
                                 }.buttonStyle(.plain)
                                 PapiText("Choose a report reason, or hide this item from your lists.").font(CoffeeType.face(.subheadline)).multilineTextAlignment(.center)
                                 if target.kind != .user,let author=target.authorID,author != store.state.passport.id.uuidString {
-                                    PapiTextButton("Block author") {if store.block(author){dismiss()}}.buttonStyle(PapiButtonStyle(light:true))
+                                    PapiTextButton("Block author") {authorToBlock=author}.buttonStyle(PapiButtonStyle(light:true))
                                 }
                             }.padding(.bottom,20)
                         }
@@ -49,6 +50,9 @@ struct SafetyMenuView:View {
                     .overlay {
                         if confirmBlock {
                             PapiDialog(title:target.kind == .user ? "Block this user?":"Hide this content?",message:target.kind == .user ? "Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.":"This item will disappear from your lists on this device.",confirm:target.kind == .user ? "Block user":"Hide content",cancel:"Cancel",action:{confirmBlock=false;if store.hide(target){dismiss()}},dismiss:{confirmBlock=false})
+                        }
+                        if let authorToBlock {
+                            PapiDialog(title:"Block this user?",message:"Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.",confirm:"Block user",cancel:"Cancel",action:{self.authorToBlock=nil;if store.block(authorToBlock){dismiss()}},dismiss:{self.authorToBlock=nil})
                         }
                     }
                 }

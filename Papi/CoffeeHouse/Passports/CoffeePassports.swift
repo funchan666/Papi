@@ -4,6 +4,7 @@ import PhotosUI
 struct MyCoffeePassportView:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var collection=0
     var body:some View {
         PapiScreen {
@@ -38,6 +39,8 @@ struct MyCoffeePassportView:View {
                         Button {router.go(.level)} label:{Image("levelBanner").resizable().scaledToFit()}.papiAccessibilityLabel("My level")
                     }.buttonStyle(.plain).padding(.horizontal,18)
                     VStack(spacing:0) {
+                        PapiRow(asset:"brewDripper",title:"Brew bench"){router.go(.brewBench)}
+                        Divider().padding(.leading,52)
                         PapiRow(asset:"brewDripper",title:"My brew book"){router.go(.brewArchive)}
                         Divider().padding(.leading,52)
                         PapiRow(asset:"voiceOn",title:"Coffee tables"){router.go(.tables)}
@@ -63,7 +66,7 @@ struct MyCoffeePassportView:View {
                     } else {
                         let posts=collection==0 ? store.visiblePosts.filter{$0.authorID==store.state.passport.id.uuidString}:store.visiblePosts.filter{store.state.keptMoments.contains($0.id)}
                         if posts.isEmpty {PapiEmpty(title:collection==0 ? "Your coffee journal is waiting":"No saved moments",detail:collection==0 ? "Use the plus button on Home to keep your first coffee moment.":"Save a moment from its detail page to find it here.")}
-                        LazyVGrid(columns:[GridItem(.adaptive(minimum:150),spacing:12)],spacing:12) {ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}.padding(.horizontal,18)
+                        LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:12) {ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}.padding(.horizontal,18)
                     }
                 }.padding(.bottom,24).frame(maxWidth:820).frame(maxWidth:.infinity)
             }
