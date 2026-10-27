@@ -2,8 +2,8 @@ import SwiftUI
 import AVFoundation
 @preconcurrency import LiveKit
 
-// Prepared for the consent-based call flow. It is not routed from the app until
-// the token service, remote participant removal and device validation are ready.
+// The route remains gated until the token service, remote participant removal
+// and device validation are ready.
 @MainActor final class CoffeeLiveCall:ObservableObject {
     let room=Room()
     @Published private(set) var connecting=false
@@ -11,8 +11,6 @@ import AVFoundation
     @Published private(set) var microphoneEnabled=false
     @Published private(set) var cameraEnabled=false
     @Published var message:String?
-    private var sessionID:UUID?
-    private var accountID:UUID?
     private var generation=UUID()
     private var monitor:Task<Void,Never>?
 
@@ -28,7 +26,7 @@ import AVFoundation
             guard generation==attempt,!Task.isCancelled,try await CoffeeCloud.shared.canJoinCall(id:call,account:account) else {
                 await room.disconnect();connecting=false;return
             }
-            sessionID=call;accountID=account;connected=true;connecting=false
+            connected=true;connecting=false
             monitor=Task { [weak self] in
                 while !Task.isCancelled {
                     do {
@@ -61,18 +59,13 @@ import AVFoundation
         generation=UUID();monitor?.cancel();monitor=nil
         await room.disconnect();connecting=false;connected=false;microphoneEnabled=false;cameraEnabled=false
     }
-    func end() async {
-        let call=sessionID,account=accountID
-        await disconnect()
-        guard let call,let account else{return}
-        do {try await CoffeeCloud.shared.endCall(id:call,account:account);sessionID=nil;accountID=nil}
-        catch {message="The call ended on this device. Its server status needs another attempt."}
-    }
 }
 
 struct CoffeeLiveCallView:View {
     let callID:UUID
     let accountID:UUID
+    @EnvironmentObject private var store:CoffeeHouse
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var call=CoffeeLiveCall()
     var body:some View {
@@ -85,13 +78,14 @@ struct CoffeeLiveCallView:View {
                     PapiActionGroup {
                         PapiTextButton(call.microphoneEnabled ? "Mute microphone":"Enable microphone"){Task {await call.setMicrophone(!call.microphoneEnabled)}}
                         PapiTextButton(call.cameraEnabled ? "Turn camera off":"Enable camera"){Task {await call.setCamera(!call.cameraEnabled)}}
-                        PapiTextButton("End call"){Task {await call.end()}}
+                        PapiTextButton("End call"){Task {await finish();dismiss()}}
                     }
                 } else {PapiTextButton(call.connecting ? "Connecting…":"Join call"){Task {await call.join(call:callID,account:accountID)}}.disabled(call.connecting)}
             }.padding(16)
-        }.onDisappear {Task {await call.end()}}
-            .onChange(of:scenePhase){_,phase in if phase != .active {Task {await call.end()}}}
+        }.onDisappear {Task {await finish()}}
+            .onChange(of:scenePhase){_,phase in if phase != .active {Task {await finish()}}}
     }
+    private func finish() async {await call.disconnect();await store.endCloudCall(callID)}
 }
 
 private struct LiveCallVideo:View {

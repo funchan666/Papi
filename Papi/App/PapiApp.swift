@@ -37,7 +37,7 @@ import SwiftUI
     }
 }
 enum CoffeeDestination:Hashable {
-    case room(String),post(String),person(String),chat(String),beans,cafes,settings,editProfile,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,photo(String),gifts(String),reviewQueue,tables,brewBench,brewRecipe(String),brewArchive,brewCup(UUID),cuppingFlight,cupChoice(Int)
+    case room(String),post(String),person(String),chat(String),liveCall(UUID),beans,cafes,settings,editProfile,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,photo(String),gifts(String),reviewQueue,tables,brewBench,brewRecipe(String),brewArchive,brewCup(UUID),cuppingFlight,cupChoice(Int)
 }
 enum CoffeePresentation:Identifiable {
     case compose,checkin,report(SafetyTarget),safety(SafetyTarget),more(String),gifts(String)
@@ -111,6 +111,9 @@ struct PapiRootView:View {
             if id==store.state.passport.id.uuidString || id==store.state.cloudAccountID?.uuidString {VStack(spacing:0){PapiHeader("Profile").background(Color.cream).papiContainerMargins();MyCoffeePassportView()}.background {PapiBackground()}}
             else {MemberPassportView(memberID:id)}
         case .chat(let id):CoffeeConversationView(memberID:id)
+        case .liveCall(let id):
+            if store.liveCallsEnabled,let account=store.state.cloudAccountID {CoffeeLiveCallView(callID:id,accountID:account)}
+            else {PapiScreen {PapiEmpty(title:"Call unavailable")}}
         case .beans:BeanVarietyShelf()
         case .cafes:CafeInspirationView()
         case .settings:CoffeePreferencesView()

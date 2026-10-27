@@ -485,9 +485,10 @@ struct CoffeeReceipt: Identifiable {
     }
 
     func endCloudCall(_ id:UUID) async {
-        guard liveCallsEnabled,let account=state.cloudAccountID,state.signedIn,!cloudCallsBusy else{return}
+        guard liveCallsEnabled,let account=state.cloudAccountID,state.signedIn else{return}
         if let pending=state.pendingCloudCallEnd {guard pending.id==id,pending.accountID==account else{return}}
         else if !commit({$0.pendingCloudCallEnd = .init(id:id,accountID:account)}) {return}
+        guard !cloudCallsBusy else{return}
         cloudCallsBusy=true;defer{cloudCallsBusy=false}
         do {
             try await CoffeeCloud.shared.endCall(id:id,account:account)

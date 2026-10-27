@@ -89,6 +89,17 @@ import Foundation
         let formatter=ISO8601DateFormatter();formatter.formatOptions=[.withInternetDateTime,.withFractionalSeconds]
         return formatter.date(from:value) ?? ISO8601DateFormatter().date(from:value)
     }
+    func activeCloudCall(with peer:UUID)->CoffeeCloud.CallSession? {
+        guard let account=state.cloudAccountID else{return nil}
+        return cloudCalls?.first {call in
+            ((call.caller_id==account && call.recipient_id==peer) || (call.caller_id==peer && call.recipient_id==account)) &&
+            ["pending","accepted"].contains(call.status) && (cloudDate(call.expires_at) ?? .distantPast)>Date()
+        }
+    }
+    var incomingCloudCalls:[CoffeeCloud.CallSession] {
+        guard let account=state.cloudAccountID else{return []}
+        return (cloudCalls ?? []).filter{$0.recipient_id==account && $0.status=="pending" && (cloudDate($0.expires_at) ?? .distantPast)>Date()}
+    }
     func cloudFeedItem(_ id:String)->CoffeeCloud.FeedMoment? {cloudFeed?.first{$0.id.uuidString==id}}
     func post(_ id:String)->CoffeeMoment? {visiblePosts.first{$0.id==id}}
     func appreciationCount(for post:CoffeeMoment)->Int {
