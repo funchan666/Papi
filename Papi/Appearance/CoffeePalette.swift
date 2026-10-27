@@ -13,15 +13,18 @@ struct PapiImage: View {
     var fit = false
     @State private var poster:UIImage?
     @State private var posterName:String?
+    @Environment(\.scenePhase) private var scenePhase
     var body: some View {
         Group {
         if let image = CoffeeMedia.image(name) ?? (posterName==name ? poster:nil) {
             Image(uiImage:image).resizable().aspectRatio(contentMode:fit ? .fit : .fill)
         } else {
-            Image("emptyCup").resizable().scaledToFit().padding(24).background(Color.cream)
+            Image("emptyCup").resizable().scaledToFit().padding(8).background(Color.cream)
         }
-        }.task(id:name) {
+        }.task(id:name+(scenePhase == .active ? "|active":"|inactive")) {
+            guard scenePhase == .active else{return}
             let source=name
+            if posterName != source {poster=nil;posterName=nil}
             let result=await CoffeeMedia.preparePoster(source)
             guard !Task.isCancelled else{return}
             posterName=source;poster=result

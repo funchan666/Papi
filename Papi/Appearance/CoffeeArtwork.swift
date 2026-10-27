@@ -32,13 +32,17 @@ enum CoffeeArtwork {
         "person07":"portrait-dae",
         "coffeeVideo00":"ghost-latte-art",
         "coffeeVideo01":"rosetta-practice",
+        "coffeeVideo02":"cafe-company-portrait",
+        "coffeeVideo03":"window-seat-journey",
         "coffeeVideo04":"iced-espresso-glass",
         "coffeeVideo05":"bar-counter-iced-latte",
         "coffeeVideo06":"blue-cup-pour",
         "coffeeVideo07":"caramel-swirl-glass",
         "coffeeVideo08":"heart-latte-workshop",
         "coffeeVideo09":"moka-orange-peel",
+        "coffeeVideo10":"evening-city-company",
         "coffeeVideo11":"tulip-latte-pour",
+        "coffeeVideo12":"city-cafe-walk",
         "coffeeVideo13":"espresso-on-off",
         "coffeeVideo14":"stirred-caramel-latte",
         "coffeeVideo15":"citrus-iced-coffee",
@@ -74,13 +78,17 @@ enum CoffeeArtwork {
     static let filmNames:[Int:String] = [
         0:"ghost-latte-art",
         1:"rosetta-practice",
+        2:"cafe-company-portrait",
+        3:"window-seat-journey",
         4:"iced-espresso-glass",
         5:"bar-counter-iced-latte",
         6:"blue-cup-pour",
         7:"caramel-swirl-glass",
         8:"heart-latte-workshop",
         9:"moka-orange-peel",
+        10:"evening-city-company",
         11:"tulip-latte-pour",
+        12:"city-cafe-walk",
         13:"espresso-on-off",
         14:"stirred-caramel-latte",
         15:"citrus-iced-coffee",
@@ -90,5 +98,40 @@ enum CoffeeArtwork {
         19:"iced-milk-rosetta",
         20:"coffee-over-ice",
     ]
-    static func isFilm(_ reference:String)->Bool {filmNames.values.contains(canonical(reference))}
+    static func isFilm(_ reference:String)->Bool {CoffeeCollection.entry(reference)?.kind == "film"}
+}
+
+struct CoffeeCollectionAsset:Decodable {
+    let asset:String
+    let kind:String
+    let path:String
+    let usage:String
+    let memberID:String?
+    let displayName:String?
+    let bio:String?
+}
+/// An explicit catalog keeps cloud filenames out of saved guest records.
+enum CoffeeCollection {
+    private struct Catalog:Decodable {let baseURL:String;let items:[CoffeeCollectionAsset]}
+    private static let catalog:Catalog? = {
+        guard let url=Bundle.main.url(forResource:"CoffeeCollection",withExtension:"json",subdirectory:"Media"),
+              let data=try? Data(contentsOf:url) else{return nil}
+        return try? JSONDecoder().decode(Catalog.self,from:data)
+    }()
+    static var assets:[CoffeeCollectionAsset] {catalog?.items ?? []}
+    private static let byName=Dictionary(uniqueKeysWithValues:assets.map{($0.asset,$0)})
+    static func entry(_ reference:String)->CoffeeCollectionAsset? {byName[CoffeeArtwork.canonical(reference)]}
+    static func url(_ reference:String)->URL? {
+        guard let item=entry(reference),let base=catalog?.baseURL,
+              base=="https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev",
+              item.path.hasPrefix(item.kind=="film" ? "vv/":"pp/"),
+              !item.path.contains(".."),item.path.split(separator:"/").count==2 else{return nil}
+        return URL(string:base+"/"+item.path)
+    }
+    static var additionalPeople:[CoffeeMember] {
+        assets.compactMap {item in
+            guard item.usage=="profile",let id=item.memberID,!id.hasPrefix("preview-member-"),let name=item.displayName,let bio=item.bio else{return nil}
+            return CoffeeMember(id:id,name:name,portrait:item.asset,bio:bio)
+        }
+    }
 }

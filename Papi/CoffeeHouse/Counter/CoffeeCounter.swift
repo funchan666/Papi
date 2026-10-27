@@ -288,7 +288,7 @@ struct CoffeeJourneyView:View {
                 ScrollView {
                     VStack(spacing:22) {
                         VStack(alignment:.leading,spacing:16) {
-                            HStack {Avatar(name:store.state.passport.avatar,size:48);PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.title3,weight:.bold));Spacer()}
+                            HStack {Avatar(name:store.state.passport.portraitReference,size:48);PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.title3,weight:.bold));Spacer()}
                             PapiText("Lv.\(store.state.experience/100+1)").font(CoffeeType.counter(size:32,weight:.heavy))
                             ProgressView(value:Double(store.state.experience%100),total:100).tint(.coffee)
                             PapiText("\(store.state.experience%100)/100 EXP").font(CoffeeType.face(.caption))

@@ -6,11 +6,7 @@
     "tree-sitter-swift": "0.7.4"
   },
   "fileCount": 30,
-  "lineCount": 4510,
-  "regularStringLiterals": 1490,
-  "rawStringLiterals": 10,
-  "stringInterpolations": 79,
-  "unicodeEscapes": 2,
+  "lineCount": 4793,
   "inMemoryGrammarNormalisations": [
     {
       "file": "Papi/Appearance/DisplayContinuity.swift",
@@ -20,7 +16,7 @@
     },
     {
       "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
-      "line": 286,
+      "line": 307,
       "original": "scale*$0",
       "reason": "Parser grammar ambiguity; equivalent spaces in memory only."
     }
@@ -34,7 +30,7 @@
     },
     {
       "file": "Papi/Appearance/CoffeeArtwork.swift",
-      "lines": 94,
+      "lines": 137,
       "syntaxTreeComplete": true
     },
     {
@@ -44,7 +40,7 @@
     },
     {
       "file": "Papi/Appearance/CoffeePalette.swift",
-      "lines": 244,
+      "lines": 247,
       "syntaxTreeComplete": true
     },
     {
@@ -64,7 +60,7 @@
     },
     {
       "file": "Papi/CoffeeDomain/CoffeeArchive.swift",
-      "lines": 352,
+      "lines": 363,
       "syntaxTreeComplete": true
     },
     {
@@ -109,12 +105,12 @@
     },
     {
       "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
-      "lines": 296,
+      "lines": 317,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Passports/CoffeePassports.swift",
-      "lines": 273,
+      "lines": 420,
       "syntaxTreeComplete": true
     },
     {
@@ -134,12 +130,12 @@
     },
     {
       "file": "Papi/Media/CoffeeFilm.swift",
-      "lines": 103,
+      "lines": 110,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/Media/CoffeeMediaFiles.swift",
-      "lines": 137,
+      "lines": 188,
       "syntaxTreeComplete": true
     },
     {

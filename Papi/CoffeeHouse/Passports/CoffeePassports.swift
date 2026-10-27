@@ -1,5 +1,6 @@
 import SwiftUI
 import PhotosUI
+import WebKit
 
 struct MyCoffeePassportView:View {
     @EnvironmentObject private var store:CoffeeHouse
@@ -8,67 +9,78 @@ struct MyCoffeePassportView:View {
     @State private var collection=0
     var body:some View {
         PapiScreen {
-            ScrollView {
-                VStack(spacing:15) {
-                    ZStack(alignment:.top) {
-                        PapiImage(name:store.state.passport.cover).frame(height:260).clipped()
-                        HStack {
-                            Image("profileTitle").resizable().scaledToFit().frame(maxWidth:145).frame(height:55)
-                            Spacer()
-                            PapiIconButton(asset:"edit",label:"Edit profile"){router.go(.editProfile)}.background(Color.cream.opacity(0.94),in:RoundedRectangle(cornerRadius:12))
-                            PapiIconButton(asset:"settings",label:store.text("Settings")){router.go(.settings)}.background(Color.cream.opacity(0.94),in:RoundedRectangle(cornerRadius:12))
-                        }.padding(18).papiAvoidReserved()
-                    }
-                    VStack(alignment:.leading,spacing:12) {
-                        HStack {
-                            Avatar(name:store.state.passport.avatar,size:66)
-                            VStack(alignment:.leading,spacing:5) {PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.title3,weight:.bold));PapiText("Your coffee passport").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
-                            Spacer()
-                            if let id=store.state.displayedGift,let gift=CoffeeCollectible.all.first(where:{$0.id==id}) {Image(gift.asset).resizable().scaledToFit().frame(width:55,height:55).papiAccessibilityLabel(gift.name)}
-                        }
-                        PapiText(verbatim:store.state.passport.bio).font(CoffeeType.face(.subheadline))
-                        PapiText("\(store.brewBook.cups.count) cups in your book").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                    }.padding(18).background(Color.cream.opacity(0.95),in:RoundedRectangle(cornerRadius:24)).padding(.horizontal,16).padding(.top,-42)
-                    HStack(spacing:0) {
-                        countButton(store.state.followedMembers.filter{!store.isUserHidden($0)}.count,"Following")
-                        countButton(store.followers.count,"Follower")
-                        countButton(store.friends.count,"Friends")
-                    }.padding(.vertical,16).background(Color.coffee,in:RoundedRectangle(cornerRadius:12)).padding(.horizontal,18)
-                    HStack(spacing:12) {
-                        Button {router.go(.wallet)} label:{Image("walletBanner").resizable().scaledToFit()}.papiAccessibilityLabel("My wallet")
-                        Button {router.go(.level)} label:{Image("levelBanner").resizable().scaledToFit()}.papiAccessibilityLabel("My level")
-                    }.buttonStyle(.plain).padding(.horizontal,18)
+            GeometryReader {container in
+                let topInset=container.safeAreaInsets.top
+                let coverHeight=min(360,max(260,container.size.width*0.62))
+                ScrollView {
                     VStack(spacing:0) {
-                        PapiRow(asset:"brewDripper",title:"Brew bench"){router.go(.brewBench)}
-                        Divider().padding(.leading,52)
-                        PapiRow(asset:"brewDripper",title:"My brew book"){router.go(.brewArchive)}
-                        Divider().padding(.leading,52)
-                        PapiRow(asset:"voiceOn",title:"Coffee tables"){router.go(.tables)}
-                        Divider().padding(.leading,52)
-                        PapiRow(asset:"blocked",title:"Blacklist"){router.go(.blacklist)}
-                        Divider().padding(.leading,52)
-                        PapiRow(asset:"calendar",title:store.text("Check in")){router.sheet = .checkin}
-                        Divider().padding(.leading,52)
-                        PapiRow(asset:"bag",title:"My backpack"){router.go(.backpack)}
-                        Divider().padding(.leading,52)
-                        PapiRow(asset:"globe",title:store.text("Language")){router.go(.language)}
-                        Divider().padding(.leading,52)
-                        PapiRow(asset:"coffeeUpdates",title:"My submissions"){router.go(.reviewQueue)}
-                    }.background(Color.white,in:RoundedRectangle(cornerRadius:18)).padding(.horizontal,18)
-                    HStack {
-                        ForEach(0..<3) {i in PapiTextButton(["Posts","Photo album","Saved"][i]){collection=i}.font(CoffeeType.face(.subheadline,weight:.semibold)).padding(.vertical,10).frame(maxWidth:.infinity).background(collection==i ? Color.butter:Color.clear,in:Capsule())}
-                    }.buttonStyle(.plain).padding(.horizontal,16)
-                    if collection==1 {
-                        if store.state.passport.photos.isEmpty {PapiEmpty(title:"No album photos yet",detail:"Add a photo from Edit Profile.")}
-                        LazyVGrid(columns:[GridItem(.adaptive(minimum:145),spacing:12)],spacing:12) {
-                            ForEach(store.state.passport.photos,id:\.self) {name in Button{router.go(.photo(name))} label:{PapiImage(name:name).frame(height:180).clipped().clipShape(RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)}
-                        }.padding(.horizontal,18)
-                    } else {
-                        let posts=collection==0 ? store.visiblePosts.filter{$0.authorID==store.state.passport.id.uuidString}:store.visiblePosts.filter{store.state.keptMoments.contains($0.id)}
-                        if posts.isEmpty {PapiEmpty(title:collection==0 ? "Your coffee journal is waiting":"No saved moments",detail:collection==0 ? "Use the plus button on Home to keep your first coffee moment.":"Save a moment from its detail page to find it here.")}
-                        LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:12) {ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}.padding(.horizontal,18)
+                        ZStack(alignment:.top) {
+                            PapiImage(name:store.state.passport.cover)
+                                .frame(width:container.size.width,height:coverHeight+topInset).clipped()
+                            HStack {
+                                Image("profileTitle").resizable().scaledToFit().frame(maxWidth:145).frame(height:55)
+                                Spacer()
+                                PapiIconButton(asset:"edit",label:"Edit profile"){router.go(.editProfile)}.background(Color.cream.opacity(0.94),in:RoundedRectangle(cornerRadius:12))
+                                PapiIconButton(asset:"settings",label:store.text("Settings")){router.go(.settings)}.background(Color.cream.opacity(0.94),in:RoundedRectangle(cornerRadius:12))
+                            }.padding(18).padding(.top,topInset).frame(maxWidth:820).papiAvoidReserved()
+                        }.frame(height:coverHeight+topInset)
+                        VStack(spacing:15) {
+                            VStack(alignment:.leading,spacing:12) {
+                                HStack {
+                                    Button {router.go(.editProfile)} label:{Avatar(name:store.state.passport.portraitReference,size:76)}
+                                        .buttonStyle(.plain).papiAccessibilityLabel("Change avatar")
+                                    VStack(alignment:.leading,spacing:5) {PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.title3,weight:.bold));PapiText("Your coffee passport").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
+                                    Spacer()
+                                    if let id=store.state.displayedGift,let gift=CoffeeCollectible.all.first(where:{$0.id==id}) {Image(gift.asset).resizable().scaledToFit().frame(width:55,height:55).papiAccessibilityLabel(gift.name)}
+                                }
+                                PapiText(verbatim:store.state.passport.bio).font(CoffeeType.face(.subheadline))
+                                PapiText("\(store.brewBook.cups.count) cups in your book").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                            }.padding(18).background(Color.cream.opacity(0.95),in:RoundedRectangle(cornerRadius:24)).padding(.horizontal,16).padding(.top,-32)
+                            HStack(spacing:0) {
+                                countButton(store.state.followedMembers.filter{!store.isUserHidden($0)}.count,"Following")
+                                countButton(store.followers.count,"Follower")
+                                countButton(store.friends.count,"Friends")
+                            }.padding(.vertical,16).background(Color.coffee,in:RoundedRectangle(cornerRadius:12)).padding(.horizontal,18)
+                            HStack(spacing:12) {
+                                Button {router.go(.wallet)} label:{Image("walletBanner").resizable().scaledToFit()}.papiAccessibilityLabel("My wallet")
+                                Button {router.go(.level)} label:{Image("levelBanner").resizable().scaledToFit()}.papiAccessibilityLabel("My level")
+                            }.buttonStyle(.plain).padding(.horizontal,18)
+                            VStack(spacing:0) {
+                                PapiRow(asset:"brewDripper",title:"Brew bench"){router.go(.brewBench)}
+                                Divider().padding(.leading,52)
+                                PapiRow(asset:"brewDripper",title:"My brew book"){router.go(.brewArchive)}
+                                Divider().padding(.leading,52)
+                                PapiRow(asset:"voiceOn",title:"Coffee tables"){router.go(.tables)}
+                                Divider().padding(.leading,52)
+                                PapiRow(asset:"blocked",title:"Blacklist"){router.go(.blacklist)}
+                                Divider().padding(.leading,52)
+                                PapiRow(asset:"calendar",title:store.text("Check in")){router.sheet = .checkin}
+                                Divider().padding(.leading,52)
+                                PapiRow(asset:"bag",title:"My backpack"){router.go(.backpack)}
+                                Divider().padding(.leading,52)
+                                PapiRow(asset:"globe",title:store.text("Language")){router.go(.language)}
+                                Divider().padding(.leading,52)
+                                PapiRow(asset:"coffeeUpdates",title:"My submissions"){router.go(.reviewQueue)}
+                            }.background(Color.white,in:RoundedRectangle(cornerRadius:18)).padding(.horizontal,18)
+                            HStack {
+                                ForEach(0..<3) {i in PapiTextButton(["Posts","Photo album","Saved"][i]){collection=i}.font(CoffeeType.face(.subheadline,weight:.semibold)).padding(.vertical,10).frame(maxWidth:.infinity).background(collection==i ? Color.butter:Color.clear,in:Capsule())}
+                            }.buttonStyle(.plain).padding(.horizontal,16)
+                            if collection==1 {
+                                if store.state.passport.photos.isEmpty {PapiEmpty(title:"No album photos yet",detail:"Add a photo from Edit Profile.")}
+                                LazyVGrid(columns:[GridItem(.adaptive(minimum:145),spacing:12)],spacing:12) {
+                                    ForEach(store.state.passport.photos,id:\.self) {name in Button{router.go(.photo(name))} label:{PapiImage(name:name).frame(height:180).clipped().clipShape(RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)}
+                                }.padding(.horizontal,18)
+                            } else {
+                                let posts=collection==0 ? store.visiblePosts.filter{$0.authorID==store.state.passport.id.uuidString}:store.visiblePosts.filter{store.state.keptMoments.contains($0.id)}
+                                if posts.isEmpty {PapiEmpty(title:collection==0 ? "Your coffee journal is waiting":"No saved moments",detail:collection==0 ? "Use the plus button on Home to keep your first coffee moment.":"Save a moment from its detail page to find it here.")}
+                                LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:12) {ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}.padding(.horizontal,18)
+                            }
+                        }.padding(.bottom,24).frame(maxWidth:820).frame(maxWidth:.infinity)
                     }
-                }.padding(.bottom,24).frame(maxWidth:820).frame(maxWidth:.infinity)
+                }
+                // Extend the photo and scroll surface; measured top padding keeps controls below system cutouts.
+                .ignoresSafeArea(.container,edges:.top)
+                .contentMargins(.top,0,for:.scrollContent)
             }
         }
     }
@@ -93,7 +105,7 @@ struct EditCoffeePassportView:View {
                     VStack(spacing:18) {
                         PapiImage(name:passport.cover).frame(height:210).clipped().clipShape(RoundedRectangle(cornerRadius:20))
                         PapiActionGroup {pickButton("Change background",kind:"cover");pickButton("Change avatar",kind:"avatar")}
-                        HStack {Avatar(name:passport.avatar,size:64);PapiText("Your coffee passport").font(CoffeeType.face(.headline));Spacer()}
+                        HStack {Avatar(name:passport.portraitReference,size:64);PapiText("Your coffee passport").font(CoffeeType.face(.headline));Spacer()}
                         VStack(alignment:.leading,spacing:8) {
                             PapiText("Name").font(CoffeeType.face(.caption,weight:.semibold));PapiTextField(prompt:"Please enter the name…",text:$passport.name)
                             PapiText("About you").font(CoffeeType.face(.caption,weight:.semibold));PapiTextField(prompt:"Keeping the cups I want to brew again.",text:$passport.bio)
@@ -111,6 +123,7 @@ struct EditCoffeePassportView:View {
                             guard store.validateCommunityText(name+" "+passport.bio) else{return}
                             guard passport.id==store.state.passport.id else {store.inform("Account changed","Reopen this page to edit the current coffee account.");return}
                             passport.name=name
+                            passport.avatar=passport.portraitReference
                             if store.commit({$0.passport=passport}) {dismiss()}
                         }.buttonStyle(PapiButtonStyle()).disabled(importing)
                         PapiText("Tap Save to keep these changes.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
@@ -230,41 +243,175 @@ struct LanguageView:View {
         }}
     }
 }
+struct CoffeePolicyDocument:Decodable,Identifiable {
+    struct Section:Decodable {let heading:String;let paragraphs:[String]}
+    let id:String
+    let title:String
+    let subtitle:String
+    let updated:String
+    let publishedURL:String
+    let introduction:[String]
+    let sections:[Section]
+    var url:URL? {
+        guard let url=URL(string:publishedURL),url.scheme=="https",url.host=="docs.google.com",
+              url.path.hasPrefix("/document/d/e/"),url.path.hasSuffix("/pub") else{return nil}
+        return url
+    }
+}
+enum CoffeePolicyLibrary {
+    private struct Book:Decodable {let version:String;let documents:[CoffeePolicyDocument]}
+    private static let book:Book? = {
+        guard let url=Bundle.main.url(forResource:"PapiPolicies",withExtension:"json",subdirectory:"Localization"),let data=try? Data(contentsOf:url) else{return nil}
+        return try? JSONDecoder().decode(Book.self,from:data)
+    }()
+    static var version:String {book?.version ?? "2026-10-26"}
+    static func document(_ id:String)->CoffeePolicyDocument? {book?.documents.first{$0.id==id}}
+}
 struct LegalView:View {
     var type:String
     var body:some View {
+        if type=="community" {CoffeeCommunityGuidelinesView()}
+        else if let document=CoffeePolicyLibrary.document(type) {PublishedCoffeePolicyView(document:document).id(document.id)}
+        else {PapiScreen {VStack(spacing:0){PapiHeader("Policy");PapiEmpty(title:"Policy unavailable",detail:"Please reopen this page to try again.");Spacer()}}}
+    }
+}
+private struct PublishedCoffeePolicyView:View {
+    let document:CoffeePolicyDocument
+    @Environment(\.openURL) private var openURL
+    @State private var loading=true
+    @State private var unavailable=false
+    @State private var savedCopy=false
+    @State private var reloadID=UUID()
+    @Environment(\.papiRegions) private var reservedRegions
+    var body:some View {
+        PapiScreen {
+            VStack(spacing:0) {
+                PapiHeader(document.id=="privacy" ? "Privacy Policy":"User Agreement") {
+                    PapiTextButton(savedCopy ? "Online":"Saved copy") {
+                        if savedCopy {loading=true;unavailable=false;reloadID=UUID()}
+                        savedCopy.toggle()
+                    }
+                        .font(CoffeeType.face(.caption,weight:.bold)).padding(.horizontal,6)
+                }
+                GeometryReader {proxy in
+                    let frame=proxy.frame(in:.named("PapiContainer"))
+                    let regions=reservedRegions.map{$0.offsetBy(dx:-frame.minX,dy:-frame.minY)}
+                    let readingArea=PapiRegionGeometry.largestArea(in:CGRect(origin:.zero,size:proxy.size),excluding:regions)
+                    readingContent.frame(width:readingArea.width,height:readingArea.height).position(x:readingArea.midX,y:readingArea.midY)
+                }
+                if let url=document.url {
+                    PapiTextButton("Open in browser") {openURL(url)}
+                        .font(CoffeeType.face(.caption,weight:.semibold)).frame(maxWidth:.infinity,minHeight:44).background(Color.cream).papiAvoidReserved()
+                }
+            }
+        }
+    }
+    @ViewBuilder private var readingContent:some View {
+        if savedCopy {savedBody}
+        else if let url=document.url {
+            ZStack {
+                CoffeePolicyWebPage(url:url,loading:$loading,unavailable:$unavailable,openExternal:{openURL($0)}).id(reloadID)
+                    .opacity(unavailable ? 0:1).accessibilityHidden(unavailable)
+                if loading || unavailable {
+                    ScrollView {
+                        VStack(spacing:16) {
+                            Image("brandMark").resizable().scaledToFit().frame(width:54,height:54).accessibilityHidden(true)
+                            PapiText(unavailable ? "Online policy unavailable":"Opening the policy…").font(CoffeeType.face(.headline)).multilineTextAlignment(.center)
+                            if unavailable {
+                                PapiText("Read the saved copy now, or retry the public page.").font(CoffeeType.face(.subheadline)).multilineTextAlignment(.center)
+                                PapiTextButton("Retry") {loading=true;unavailable=false;reloadID=UUID()}.buttonStyle(PapiButtonStyle())
+                            }
+                            PapiTextButton("Read saved copy") {savedCopy=true}.buttonStyle(PapiButtonStyle(light:true))
+                        }.padding(24).frame(maxWidth:520).frame(maxWidth:.infinity)
+                    }.frame(maxWidth:.infinity,maxHeight:.infinity).background {PapiBackground()}
+                }
+            }.frame(maxWidth:.infinity,maxHeight:.infinity)
+        } else {savedBody}
+    }
+
+    private var savedBody:some View {
+        ScrollView {
+            VStack(alignment:.leading,spacing:18) {
+                PapiText("Saved copy · English").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                PapiText(verbatim:document.title).font(CoffeeType.face(.title2,weight:.bold))
+                PapiText(verbatim:document.subtitle).font(CoffeeType.face(.subheadline))
+                PapiText(verbatim:"Updated "+document.updated).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                ForEach(document.introduction,id:\.self) {text in PapiText(verbatim:text)}
+                ForEach(document.sections, id:\.heading) {section in
+                    VStack(alignment:.leading,spacing:10) {
+                        PapiText(verbatim:section.heading).font(CoffeeType.face(.headline)).accessibilityAddTraits(.isHeader)
+                        ForEach(section.paragraphs,id:\.self) {text in PapiText(verbatim:text)}
+                    }
+                }
+            }.font(CoffeeType.face(.body)).lineSpacing(4).textSelection(.enabled)
+                .environment(\.layoutDirection,.leftToRight).padding(24).frame(maxWidth:700).frame(maxWidth:.infinity,alignment:.leading)
+        }
+    }
+}
+private struct CoffeePolicyWebPage:UIViewRepresentable {
+    let url:URL
+    @Binding var loading:Bool
+    @Binding var unavailable:Bool
+    let openExternal:(URL)->Void
+    func makeCoordinator()->Coordinator {Coordinator(self)}
+    func makeUIView(context:Context)->WKWebView {
+        let configuration=WKWebViewConfiguration()
+        configuration.websiteDataStore = .nonPersistent()
+        configuration.defaultWebpagePreferences.allowsContentJavaScript=false
+        configuration.preferences.javaScriptCanOpenWindowsAutomatically=false
+        configuration.mediaTypesRequiringUserActionForPlayback = .all
+        let view=WKWebView(frame:.zero,configuration:configuration)
+        view.navigationDelegate=context.coordinator
+        view.isOpaque=false;view.backgroundColor = .clear
+        view.scrollView.backgroundColor = .clear
+        view.scrollView.contentInsetAdjustmentBehavior = .never
+        view.load(URLRequest(url:url,cachePolicy:.useProtocolCachePolicy,timeoutInterval:20))
+        return view
+    }
+    func updateUIView(_ view:WKWebView,context:Context) {context.coordinator.owner=self}
+    static func dismantleUIView(_ view:WKWebView,coordinator:Coordinator) {view.navigationDelegate=nil;view.stopLoading()}
+    final class Coordinator:NSObject,WKNavigationDelegate {
+        var owner:CoffeePolicyWebPage
+        init(_ owner:CoffeePolicyWebPage) {self.owner=owner}
+        func webView(_ webView:WKWebView,didStartProvisionalNavigation navigation:WKNavigation!) {owner.loading=true;owner.unavailable=false}
+        func webView(_ webView:WKWebView,didFinish navigation:WKNavigation!) {owner.loading=false}
+        func webView(_ webView:WKWebView,didFailProvisionalNavigation navigation:WKNavigation!,withError error:Error) {failed(error)}
+        func webView(_ webView:WKWebView,didFail navigation:WKNavigation!,withError error:Error) {failed(error)}
+        func webViewWebContentProcessDidTerminate(_ webView:WKWebView) {owner.loading=false;owner.unavailable=true}
+        private func failed(_ error:Error) {
+            guard (error as NSError).code != NSURLErrorCancelled else{return}
+            owner.loading=false;owner.unavailable=true
+        }
+        func webView(_ webView:WKWebView,decidePolicyFor action:WKNavigationAction,decisionHandler:@escaping(WKNavigationActionPolicy)->Void) {
+            guard let url=action.request.url,url.scheme=="https" else {decisionHandler(.cancel);return}
+            if action.targetFrame?.isMainFrame==false {decisionHandler(.allow);return}
+            if url.host==owner.url.host,url.path==owner.url.path {decisionHandler(.allow);return}
+            decisionHandler(.cancel)
+            if action.navigationType == .linkActivated {owner.openExternal(url)}
+        }
+        func webView(_ webView:WKWebView,decidePolicyFor response:WKNavigationResponse,decisionHandler:@escaping(WKNavigationResponsePolicy)->Void) {
+            if response.isForMainFrame,let http=response.response as? HTTPURLResponse,!(200...299).contains(http.statusCode) {
+                owner.loading=false;owner.unavailable=true;decisionHandler(.cancel)
+            } else {decisionHandler(.allow)}
+        }
+    }
+}
+private struct CoffeeCommunityGuidelinesView:View {
+    var body:some View {
         PapiScreen {VStack(spacing:0) {
-            PapiHeader(type=="privacy" ? "Privacy Policy":(type=="community" ? "Community Guidelines":"User Agreement"))
+            PapiHeader("Community Guidelines")
             ScrollView {
                 VStack(alignment:.leading,spacing:20) {
                     PapiText("Papi · Your coffee book").font(CoffeeType.face(.title2,weight:.bold))
-                    PapiText("Updated 22 October 2026").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                    if type=="privacy" {
-                        section("Your data stays with you","Papi creates a guest identifier on this device. Profile details, message history, follows, local notes, reports, review submissions, check-ins, wallet records, drafts and gift collections are kept in device-protected storage. Selected photos and videos are copied to the app's private media folder.")
-                        section("Photos, camera and microphone","Papi accesses a photo or video when you choose it in Apple's picker. Camera or microphone access is requested only for a feature you explicitly start. Preview voice rooms do not connect to live audio.")
-                        section("No community server","This edition does not upload posts, send chat messages, submit reports to a moderation team or transmit gifts. Supplied content and member profiles are previews. No advertising or analytics SDK is included.")
-                        section("Purchases","Apple handles payments through its own confirmation sheet. Papi stores transaction identifiers, the original local owner and the coin amount for delivery and recovery. Product details are requested only when you tap Buy. Papi does not receive your payment card details.")
-                        section("Deletion and local storage","Log out keeps your data. Delete local guest removes the local profile and its media. Minimal guest and transaction ownership records remain to prevent a future guest from claiming old purchases. Data does not sync to other devices; the app cannot recover local media lost on uninstall.")
-                        section("Support","A public support contact has not been configured for this development edition. This document must be reviewed and a valid support channel supplied before public distribution.")
-                    } else if type=="terms" {
-                        section("Your coffee account","Continuing opens your coffee passport on this device. It does not create an online community account.")
-                        section("Your coffee journal","You may select your own photos and videos, write notes, follow preview profiles, and save local posts. Only use media you are entitled to use. No content is publicly published by this edition.")
-                        section("Coins and gifts","A new local guest receives 800 welcome coins once. Daily check-ins also provide coins. Saving a photo submission costs 40 coins; a video submission costs 80. This saves a private review entry and does not buy approval or public visibility. Optional backpack gifts cost the displayed amount. Gift previews and displaying owned gifts are free. Chat, photos in chat, voice messages and video calls never cost coins.")
-                        section("Brewing and tasting","The morning cone and quiet immersion recipes are included. Optional recipes unlock once for 120, 180 or 240 coins, as shown before confirmation. Reusing recipes, brew records and two-cup tastings are free. Unlocked recipes and notes belong to this device account and are removed when it is deleted. Recipe timings are guidance, and tasting scores are your own impressions.")
-                        section("Respectful content","Do not use the app to create or distribute abusive, exploitative, hateful or unlawful content. Block and report controls are available; reports are local records until a real moderation channel is connected.")
-                        section("Chat and review","Both people must choose to follow each other before messaging or video-call actions. Friendship requires the other person's acceptance. New posts remain private until approved. This local edition stores messages and submissions on your device without remote delivery or automatic approval.")
-                        section("Availability and data","Preview rooms and people do not represent online availability. Remote chat and live voice are not active. Local guest data is device-bound, and deleting a guest removes its usable balance and collection.")
-                        section("Community connections","Purchases require products configured for this app in App Store Connect. The Apple sheet provides the final local price. Real-time community services and a public support contact still need configuration before online distribution. Coins stay with this device's guest and cannot be transferred or redeemed for cash.")
-                    } else {
-                        section("A welcoming coffee table","Share coffee rituals, café discoveries and thoughtful conversation. Respect different cultures, preferences and brewing experience. Do not harass, threaten, bully, discriminate against or shame another person.")
-                        section("Keep the community safe","Pornography, sexual exploitation, child endangerment, hateful content, graphic violence, illegal activity and threats are prohibited. Do not publish another person's private information or intimate media without consent.")
-                        section("Real consent, real connections","Chat messages and video-call actions require mutual following. Friendship requires the other person's acceptance. Do not impersonate someone, create fake relationships or use Papi for random or anonymous chat. You may withdraw a follow at any time.")
-                        section("Share only what is yours","Post only photos, videos, audio and text you have the right to share. Get permission from identifiable people. Avoid scams, spam, misleading promotions and dangerous advice. Never pressure someone to send money or gifts.")
-                        section("Review before visibility","New posts remain private until approved. In this local edition, submissions wait on your device until a moderation service is connected. There is no automatic approval or fabricated moderator response.")
-                        section("Report and control your space","Use the safety menu on a profile, post, comment, message or room. Choose a report reason and confirm. Saved reports hide the item immediately on this device. Blocking a user hides their profile, posts, comments, rooms and chats. Manage blocks in Settings; unblocking never restores follows or friendship automatically.")
-                        section("Camera and microphone consent","Camera preview starts only after you choose it and grant camera and microphone access. This local edition does not connect a call or send your camera or microphone to another person. Stop preview or leave the page to stop capture.")
-                        section("Moderation and support","A live community must provide content filtering, timely handling of reports and a published way to contact its operator. These services and a public support contact are not connected in this local edition. Local hiding is not a substitute for server moderation; online sharing stays unavailable until those services are ready.")
-                    }
+                    PapiText("Updated 26 October 2026").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                    section("A welcoming coffee table","Share coffee rituals, café discoveries and thoughtful conversation. Respect different cultures, preferences and brewing experience. Do not harass, threaten, bully, discriminate against or shame another person.")
+                    section("Keep the community safe","Pornography, sexual exploitation, child endangerment, hateful content, graphic violence, illegal activity and threats are prohibited. Do not publish another person's private information or intimate media without consent.")
+                    section("Real consent, real connections","Chat messages and video-call actions require mutual following. Friendship requires the other person's acceptance. Do not impersonate someone, create fake relationships or use Papi for random or anonymous chat. You may withdraw a follow at any time.")
+                    section("Share only what is yours","Post only photos, videos, audio and text you have the right to share. Get permission from identifiable people. Avoid scams, spam, misleading promotions and dangerous advice. Never pressure someone to send money or gifts.")
+                    section("Review before visibility","New posts remain private until approved. In this local edition, submissions wait on your device until a moderation service is connected. There is no automatic approval or fabricated moderator response.")
+                    section("Report and control your space","Use the safety menu on a profile, post, comment, message or room. Choose a report reason and confirm. Saved reports hide the item immediately on this device. Blocking a user hides their profile, posts, comments, rooms and chats. Manage blocks in Settings; unblocking never restores follows or friendship automatically.")
+                    section("Camera and microphone consent","Camera preview starts only after you choose it and grant camera and microphone access. This local edition does not connect a call or send your camera or microphone to another person. Stop preview or leave the page to stop capture.")
+                    section("Moderation and support","A live community must provide content filtering, timely handling of reports and a published way to contact its operator. These services and a public support contact are not connected in this local edition. Local hiding is not a substitute for server moderation; online sharing stays unavailable until those services are ready.")
                 }.padding(24).frame(maxWidth:700).frame(maxWidth:.infinity,alignment:.leading)
             }
         }}

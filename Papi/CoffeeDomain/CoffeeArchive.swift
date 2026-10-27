@@ -105,12 +105,15 @@ enum CoffeeEconomy {
     static func postCost(isVideo: Bool) -> Int { isVideo ? 80 : 40 }
 }
 struct CoffeePassport: Codable {
+    static let defaultPortrait = "portrait-caleb-stone"
     var id = UUID()
     var name = "My coffee corner"
     var bio = "Keeping the cups I want to brew again."
-    var avatar = "brandMark"
+    var avatar = CoffeePassport.defaultPortrait
     var cover = "corner-latte"
     var photos: [String] = []
+    // Existing guests with the original brand avatar receive the same photo default as new guests.
+    var portraitReference:String {avatar.isEmpty || avatar=="brandMark" ? Self.defaultPortrait:avatar}
 }
 struct MomentDraft: Codable {
     var text = ""
@@ -208,14 +211,14 @@ extension CoffeeMember {
         return .init(id:"preview-member-\(index)",name:names[index],portrait:CoffeeArtwork.portraits[index],bio:notes[index])
     }
     // Legacy identifiers remain stable for existing follows, blocks and reports.
-    static var previews:[CoffeeMember] {portraits}
+    static var previews:[CoffeeMember] {portraits+CoffeeCollection.additionalPeople}
     static let editorial=CoffeeMember(id:"papi-editorial",name:"The Papi coffee desk",portrait:"brandMark",bio:"Coffee scenes, brewing details and small rituals selected for the Papi journal.")
-    static func find(_ id:String)->CoffeeMember? {id==editorial.id ? editorial:portraits.first{$0.id==id}}
+    static func find(_ id:String)->CoffeeMember? {id==editorial.id ? editorial:previews.first{$0.id==id}}
     var handle:String {
         if id==Self.editorial.id {return "papi.coffee.desk"}
         let handles=["clara.pourover","jun.ceramics","kai.trailcoffee","theo.espresso","elise.readsandbrews","mateo.icedcoffee","ren.roastnotes","dae.firstcup"]
         if let index=Self.portraits.firstIndex(where:{$0.id==id}) {return handles[index]}
-        return "coffee.reader"
+        return name.lowercased().replacingOccurrences(of:" ",with:".")
     }
 }
 extension CoffeeCollectible {
@@ -270,13 +273,17 @@ extension CoffeeMoment {
         let filmNotes:[Int:String] = [
             0:"A little ghost appears in the milk foam, one careful pour at a time.",
             1:"A steady milk stream opens into a rosetta in a dark cup.",
+            2:"A portrait pause between café visits, from the Papi collection.",
+            3:"A window-side journey, watching the afternoon pass outside.",
             4:"Espresso meets ice and milk in a clear glass.",
             5:"A bar-counter iced coffee, assembled from the first ice cube to the final stir.",
             6:"Two cups and a blue saucer frame a milk-pouring practice.",
             7:"Caramel trails line the glass before coffee and milk meet.",
             8:"A heart takes shape as the pitcher drops close to the surface.",
             9:"Orange peel joins the moka-pot ritual for a bright aromatic detail.",
+            10:"An evening in the city, with company for the walk between stops.",
             11:"A tulip pattern builds from a few controlled milk pours.",
+            12:"A city walk past familiar façades before the next coffee stop.",
             13:"An empty cup becomes the first espresso of the morning.",
             14:"A spoon carries caramel through an iced latte.",
             15:"A citrus iced coffee comes together over a glass of ice.",
@@ -289,7 +296,7 @@ extension CoffeeMoment {
         let films=CoffeeArtwork.filmNames.keys.sorted().compactMap {index -> CoffeeMoment? in
             guard let reference=CoffeeArtwork.filmNames[index],let caption=filmNotes[index] else{return nil}
             let id="editorial-video-\(index)"
-            return CoffeeMoment(id:id,authorID:CollectionConversation.entry(id)?.contributorID ?? CoffeeMember.editorial.id,media:reference,isVideo:true,caption:caption,category:"Coffee films",createdAt:Date(timeIntervalSince1970:1_790_000_000+Double(index)*3600))
+            return CoffeeMoment(id:id,authorID:CollectionConversation.entry(id)?.contributorID ?? CoffeeMember.editorial.id,media:reference,isVideo:true,caption:caption,category:[2,3,10,12].contains(index) ? "Between cafés":"Coffee films",createdAt:Date(timeIntervalSince1970:1_790_000_000+Double(index)*3600))
         }
         return Array(photographs.prefix(4))+films+Array(photographs.dropFirst(4))
     }()
@@ -325,13 +332,17 @@ struct CollectionConversation {
         .init(momentID:"editorial-photo-30",contributorIndex:2,appreciationCount:9,cupNotes:["A quick street-side espresso, then back to the day.","Small cup, good pause."]),
         .init(momentID:"editorial-video-0",contributorIndex:0,appreciationCount:18,cupNotes:["The tiny ghost only appears at the very end.","That last pour takes a steady hand."]),
         .init(momentID:"editorial-video-1",contributorIndex:1,appreciationCount:11,cupNotes:["The rosetta opens so neatly when the pitcher comes closer."]),
+        .init(momentID:"editorial-video-2",contributorIndex:4,appreciationCount:5,cupNotes:["A little pause before the next stop."]),
+        .init(momentID:"editorial-video-3",contributorIndex:2,appreciationCount:8,cupNotes:["The view from a window can be part of the coffee break too."]),
         .init(momentID:"editorial-video-4",contributorIndex:5,appreciationCount:7,cupNotes:["I could watch espresso slipping between ice cubes for a while."]),
         .init(momentID:"editorial-video-5",contributorIndex:3,appreciationCount:13,cupNotes:["The ice goes in first and everything else follows.","I like seeing the whole glass come together."]),
         .init(momentID:"editorial-video-6",contributorIndex:6,appreciationCount:6,cupNotes:["That blue saucer makes the milk pour stand out."]),
         .init(momentID:"editorial-video-7",contributorIndex:4,appreciationCount:15,cupNotes:["The caramel trails stay visible until the first stir."]),
         .init(momentID:"editorial-video-8",contributorIndex:0,appreciationCount:19,cupNotes:["A small drop at the end gives the heart its point.","Getting the pitcher low seems to make all the difference."]),
         .init(momentID:"editorial-video-9",contributorIndex:2,appreciationCount:8,cupNotes:["Orange peel with a moka pot is an aroma combination I'd remember."]),
+        .init(momentID:"editorial-video-10",contributorIndex:6,appreciationCount:4,cupNotes:["City evenings have their own pace."]),
         .init(momentID:"editorial-video-11",contributorIndex:1,appreciationCount:14,cupNotes:["One little layer at a time, then the tulip comes through."]),
+        .init(momentID:"editorial-video-12",contributorIndex:3,appreciationCount:7,cupNotes:["I tend to notice the buildings on the way to a café."]),
         .init(momentID:"editorial-video-13",contributorIndex:3,appreciationCount:5,cupNotes:["That first espresso of the morning deserves a clean cup.","A short extraction, a long pause afterward."]),
         .init(momentID:"editorial-video-14",contributorIndex:4,appreciationCount:10,cupNotes:["The caramel disappears slowly around the spoon."]),
         .init(momentID:"editorial-video-15",contributorIndex:5,appreciationCount:16,cupNotes:["Citrus over ice makes this feel like an afternoon cup."]),

@@ -1,0 +1,685 @@
+{
+  "date": "2026-10-26",
+  "authorization": "User requested all ContentImages and ContentVideos load from the supplied links and local copies be removed.",
+  "remoteItems": 81,
+  "removedFiles": 169,
+  "removedBytes": 130101270,
+  "files": [
+    {
+      "path": "ProjectMaterials/ContentImages/491446704_18495838444015606_2951662145041834063_n.jpg",
+      "bytes": 182723
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/531218040_18215454979307337_4523770324707123032_n.jpg",
+      "bytes": 281837
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/545336021_18236256523292459_4507865406424230615_n.jpg",
+      "bytes": 128318
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/576547713_18084713414088363_1285219696126171284_n.jpg",
+      "bytes": 243207
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/587561444_18520843717067479_7889809574185219306_n.jpg",
+      "bytes": 213136
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/589257354_18331874491214752_1361707186294986293_n.jpg",
+      "bytes": 149056
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/610897135_18554168221034896_5027949645344542905_n.jpg",
+      "bytes": 125039
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/621599361_17997497273856576_6448872857505022523_n.jpg",
+      "bytes": 167385
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/627472722_18436267090118139_6342985871363311357_n.jpg",
+      "bytes": 283375
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/628012198_18438626845128037_4967181347781712324_n.jpeg",
+      "bytes": 233052
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/640856207_18567478963053198_3773407055237167139_n.jpg",
+      "bytes": 815702
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/654566804_18013469846676232_8010475497353305856_n.jpg",
+      "bytes": 173723
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/706028737_17928520068313071_4136620075343317093_n.jpg",
+      "bytes": 186015
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/729148503_18005159000928677_2131875526618465034_n.jpg",
+      "bytes": 242010
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/757665890_18620593681051045_6033168349973866481_n.jpg",
+      "bytes": 176037
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/764102974_18109832771003789_5171860791040556245_n.jpg",
+      "bytes": 161646
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/782542831_18247893658307970_7502922252822748806_n.jpg",
+      "bytes": 312755
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/825322594_18015018077952191_641264614028541211_n.webp",
+      "bytes": 176066
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/828150671_18460538542189071_1789721700966985714_n.jpg",
+      "bytes": 1134387
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/828924727_18592029697068547_9134634135057079283_n.jpg",
+      "bytes": 84120
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/830487382_18487605439104358_2075193543309807603_n.jpg",
+      "bytes": 185975
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/830594342_17911443807537299_6706399938915264218_n.jpg",
+      "bytes": 108338
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/831424261_18635464435021134_6891735408629346119_n.jpg",
+      "bytes": 116535
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/833701675_18377411281215137_4162611926844631045_n.jpg",
+      "bytes": 149396
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/833790432_18414404590080004_2113187723771374653_n.jpg",
+      "bytes": 77709
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/834333937_18102939077437158_2249796027265385049_n.jpg",
+      "bytes": 84424
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/836759866_18246204481313915_5450768172558231425_n.jpg",
+      "bytes": 154810
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/837039650_17936607405381141_4843657821102816729_n.jpg",
+      "bytes": 242297
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/838362925_18478378603116502_4094375439820185520_n.jpg",
+      "bytes": 156153
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/838851653_17915580165463956_8646273599053634246_n.jpg",
+      "bytes": 249416
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/839589733_18223950805337746_8518896593143034853_n.jpg",
+      "bytes": 566254
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/839589735_18435631513194537_5962308028115092182_n.jpg",
+      "bytes": 74122
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/839617909_18636140752036257_2098987833378784333_n.jpg",
+      "bytes": 133452
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/840346667_18433655446180767_1370174977741391988_n.jpg",
+      "bytes": 150860
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/841464706_18366723628268751_1043541057353877128_n.jpg",
+      "bytes": 81024
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/843495067_17881633962628623_2588240699924030750_n.jpeg",
+      "bytes": 143542
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/843884094_17912958240541348_6657353171384554378_n.jpg",
+      "bytes": 116559
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/844321453_18060673460799617_7311462697784706363_n.jpg",
+      "bytes": 180377
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/845832708_18636696226058690_7728222674528347727_n.jpg",
+      "bytes": 70761
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/847859927_18337864615273096_1975416002277433834_n.jpg",
+      "bytes": 111557
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/847939309_18497838286108045_8543151347112222288_n.jpg",
+      "bytes": 167016
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/848196762_18596616184067882_5040749258115402944_n.jpg",
+      "bytes": 308621
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/849771840_18034819817889144_3925256592976004249_n.jpg",
+      "bytes": 139187
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/849773106_18639750280008887_6117308489060789711_n.jpg",
+      "bytes": 203899
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/849773200_17950482690315564_8876215987114569094_n.jpg",
+      "bytes": 210329
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/849807710_18645009418024527_6642553109896532623_n.jpg",
+      "bytes": 100742
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/850999231_18073885979771277_7976746379773659398_n.jpg",
+      "bytes": 142206
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/851150069_18644948692026015_1961800893533170202_n.jpg",
+      "bytes": 356216
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/851189164_18640503070004015_7144487729461611309_n.jpg",
+      "bytes": 100606
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/851257175_18647269771035766_980929698285222742_n.jpg",
+      "bytes": 332627
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/851257192_18467968138141225_372909651516312439_n.jpg",
+      "bytes": 154822
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/851887662_17961934497248615_3061332579403452781_n.jpg",
+      "bytes": 213282
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/852678974_18128356141847209_6461935358698939218_n.jpg",
+      "bytes": 134537
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/852679207_17928965442469300_6301715055087659119_n.jpg",
+      "bytes": 109048
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/855448264_18633957871002497_2718116683748157052_n.jpg",
+      "bytes": 436117
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/856770597_18346890787254352_7789099904822071278_n.jpg",
+      "bytes": 152579
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/856840641_18021404207926682_1527601665521701068_n.jpg",
+      "bytes": 226318
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/857323413_18076577417729357_3356181006658220970_n.jpg",
+      "bytes": 102567
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/858050115_18081701012720796_1141335178425589448_n.jpg",
+      "bytes": 223720
+    },
+    {
+      "path": "ProjectMaterials/ContentImages/858159161_18637015324034456_7860982535270189554_n.jpg",
+      "bytes": 125646
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQMMWPVvGd3CXLwvme60KodkT6POOXMuzYtmY1BBJ3-8TsaTvOOYIxw2Zb7EU-MVrjFtgsCLFX-R45ejX9QHHpFm47le-_KWhYfHLTc.mp4",
+      "bytes": 2510923
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQMPyLg4xKrvk9K2-3z5bFppGZ4BXjyLqCZbDbSulzR4qs4_MIS4WmoQyGLzdThFIGqepkGlxzm8XfZ_JDKkwNgxA2bRTEaRFo3epPk.mp4",
+      "bytes": 1853443
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQMjB1uEvbHyxAl8nY8qeri5bkDbfWG-bS3cTzZehRSzulwOYjSQWYgn0ThuHfrtGzAEmhA0G54DZ-94mTWawly8UTBE9N2IXzJ0rYc.mp4",
+      "bytes": 3507029
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQMmC0sIQ4NmgrJy9YygZSitQmNKxrpjIUlfE6DbfifbFKexSOENdWBXQeoJ_IngCJGUZ58pDlx_og7X5zpZvqkmB4jgkPHyBJRx5xI.mp4",
+      "bytes": 8654939
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQN4L-GB2rD_WTY50ltWz0NfCUUQxiyWuzJQrXV3r44sLQQ3855Zy_TXSkAGfxrP7Kv1F5yYc847poaAl8zIZxqMz9KxRuN29bZNv8A.mp4",
+      "bytes": 2238421
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQNFekgDQ1UINyqcrmDjU9IKnFRgx1VNwgrXLQ5KRgyZn8scsOznU3430EgeXQKq3ttD6GfSNVbP5OHRzEc6jddgSSY1j6oLgdE8oKU.mp4",
+      "bytes": 10107375
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQNN7LdTNuTD7FdQdwXhZ71Ll5a9FgECLpx0ao1S3ha73jwH0GSHgeVlh-1zE_SkKmFFrn7HHUgF7ReYNY57OVEFBgYpR1bP5oM3T1A.mp4",
+      "bytes": 3279306
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQNh25D7bDaWrl7AfwH0XoLCR90EGL6Q7KszJ2ODbELVYUautRLHLgrPVDN-8abHcOCqXe4kSM543gJbL-g_Dm29dZyskWQPgMvlwqk.mp4",
+      "bytes": 5608174
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQNnLAKorkEXp49wkTyXoOb7xgzZfgLAGOcX9GEESYX01thVplX2L_r4eKmXSwEKp7cO-GU_Z43GvJ8GLuFyuTH4LPbSO32Qkrgy0iE.mp4",
+      "bytes": 1177930
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQO1SxnnKk4IuLTQkKf49X73ad-DXoe7kMY8uHAqSl2f0_YUbO9VXaRnUXOxVkrQpD-wvpBqhZ3lL9AHnWAo3cB3U2yZV66p8rsZ2G4.mp4",
+      "bytes": 2310260
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQOATF2y8Ss6N0_xp4paeEtHO9_3fzt2XBVGlnSLdBG30R4fJuOoz9KFGeA3T09Q-36wDtMZr3OlEQctiC7Q1OIldYMD01U7w4ARlAo.mp4",
+      "bytes": 5514248
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQOPp9s5zaj1hwNY4F51Ousj0iEBgaknegMrxVIR2ulV-k2hJqOWY4bQ6Vny-ioScqDbUGSHVbghTgwQQ9IZX-3QKq_VwznzCG9xr1Y.mp4",
+      "bytes": 1652547
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQOVTD7Qw3rvUbflEsPfqAUEJg6Y_Tp2xOdZT8CGd32GagGQxZhh_LyIsYpr5P4wQUXCYlMA8i3nfXCmO_Jehyvea_Wa21BvDa-PJCI.mp4",
+      "bytes": 2428998
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQOqDevvZpejZaxcS_j6ou_JDnryhjVx63fB4rjhyStfOorUxHnonZVELbxJ46nK6AHEEk6CLIJQFHg1MTevCV5qsrgXyix_8qDEX8o.mp4",
+      "bytes": 674636
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQOqif0IggotCMxdixLIrcWchlp27j7AKuSQv06QkqhChmn8nlOkarWTjUy6AyptqWJ_29NdO6tG38qWzUt84fxcBz-EtnUWM5Jvwv8.mp4",
+      "bytes": 1821288
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQOw6t5UJFCzpYup-7IWsJMxaLSpq5TyqJZgs0j1tn19uTvvby78cpCRrS1gpn6kdR0jvQwDnEVBG6wA6EOIhAuFJG6o_O_Yz2xg-zs.mp4",
+      "bytes": 5849271
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQPEW3XG-3JkaH4nOxbNUjK_0cSX27ZeJbE-ljzZlYFhBEve_5fA_OIufoo1ibXBOkRsnAT6F2VoYdkxpoB1f4Wtwa7J4MlPONUVuEo.mp4",
+      "bytes": 2672944
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQPNx6nNtrKyg7fDwSu_Zyy8PSUZ8uhEhlhdgAJUkWZw9q16iy_UNQlZ3gyqGiK7mhuSSiyn8j9j1afUY8VT6WpzAAvON8b1LCMe93M.mp4",
+      "bytes": 2136477
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQPSEOmv3K-cJOeVH5IvLdNtfqakg8JQGMaclioGZWxSY_d6C2Nhq8keAUqmBE0nBzOphHMUGNQ9nGeTcAczI3kxSX81Fffsg9_xupA.mp4",
+      "bytes": 2029012
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQPcg4wtkJ1mamBqaWqrT2Iewrz-mDWOGEnPMOG5_XTx9syGLBkwfAM4RMx1np4Gk7zGV03W4bz8oFBOQJwa1cB2H0EvNOgA9FMmK8I.mp4",
+      "bytes": 5343776
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos/AQPqC5T4ywHyMPomckZ0uFckxEXUNr4IT0EqQl9pzG4ONBUUzC-vs3VqvHKLQxHdc7KTDMohQyZ_Yr48UqarNDHSBv999JZP19ZpaNY.mp4",
+      "bytes": 3685253
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/corner-latte.imageset/Contents.json",
+      "bytes": 177
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/corner-latte.imageset/corner-latte.jpg",
+      "bytes": 182723
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/breakfast-tray.imageset/breakfast-tray.jpg",
+      "bytes": 281837
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/breakfast-tray.imageset/Contents.json",
+      "bytes": 179
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/window-americano.imageset/window-americano.jpg",
+      "bytes": 128318
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/window-americano.imageset/Contents.json",
+      "bytes": 181
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/canal-coffee.imageset/canal-coffee.jpg",
+      "bytes": 243207
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/canal-coffee.imageset/Contents.json",
+      "bytes": 177
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/croissant-table.imageset/croissant-table.jpg",
+      "bytes": 213136
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/croissant-table.imageset/Contents.json",
+      "bytes": 180
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/round-cafe-table.imageset/round-cafe-table.jpg",
+      "bytes": 126793
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/round-cafe-table.imageset/Contents.json",
+      "bytes": 181
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/pastry-ritual.imageset/pastry-ritual.jpg",
+      "bytes": 125039
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/pastry-ritual.imageset/Contents.json",
+      "bytes": 178
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/handheld-cold-brew.imageset/Contents.json",
+      "bytes": 183
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/handheld-cold-brew.imageset/handheld-cold-brew.jpg",
+      "bytes": 167385
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/garden-coffee-seat.imageset/garden-coffee-seat.jpg",
+      "bytes": 283375
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/garden-coffee-seat.imageset/Contents.json",
+      "bytes": 183
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/home-espresso-corner.imageset/home-espresso-corner.jpg",
+      "bytes": 253495
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/home-espresso-corner.imageset/Contents.json",
+      "bytes": 185
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/sunlit-cup.imageset/sunlit-cup.jpg",
+      "bytes": 500224
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/sunlit-cup.imageset/Contents.json",
+      "bytes": 175
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/two-iced-lattes.imageset/Contents.json",
+      "bytes": 180
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/two-iced-lattes.imageset/two-iced-lattes.jpg",
+      "bytes": 173723
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/marbled-latte.imageset/marbled-latte.jpg",
+      "bytes": 168329
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/marbled-latte.imageset/Contents.json",
+      "bytes": 178
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/courtyard-brunch.imageset/Contents.json",
+      "bytes": 181
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/courtyard-brunch.imageset/courtyard-brunch.jpg",
+      "bytes": 242010
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/matcha-and-cookie.imageset/Contents.json",
+      "bytes": 182
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/matcha-and-cookie.imageset/matcha-and-cookie.jpg",
+      "bytes": 155587
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/glasshouse-cafe.imageset/glasshouse-cafe.jpg",
+      "bytes": 139008
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/glasshouse-cafe.imageset/Contents.json",
+      "bytes": 180
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/coffee-and-dates.imageset/coffee-and-dates.jpg",
+      "bytes": 131115
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/coffee-and-dates.imageset/Contents.json",
+      "bytes": 181
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/rose-front-cafe.imageset/rose-front-cafe.jpg",
+      "bytes": 274023
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/rose-front-cafe.imageset/Contents.json",
+      "bytes": 180
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/street-espresso.imageset/street-espresso.jpg",
+      "bytes": 169238
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/street-espresso.imageset/Contents.json",
+      "bytes": 180
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-clara.imageset/Contents.json",
+      "bytes": 179
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-clara.imageset/portrait-clara.jpg",
+      "bytes": 319726
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-jun.imageset/portrait-jun.jpg",
+      "bytes": 84120
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-jun.imageset/Contents.json",
+      "bytes": 177
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-kai.imageset/portrait-kai.jpg",
+      "bytes": 158738
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-kai.imageset/Contents.json",
+      "bytes": 177
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-theo.imageset/portrait-theo.jpg",
+      "bytes": 89493
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-theo.imageset/Contents.json",
+      "bytes": 178
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-elise.imageset/Contents.json",
+      "bytes": 179
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-elise.imageset/portrait-elise.jpg",
+      "bytes": 116535
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-mateo.imageset/portrait-mateo.jpg",
+      "bytes": 127972
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-mateo.imageset/Contents.json",
+      "bytes": 179
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-ren.imageset/portrait-ren.jpg",
+      "bytes": 77709
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-ren.imageset/Contents.json",
+      "bytes": 177
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-dae.imageset/portrait-dae.jpg",
+      "bytes": 70863
+    },
+    {
+      "path": "Papi/Resources/Assets.xcassets/portrait-dae.imageset/Contents.json",
+      "bytes": 177
+    },
+    {
+      "path": "Papi/Resources/Media/bar-counter-iced-latte.mp4",
+      "bytes": 6715657
+    },
+    {
+      "path": "Papi/Resources/Media/espresso-on-off.mp4",
+      "bytes": 511802
+    },
+    {
+      "path": "Papi/Resources/Media/blue-cup-pour.mp4",
+      "bytes": 1954423
+    },
+    {
+      "path": "Papi/Resources/Media/grinder-to-espresso.mp4",
+      "bytes": 1000727
+    },
+    {
+      "path": "Papi/Resources/Media/spiral-dessert-coffee.mp4",
+      "bytes": 1642253
+    },
+    {
+      "path": "Papi/Resources/Media/ghost-latte-art.mp4",
+      "bytes": 1661025
+    },
+    {
+      "path": "Papi/Resources/Media/iced-milk-rosetta.jpg",
+      "bytes": 35226
+    },
+    {
+      "path": "Papi/Resources/Media/tulip-latte-pour.mp4",
+      "bytes": 1278143
+    },
+    {
+      "path": "Papi/Resources/Media/iced-espresso-glass.jpg",
+      "bytes": 23088
+    },
+    {
+      "path": "Papi/Resources/Media/coffee-over-ice.jpg",
+      "bytes": 14477
+    },
+    {
+      "path": "Papi/Resources/Media/caramel-swirl-glass.jpg",
+      "bytes": 38293
+    },
+    {
+      "path": "Papi/Resources/Media/citrus-iced-coffee.jpg",
+      "bytes": 46364
+    },
+    {
+      "path": "Papi/Resources/Media/moka-orange-peel.jpg",
+      "bytes": 44747
+    },
+    {
+      "path": "Papi/Resources/Media/cappuccino-rosetta.mp4",
+      "bytes": 1550688
+    },
+    {
+      "path": "Papi/Resources/Media/heart-latte-workshop.jpg",
+      "bytes": 20434
+    },
+    {
+      "path": "Papi/Resources/Media/stirred-caramel-latte.mp4",
+      "bytes": 1274279
+    },
+    {
+      "path": "Papi/Resources/Media/rosetta-practice.mp4",
+      "bytes": 1515748
+    },
+    {
+      "path": "Papi/Resources/Media/cappuccino-rosetta.jpg",
+      "bytes": 33651
+    },
+    {
+      "path": "Papi/Resources/Media/heart-latte-workshop.mp4",
+      "bytes": 979970
+    },
+    {
+      "path": "Papi/Resources/Media/moka-orange-peel.mp4",
+      "bytes": 1543694
+    },
+    {
+      "path": "Papi/Resources/Media/caramel-swirl-glass.mp4",
+      "bytes": 3532699
+    },
+    {
+      "path": "Papi/Resources/Media/citrus-iced-coffee.mp4",
+      "bytes": 4039629
+    },
+    {
+      "path": "Papi/Resources/Media/stirred-caramel-latte.jpg",
+      "bytes": 36227
+    },
+    {
+      "path": "Papi/Resources/Media/rosetta-practice.jpg",
+      "bytes": 27661
+    },
+    {
+      "path": "Papi/Resources/Media/blue-cup-pour.jpg",
+      "bytes": 56760
+    },
+    {
+      "path": "Papi/Resources/Media/grinder-to-espresso.jpg",
+      "bytes": 45080
+    },
+    {
+      "path": "Papi/Resources/Media/espresso-on-off.jpg",
+      "bytes": 29265
+    },
+    {
+      "path": "Papi/Resources/Media/ghost-latte-art.jpg",
+      "bytes": 39494
+    },
+    {
+      "path": "Papi/Resources/Media/spiral-dessert-coffee.jpg",
+      "bytes": 24095
+    },
+    {
+      "path": "Papi/Resources/Media/bar-counter-iced-latte.jpg",
+      "bytes": 46919
+    },
+    {
+      "path": "Papi/Resources/Media/coffee-over-ice.mp4",
+      "bytes": 2368073
+    },
+    {
+      "path": "Papi/Resources/Media/tulip-latte-pour.jpg",
+      "bytes": 25874
+    },
+    {
+      "path": "Papi/Resources/Media/iced-milk-rosetta.mp4",
+      "bytes": 3688181
+    },
+    {
+      "path": "Papi/Resources/Media/iced-espresso-glass.mp4",
+      "bytes": 1628574
+    }
+  ]
+}

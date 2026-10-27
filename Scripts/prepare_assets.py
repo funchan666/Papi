@@ -1,4 +1,4 @@
-"""Restore missing explicit artwork mappings without undoing optimized bundled copies."""
+"""Restore bundled UI artwork only; never recreate migrated collection media."""
 from pathlib import Path
 import json,shutil,subprocess
 root=Path(__file__).resolve().parents[1]
@@ -6,7 +6,7 @@ assets=root/'Papi/Resources/Assets.xcassets';media=root/'Papi/Resources/Media'
 manifest=json.loads((root/'docs/ASSET_MANIFEST.json').read_text())
 restored=[]
 for row in manifest:
- if row.get('bundled',True) is False:continue
+ if row.get('delivery')=='remote' or row.get('bundled',True) is False:continue
  source=root/row['source'];name=row['asset']
  if not source.is_file():raise FileNotFoundError(source)
  if row.get('kind')=='film':

@@ -5430,5 +5430,103 @@
     "ar": "معاينة المجموعة",
     "vi": "Xem trước bộ sưu tập",
     "ko": "컬렉션 미리보기"
+  },
+  "Around the coffee table": {
+    "es": "Alrededor de la mesa de café",
+    "th": "รอบโต๊ะกาแฟ",
+    "ar": "حول طاولة القهوة",
+    "vi": "Bên bàn cà phê",
+    "ko": "커피 테이블 주변"
+  },
+  "Collection portraits": {
+    "es": "Retratos de la colección",
+    "th": "ภาพบุคคลในคอลเลกชัน",
+    "ar": "صور المجموعة",
+    "vi": "Chân dung trong bộ sưu tập",
+    "ko": "컬렉션 인물 사진"
+  },
+  "Between cafés": {
+    "es": "Entre cafeterías",
+    "th": "ระหว่างคาเฟ่",
+    "ar": "بين المقاهي",
+    "vi": "Giữa các quán cà phê",
+    "ko": "카페 사이에서"
+  },
+  "Policy": {
+    "es": "Documento legal",
+    "th": "นโยบาย",
+    "ar": "المستند القانوني",
+    "vi": "Chính sách",
+    "ko": "정책"
+  },
+  "Policy unavailable": {
+    "es": "Documento no disponible",
+    "th": "ไม่สามารถเปิดนโยบายได้",
+    "ar": "المستند غير متاح",
+    "vi": "Không thể mở chính sách",
+    "ko": "정책을 열 수 없어요"
+  },
+  "Please reopen this page to try again.": {
+    "es": "Vuelve a abrir esta página para intentarlo de nuevo.",
+    "th": "โปรดเปิดหน้านี้อีกครั้งเพื่อลองใหม่",
+    "ar": "يرجى إعادة فتح هذه الصفحة للمحاولة مجددًا.",
+    "vi": "Vui lòng mở lại trang này để thử lại.",
+    "ko": "이 페이지를 다시 열어 주세요."
+  },
+  "Online": {
+    "es": "En línea",
+    "th": "ออนไลน์",
+    "ar": "عبر الإنترنت",
+    "vi": "Trực tuyến",
+    "ko": "온라인"
+  },
+  "Saved copy": {
+    "es": "Copia guardada",
+    "th": "ฉบับที่บันทึกไว้",
+    "ar": "نسخة محفوظة",
+    "vi": "Bản đã lưu",
+    "ko": "저장된 사본"
+  },
+  "Online policy unavailable": {
+    "es": "Documento en línea no disponible",
+    "th": "ไม่สามารถเปิดนโยบายออนไลน์ได้",
+    "ar": "المستند عبر الإنترنت غير متاح",
+    "vi": "Không thể mở chính sách trực tuyến",
+    "ko": "온라인 정책을 열 수 없어요"
+  },
+  "Opening the policy…": {
+    "es": "Abriendo el documento…",
+    "th": "กำลังเปิดนโยบาย…",
+    "ar": "جارٍ فتح المستند…",
+    "vi": "Đang mở chính sách…",
+    "ko": "정책을 여는 중…"
+  },
+  "Read the saved copy now, or retry the public page.": {
+    "es": "Lee la copia guardada o vuelve a intentar abrir la página pública.",
+    "th": "อ่านฉบับที่บันทึกไว้ หรือลองเปิดหน้าสาธารณะอีกครั้ง",
+    "ar": "اقرأ النسخة المحفوظة أو أعد محاولة فتح الصفحة العامة.",
+    "vi": "Đọc bản đã lưu hoặc thử mở lại trang công khai.",
+    "ko": "저장된 사본을 읽거나 공개 페이지를 다시 열어 보세요."
+  },
+  "Read saved copy": {
+    "es": "Leer copia guardada",
+    "th": "อ่านฉบับที่บันทึกไว้",
+    "ar": "قراءة النسخة المحفوظة",
+    "vi": "Đọc bản đã lưu",
+    "ko": "저장된 사본 읽기"
+  },
+  "Open in browser": {
+    "es": "Abrir en el navegador",
+    "th": "เปิดในเบราว์เซอร์",
+    "ar": "فتح في المتصفح",
+    "vi": "Mở trong trình duyệt",
+    "ko": "브라우저에서 열기"
+  },
+  "Saved copy · English": {
+    "es": "Copia guardada · Inglés",
+    "th": "ฉบับที่บันทึกไว้ · ภาษาอังกฤษ",
+    "ar": "نسخة محفوظة · الإنجليزية",
+    "vi": "Bản đã lưu · Tiếng Anh",
+    "ko": "저장된 사본 · 영어"
   }
 }

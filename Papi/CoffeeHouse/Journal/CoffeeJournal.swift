@@ -6,6 +6,7 @@ struct CoffeeJournalView:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
     @Environment(\.dynamicTypeSize) private var typeSize
+    @ScaledMetric(relativeTo:.caption) private var portraitNameLineHeight:CGFloat=18
     var body:some View {
         PapiScreen {
             GeometryReader { geo in
@@ -23,6 +24,26 @@ struct CoffeeJournalView:View {
                             Button {router.go(.cafes)} label:{Image("exploreBanner").resizable().scaledToFit()}
                             Button {router.go(.beans)} label:{Image("beansBanner").resizable().scaledToFit()}
                         }.buttonStyle(.plain)
+                        let portraits=CoffeeMember.previews.filter{!store.isUserHidden($0.id)}
+                        if !portraits.isEmpty {
+                            HStack {
+                                PapiText("Around the coffee table").font(CoffeeType.face(.headline))
+                                Spacer()
+                                PapiText("Collection portraits").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
+                            }
+                            ScrollView(.horizontal) {
+                                LazyHStack(alignment:.top,spacing:14) {
+                                    ForEach(portraits) {person in
+                                        Button {router.go(.person(person.id))} label:{
+                                            VStack(spacing:8) {
+                                                Avatar(name:person.portrait,size:typeSize.isAccessibilitySize ? 88:70)
+                                                PapiText(verbatim:person.name).font(CoffeeType.face(.caption)).multilineTextAlignment(.center).lineLimit(2).fixedSize(horizontal:false,vertical:true)
+                                            }.frame(width:typeSize.isAccessibilitySize ? 150:96)
+                                        }.buttonStyle(.plain)
+                                    }
+                                }.padding(.vertical,4)
+                            }.scrollIndicators(.hidden).frame(height:(typeSize.isAccessibilitySize ? 88:70)+16+portraitNameLineHeight*2)
+                        }
                         Button {router.openWallet()} label:{
                             HStack {PapiText("Coffee reserve").font(CoffeeType.face(.subheadline,weight:.semibold));Spacer();CoinLabel(value:store.state.coinBalance);PapiText("Recharge").font(CoffeeType.face(.caption,weight:.bold))}
                                 .padding(14).background(Color.butter,in:RoundedRectangle(cornerRadius:16))

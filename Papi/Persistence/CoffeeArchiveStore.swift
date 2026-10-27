@@ -62,7 +62,7 @@ struct CoffeeReceipt: Identifiable {
             next.welcomeGrant=WelcomeGrant(coins:reward)
             next.coinMovements.insert(.init(id:welcomeID,delta:reward,reason:"First brew welcome gift"),at:0)
         }
-        next.signedIn=true;next.acceptedPolicyVersion="2026-10-22"
+        next.signedIn=true;next.acceptedPolicyVersion=CoffeePolicyLibrary.version
         let snapshot=next
         do {
             try await Task.detached(priority:.userInitiated){try CoffeeVault.write(snapshot)}.value

@@ -1,8 +1,8 @@
 {
   "sourceFiles": 30,
-  "imageSets": 101,
-  "bundledVideos": 17,
-  "resourceBytes": 49743527,
+  "imageSets": 74,
+  "bundledVideos": 0,
+  "resourceBytes": 7328707,
   "resourcePhase": [
     "Assets.xcassets",
     "InfoPlist.strings",
@@ -11,7 +11,7 @@
     "Papi/Resources/Media",
     "PrivacyInfo.xcprivacy"
   ],
-  "translationEntries": 776,
+  "translationEntries": 790,
   "uiLanguages": [
     "en",
     "ar",
@@ -38,5 +38,10 @@
   "testsExecuted": false,
   "appLaunched": false,
   "storeKitExecuted": false,
-  "binarySimilarityMeasured": false
+  "binarySimilarityMeasured": false,
+  "remotePhotos": 60,
+  "remoteVideos": 21,
+  "collectionProfiles": 41,
+  "collectionMoments": 40,
+  "publishedPolicies": 2
 }

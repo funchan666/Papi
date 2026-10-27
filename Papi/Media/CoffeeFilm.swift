@@ -10,6 +10,7 @@ import AVFoundation
     private var loaded:String?
     private var observer:Any?
     private var statusObservation:NSKeyValueObservation?
+    private var durationObservation:NSKeyValueObservation?
     private var finishObserver:NSObjectProtocol?
     private let audioID=UUID()
     private var audioObserver:NSObjectProtocol?
@@ -25,7 +26,7 @@ import AVFoundation
     func load(_ media:String,force:Bool=false) {
         guard loaded != media || force else{return}
         pause()
-        statusObservation=nil
+        statusObservation=nil;durationObservation=nil
         if let finishObserver {NotificationCenter.default.removeObserver(finishObserver)}
         finishObserver=nil
         loaded=nil;position=0;duration=0
@@ -33,6 +34,12 @@ import AVFoundation
         guard let url=CoffeeMedia.url(media) else {failure="This video is unavailable.";return}
         loaded=media;failure=nil
         let item=AVPlayerItem(url:url);player.replaceCurrentItem(with:item)
+        durationObservation=item.observe(\.duration,options:[.initial,.new]) { [weak self] item,_ in
+            Task {@MainActor in
+                guard let self,self.player.currentItem === item else{return}
+                let seconds=item.duration.seconds;self.duration=seconds.isFinite ? seconds:0
+            }
+        }
         statusObservation=item.observe(\.status,options:[.initial,.new]) { [weak self] item,_ in
             Task { @MainActor in
                 guard let self,self.player.currentItem === item else{return}

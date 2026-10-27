@@ -1,0 +1,1428 @@
+{
+  "checkedAt": "2026-10-26",
+  "method": "Unauthenticated HTTPS HEAD, original byte-length/ETag matching, 64-byte MP4 range reads and source-file codec metadata only; no application or player executed.",
+  "items": [
+    {
+      "source": "ProjectMaterials/ContentImages/491446704_18495838444015606_2951662145041834063_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/491446704_18495838444015606_2951662145041834063_n.jpg",
+      "bytes": 182723,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "182723",
+      "acceptRanges": "bytes",
+      "etag": "\"6ceac648f0a164802a2b221d755288fe\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/531218040_18215454979307337_4523770324707123032_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/531218040_18215454979307337_4523770324707123032_n.jpg",
+      "bytes": 281837,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "281837",
+      "acceptRanges": "bytes",
+      "etag": "\"89e727c8dff8a9df47e92987a5b74a1a\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/545336021_18236256523292459_4507865406424230615_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/545336021_18236256523292459_4507865406424230615_n.jpg",
+      "bytes": 128318,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "128318",
+      "acceptRanges": "bytes",
+      "etag": "\"48806d19ee59dfe813924b4957844479\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/576547713_18084713414088363_1285219696126171284_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/576547713_18084713414088363_1285219696126171284_n.jpg",
+      "bytes": 243207,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "243207",
+      "acceptRanges": "bytes",
+      "etag": "\"38508156d5f53f4e1dd0846c688f5ede\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/587561444_18520843717067479_7889809574185219306_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/587561444_18520843717067479_7889809574185219306_n.jpg",
+      "bytes": 213136,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "213136",
+      "acceptRanges": "bytes",
+      "etag": "\"10e996fb5c849ecd17b18ab6ffd4e3a6\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/589257354_18331874491214752_1361707186294986293_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/589257354_18331874491214752_1361707186294986293_n.jpg",
+      "bytes": 149056,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "149056",
+      "acceptRanges": "bytes",
+      "etag": "\"bc32a12cb22812a2eb3ce1ee690ff306\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/610897135_18554168221034896_5027949645344542905_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/610897135_18554168221034896_5027949645344542905_n.jpg",
+      "bytes": 125039,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "125039",
+      "acceptRanges": "bytes",
+      "etag": "\"6566fa24490f5c06312264a50db2cf62\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/621599361_17997497273856576_6448872857505022523_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/621599361_17997497273856576_6448872857505022523_n.jpg",
+      "bytes": 167385,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "167385",
+      "acceptRanges": "bytes",
+      "etag": "\"b5ae88123a9442db02d60721f3364cef\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/627472722_18436267090118139_6342985871363311357_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/627472722_18436267090118139_6342985871363311357_n.jpg",
+      "bytes": 283375,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "283375",
+      "acceptRanges": "bytes",
+      "etag": "\"f688f33fcd9116411c66b6c46ddcd989\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/628012198_18438626845128037_4967181347781712324_n.jpeg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/628012198_18438626845128037_4967181347781712324_n.jpeg",
+      "bytes": 233052,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "233052",
+      "acceptRanges": "bytes",
+      "etag": "\"07ce5040cb2e05a2fd16fd4cfc1f13e9\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/640856207_18567478963053198_3773407055237167139_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/640856207_18567478963053198_3773407055237167139_n.jpg",
+      "bytes": 815702,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "815702",
+      "acceptRanges": "bytes",
+      "etag": "\"b9582efc12d7a81dbcfc5643683fd8cb\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/654566804_18013469846676232_8010475497353305856_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/654566804_18013469846676232_8010475497353305856_n.jpg",
+      "bytes": 173723,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "173723",
+      "acceptRanges": "bytes",
+      "etag": "\"4c6a409c1c84ef28f81f71f29fe51a16\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/706028737_17928520068313071_4136620075343317093_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/706028737_17928520068313071_4136620075343317093_n.jpg",
+      "bytes": 186015,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "186015",
+      "acceptRanges": "bytes",
+      "etag": "\"b2e4c96ec896eb98f8d0e8edf5af007d\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/729148503_18005159000928677_2131875526618465034_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/729148503_18005159000928677_2131875526618465034_n.jpg",
+      "bytes": 242010,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "242010",
+      "acceptRanges": "bytes",
+      "etag": "\"4725aa65f811ca6147eccf7a3a2c2256\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/757665890_18620593681051045_6033168349973866481_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/757665890_18620593681051045_6033168349973866481_n.jpg",
+      "bytes": 176037,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "176037",
+      "acceptRanges": "bytes",
+      "etag": "\"5dbf13df3a6d1cd3798e82149c10abb6\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/764102974_18109832771003789_5171860791040556245_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/764102974_18109832771003789_5171860791040556245_n.jpg",
+      "bytes": 161646,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "161646",
+      "acceptRanges": "bytes",
+      "etag": "\"fb1a56c7cd96d52b548a9dccc28dc1ce\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/782542831_18247893658307970_7502922252822748806_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/782542831_18247893658307970_7502922252822748806_n.jpg",
+      "bytes": 312755,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "312755",
+      "acceptRanges": "bytes",
+      "etag": "\"617fb0de506ab03e57877000d52791b8\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/825322594_18015018077952191_641264614028541211_n.webp",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/825322594_18015018077952191_641264614028541211_n.webp",
+      "bytes": 176066,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/webp",
+      "remoteBytes": "176066",
+      "acceptRanges": "bytes",
+      "etag": "\"53c7ffe769388177273794ce4f43285d\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/828150671_18460538542189071_1789721700966985714_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/828150671_18460538542189071_1789721700966985714_n.jpg",
+      "bytes": 1134387,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "1134387",
+      "acceptRanges": "bytes",
+      "etag": "\"60c16a6943fdc810793ba9d5def4c023\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/828924727_18592029697068547_9134634135057079283_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/828924727_18592029697068547_9134634135057079283_n.jpg",
+      "bytes": 84120,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "84120",
+      "acceptRanges": "bytes",
+      "etag": "\"1e6f2b7b1cb9578a670a336b82cb085f\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/830487382_18487605439104358_2075193543309807603_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/830487382_18487605439104358_2075193543309807603_n.jpg",
+      "bytes": 185975,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "185975",
+      "acceptRanges": "bytes",
+      "etag": "\"6535e52a0c72c3d7fa5025a9539a301f\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/830594342_17911443807537299_6706399938915264218_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/830594342_17911443807537299_6706399938915264218_n.jpg",
+      "bytes": 108338,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "108338",
+      "acceptRanges": "bytes",
+      "etag": "\"c426f30275a9ebaaf5914213fc90b0c0\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/831424261_18635464435021134_6891735408629346119_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/831424261_18635464435021134_6891735408629346119_n.jpg",
+      "bytes": 116535,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "116535",
+      "acceptRanges": "bytes",
+      "etag": "\"1d3ce4f2b65c8ead554dace0b61f74ff\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/833701675_18377411281215137_4162611926844631045_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/833701675_18377411281215137_4162611926844631045_n.jpg",
+      "bytes": 149396,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "149396",
+      "acceptRanges": "bytes",
+      "etag": "\"612bc33e39d49c04ad39ff6994ebbb9c\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/833790432_18414404590080004_2113187723771374653_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/833790432_18414404590080004_2113187723771374653_n.jpg",
+      "bytes": 77709,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "77709",
+      "acceptRanges": "bytes",
+      "etag": "\"8760a95f1a7f738190948a9445303fe8\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/834333937_18102939077437158_2249796027265385049_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/834333937_18102939077437158_2249796027265385049_n.jpg",
+      "bytes": 84424,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "84424",
+      "acceptRanges": "bytes",
+      "etag": "\"2f96277f70a78b85ff95633f84c78148\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/836759866_18246204481313915_5450768172558231425_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/836759866_18246204481313915_5450768172558231425_n.jpg",
+      "bytes": 154810,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "154810",
+      "acceptRanges": "bytes",
+      "etag": "\"2e6a9070f2e67df0d2d2b330a124ace2\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/837039650_17936607405381141_4843657821102816729_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/837039650_17936607405381141_4843657821102816729_n.jpg",
+      "bytes": 242297,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "242297",
+      "acceptRanges": "bytes",
+      "etag": "\"0ec122c49c180ddd2262dd7a5d6e6e47\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/838362925_18478378603116502_4094375439820185520_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/838362925_18478378603116502_4094375439820185520_n.jpg",
+      "bytes": 156153,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "156153",
+      "acceptRanges": "bytes",
+      "etag": "\"5ee93f4a37ec14f808457aaf2c681aa0\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/838851653_17915580165463956_8646273599053634246_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/838851653_17915580165463956_8646273599053634246_n.jpg",
+      "bytes": 249416,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "249416",
+      "acceptRanges": "bytes",
+      "etag": "\"1af88adceb26218e09fd4799c63ba9e6\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/839589733_18223950805337746_8518896593143034853_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/839589733_18223950805337746_8518896593143034853_n.jpg",
+      "bytes": 566254,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "566254",
+      "acceptRanges": "bytes",
+      "etag": "\"69a14086bb9707862ccd952697f978f0\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/839589735_18435631513194537_5962308028115092182_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/839589735_18435631513194537_5962308028115092182_n.jpg",
+      "bytes": 74122,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "74122",
+      "acceptRanges": "bytes",
+      "etag": "\"8a6d305e8f313b1e1c631267574b1721\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/839617909_18636140752036257_2098987833378784333_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/839617909_18636140752036257_2098987833378784333_n.jpg",
+      "bytes": 133452,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "133452",
+      "acceptRanges": "bytes",
+      "etag": "\"7660f1b29b7810a109a115033da9368b\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/840346667_18433655446180767_1370174977741391988_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/840346667_18433655446180767_1370174977741391988_n.jpg",
+      "bytes": 150860,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "150860",
+      "acceptRanges": "bytes",
+      "etag": "\"cd4b9406abc4c467ac8681d65f3cb0ae\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/841464706_18366723628268751_1043541057353877128_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/841464706_18366723628268751_1043541057353877128_n.jpg",
+      "bytes": 81024,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "81024",
+      "acceptRanges": "bytes",
+      "etag": "\"017783be0db99b4fd2099bb5b01d1d1c\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/843495067_17881633962628623_2588240699924030750_n.jpeg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/843495067_17881633962628623_2588240699924030750_n.jpeg",
+      "bytes": 143542,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "143542",
+      "acceptRanges": "bytes",
+      "etag": "\"2c15115794ffb2c29925c87a6b689154\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/843884094_17912958240541348_6657353171384554378_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/843884094_17912958240541348_6657353171384554378_n.jpg",
+      "bytes": 116559,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "116559",
+      "acceptRanges": "bytes",
+      "etag": "\"97b85413afdb938d70dd828160b64802\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/844321453_18060673460799617_7311462697784706363_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/844321453_18060673460799617_7311462697784706363_n.jpg",
+      "bytes": 180377,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "180377",
+      "acceptRanges": "bytes",
+      "etag": "\"55380f132c738c33be862a54fb2d138a\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/845832708_18636696226058690_7728222674528347727_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/845832708_18636696226058690_7728222674528347727_n.jpg",
+      "bytes": 70761,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "70761",
+      "acceptRanges": "bytes",
+      "etag": "\"0185292a12e2068327613e0176a3da30\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/847859927_18337864615273096_1975416002277433834_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/847859927_18337864615273096_1975416002277433834_n.jpg",
+      "bytes": 111557,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "111557",
+      "acceptRanges": "bytes",
+      "etag": "\"726d9f915c7ad7f3bb35019c63b7f09d\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/847939309_18497838286108045_8543151347112222288_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/847939309_18497838286108045_8543151347112222288_n.jpg",
+      "bytes": 167016,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "167016",
+      "acceptRanges": "bytes",
+      "etag": "\"fb085042ef51ec045ec97fed2dc356d2\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/848196762_18596616184067882_5040749258115402944_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/848196762_18596616184067882_5040749258115402944_n.jpg",
+      "bytes": 308621,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "308621",
+      "acceptRanges": "bytes",
+      "etag": "\"ed025bb7a7a067a70697a239a20b42ff\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849771840_18034819817889144_3925256592976004249_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/849771840_18034819817889144_3925256592976004249_n.jpg",
+      "bytes": 139187,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "139187",
+      "acceptRanges": "bytes",
+      "etag": "\"a07e0a06e4ab2752ce19b5d034788177\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849773106_18639750280008887_6117308489060789711_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/849773106_18639750280008887_6117308489060789711_n.jpg",
+      "bytes": 203899,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "203899",
+      "acceptRanges": "bytes",
+      "etag": "\"129f34da98417b94222ec646173b26ec\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849773200_17950482690315564_8876215987114569094_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/849773200_17950482690315564_8876215987114569094_n.jpg",
+      "bytes": 210329,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "210329",
+      "acceptRanges": "bytes",
+      "etag": "\"2f579a1c93e1d3229c2308a85da830cd\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849807710_18645009418024527_6642553109896532623_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/849807710_18645009418024527_6642553109896532623_n.jpg",
+      "bytes": 100742,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "100742",
+      "acceptRanges": "bytes",
+      "etag": "\"0ed719df6dde3ed8189e75d770cac741\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/850999231_18073885979771277_7976746379773659398_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/850999231_18073885979771277_7976746379773659398_n.jpg",
+      "bytes": 142206,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "142206",
+      "acceptRanges": "bytes",
+      "etag": "\"5b5fd8e462a217ad589eab65fb782c7e\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/851150069_18644948692026015_1961800893533170202_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/851150069_18644948692026015_1961800893533170202_n.jpg",
+      "bytes": 356216,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "356216",
+      "acceptRanges": "bytes",
+      "etag": "\"0f59cdc589d1a12968118a74477a4b23\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/851189164_18640503070004015_7144487729461611309_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/851189164_18640503070004015_7144487729461611309_n.jpg",
+      "bytes": 100606,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "100606",
+      "acceptRanges": "bytes",
+      "etag": "\"5d1ccd011298a44b13b7b8165f7d45a2\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/851257175_18647269771035766_980929698285222742_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/851257175_18647269771035766_980929698285222742_n.jpg",
+      "bytes": 332627,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "332627",
+      "acceptRanges": "bytes",
+      "etag": "\"114009691d64fda1de18d1938b6453dc\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/851257192_18467968138141225_372909651516312439_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/851257192_18467968138141225_372909651516312439_n.jpg",
+      "bytes": 154822,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "154822",
+      "acceptRanges": "bytes",
+      "etag": "\"eef1b4c56f148549ff5c86c57b70ac74\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/851887662_17961934497248615_3061332579403452781_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/851887662_17961934497248615_3061332579403452781_n.jpg",
+      "bytes": 213282,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "213282",
+      "acceptRanges": "bytes",
+      "etag": "\"ed02052cd0b1171f74e6edf5fe9c274e\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/852678974_18128356141847209_6461935358698939218_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/852678974_18128356141847209_6461935358698939218_n.jpg",
+      "bytes": 134537,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "134537",
+      "acceptRanges": "bytes",
+      "etag": "\"01e21913b9e5360334da960da1b9d28a\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/852679207_17928965442469300_6301715055087659119_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/852679207_17928965442469300_6301715055087659119_n.jpg",
+      "bytes": 109048,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "109048",
+      "acceptRanges": "bytes",
+      "etag": "\"65891e88a2c5a7f0452e6f58bbbb192a\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/855448264_18633957871002497_2718116683748157052_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/855448264_18633957871002497_2718116683748157052_n.jpg",
+      "bytes": 436117,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "436117",
+      "acceptRanges": "bytes",
+      "etag": "\"cf4384ec5cd3a70791f4e93f987dcff2\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/856770597_18346890787254352_7789099904822071278_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/856770597_18346890787254352_7789099904822071278_n.jpg",
+      "bytes": 152579,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "152579",
+      "acceptRanges": "bytes",
+      "etag": "\"959eaccac7f4cccd5a093f8a8e1de62d\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/856840641_18021404207926682_1527601665521701068_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/856840641_18021404207926682_1527601665521701068_n.jpg",
+      "bytes": 226318,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "226318",
+      "acceptRanges": "bytes",
+      "etag": "\"1d69f6ee7a2db3e83b65a9f4ccc40629\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/857323413_18076577417729357_3356181006658220970_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/857323413_18076577417729357_3356181006658220970_n.jpg",
+      "bytes": 102567,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "102567",
+      "acceptRanges": "bytes",
+      "etag": "\"ff3a1c843c8970255b26712bdd4a0d7b\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/858050115_18081701012720796_1141335178425589448_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/858050115_18081701012720796_1141335178425589448_n.jpg",
+      "bytes": 223720,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "223720",
+      "acceptRanges": "bytes",
+      "etag": "\"485238e181ed8d6f8149c83c1db09c11\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/858159161_18637015324034456_7860982535270189554_n.jpg",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/858159161_18637015324034456_7860982535270189554_n.jpg",
+      "bytes": 125646,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "image/jpeg",
+      "remoteBytes": "125646",
+      "acceptRanges": "bytes",
+      "etag": "\"7f1811dea85ba7d1f8183f2e9403e740\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQMMWPVvGd3CXLwvme60KodkT6POOXMuzYtmY1BBJ3-8TsaTvOOYIxw2Zb7EU-MVrjFtgsCLFX-R45ejX9QHHpFm47le-_KWhYfHLTc.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQMMWPVvGd3CXLwvme60KodkT6POOXMuzYtmY1BBJ3-8TsaTvOOYIxw2Zb7EU-MVrjFtgsCLFX-R45ejX9QHHpFm47le-_KWhYfHLTc.mp4",
+      "bytes": 2510923,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "2510923",
+      "acceptRanges": "bytes",
+      "etag": "\"71c10b28d6f88af12a11ca4442a6d793\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "19.060726"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQMPyLg4xKrvk9K2-3z5bFppGZ4BXjyLqCZbDbSulzR4qs4_MIS4WmoQyGLzdThFIGqepkGlxzm8XfZ_JDKkwNgxA2bRTEaRFo3epPk.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQMPyLg4xKrvk9K2-3z5bFppGZ4BXjyLqCZbDbSulzR4qs4_MIS4WmoQyGLzdThFIGqepkGlxzm8XfZ_JDKkwNgxA2bRTEaRFo3epPk.mp4",
+      "bytes": 1853443,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "1853443",
+      "acceptRanges": "bytes",
+      "etag": "\"9b03669687a7a474ba122cab7b97ea96\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "16.831610"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQMjB1uEvbHyxAl8nY8qeri5bkDbfWG-bS3cTzZehRSzulwOYjSQWYgn0ThuHfrtGzAEmhA0G54DZ-94mTWawly8UTBE9N2IXzJ0rYc.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQMjB1uEvbHyxAl8nY8qeri5bkDbfWG-bS3cTzZehRSzulwOYjSQWYgn0ThuHfrtGzAEmhA0G54DZ-94mTWawly8UTBE9N2IXzJ0rYc.mp4",
+      "bytes": 3507029,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "3507029",
+      "acceptRanges": "bytes",
+      "etag": "\"e89716e5b75ed6c9297f04a444510750\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "18.898186"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQMmC0sIQ4NmgrJy9YygZSitQmNKxrpjIUlfE6DbfifbFKexSOENdWBXQeoJ_IngCJGUZ58pDlx_og7X5zpZvqkmB4jgkPHyBJRx5xI.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQMmC0sIQ4NmgrJy9YygZSitQmNKxrpjIUlfE6DbfifbFKexSOENdWBXQeoJ_IngCJGUZ58pDlx_og7X5zpZvqkmB4jgkPHyBJRx5xI.mp4",
+      "bytes": 8654939,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "8654939",
+      "acceptRanges": "bytes",
+      "etag": "\"4c6c30e297b19f74d7231650ace4ee40\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "38.472608"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQN4L-GB2rD_WTY50ltWz0NfCUUQxiyWuzJQrXV3r44sLQQ3855Zy_TXSkAGfxrP7Kv1F5yYc847poaAl8zIZxqMz9KxRuN29bZNv8A.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQN4L-GB2rD_WTY50ltWz0NfCUUQxiyWuzJQrXV3r44sLQQ3855Zy_TXSkAGfxrP7Kv1F5yYc847poaAl8zIZxqMz9KxRuN29bZNv8A.mp4",
+      "bytes": 2238421,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "2238421",
+      "acceptRanges": "bytes",
+      "etag": "\"96eed4c9671b07153e47c2b6b5a5d635\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "22.125760"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQNFekgDQ1UINyqcrmDjU9IKnFRgx1VNwgrXLQ5KRgyZn8scsOznU3430EgeXQKq3ttD6GfSNVbP5OHRzEc6jddgSSY1j6oLgdE8oKU.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQNFekgDQ1UINyqcrmDjU9IKnFRgx1VNwgrXLQ5KRgyZn8scsOznU3430EgeXQKq3ttD6GfSNVbP5OHRzEc6jddgSSY1j6oLgdE8oKU.mp4",
+      "bytes": 10107375,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "10107375",
+      "acceptRanges": "bytes",
+      "etag": "\"b7f66d8fd7a7fd5daad71cff0bda7417\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "66.893832"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQNN7LdTNuTD7FdQdwXhZ71Ll5a9FgECLpx0ao1S3ha73jwH0GSHgeVlh-1zE_SkKmFFrn7HHUgF7ReYNY57OVEFBgYpR1bP5oM3T1A.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQNN7LdTNuTD7FdQdwXhZ71Ll5a9FgECLpx0ao1S3ha73jwH0GSHgeVlh-1zE_SkKmFFrn7HHUgF7ReYNY57OVEFBgYpR1bP5oM3T1A.mp4",
+      "bytes": 3279306,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "3279306",
+      "acceptRanges": "bytes",
+      "etag": "\"02462288810f1e94d67fffeb19040483\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "17.390340"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQNh25D7bDaWrl7AfwH0XoLCR90EGL6Q7KszJ2ODbELVYUautRLHLgrPVDN-8abHcOCqXe4kSM543gJbL-g_Dm29dZyskWQPgMvlwqk.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQNh25D7bDaWrl7AfwH0XoLCR90EGL6Q7KszJ2ODbELVYUautRLHLgrPVDN-8abHcOCqXe4kSM543gJbL-g_Dm29dZyskWQPgMvlwqk.mp4",
+      "bytes": 5608174,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "5608174",
+      "acceptRanges": "bytes",
+      "etag": "\"bb682bbbf851e093147a730c824290e0\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "34.385896"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQNnLAKorkEXp49wkTyXoOb7xgzZfgLAGOcX9GEESYX01thVplX2L_r4eKmXSwEKp7cO-GU_Z43GvJ8GLuFyuTH4LPbSO32Qkrgy0iE.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQNnLAKorkEXp49wkTyXoOb7xgzZfgLAGOcX9GEESYX01thVplX2L_r4eKmXSwEKp7cO-GU_Z43GvJ8GLuFyuTH4LPbSO32Qkrgy0iE.mp4",
+      "bytes": 1177930,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "1177930",
+      "acceptRanges": "bytes",
+      "etag": "\"bcacd78d7b1d28eadfcdfe830e0a73ba\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "14.370295"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQO1SxnnKk4IuLTQkKf49X73ad-DXoe7kMY8uHAqSl2f0_YUbO9VXaRnUXOxVkrQpD-wvpBqhZ3lL9AHnWAo3cB3U2yZV66p8rsZ2G4.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQO1SxnnKk4IuLTQkKf49X73ad-DXoe7kMY8uHAqSl2f0_YUbO9VXaRnUXOxVkrQpD-wvpBqhZ3lL9AHnWAo3cB3U2yZV66p8rsZ2G4.mp4",
+      "bytes": 2310260,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "2310260",
+      "acceptRanges": "bytes",
+      "etag": "\"c6ffc2b893222018ff5c408957593a6e\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "12.489478"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQOATF2y8Ss6N0_xp4paeEtHO9_3fzt2XBVGlnSLdBG30R4fJuOoz9KFGeA3T09Q-36wDtMZr3OlEQctiC7Q1OIldYMD01U7w4ARlAo.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOATF2y8Ss6N0_xp4paeEtHO9_3fzt2XBVGlnSLdBG30R4fJuOoz9KFGeA3T09Q-36wDtMZr3OlEQctiC7Q1OIldYMD01U7w4ARlAo.mp4",
+      "bytes": 5514248,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "5514248",
+      "acceptRanges": "bytes",
+      "etag": "\"551168e3cab80acb5e3bc87d8289832f\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "22.125760"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQOPp9s5zaj1hwNY4F51Ousj0iEBgaknegMrxVIR2ulV-k2hJqOWY4bQ6Vny-ioScqDbUGSHVbghTgwQQ9IZX-3QKq_VwznzCG9xr1Y.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOPp9s5zaj1hwNY4F51Ousj0iEBgaknegMrxVIR2ulV-k2hJqOWY4bQ6Vny-ioScqDbUGSHVbghTgwQQ9IZX-3QKq_VwznzCG9xr1Y.mp4",
+      "bytes": 1652547,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "1652547",
+      "acceptRanges": "bytes",
+      "etag": "\"b92c9b9bab78b7f6716b1a2a7a023957\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "13.882676"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQOVTD7Qw3rvUbflEsPfqAUEJg6Y_Tp2xOdZT8CGd32GagGQxZhh_LyIsYpr5P4wQUXCYlMA8i3nfXCmO_Jehyvea_Wa21BvDa-PJCI.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOVTD7Qw3rvUbflEsPfqAUEJg6Y_Tp2xOdZT8CGd32GagGQxZhh_LyIsYpr5P4wQUXCYlMA8i3nfXCmO_Jehyvea_Wa21BvDa-PJCI.mp4",
+      "bytes": 2428998,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "2428998",
+      "acceptRanges": "bytes",
+      "etag": "\"145d4bf281772f686424cc8ddedbaf74\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "11.467800"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQOqDevvZpejZaxcS_j6ou_JDnryhjVx63fB4rjhyStfOorUxHnonZVELbxJ46nK6AHEEk6CLIJQFHg1MTevCV5qsrgXyix_8qDEX8o.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOqDevvZpejZaxcS_j6ou_JDnryhjVx63fB4rjhyStfOorUxHnonZVELbxJ46nK6AHEEk6CLIJQFHg1MTevCV5qsrgXyix_8qDEX8o.mp4",
+      "bytes": 674636,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "674636",
+      "acceptRanges": "bytes",
+      "etag": "\"86e13859904cb4e887fcdb5de190d276\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "10.033333"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQOqif0IggotCMxdixLIrcWchlp27j7AKuSQv06QkqhChmn8nlOkarWTjUy6AyptqWJ_29NdO6tG38qWzUt84fxcBz-EtnUWM5Jvwv8.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOqif0IggotCMxdixLIrcWchlp27j7AKuSQv06QkqhChmn8nlOkarWTjUy6AyptqWJ_29NdO6tG38qWzUt84fxcBz-EtnUWM5Jvwv8.mp4",
+      "bytes": 1821288,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "1821288",
+      "acceptRanges": "bytes",
+      "etag": "\"9c0d124debe7c6acaf06247b6a48f9e5\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "11.282041"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQOw6t5UJFCzpYup-7IWsJMxaLSpq5TyqJZgs0j1tn19uTvvby78cpCRrS1gpn6kdR0jvQwDnEVBG6wA6EOIhAuFJG6o_O_Yz2xg-zs.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOw6t5UJFCzpYup-7IWsJMxaLSpq5TyqJZgs0j1tn19uTvvby78cpCRrS1gpn6kdR0jvQwDnEVBG6wA6EOIhAuFJG6o_O_Yz2xg-zs.mp4",
+      "bytes": 5849271,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "5849271",
+      "acceptRanges": "bytes",
+      "etag": "\"ddaad544d3337a27c7c43f18d615a7d2\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "25.028254"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQPEW3XG-3JkaH4nOxbNUjK_0cSX27ZeJbE-ljzZlYFhBEve_5fA_OIufoo1ibXBOkRsnAT6F2VoYdkxpoB1f4Wtwa7J4MlPONUVuEo.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQPEW3XG-3JkaH4nOxbNUjK_0cSX27ZeJbE-ljzZlYFhBEve_5fA_OIufoo1ibXBOkRsnAT6F2VoYdkxpoB1f4Wtwa7J4MlPONUVuEo.mp4",
+      "bytes": 2672944,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "2672944",
+      "acceptRanges": "bytes",
+      "etag": "\"4050ecbb32bf0cd9495f5291727919a2\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "15.461633"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQPNx6nNtrKyg7fDwSu_Zyy8PSUZ8uhEhlhdgAJUkWZw9q16iy_UNQlZ3gyqGiK7mhuSSiyn8j9j1afUY8VT6WpzAAvON8b1LCMe93M.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQPNx6nNtrKyg7fDwSu_Zyy8PSUZ8uhEhlhdgAJUkWZw9q16iy_UNQlZ3gyqGiK7mhuSSiyn8j9j1afUY8VT6WpzAAvON8b1LCMe93M.mp4",
+      "bytes": 2136477,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "2136477",
+      "acceptRanges": "bytes",
+      "etag": "\"1567c3794ced97e24feb298f4d736d32\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "25.121134"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQPSEOmv3K-cJOeVH5IvLdNtfqakg8JQGMaclioGZWxSY_d6C2Nhq8keAUqmBE0nBzOphHMUGNQ9nGeTcAczI3kxSX81Fffsg9_xupA.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQPSEOmv3K-cJOeVH5IvLdNtfqakg8JQGMaclioGZWxSY_d6C2Nhq8keAUqmBE0nBzOphHMUGNQ9nGeTcAczI3kxSX81Fffsg9_xupA.mp4",
+      "bytes": 2029012,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "2029012",
+      "acceptRanges": "bytes",
+      "etag": "\"ba88af4251931b88f9752788cc2b051e\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "9.261905"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQPcg4wtkJ1mamBqaWqrT2Iewrz-mDWOGEnPMOG5_XTx9syGLBkwfAM4RMx1np4Gk7zGV03W4bz8oFBOQJwa1cB2H0EvNOgA9FMmK8I.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQPcg4wtkJ1mamBqaWqrT2Iewrz-mDWOGEnPMOG5_XTx9syGLBkwfAM4RMx1np4Gk7zGV03W4bz8oFBOQJwa1cB2H0EvNOgA9FMmK8I.mp4",
+      "bytes": 5343776,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "5343776",
+      "acceptRanges": "bytes",
+      "etag": "\"9e7d7110be4099a4ec5a431c12762f9c\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "19.085397"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQPqC5T4ywHyMPomckZ0uFckxEXUNr4IT0EqQl9pzG4ONBUUzC-vs3VqvHKLQxHdc7KTDMohQyZ_Yr48UqarNDHSBv999JZP19ZpaNY.mp4",
+      "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQPqC5T4ywHyMPomckZ0uFckxEXUNr4IT0EqQl9pzG4ONBUUzC-vs3VqvHKLQxHdc7KTDMohQyZ_Yr48UqarNDHSBv999JZP19ZpaNY.mp4",
+      "bytes": 3685253,
+      "status": "HTTP/1.1 200 OK",
+      "contentType": "video/mp4",
+      "remoteBytes": "3685253",
+      "acceptRanges": "bytes",
+      "etag": "\"a8d0cd01119a7add9aa54c47dbace261\"",
+      "lengthMatches": true,
+      "md5MatchesETag": true,
+      "originalFormat": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 720,
+            "height": 1280
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "duration": "25.794512"
+        }
+      },
+      "range206": true,
+      "mp4Header": true
+    }
+  ],
+  "summary": {
+    "photos": 60,
+    "films": 21,
+    "available": 81,
+    "lengthMatches": 81,
+    "etagMatches": 81,
+    "filmRanges206": 21,
+    "filmHeaders": 21
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-26",
+  "method": "Google Docs native readback and unauthenticated HTTPS published-page paragraph comparison.",
+  "documents": [
+    {
+      "policy": "terms",
+      "url": "https://docs.google.com/document/d/e/2PACX-1vQoWJi7C-CO9-OWqtetngX3xDZerh2viDCfC82GdLjbdsmmRO1XIx59c51M5FGf-rJ7YONmJ7Ph1mG7/pub",
+      "anonymousRead": true,
+      "exactParagraphs": true,
+      "paragraphs": 48,
+      "emailBlank": true,
+      "canonicalSHA256": "5e45491390eec1e2cec6c1910539647464209be1cf47142f7cfb46484840a97b"
+    },
+    {
+      "policy": "privacy",
+      "url": "https://docs.google.com/document/d/e/2PACX-1vTE64ZsiJbXRE47OlspklgrzvUkIqo0CuswoHkkzsm4pe3nbcOFPmrQszIk0Z2-rbNYDVR-LU5tJJ3f/pub",
+      "anonymousRead": true,
+      "exactParagraphs": true,
+      "paragraphs": 42,
+      "emailBlank": true,
+      "canonicalSHA256": "a6d69eae6a277c65afd1e30afe39f55512bedf34dec3af496791efa20068d008"
+    }
+  ],
+  "appExecuted": false
+}

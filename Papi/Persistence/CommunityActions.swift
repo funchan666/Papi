@@ -7,7 +7,7 @@ import Foundation
     }
     var visibilityKeys:[String] {(hiddenKeys.union(state.blockedMembers.map{"blocked:"+$0})).sorted()}
     func person(_ id:String)->CoffeeMember? {
-        if id==state.passport.id.uuidString {return .init(id:id,name:state.passport.name,portrait:state.passport.avatar,bio:state.passport.bio)}
+        if id==state.passport.id.uuidString {return .init(id:id,name:state.passport.name,portrait:state.passport.portraitReference,bio:state.passport.bio)}
         return CoffeeMember.find(id) ?? community.rememberedPeople[id]
     }
     func isUserHidden(_ id:String)->Bool {state.blockedMembers.contains(id) || hiddenKeys.contains(SafetyTarget.user(id).id)}

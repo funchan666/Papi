@@ -7,6 +7,22 @@ root=Path(__file__).resolve().parents[1]
 errors=[]
 assets=root/'Papi/Resources/Assets.xcassets'
 names={p.stem for p in assets.glob('*.imageset')}
+collection=json.loads((root/'Papi/Resources/Media/CoffeeCollection.json').read_text())
+remote_items=collection['items'];remote_names={item['asset'] for item in remote_items}
+if collection['baseURL']!='https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev':errors.append('Unexpected collection host')
+if len(remote_items)!=81 or len(remote_names)!=81:errors.append('The collection must include all 81 supplied media files')
+if sum(item['kind']=='photo' for item in remote_items)!=60 or sum(item['kind']=='film' for item in remote_items)!=21:errors.append('Unexpected remote photo or film count')
+if sum(item['usage']=='profile' for item in remote_items)!=41:errors.append('Missing collection portrait destination')
+for item in remote_items:
+ expected_prefix='vv/' if item['kind']=='film' else 'pp/'
+ if not item['path'].startswith(expected_prefix) or item['path'].split('/')[-1]!=item['sourceName']:errors.append('Remote media path mismatch: '+item['asset'])
+ if (assets/(item['asset']+'.imageset')).exists():errors.append('A remote image still has a bundled content copy: '+item['asset'])
+ if item['usage']=='journal' and not item.get('momentID'):errors.append('Remote journal item has no destination: '+item['asset'])
+ if item['usage']=='profile' and not item.get('memberID'):errors.append('Remote portrait has no profile: '+item['asset'])
+for folder in ['ContentImages','ContentVideos']:
+ if (root/'ProjectMaterials'/folder).exists():errors.append('Original local content folder remains: '+folder)
+for path in (root/'Papi/Resources/Media').iterdir():
+ if path.suffix.lower() in {'.jpg','.jpeg','.png','.mp4','.webp'}:errors.append('Bundled collection binary remains: '+path.name)
 for p in assets.rglob('Contents.json'):
  try:
   value=json.loads(p.read_text())
@@ -17,13 +33,15 @@ for p in assets.rglob('Contents.json'):
 source_files=list((root/'Papi').rglob('*.swift'))
 for p in source_files:
  source=p.read_text()
- for name in re.findall(r'(?:Image\(|PapiImage\(name:|PapiBackground\(asset:)"([^"\\]+)"',source):
+ for name in re.findall(r'(?:\bImage\(|PapiBackground\(asset:)"([^"\\]+)"',source):
   if name not in names:errors.append(f'{p.name}: unknown image {name}')
+ for name in re.findall(r'PapiImage\(name:"([^"\\]+)"',source):
+  if name not in names|remote_names:errors.append(f'{p.name}: unknown collection image {name}')
  if 'Image(systemName:' in source or 'UIScreen.main' in source:errors.append(f'{p.name}: forbidden image or global-screen pattern')
  for number,line in enumerate(source.splitlines(),1):
   if line.rstrip()!=line:errors.append(f'{p.name}:{number}: trailing whitespace')
   if re.search(r'(?<!\\)(?:\\\\)*\\u[0-9A-Fa-f]{4}',line):errors.append(f'{p.name}:{number}: JSON-style Unicode escape; use UTF-8 or Swift Unicode braces')
-# Only coffee-focused films selected by the reviewed manifest are bundled.
+# Media provenance remains available after migrating every source to the fixed remote catalog.
 manifest=json.loads((root/'docs/ASSET_MANIFEST.json').read_text())
 films=[row for row in manifest if row.get('kind')=='film' and row.get('bundled',True)]
 for row in films:
@@ -33,6 +51,13 @@ for row in films:
 expected_films={row['asset']+'.mp4' for row in films}
 actual_films={p.name for p in (root/'Papi/Resources/Media').glob('*.mp4')}
 if actual_films!=expected_films:errors.append('Unexpected or missing bundled coffee film')
+remote_manifest={row['asset']:row['url'] for row in manifest if row.get('delivery')=='remote'}
+if remote_manifest!={row['asset']:collection['baseURL']+'/'+row['path'] for row in remote_items}:errors.append('Remote catalog and provenance differ')
+policies=json.loads((root/'Papi/Resources/Localization/PapiPolicies.json').read_text())
+if {doc['id'] for doc in policies['documents']}!={'privacy','terms'}:errors.append('Both policy documents are required')
+for doc in policies['documents']:
+ if not doc['publishedURL'].startswith('https://docs.google.com/document/d/e/') or not doc['publishedURL'].endswith('/pub'):errors.append('Invalid published policy URL')
+ if not doc['sections'] or doc['sections'][-1]['paragraphs']!=['Contact email:']:errors.append('Policy contact field must remain blank for this delivery')
 for p in [root/'Config/Info.plist',root/'Papi/Resources/PrivacyInfo.xcprivacy']:
  with p.open('rb') as f:plistlib.load(f)
 info=plistlib.loads((root/'Config/Info.plist').read_bytes())
@@ -104,6 +129,7 @@ recipe_source=(root/'Papi/CoffeeDomain/BrewRecords.swift').read_text()
 recipe_costs=[int(cost) for cost in re.findall(r'unlockCoins:(\d+)',recipe_source)]
 if recipe_costs!=[0,0,120,180,240]:errors.append('Unexpected recipe pricing configuration')
 report={'sourceFiles':len(source_files),'imageSets':len(names),'bundledVideos':len(films),'resourceBytes':size,'resourcePhase':sorted(resources),'translationEntries':len(translations),'uiLanguages':['en']+sorted(languages),'typefaceFamilies':len({row['family'] for row in font_manifest}),'fontStyles':len(font_manifest),'fontBytes':font_bytes,'coinPacks':len(packs),'protectedCoinProductIDs':len(fixed),'addedCoinPacks':len(catalog.keys()-fixed.keys()),'brewRecipes':len(recipe_costs),'freeBrewRecipes':recipe_costs.count(0),'paidRecipeCoins':[cost for cost in recipe_costs if cost>0],'findings':errors,'buildExecuted':False,'testsExecuted':False,'appLaunched':False,'storeKitExecuted':False,'binarySimilarityMeasured':False}
+report.update(remotePhotos=sum(row['kind']=='photo' for row in remote_items),remoteVideos=sum(row['kind']=='film' for row in remote_items),collectionProfiles=sum(row['usage']=='profile' for row in remote_items),collectionMoments=sum(row['usage']=='journal' for row in remote_items),publishedPolicies=len(policies['documents']))
 (root/'docs/STATIC_INSPECTION.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps(report,ensure_ascii=False,indent=2))
 raise SystemExit(1 if errors else 0)

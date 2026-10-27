@@ -401,115 +401,153 @@
     "asset": "corner-latte",
     "source": "ProjectMaterials/ContentImages/491446704_18495838444015606_2951662145041834063_n.jpg",
     "legacyAsset": "coffee00",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/491446704_18495838444015606_2951662145041834063_n.jpg"
   },
   {
     "asset": "breakfast-tray",
     "source": "ProjectMaterials/ContentImages/531218040_18215454979307337_4523770324707123032_n.jpg",
     "legacyAsset": "coffee01",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/531218040_18215454979307337_4523770324707123032_n.jpg"
   },
   {
     "asset": "window-americano",
     "source": "ProjectMaterials/ContentImages/545336021_18236256523292459_4507865406424230615_n.jpg",
     "legacyAsset": "coffee02",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/545336021_18236256523292459_4507865406424230615_n.jpg"
   },
   {
     "asset": "canal-coffee",
     "source": "ProjectMaterials/ContentImages/576547713_18084713414088363_1285219696126171284_n.jpg",
     "legacyAsset": "coffee03",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/576547713_18084713414088363_1285219696126171284_n.jpg"
   },
   {
     "asset": "croissant-table",
     "source": "ProjectMaterials/ContentImages/587561444_18520843717067479_7889809574185219306_n.jpg",
     "legacyAsset": "coffee04",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/587561444_18520843717067479_7889809574185219306_n.jpg"
   },
   {
     "asset": "round-cafe-table",
     "source": "ProjectMaterials/ContentImages/589257354_18331874491214752_1361707186294986293_n.jpg",
     "legacyAsset": "coffee05",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/589257354_18331874491214752_1361707186294986293_n.jpg"
   },
   {
     "asset": "pastry-ritual",
     "source": "ProjectMaterials/ContentImages/610897135_18554168221034896_5027949645344542905_n.jpg",
     "legacyAsset": "coffee06",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/610897135_18554168221034896_5027949645344542905_n.jpg"
   },
   {
     "asset": "handheld-cold-brew",
     "source": "ProjectMaterials/ContentImages/621599361_17997497273856576_6448872857505022523_n.jpg",
     "legacyAsset": "coffee07",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/621599361_17997497273856576_6448872857505022523_n.jpg"
   },
   {
     "asset": "garden-coffee-seat",
     "source": "ProjectMaterials/ContentImages/627472722_18436267090118139_6342985871363311357_n.jpg",
     "legacyAsset": "coffee08",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/627472722_18436267090118139_6342985871363311357_n.jpg"
   },
   {
     "asset": "home-espresso-corner",
     "source": "ProjectMaterials/ContentImages/628012198_18438626845128037_4967181347781712324_n.jpeg",
     "legacyAsset": "coffee09",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/628012198_18438626845128037_4967181347781712324_n.jpeg"
   },
   {
     "asset": "sunlit-cup",
     "source": "ProjectMaterials/ContentImages/640856207_18567478963053198_3773407055237167139_n.jpg",
     "legacyAsset": "coffee10",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/640856207_18567478963053198_3773407055237167139_n.jpg"
   },
   {
     "asset": "two-iced-lattes",
     "source": "ProjectMaterials/ContentImages/654566804_18013469846676232_8010475497353305856_n.jpg",
     "legacyAsset": "coffee11",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/654566804_18013469846676232_8010475497353305856_n.jpg"
   },
   {
     "asset": "marbled-latte",
     "source": "ProjectMaterials/ContentImages/706028737_17928520068313071_4136620075343317093_n.jpg",
     "legacyAsset": "coffee12",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/706028737_17928520068313071_4136620075343317093_n.jpg"
   },
   {
     "asset": "courtyard-brunch",
     "source": "ProjectMaterials/ContentImages/729148503_18005159000928677_2131875526618465034_n.jpg",
     "legacyAsset": "coffee13",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/729148503_18005159000928677_2131875526618465034_n.jpg"
   },
   {
     "asset": "matcha-and-cookie",
     "source": "ProjectMaterials/ContentImages/757665890_18620593681051045_6033168349973866481_n.jpg",
     "legacyAsset": "coffee14",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/757665890_18620593681051045_6033168349973866481_n.jpg"
   },
   {
     "asset": "glasshouse-cafe",
     "source": "ProjectMaterials/ContentImages/764102974_18109832771003789_5171860791040556245_n.jpg",
     "legacyAsset": "coffee15",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/764102974_18109832771003789_5171860791040556245_n.jpg"
   },
   {
     "asset": "coffee-and-dates",
     "source": "ProjectMaterials/ContentImages/782542831_18247893658307970_7502922252822748806_n.jpg",
     "legacyAsset": "coffee16",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/782542831_18247893658307970_7502922252822748806_n.jpg"
   },
   {
     "asset": "rose-front-cafe",
     "source": "ProjectMaterials/ContentImages/825322594_18015018077952191_641264614028541211_n.webp",
     "legacyAsset": "coffee17",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/825322594_18015018077952191_641264614028541211_n.webp"
   },
   {
     "asset": "street-espresso",
     "source": "ProjectMaterials/ContentImages/839589733_18223950805337746_8518896593143034853_n.jpg",
     "legacyAsset": "coffee30",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/839589733_18223950805337746_8518896593143034853_n.jpg"
   },
   {
     "asset": "portrait-clara",
@@ -518,7 +556,9 @@
     "displayName": "Clara Voss",
     "mappingApprovedByUser": "2026-10-21",
     "legacyAsset": "person00",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/828150671_18460538542189071_1789721700966985714_n.jpg"
   },
   {
     "asset": "portrait-jun",
@@ -527,7 +567,9 @@
     "displayName": "Jun Park",
     "mappingApprovedByUser": "2026-10-21",
     "legacyAsset": "person01",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/828924727_18592029697068547_9134634135057079283_n.jpg"
   },
   {
     "asset": "portrait-kai",
@@ -536,7 +578,9 @@
     "displayName": "Kai Moreno",
     "mappingApprovedByUser": "2026-10-21",
     "legacyAsset": "person02",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/830487382_18487605439104358_2075193543309807603_n.jpg"
   },
   {
     "asset": "portrait-theo",
@@ -545,7 +589,9 @@
     "displayName": "Theo Ellis",
     "mappingApprovedByUser": "2026-10-21",
     "legacyAsset": "person03",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/830594342_17911443807537299_6706399938915264218_n.jpg"
   },
   {
     "asset": "portrait-elise",
@@ -554,7 +600,9 @@
     "displayName": "Elise Reed",
     "mappingApprovedByUser": "2026-10-21",
     "legacyAsset": "person04",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/831424261_18635464435021134_6891735408629346119_n.jpg"
   },
   {
     "asset": "portrait-mateo",
@@ -563,7 +611,9 @@
     "displayName": "Mateo Silva",
     "mappingApprovedByUser": "2026-10-21",
     "legacyAsset": "person05",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/833701675_18377411281215137_4162611926844631045_n.jpg"
   },
   {
     "asset": "portrait-ren",
@@ -572,7 +622,9 @@
     "displayName": "Ren Aoki",
     "mappingApprovedByUser": "2026-10-21",
     "legacyAsset": "person06",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/833790432_18414404590080004_2113187723771374653_n.jpg"
   },
   {
     "asset": "portrait-dae",
@@ -581,192 +633,215 @@
     "displayName": "Dae Han",
     "mappingApprovedByUser": "2026-10-21",
     "legacyAsset": "person07",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/834333937_18102939077437158_2249796027265385049_n.jpg"
   },
   {
     "asset": "ghost-latte-art",
     "source": "ProjectMaterials/ContentVideos/AQMMWPVvGd3CXLwvme60KodkT6POOXMuzYtmY1BBJ3-8TsaTvOOYIxw2Zb7EU-MVrjFtgsCLFX-R45ejX9QHHpFm47le-_KWhYfHLTc.mp4",
-    "poster": "ghost-latte-art.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo00",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQMMWPVvGd3CXLwvme60KodkT6POOXMuzYtmY1BBJ3-8TsaTvOOYIxw2Zb7EU-MVrjFtgsCLFX-R45ejX9QHHpFm47le-_KWhYfHLTc.mp4"
   },
   {
     "asset": "rosetta-practice",
     "source": "ProjectMaterials/ContentVideos/AQMPyLg4xKrvk9K2-3z5bFppGZ4BXjyLqCZbDbSulzR4qs4_MIS4WmoQyGLzdThFIGqepkGlxzm8XfZ_JDKkwNgxA2bRTEaRFo3epPk.mp4",
-    "poster": "rosetta-practice.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo01",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQMPyLg4xKrvk9K2-3z5bFppGZ4BXjyLqCZbDbSulzR4qs4_MIS4WmoQyGLzdThFIGqepkGlxzm8XfZ_JDKkwNgxA2bRTEaRFo3epPk.mp4"
   },
   {
-    "asset": "coffeeVideo02",
+    "asset": "cafe-company-portrait",
     "source": "ProjectMaterials/ContentVideos/AQMjB1uEvbHyxAl8nY8qeri5bkDbfWG-bS3cTzZehRSzulwOYjSQWYgn0ThuHfrtGzAEmhA0G54DZ-94mTWawly8UTBE9N2IXzJ0rYc.mp4",
-    "poster": "coffeeVideo02.jpg",
     "owner": "unassigned-editorial-preview",
     "bundled": false,
-    "exclusionReason": "Not coffee-focused; original remains in ProjectMaterials."
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQMjB1uEvbHyxAl8nY8qeri5bkDbfWG-bS3cTzZehRSzulwOYjSQWYgn0ThuHfrtGzAEmhA0G54DZ-94mTWawly8UTBE9N2IXzJ0rYc.mp4",
+    "kind": "film"
   },
   {
-    "asset": "coffeeVideo03",
+    "asset": "window-seat-journey",
     "source": "ProjectMaterials/ContentVideos/AQMmC0sIQ4NmgrJy9YygZSitQmNKxrpjIUlfE6DbfifbFKexSOENdWBXQeoJ_IngCJGUZ58pDlx_og7X5zpZvqkmB4jgkPHyBJRx5xI.mp4",
-    "poster": "coffeeVideo03.jpg",
     "owner": "unassigned-editorial-preview",
     "bundled": false,
-    "exclusionReason": "Not coffee-focused; original remains in ProjectMaterials."
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQMmC0sIQ4NmgrJy9YygZSitQmNKxrpjIUlfE6DbfifbFKexSOENdWBXQeoJ_IngCJGUZ58pDlx_og7X5zpZvqkmB4jgkPHyBJRx5xI.mp4",
+    "kind": "film"
   },
   {
     "asset": "iced-espresso-glass",
     "source": "ProjectMaterials/ContentVideos/AQN4L-GB2rD_WTY50ltWz0NfCUUQxiyWuzJQrXV3r44sLQQ3855Zy_TXSkAGfxrP7Kv1F5yYc847poaAl8zIZxqMz9KxRuN29bZNv8A.mp4",
-    "poster": "iced-espresso-glass.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo04",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQN4L-GB2rD_WTY50ltWz0NfCUUQxiyWuzJQrXV3r44sLQQ3855Zy_TXSkAGfxrP7Kv1F5yYc847poaAl8zIZxqMz9KxRuN29bZNv8A.mp4"
   },
   {
     "asset": "bar-counter-iced-latte",
     "source": "ProjectMaterials/ContentVideos/AQNFekgDQ1UINyqcrmDjU9IKnFRgx1VNwgrXLQ5KRgyZn8scsOznU3430EgeXQKq3ttD6GfSNVbP5OHRzEc6jddgSSY1j6oLgdE8oKU.mp4",
-    "poster": "bar-counter-iced-latte.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo05",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQNFekgDQ1UINyqcrmDjU9IKnFRgx1VNwgrXLQ5KRgyZn8scsOznU3430EgeXQKq3ttD6GfSNVbP5OHRzEc6jddgSSY1j6oLgdE8oKU.mp4"
   },
   {
     "asset": "blue-cup-pour",
     "source": "ProjectMaterials/ContentVideos/AQNN7LdTNuTD7FdQdwXhZ71Ll5a9FgECLpx0ao1S3ha73jwH0GSHgeVlh-1zE_SkKmFFrn7HHUgF7ReYNY57OVEFBgYpR1bP5oM3T1A.mp4",
-    "poster": "blue-cup-pour.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo06",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQNN7LdTNuTD7FdQdwXhZ71Ll5a9FgECLpx0ao1S3ha73jwH0GSHgeVlh-1zE_SkKmFFrn7HHUgF7ReYNY57OVEFBgYpR1bP5oM3T1A.mp4"
   },
   {
     "asset": "caramel-swirl-glass",
     "source": "ProjectMaterials/ContentVideos/AQNh25D7bDaWrl7AfwH0XoLCR90EGL6Q7KszJ2ODbELVYUautRLHLgrPVDN-8abHcOCqXe4kSM543gJbL-g_Dm29dZyskWQPgMvlwqk.mp4",
-    "poster": "caramel-swirl-glass.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo07",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQNh25D7bDaWrl7AfwH0XoLCR90EGL6Q7KszJ2ODbELVYUautRLHLgrPVDN-8abHcOCqXe4kSM543gJbL-g_Dm29dZyskWQPgMvlwqk.mp4"
   },
   {
     "asset": "heart-latte-workshop",
     "source": "ProjectMaterials/ContentVideos/AQNnLAKorkEXp49wkTyXoOb7xgzZfgLAGOcX9GEESYX01thVplX2L_r4eKmXSwEKp7cO-GU_Z43GvJ8GLuFyuTH4LPbSO32Qkrgy0iE.mp4",
-    "poster": "heart-latte-workshop.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo08",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQNnLAKorkEXp49wkTyXoOb7xgzZfgLAGOcX9GEESYX01thVplX2L_r4eKmXSwEKp7cO-GU_Z43GvJ8GLuFyuTH4LPbSO32Qkrgy0iE.mp4"
   },
   {
     "asset": "moka-orange-peel",
     "source": "ProjectMaterials/ContentVideos/AQO1SxnnKk4IuLTQkKf49X73ad-DXoe7kMY8uHAqSl2f0_YUbO9VXaRnUXOxVkrQpD-wvpBqhZ3lL9AHnWAo3cB3U2yZV66p8rsZ2G4.mp4",
-    "poster": "moka-orange-peel.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo09",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQO1SxnnKk4IuLTQkKf49X73ad-DXoe7kMY8uHAqSl2f0_YUbO9VXaRnUXOxVkrQpD-wvpBqhZ3lL9AHnWAo3cB3U2yZV66p8rsZ2G4.mp4"
   },
   {
-    "asset": "coffeeVideo10",
+    "asset": "evening-city-company",
     "source": "ProjectMaterials/ContentVideos/AQOATF2y8Ss6N0_xp4paeEtHO9_3fzt2XBVGlnSLdBG30R4fJuOoz9KFGeA3T09Q-36wDtMZr3OlEQctiC7Q1OIldYMD01U7w4ARlAo.mp4",
-    "poster": "coffeeVideo10.jpg",
     "owner": "unassigned-editorial-preview",
     "bundled": false,
-    "exclusionReason": "Not coffee-focused; original remains in ProjectMaterials."
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOATF2y8Ss6N0_xp4paeEtHO9_3fzt2XBVGlnSLdBG30R4fJuOoz9KFGeA3T09Q-36wDtMZr3OlEQctiC7Q1OIldYMD01U7w4ARlAo.mp4",
+    "kind": "film"
   },
   {
     "asset": "tulip-latte-pour",
     "source": "ProjectMaterials/ContentVideos/AQOPp9s5zaj1hwNY4F51Ousj0iEBgaknegMrxVIR2ulV-k2hJqOWY4bQ6Vny-ioScqDbUGSHVbghTgwQQ9IZX-3QKq_VwznzCG9xr1Y.mp4",
-    "poster": "tulip-latte-pour.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo11",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOPp9s5zaj1hwNY4F51Ousj0iEBgaknegMrxVIR2ulV-k2hJqOWY4bQ6Vny-ioScqDbUGSHVbghTgwQQ9IZX-3QKq_VwznzCG9xr1Y.mp4"
   },
   {
-    "asset": "coffeeVideo12",
+    "asset": "city-cafe-walk",
     "source": "ProjectMaterials/ContentVideos/AQOVTD7Qw3rvUbflEsPfqAUEJg6Y_Tp2xOdZT8CGd32GagGQxZhh_LyIsYpr5P4wQUXCYlMA8i3nfXCmO_Jehyvea_Wa21BvDa-PJCI.mp4",
-    "poster": "coffeeVideo12.jpg",
     "owner": "unassigned-editorial-preview",
     "bundled": false,
-    "exclusionReason": "Not coffee-focused; original remains in ProjectMaterials."
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOVTD7Qw3rvUbflEsPfqAUEJg6Y_Tp2xOdZT8CGd32GagGQxZhh_LyIsYpr5P4wQUXCYlMA8i3nfXCmO_Jehyvea_Wa21BvDa-PJCI.mp4",
+    "kind": "film"
   },
   {
     "asset": "espresso-on-off",
     "source": "ProjectMaterials/ContentVideos/AQOqDevvZpejZaxcS_j6ou_JDnryhjVx63fB4rjhyStfOorUxHnonZVELbxJ46nK6AHEEk6CLIJQFHg1MTevCV5qsrgXyix_8qDEX8o.mp4",
-    "poster": "espresso-on-off.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo13",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOqDevvZpejZaxcS_j6ou_JDnryhjVx63fB4rjhyStfOorUxHnonZVELbxJ46nK6AHEEk6CLIJQFHg1MTevCV5qsrgXyix_8qDEX8o.mp4"
   },
   {
     "asset": "stirred-caramel-latte",
     "source": "ProjectMaterials/ContentVideos/AQOqif0IggotCMxdixLIrcWchlp27j7AKuSQv06QkqhChmn8nlOkarWTjUy6AyptqWJ_29NdO6tG38qWzUt84fxcBz-EtnUWM5Jvwv8.mp4",
-    "poster": "stirred-caramel-latte.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo14",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOqif0IggotCMxdixLIrcWchlp27j7AKuSQv06QkqhChmn8nlOkarWTjUy6AyptqWJ_29NdO6tG38qWzUt84fxcBz-EtnUWM5Jvwv8.mp4"
   },
   {
     "asset": "citrus-iced-coffee",
     "source": "ProjectMaterials/ContentVideos/AQOw6t5UJFCzpYup-7IWsJMxaLSpq5TyqJZgs0j1tn19uTvvby78cpCRrS1gpn6kdR0jvQwDnEVBG6wA6EOIhAuFJG6o_O_Yz2xg-zs.mp4",
-    "poster": "citrus-iced-coffee.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo15",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQOw6t5UJFCzpYup-7IWsJMxaLSpq5TyqJZgs0j1tn19uTvvby78cpCRrS1gpn6kdR0jvQwDnEVBG6wA6EOIhAuFJG6o_O_Yz2xg-zs.mp4"
   },
   {
     "asset": "cappuccino-rosetta",
     "source": "ProjectMaterials/ContentVideos/AQPEW3XG-3JkaH4nOxbNUjK_0cSX27ZeJbE-ljzZlYFhBEve_5fA_OIufoo1ibXBOkRsnAT6F2VoYdkxpoB1f4Wtwa7J4MlPONUVuEo.mp4",
-    "poster": "cappuccino-rosetta.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo16",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQPEW3XG-3JkaH4nOxbNUjK_0cSX27ZeJbE-ljzZlYFhBEve_5fA_OIufoo1ibXBOkRsnAT6F2VoYdkxpoB1f4Wtwa7J4MlPONUVuEo.mp4"
   },
   {
     "asset": "spiral-dessert-coffee",
     "source": "ProjectMaterials/ContentVideos/AQPNx6nNtrKyg7fDwSu_Zyy8PSUZ8uhEhlhdgAJUkWZw9q16iy_UNQlZ3gyqGiK7mhuSSiyn8j9j1afUY8VT6WpzAAvON8b1LCMe93M.mp4",
-    "poster": "spiral-dessert-coffee.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo17",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQPNx6nNtrKyg7fDwSu_Zyy8PSUZ8uhEhlhdgAJUkWZw9q16iy_UNQlZ3gyqGiK7mhuSSiyn8j9j1afUY8VT6WpzAAvON8b1LCMe93M.mp4"
   },
   {
     "asset": "grinder-to-espresso",
     "source": "ProjectMaterials/ContentVideos/AQPSEOmv3K-cJOeVH5IvLdNtfqakg8JQGMaclioGZWxSY_d6C2Nhq8keAUqmBE0nBzOphHMUGNQ9nGeTcAczI3kxSX81Fffsg9_xupA.mp4",
-    "poster": "grinder-to-espresso.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo18",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQPSEOmv3K-cJOeVH5IvLdNtfqakg8JQGMaclioGZWxSY_d6C2Nhq8keAUqmBE0nBzOphHMUGNQ9nGeTcAczI3kxSX81Fffsg9_xupA.mp4"
   },
   {
     "asset": "iced-milk-rosetta",
     "source": "ProjectMaterials/ContentVideos/AQPcg4wtkJ1mamBqaWqrT2Iewrz-mDWOGEnPMOG5_XTx9syGLBkwfAM4RMx1np4Gk7zGV03W4bz8oFBOQJwa1cB2H0EvNOgA9FMmK8I.mp4",
-    "poster": "iced-milk-rosetta.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo19",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQPcg4wtkJ1mamBqaWqrT2Iewrz-mDWOGEnPMOG5_XTx9syGLBkwfAM4RMx1np4Gk7zGV03W4bz8oFBOQJwa1cB2H0EvNOgA9FMmK8I.mp4"
   },
   {
     "asset": "coffee-over-ice",
     "source": "ProjectMaterials/ContentVideos/AQPqC5T4ywHyMPomckZ0uFckxEXUNr4IT0EqQl9pzG4ONBUUzC-vs3VqvHKLQxHdc7KTDMohQyZ_Yr48UqarNDHSBv999JZP19ZpaNY.mp4",
-    "poster": "coffee-over-ice.jpg",
     "owner": "unassigned-editorial-preview",
     "kind": "film",
     "legacyAsset": "coffeeVideo20",
-    "bundled": true
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/vv/AQPqC5T4ywHyMPomckZ0uFckxEXUNr4IT0EqQl9pzG4ONBUUzC-vs3VqvHKLQxHdc7KTDMohQyZ_Yr48UqarNDHSBv999JZP19ZpaNY.mp4"
   },
   {
     "asset": "roomBackground",
@@ -790,5 +865,269 @@
     "source": "ProjectMaterials/UIAssets/BrewBench/brewDripper.png",
     "bundled": true,
     "origin": "Original built-in image generation; Image 2 Host-Native workflow"
+  },
+  {
+    "asset": "portrait-adrian-bell",
+    "source": "ProjectMaterials/ContentImages/836759866_18246204481313915_5450768172558231425_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/836759866_18246204481313915_5450768172558231425_n.jpg",
+    "owner": "collection-person-26"
+  },
+  {
+    "asset": "portrait-mila-hayes",
+    "source": "ProjectMaterials/ContentImages/837039650_17936607405381141_4843657821102816729_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/837039650_17936607405381141_4843657821102816729_n.jpg",
+    "owner": "collection-person-27"
+  },
+  {
+    "asset": "portrait-sora-kim",
+    "source": "ProjectMaterials/ContentImages/838362925_18478378603116502_4094375439820185520_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/838362925_18478378603116502_4094375439820185520_n.jpg",
+    "owner": "collection-person-28"
+  },
+  {
+    "asset": "portrait-elliot-lane",
+    "source": "ProjectMaterials/ContentImages/838851653_17915580165463956_8646273599053634246_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/838851653_17915580165463956_8646273599053634246_n.jpg",
+    "owner": "collection-person-29"
+  },
+  {
+    "asset": "portrait-felix-ward",
+    "source": "ProjectMaterials/ContentImages/839589735_18435631513194537_5962308028115092182_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/839589735_18435631513194537_5962308028115092182_n.jpg",
+    "owner": "collection-person-31"
+  },
+  {
+    "asset": "portrait-luca-moretti",
+    "source": "ProjectMaterials/ContentImages/839617909_18636140752036257_2098987833378784333_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/839617909_18636140752036257_2098987833378784333_n.jpg",
+    "owner": "collection-person-32"
+  },
+  {
+    "asset": "portrait-noah-laurent",
+    "source": "ProjectMaterials/ContentImages/840346667_18433655446180767_1370174977741391988_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/840346667_18433655446180767_1370174977741391988_n.jpg",
+    "owner": "collection-person-33"
+  },
+  {
+    "asset": "portrait-owen-brooks",
+    "source": "ProjectMaterials/ContentImages/841464706_18366723628268751_1043541057353877128_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/841464706_18366723628268751_1043541057353877128_n.jpg",
+    "owner": "collection-person-34"
+  },
+  {
+    "asset": "portrait-hugo-martin",
+    "source": "ProjectMaterials/ContentImages/843495067_17881633962628623_2588240699924030750_n.jpeg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/843495067_17881633962628623_2588240699924030750_n.jpeg",
+    "owner": "collection-person-35"
+  },
+  {
+    "asset": "portrait-lena-hart",
+    "source": "ProjectMaterials/ContentImages/843884094_17912958240541348_6657353171384554378_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/843884094_17912958240541348_6657353171384554378_n.jpg",
+    "owner": "collection-person-36"
+  },
+  {
+    "asset": "portrait-idris-cole",
+    "source": "ProjectMaterials/ContentImages/844321453_18060673460799617_7311462697784706363_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/844321453_18060673460799617_7311462697784706363_n.jpg",
+    "owner": "collection-person-37"
+  },
+  {
+    "asset": "portrait-nina-wells",
+    "source": "ProjectMaterials/ContentImages/845832708_18636696226058690_7728222674528347727_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/845832708_18636696226058690_7728222674528347727_n.jpg",
+    "owner": "collection-person-38"
+  },
+  {
+    "asset": "portrait-oscar-quinn",
+    "source": "ProjectMaterials/ContentImages/847859927_18337864615273096_1975416002277433834_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/847859927_18337864615273096_1975416002277433834_n.jpg",
+    "owner": "collection-person-39"
+  },
+  {
+    "asset": "portrait-dylan-frost",
+    "source": "ProjectMaterials/ContentImages/847939309_18497838286108045_8543151347112222288_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/847939309_18497838286108045_8543151347112222288_n.jpg",
+    "owner": "collection-person-40"
+  },
+  {
+    "asset": "portrait-jasper-reed",
+    "source": "ProjectMaterials/ContentImages/848196762_18596616184067882_5040749258115402944_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/848196762_18596616184067882_5040749258115402944_n.jpg",
+    "owner": "collection-person-41"
+  },
+  {
+    "asset": "portrait-finn-adler",
+    "source": "ProjectMaterials/ContentImages/849771840_18034819817889144_3925256592976004249_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/849771840_18034819817889144_3925256592976004249_n.jpg",
+    "owner": "collection-person-42"
+  },
+  {
+    "asset": "portrait-toby-shaw",
+    "source": "ProjectMaterials/ContentImages/849773106_18639750280008887_6117308489060789711_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/849773106_18639750280008887_6117308489060789711_n.jpg",
+    "owner": "collection-person-43"
+  },
+  {
+    "asset": "portrait-enzo-riva",
+    "source": "ProjectMaterials/ContentImages/849773200_17950482690315564_8876215987114569094_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/849773200_17950482690315564_8876215987114569094_n.jpg",
+    "owner": "collection-person-44"
+  },
+  {
+    "asset": "portrait-caleb-stone",
+    "source": "ProjectMaterials/ContentImages/849807710_18645009418024527_6642553109896532623_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/849807710_18645009418024527_6642553109896532623_n.jpg",
+    "owner": "collection-person-45"
+  },
+  {
+    "asset": "portrait-freya-moss",
+    "source": "ProjectMaterials/ContentImages/850999231_18073885979771277_7976746379773659398_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/850999231_18073885979771277_7976746379773659398_n.jpg",
+    "owner": "collection-person-46"
+  },
+  {
+    "asset": "portrait-iris-blake",
+    "source": "ProjectMaterials/ContentImages/851150069_18644948692026015_1961800893533170202_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/851150069_18644948692026015_1961800893533170202_n.jpg",
+    "owner": "collection-person-47"
+  },
+  {
+    "asset": "portrait-maeve-ellis",
+    "source": "ProjectMaterials/ContentImages/851189164_18640503070004015_7144487729461611309_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/851189164_18640503070004015_7144487729461611309_n.jpg",
+    "owner": "collection-person-48"
+  },
+  {
+    "asset": "portrait-simon-hale",
+    "source": "ProjectMaterials/ContentImages/851257175_18647269771035766_980929698285222742_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/851257175_18647269771035766_980929698285222742_n.jpg",
+    "owner": "collection-person-49"
+  },
+  {
+    "asset": "portrait-arlo-finch",
+    "source": "ProjectMaterials/ContentImages/851257192_18467968138141225_372909651516312439_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/851257192_18467968138141225_372909651516312439_n.jpg",
+    "owner": "collection-person-50"
+  },
+  {
+    "asset": "portrait-miles-rowan",
+    "source": "ProjectMaterials/ContentImages/851887662_17961934497248615_3061332579403452781_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/851887662_17961934497248615_3061332579403452781_n.jpg",
+    "owner": "collection-person-51"
+  },
+  {
+    "asset": "portrait-louis-mercer",
+    "source": "ProjectMaterials/ContentImages/852678974_18128356141847209_6461935358698939218_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/852678974_18128356141847209_6461935358698939218_n.jpg",
+    "owner": "collection-person-52"
+  },
+  {
+    "asset": "portrait-eva-silva",
+    "source": "ProjectMaterials/ContentImages/852679207_17928965442469300_6301715055087659119_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/852679207_17928965442469300_6301715055087659119_n.jpg",
+    "owner": "collection-person-53"
+  },
+  {
+    "asset": "portrait-chloe-bennett",
+    "source": "ProjectMaterials/ContentImages/855448264_18633957871002497_2718116683748157052_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/855448264_18633957871002497_2718116683748157052_n.jpg",
+    "owner": "collection-person-54"
+  },
+  {
+    "asset": "portrait-leon-west",
+    "source": "ProjectMaterials/ContentImages/856770597_18346890787254352_7789099904822071278_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/856770597_18346890787254352_7789099904822071278_n.jpg",
+    "owner": "collection-person-55"
+  },
+  {
+    "asset": "portrait-rory-vale",
+    "source": "ProjectMaterials/ContentImages/856840641_18021404207926682_1527601665521701068_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/856840641_18021404207926682_1527601665521701068_n.jpg",
+    "owner": "collection-person-56"
+  },
+  {
+    "asset": "portrait-asher-dean",
+    "source": "ProjectMaterials/ContentImages/857323413_18076577417729357_3356181006658220970_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/857323413_18076577417729357_3356181006658220970_n.jpg",
+    "owner": "collection-person-57"
+  },
+  {
+    "asset": "portrait-isla-hartley",
+    "source": "ProjectMaterials/ContentImages/858050115_18081701012720796_1141335178425589448_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/858050115_18081701012720796_1141335178425589448_n.jpg",
+    "owner": "collection-person-58"
+  },
+  {
+    "asset": "portrait-niko-wells",
+    "source": "ProjectMaterials/ContentImages/858159161_18637015324034456_7860982535270189554_n.jpg",
+    "bundled": false,
+    "delivery": "remote",
+    "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/858159161_18637015324034456_7860982535270189554_n.jpg",
+    "owner": "collection-person-59"
   }
 ]

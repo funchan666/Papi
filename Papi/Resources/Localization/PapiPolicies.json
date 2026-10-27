@@ -1,0 +1,217 @@
+{
+  "version": "2026-10-26",
+  "documents": [
+    {
+      "id": "terms",
+      "title": "Papi User Agreement",
+      "subtitle": "A few ground rules for your coffee book",
+      "updated": "26 October 2026",
+      "publishedURL": "https://docs.google.com/document/d/e/2PACX-1vQoWJi7C-CO9-OWqtetngX3xDZerh2viDCfC82GdLjbdsmmRO1XIx59c51M5FGf-rJ7YONmJ7Ph1mG7/pub",
+      "contactEmail": "",
+      "introduction": [
+        "This agreement applies to Papi, the coffee journal, brewing notebook and community preview app. Papi is provided by the developer identified in its App Store listing. Read this agreement and the Papi Privacy Policy before choosing to continue. By agreeing in the app, you accept these terms. If you do not agree, do not continue or make a purchase."
+      ],
+      "sections": [
+        {
+          "heading": "1. What this edition provides",
+          "paragraphs": [
+            "Papi lets you keep a coffee profile, choose photos and videos, save brewing and tasting notes, explore supplied coffee content and manage optional digital collections. Your guest account and personal records are stored on this device. One-tap entry creates or resumes a local identity; it does not authenticate an Apple ID or create an online community account.",
+            "The supplied profiles, rooms, comments and interaction counts are collection previews. They do not prove that a person is online, has followed you or has sent you a message. This edition has no connected community, messaging, live-call or moderation server. It does not upload your posts, deliver messages, send gifts to another person or submit reports to an operator.",
+            "Supplied collection photos, portraits and videos are loaded on demand from Papi’s fixed media catalog hosted on Cloudflare R2. Internet access is required when a file is not available in the device cache. A media download does not create a community connection or upload your own files."
+          ]
+        },
+        {
+          "heading": "2. Eligibility and your local account",
+          "paragraphs": [
+            "Use Papi only if you meet the age requirements shown for the app in your region and can legally accept these terms. Obtain a parent or guardian’s permission where required. Papi does not verify age or identity, and it is not designed as a service for children.",
+            "Keep your device secure and provide only information you are entitled to use. Do not impersonate anyone or misrepresent another person’s consent. Local guest accounts are device-bound; there is no password recovery or Papi cloud account recovery in this edition."
+          ]
+        },
+        {
+          "heading": "3. Your content and ownership",
+          "paragraphs": [
+            "You retain your rights in the text, photos, video, audio and brewing notes you create. You permit Papi to store, copy and display that content only as needed to operate the features you choose on your device. These terms do not grant an advertising licence or permission to sell your content.",
+            "Use only content you own or have permission to use. Respect copyright, trademarks, privacy and the consent of identifiable people. Papi’s software, name and supplied artwork remain protected by their owners’ rights. Your use is subject to the applicable App Store licence and these terms; do not redistribute protected app materials without permission."
+          ]
+        },
+        {
+          "heading": "4. Conduct at the coffee table",
+          "paragraphs": [
+            "Do not create, share or request unlawful content, threats, targeted harassment, hate, sexual exploitation, pornography, child abuse material, graphic violence, scams or content that promotes dangerous illegal conduct. Do not disclose another person’s private information or intimate media without consent. Avoid spam, impersonation and misleading promotions.",
+            "Do not pressure anyone for money or gifts, evade a block, manipulate relationships or use Papi for random or anonymous chat. Follow the Community Guidelines available in Settings. Limited on-device text screening does not replace your responsibility for what you enter."
+          ]
+        },
+        {
+          "heading": "5. Relationships, messages and camera preview",
+          "paragraphs": [
+            "Messaging and video-call actions require both people to have chosen to follow each other. Friend requests require the other person’s acceptance. A profile preview cannot grant consent, and Papi does not automatically create a mutual follow. You may withdraw a follow or block a profile.",
+            "In this edition, a saved message remains in a local outbox waiting for a connection; it is not delivered to another person. Camera preview uses your device camera after permission and does not mean a call has connected. Voice recordings and selected chat media are saved locally. Messaging, chat media, following, friendship requests and video-call actions never consume coins."
+          ]
+        },
+        {
+          "heading": "6. Post submissions and review",
+          "paragraphs": [
+            "Saving a photo or video submission creates a private entry awaiting review. It does not immediately appear as a public post. There is no connected submission or moderation service in this edition, no automatic approval and no guaranteed review time. A local confirmation means the entry was saved on your device, not received by a reviewer.",
+            "The coin confirmation describes the local saving action before you proceed. Spending coins does not purchase approval, reach or an endorsement. If the local save fails, Papi must not treat the submission as successfully saved."
+          ]
+        },
+        {
+          "heading": "7. Coins and Apple purchases",
+          "paragraphs": [
+            "Coins are optional digital units for the purposes listed below. Eligible new local guests receive 800 welcome coins once; ordinary login does not repeat the grant. Available check-in rewards are shown in the app. Coins have no cash value, cannot be transferred or exchanged for money and have no scheduled expiry.",
+            "Paid coin packs are consumable in-app purchases handled by Apple. Papi requests the selected product when you tap Buy. The genuine Apple payment sheet shows the final currency and price; any reference amount shown beforehand is not a separate payment offer. A purchase requires a product available for this app and your Apple account. There is no recurring subscription for these packs.",
+            "Coins are credited only after a verified Apple transaction is recorded for its original local guest. Pending, cancelled or unverified transactions do not grant coins. Transaction identifiers prevent repeat credit and record applicable reversals. Do not repurchase merely because a transaction is pending; use the available recovery action. If a purchase is refunded or revoked, its original credited amount may be reversed.",
+            "Consumable purchases already delivered are not a cloud backup of your guest or media. They cannot be reassigned to a new guest after deletion. Apple’s refund process and any mandatory consumer rights continue to apply. You can review purchases or request an eligible refund through Apple at https://reportaproblem.apple.com/."
+          ]
+        },
+        {
+          "heading": "8. Where coins can be used",
+          "paragraphs": [
+            "A private photo submission costs 40 coins and a private video submission costs 80 coins. Optional brewing recipes unlock once for 120, 180 or 240 coins, as displayed before confirmation. Two starting recipes are included. Reusing an unlocked recipe, recording a brew and comparing two cups are free.",
+            "Optional backpack collectibles cost the amount shown for the selected item and quantity before confirmation. Previewing a collectible and displaying an owned item are free. These are local digital collections, not a transfer to a recipient. The app asks before spending and directs you to recharge if the balance is insufficient.",
+            "You can decline a purchase or coin expense and continue to use the free features. Chat, voice messages, chat photos, friendship and video-call actions are always free. Changes to future coin offers or costs do not retroactively change a completed transaction."
+          ]
+        },
+        {
+          "heading": "9. Brewing and tasting guidance",
+          "paragraphs": [
+            "Recipes, timers and flavour descriptions support personal coffee preparation. They do not measure your equipment, guarantee a result or provide medical or nutritional advice. Tasting scores reflect your own impressions. Use suitable equipment, handle hot water carefully and follow its manufacturer’s instructions."
+          ]
+        },
+        {
+          "heading": "10. Reports, blocks and local controls",
+          "paragraphs": [
+            "The safety menu lets you choose a report reason and save a report linked to a profile or item. Reporting hides the item locally. Blocking hides that profile’s posts, comments, rooms and chat entries on this device. You can manage blocks in Settings. Unblocking does not recreate a follow, friendship or previously hidden report item.",
+            "Reports are local records in this edition; they do not notify an operator, law enforcement or another user. These controls are not an emergency response service or a promise of remote enforcement. A future online community would require an actual report-handling and moderation service before sharing could be enabled."
+          ]
+        },
+        {
+          "heading": "11. Logout, deletion and continuity",
+          "paragraphs": [
+            "Logging out keeps your local guest, messages, drafts, balance, purchase records and other saved data so you can resume the same guest. Deleting the local guest removes its usable profile, content, drafts, media, notes, collections and balance. Deletion completes only after the device storage operation succeeds.",
+            "Minimal retired-guest and transaction-ownership records remain to prevent an old purchase being credited to another guest or counted twice. Deletion does not cancel a pending Apple purchase, erase Apple’s records or automatically issue a refund. Check unfinished purchases before deleting.",
+            "There is no Papi cross-device sync. Uninstalling can remove app media even if an iOS Keychain record remains. Device loss, reset or storage failure can make local information unavailable; do not rely on Papi as the only copy of important media."
+          ]
+        },
+        {
+          "heading": "12. Availability and your rights",
+          "paragraphs": [
+            "Features depend on device permissions, available storage, iOS and, for supplied media, purchases and online policy pages, network access and the relevant hosting service. We do not promise uninterrupted availability, a brewing outcome, remote delivery or recovery of device-only records.",
+            "Use reasonable care to protect your device and data. Nothing in this agreement excludes rights or remedies that cannot lawfully be excluded, limits liability where prohibited, or replaces Apple’s applicable purchase terms. We do not select a jurisdiction or waive mandatory consumer protections through this agreement."
+          ]
+        },
+        {
+          "heading": "13. Changes to the app and these terms",
+          "paragraphs": [
+            "The date above identifies this version. Material changes to features, data handling or these terms will be described in the app or an updated policy before they apply where notice or consent is required. A future online service is not authorised simply by accepting this local edition’s terms. You may stop using Papi and use the local deletion controls if you do not accept a change."
+          ]
+        },
+        {
+          "heading": "14. Contact",
+          "paragraphs": [
+            "Contact email:"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "privacy",
+      "title": "Papi Privacy Policy",
+      "subtitle": "How your coffee book handles information",
+      "updated": "26 October 2026",
+      "publishedURL": "https://docs.google.com/document/d/e/2PACX-1vTE64ZsiJbXRE47OlspklgrzvUkIqo0CuswoHkkzsm4pe3nbcOFPmrQszIk0Z2-rbNYDVR-LU5tJJ3f/pub",
+      "contactEmail": "",
+      "introduction": [
+        "This policy explains the current Papi app’s information handling. Papi is provided by the developer identified in its App Store listing. The app uses a local guest account and device storage. It has no connected community, messaging, live-call, analytics or advertising service. Supplied media, Apple purchases and the public policy pages use the external services described below."
+      ],
+      "sections": [
+        {
+          "heading": "1. Information you keep in Papi",
+          "paragraphs": [
+            "Papi generates a local guest identifier and stores the profile name, bio, avatar, cover and preferences you choose; your policy acceptance; selected photos and videos; journal entries and private review submissions; likes, bookmarks and local comments; follows and relationship-request records; message drafts, local outbox items and saved audio; reports, hidden items and blocks; brewing recipes, timers, brew records and tasting notes; and your coin balance, rewards, collection and purchase ledger.",
+            "You choose which optional information and media to add. Supplied collection profiles, photos, sample comments and counts are app content, not evidence that another person has interacted with you. Papi does not request your contacts, precise location or advertising tracking permission."
+          ]
+        },
+        {
+          "heading": "2. Why that information is used",
+          "paragraphs": [
+            "The app uses these device records to display your coffee book, resume drafts, retain your settings, check relationship consent, hide unwanted items, prevent repeat rewards and coin charges, unlock selected features and reconcile verified purchases. It records which policy version you accepted.",
+            "The current app does not upload your profile, media, messages, reports or brewing notes to Papi’s operator or another user. It has no advertising or behavioural analytics SDK and does not sell personal information or use it for targeted advertising. This does not prevent Apple or Google from processing information when you use their services."
+          ]
+        },
+        {
+          "heading": "3. Photos, camera and microphone",
+          "paragraphs": [
+            "The system photo picker shares the media you select. Papi copies selected media into its private storage so a saved draft is not dependent on a temporary picker file. A media file may retain information embedded in that file by its creator; do not select a file containing details you do not want stored in the app.",
+            "Camera access is requested when you choose capture or camera preview. Microphone access is requested for an action that uses audio, such as a voice recording or the audio-enabled video flow. A camera-only preview does not require audio. You may decline permission or change it in iOS Settings; the relevant feature will be unavailable.",
+            "Live camera preview is not recorded or transmitted to another person. A recording you explicitly choose to make is stored locally. Leaving or stopping preview ends the capture session. Selected chat media and voice drafts do not become remotely delivered messages in this edition."
+          ]
+        },
+        {
+          "heading": "4. Apple payments and purchase records",
+          "paragraphs": [
+            "When you tap Buy, Apple receives a request for that selected product and handles purchase authorisation and payment. Papi does not receive your card number or Apple account password. Apple processes the purchase under its own terms and privacy policy.",
+            "Papi keeps product and transaction identifiers, the purchase’s original local guest association and account token, the agreed coin amount, verification or pending status, and applicable refund or revocation information. These records deliver the correct balance, recover unfinished transactions and prevent repeat credit or reassignment. The app does not send your journal, chat or report content to Apple as part of a purchase.",
+            "For Apple’s privacy information, see https://www.apple.com/legal/privacy/."
+          ]
+        },
+        {
+          "heading": "5. Reports, blocks and review submissions",
+          "paragraphs": [
+            "Reports include the selected reason and the relevant item, author or context identifiers and excerpt. They are saved on this device, then used to hide the reported content. Blocks are saved locally and filter the blocked profile’s content and conversations. Unblocking changes that local filter; it does not recreate relationships or remove a separate report.",
+            "The app performs limited on-device text screening before certain content actions. Private post submissions remain on this device awaiting a real review service. No report or review submission is sent to a moderation team in this edition, and no automated moderator response is created."
+          ]
+        },
+        {
+          "heading": "6. Public policies and supplied media",
+          "paragraphs": [
+            "The app opens the same published Google Docs policy pages from login and Settings. Loading a page connects to Google, which can receive connection information such as your IP address, browser or device information and page requests, and may use cookies under its own policy. Papi does not add your guest identifier, journal or transaction data to the policy URL.",
+            "The in-app reader uses a non-persistent website data store. If you choose to open a page or an external link in your browser, that browser’s sign-in, cookies and privacy settings apply. Google’s policy is available at https://policies.google.com/privacy. Other external sites you choose to visit handle information under their own policies.",
+            "Supplied collection images, portraits and videos are requested from Papi’s fixed media catalog hosted on Cloudflare R2. The host receives the connection IP address, requested file path, timing and technical request information, including video byte-range requests. Papi does not append your guest identifier, purchase record or private content to those URLs. This is content delivery, not an upload of your photos, microphone or camera. Cloudflare describes its processing at https://www.cloudflare.com/privacypolicy/."
+          ]
+        },
+        {
+          "heading": "7. Where information is stored",
+          "paragraphs": [
+            "The local account snapshot is stored in the iOS Keychain, and imported media is kept in the app’s private Application Support storage. Keychain access uses device-bound protection after the device’s first unlock. These safeguards reduce unauthorised access but cannot guarantee absolute security. Protect your device passcode and keep iOS current.",
+            "Papi does not operate a cloud backup or cross-device sync for these records. iOS backup or recovery behaviour depends on Apple, the storage type and your settings. Apple and Google may process their service information in the locations described by their own policies; Papi does not assign a storage country for their services.",
+            "Public collection image responses may be cached on the device, and generated video thumbnails are held in a bounded memory cache. iOS can also buffer video playback. These caches support reading and playback; they are not cloud backups of your own media and do not synchronise your guest account."
+          ]
+        },
+        {
+          "heading": "8. Retention, logout and deletion",
+          "paragraphs": [
+            "The app keeps your local records while that guest remains in use. Logging out retains the guest and its data for a later login. Deleting the local guest removes the usable profile, content, drafts, media, notes, collections and balance once local deletion succeeds.",
+            "Minimal retired-guest and original transaction-ownership or deduplication identifiers remain on the device to prevent an old purchase being credited to a new guest or credited twice. They are not a usable chat history, profile or restored coin balance. Apple retains its own purchase information under its policies.",
+            "Uninstalling may remove app files while Keychain records remain; it is not a guaranteed way to erase every record or recover your media. Use the in-app deletion control before uninstalling when you want to remove the usable local guest. Device reset, loss or storage failure may also remove access to local records."
+          ]
+        },
+        {
+          "heading": "9. Your choices and privacy rights",
+          "paragraphs": [
+            "You can edit your profile, choose what to record, stop camera or microphone use, manage blocks and use the local guest deletion control. Change camera and microphone permission in iOS Settings. Declining optional media permissions does not prevent reading supplied coffee content or using features that do not need them.",
+            "Depending on applicable law, you may have rights to access, correct, delete or restrict processing of personal information or to complain to a competent privacy authority. Papi’s operator cannot retrieve device-only records through a remote account. Apple and Google provide their own controls for information processed by their services. Nothing here limits rights provided by law."
+          ]
+        },
+        {
+          "heading": "10. Children and sensitive information",
+          "paragraphs": [
+            "Papi is not designed for children. Follow the app’s regional age rating and obtain guardian permission where required. The app does not verify age. Avoid entering sensitive information that is unnecessary for a coffee journal, and do not include another person’s private information without permission."
+          ]
+        },
+        {
+          "heading": "11. Changes to this policy",
+          "paragraphs": [
+            "The date above identifies this policy version. If Papi adds an online service, new data collection or a new purpose, the operator must update the policy and provide notice or obtain consent where required before that change applies. This policy does not silently authorise future uploading of local content."
+          ]
+        },
+        {
+          "heading": "12. Contact",
+          "paragraphs": [
+            "Contact email:"
+          ]
+        }
+      ]
+    }
+  ]
+}

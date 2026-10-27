@@ -43,7 +43,11 @@
     "coffeeVideo17": "spiral-dessert-coffee",
     "coffeeVideo18": "grinder-to-espresso",
     "coffeeVideo19": "iced-milk-rosetta",
-    "coffeeVideo20": "coffee-over-ice"
+    "coffeeVideo20": "coffee-over-ice",
+    "coffeeVideo02": "cafe-company-portrait",
+    "coffeeVideo03": "window-seat-journey",
+    "coffeeVideo10": "evening-city-company",
+    "coffeeVideo12": "city-cafe-walk"
   },
   "photographs": {
     "0": "corner-latte",
@@ -93,6 +97,10 @@
     "17": "spiral-dessert-coffee",
     "18": "grinder-to-espresso",
     "19": "iced-milk-rosetta",
-    "20": "coffee-over-ice"
+    "20": "coffee-over-ice",
+    "2": "cafe-company-portrait",
+    "3": "window-seat-journey",
+    "10": "evening-city-company",
+    "12": "city-cafe-walk"
   }
 }
