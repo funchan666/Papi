@@ -247,7 +247,7 @@ struct CoffeeModal<Content:View>:View {
     var maximumWidth:CGFloat=360
     var maximumHeight:CGFloat=460
     var shade:Color=Color.black.opacity(0.48)
-    var artwork:String?="dialogBackground"
+    var artwork:String?=nil
     @ViewBuilder var content:()->Content
     @Environment(\.papiRegions) private var regions
     @EnvironmentObject private var router:CoffeeNavigation
@@ -268,7 +268,8 @@ struct CoffeeModal<Content:View>:View {
                             if let artwork {PapiArtworkFill(asset:artwork)} else {Color.cream}
                         }
                 }.frame(width:width,height:min(height,contentHeight>0 ? contentHeight:height))
-                    .clipShape(RoundedRectangle(cornerRadius:22)).position(x:rect.midX,y:rect.midY)
+                    .clipShape(RoundedRectangle(cornerRadius:24))
+                    .shadow(color:Color.coffee.opacity(0.22),radius:18,x:0,y:10).position(x:rect.midX,y:rect.midY)
             }.foregroundStyle(Color.coffee)
         }.onPreferenceChange(CoffeeModalHeightKey.self){if abs(contentHeight-$0)>0.5 {contentHeight=$0}}
             .onAppear {
@@ -287,13 +288,20 @@ struct PapiDialog: View {
     var dismiss:()->Void
     @State private var resolving=false
     var body:some View {
-        CoffeeModal {
-            VStack(spacing:20) {
-                PapiText(title).font(CoffeeType.face(.title3,weight:.bold)).multilineTextAlignment(.center)
-                PapiText(message).font(CoffeeType.face(.body)).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
-                PapiTextButton(confirm){resolve(action)}.buttonStyle(PapiButtonStyle(wide:true)).disabled(resolving)
-                if let cancel {PapiTextButton(cancel){resolve(dismiss)}.buttonStyle(PapiButtonStyle(light:true,wide:true)).disabled(resolving)}
-            }
+        CoffeeModal(maximumWidth:370,maximumHeight:560,shade:Color.coffee.opacity(0.62)) {
+            VStack(alignment:.leading,spacing:18) {
+                HStack(alignment:.center,spacing:12) {
+                    PapiText(title).font(CoffeeType.display(.title2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                        .frame(maxWidth:.infinity,alignment:.leading)
+                    PapiArtworkFit(asset:"dialogCoffeeArt").frame(width:72,height:72)
+                }
+                PapiText(message).font(CoffeeType.face(.body)).foregroundStyle(Color.mutedCoffee)
+                    .fixedSize(horizontal:false,vertical:true)
+                VStack(spacing:8) {
+                    PapiTextButton(confirm){resolve(action)}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:15)).disabled(resolving)
+                    if let cancel {PapiTextButton(cancel){resolve(dismiss)}.buttonStyle(PapiButtonStyle(light:true,wide:true,cornerRadius:15)).disabled(resolving)}
+                }.padding(.top,2)
+            }.frame(maxWidth:.infinity,alignment:.leading)
         }
     }
     private func resolve(_ choice:()->Void) {

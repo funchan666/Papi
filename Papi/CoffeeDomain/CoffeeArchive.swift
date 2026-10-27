@@ -73,6 +73,11 @@ struct CoffeeTable: Identifiable, Hashable {
     let image: String
     let hostMemberID: String
 }
+struct TableNoteEntry:Identifiable,Codable {
+    var id=UUID().uuidString
+    let text:String
+    var createdAt=Date()
+}
 struct GiftPreview: Identifiable, Codable {
     var id = UUID().uuidString
     var giftID: String
@@ -145,6 +150,8 @@ struct CoffeeArchive: Codable {
     var letterPhotos: [String: String] = [:]
     var letterVoiceNotes: [String: String] = [:]
     var tableNotes: [String: String] = [:]
+    // Optional so existing account snapshots remain readable.
+    var tableNoteHistory: [String:[TableNoteEntry]]? = nil
     var recentRooms: [String] = []
     var coinBalance = 0
     var collectiblesOwned: [String: Int] = [:]
@@ -190,6 +197,7 @@ struct CoffeeArchive: Codable {
         case letterPhotos = "chatAttachments"
         case letterVoiceNotes = "voiceDrafts"
         case tableNotes = "roomDrafts"
+        case tableNoteHistory = "tableNoteHistory"
         case recentRooms = "recentRooms"
         case coinBalance = "coins"
         case collectiblesOwned = "inventory"

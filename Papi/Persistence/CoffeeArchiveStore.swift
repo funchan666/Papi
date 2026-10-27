@@ -199,6 +199,17 @@ struct CoffeeReceipt: Identifiable {
             inform("Gift idea saved", "\(gift.name) × \(quantity). No recipient is connected; no coins or inventory were spent. You can collect this gift for your backpack.")
         }
     }
+    @discardableResult func keepTableNote(_ room:CoffeeTable)->Bool {
+        guard state.signedIn,isRoomVisible(room) else{return false}
+        let note=(state.tableNotes[room.id] ?? "").trimmingCharacters(in:.whitespacesAndNewlines)
+        guard !note.isEmpty,note.count<=2000,validateCommunityText(note) else{return false}
+        return commit {archive in
+            var history=archive.tableNoteHistory ?? [:]
+            history[room.id,default:[]].append(.init(text:note))
+            archive.tableNoteHistory=history
+            archive.tableNotes.removeValue(forKey:room.id)
+        }
+    }
     @discardableResult func enter(_ room: CoffeeTable)->Bool {
         guard isRoomVisible(room) else { return false }
         if commit({ $0.recentRooms.removeAll {$0 == room.id}; $0.recentRooms.insert(room.id,at:0) }) { activeRoomID = room.id;return true }

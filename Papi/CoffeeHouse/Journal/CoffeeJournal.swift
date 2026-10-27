@@ -259,15 +259,16 @@ struct CoffeeMomentComposer:View {
                             if store.state.momentDraft.isVideo {CoffeePlayerView(media:media).frame(height:260)}
                             else {PapiImage(name:media).frame(height:260).clipped().clipShape(RoundedRectangle(cornerRadius:18))}
                         }
+                        let hasDraftMedia=store.state.momentDraft.media != nil
                         PhotosPicker(selection:$item,matching:.any(of:[.images,.videos]),photoLibrary:.shared()) {
                             HStack(spacing:16) {
-                                if store.state.momentDraft.media==nil {
+                                if !hasDraftMedia {
                                     PapiArtworkFit(asset:"momentComposeArt").frame(width:typeSize.isAccessibilitySize || (bounds.width>0 && bounds.width<330) ? 72:100,height:typeSize.isAccessibilitySize || (bounds.width>0 && bounds.width<330) ? 72:100)
                                 }
                                 VStack(alignment:.leading,spacing:6) {
-                                    PapiText(importing ? "Importing…":(store.state.momentDraft.media==nil ? "Add pictures or videos…":"Choose a different photo or video"))
+                                    PapiText(importing ? "Importing…":(!hasDraftMedia ? "Add pictures or videos…":"Choose a different photo or video"))
                                         .font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true)
-                                    if store.state.momentDraft.media==nil {
+                                    if !hasDraftMedia {
                                         PapiText("A coffee moment").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                                     }
                                 }.frame(maxWidth:.infinity,alignment:.leading)

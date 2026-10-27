@@ -5969,5 +5969,117 @@
     "ar": "حسابك",
     "vi": "Tài khoản của bạn",
     "ko": "내 계정"
+  },
+  "Only you can see these notes": {
+    "es": "Solo tú puedes ver estas notas",
+    "th": "มีเพียงคุณที่เห็นบันทึกเหล่านี้",
+    "ar": "هذه الملاحظات ظاهرة لك وحدك",
+    "vi": "Chỉ bạn có thể xem các ghi chú này",
+    "ko": "이 메모는 나만 볼 수 있습니다"
+  },
+  "No notes yet": {
+    "es": "Aún no hay notas",
+    "th": "ยังไม่มีบันทึก",
+    "ar": "لا توجد ملاحظات بعد",
+    "vi": "Chưa có ghi chú",
+    "ko": "아직 메모가 없습니다"
+  },
+  "Private note": {
+    "es": "Nota privada",
+    "th": "บันทึกส่วนตัว",
+    "ar": "ملاحظة خاصة",
+    "vi": "Ghi chú riêng tư",
+    "ko": "비공개 메모"
+  },
+  "Gift idea · Not sent": {
+    "es": "Idea de regalo · Sin enviar",
+    "th": "ไอเดียของขวัญ · ยังไม่ส่ง",
+    "ar": "فكرة هدية · لم تُرسل",
+    "vi": "Ý tưởng quà tặng · Chưa gửi",
+    "ko": "선물 아이디어 · 미전송"
+  },
+  "Demo room": {
+    "es": "Sala de demostración",
+    "th": "ห้องตัวอย่าง",
+    "ar": "غرفة تجريبية",
+    "vi": "Phòng trải nghiệm",
+    "ko": "체험 룸"
+  },
+  "Demo": {
+    "es": "Demostración",
+    "th": "ตัวอย่าง",
+    "ar": "تجريبي",
+    "vi": "Trải nghiệm",
+    "ko": "체험"
+  },
+  "Sample participants": {
+    "es": "Participantes de muestra",
+    "th": "ผู้ร่วมวงตัวอย่าง",
+    "ar": "مشاركون تجريبيون",
+    "vi": "Người tham gia mẫu",
+    "ko": "체험 참가자"
+  },
+  "Play sample voice": {
+    "es": "Escuchar voz de muestra",
+    "th": "ฟังเสียงตัวอย่าง",
+    "ar": "تشغيل صوت تجريبي",
+    "vi": "Nghe giọng mẫu",
+    "ko": "샘플 음성 듣기"
+  },
+  "Synthetic sample voice": {
+    "es": "Voz de muestra sintetizada",
+    "th": "เสียงตัวอย่างสังเคราะห์",
+    "ar": "صوت تجريبي اصطناعي",
+    "vi": "Giọng mẫu tổng hợp",
+    "ko": "합성 샘플 음성"
+  },
+  "Demo gift": {
+    "es": "Regalo de muestra",
+    "th": "ของขวัญตัวอย่าง",
+    "ar": "هدية تجريبية",
+    "vi": "Quà mẫu",
+    "ko": "체험 선물"
+  },
+  "Demo rooms · Sample voices, messages and gifts": {
+    "es": "Salas de demostración · Voces, mensajes y regalos de muestra",
+    "th": "ห้องตัวอย่าง · เสียง ข้อความ และของขวัญตัวอย่าง",
+    "ar": "غرف تجريبية · أصوات ورسائل وهدايا نموذجية",
+    "vi": "Phòng trải nghiệm · Giọng nói, tin nhắn và quà mẫu",
+    "ko": "체험 룸 · 샘플 음성, 메시지와 선물"
+  },
+  "Welcome to the coffee table. What are you brewing today?": {
+    "es": "Bienvenidos a la mesa de café. ¿Qué estás preparando hoy?",
+    "th": "ยินดีต้อนรับสู่โต๊ะกาแฟ วันนี้คุณชงอะไรอยู่",
+    "ar": "أهلاً بكم حول طاولة القهوة. ماذا تحضرون اليوم؟",
+    "vi": "Chào mừng đến bàn cà phê. Hôm nay bạn pha gì?",
+    "ko": "커피 테이블에 오신 것을 환영해요. 오늘은 어떤 커피를 내리나요?"
+  },
+  "That first sip is always the best.": {
+    "es": "El primer sorbo siempre es el mejor.",
+    "th": "จิบแรกอร่อยที่สุดเสมอ",
+    "ar": "الرشفة الأولى دائماً هي الأفضل.",
+    "vi": "Ngụm đầu tiên luôn tuyệt nhất.",
+    "ko": "첫 모금이 언제나 최고예요."
+  },
+  "What beans are in your cup today?": {
+    "es": "¿Qué granos hay en tu taza hoy?",
+    "th": "วันนี้คุณใช้เมล็ดกาแฟอะไร",
+    "ar": "ما نوع حبوب القهوة في كوبك اليوم؟",
+    "vi": "Hôm nay bạn dùng hạt cà phê gì?",
+    "ko": "오늘은 어떤 원두로 내렸나요?"
+  },
+  "I love a slow morning brew.": {
+    "es": "Me encanta preparar café sin prisa por la mañana.",
+    "th": "ชอบชงกาแฟสบาย ๆ ในตอนเช้า",
+    "ar": "أحب تحضير القهوة على مهل في الصباح.",
+    "vi": "Mình thích pha cà phê thong thả vào buổi sáng.",
+    "ko": "여유롭게 내리는 아침 커피가 좋아요."
+  },
+  "A little gift for the table · Demo": {
+    "es": "Un pequeño regalo para la mesa · Demostración",
+    "th": "ของขวัญเล็ก ๆ สำหรับโต๊ะกาแฟ · ตัวอย่าง",
+    "ar": "هدية صغيرة للطاولة · تجريبي",
+    "vi": "Một món quà nhỏ cho bàn cà phê · Trải nghiệm",
+    "ko": "커피 테이블을 위한 작은 선물 · 체험"
   }
 }

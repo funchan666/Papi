@@ -6,7 +6,7 @@
     "tree-sitter-swift": "0.7.4"
   },
   "fileCount": 30,
-  "lineCount": 5442,
+  "lineCount": 5684,
   "inMemoryGrammarNormalisations": [
     {
       "file": "Papi/Appearance/DisplayContinuity.swift",
@@ -16,7 +16,7 @@
     },
     {
       "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
-      "line": 387,
+      "line": 388,
       "original": "scale*$0",
       "reason": "Parser grammar ambiguity; equivalent spaces in memory only."
     }
@@ -40,7 +40,7 @@
     },
     {
       "file": "Papi/Appearance/CoffeePalette.swift",
-      "lines": 315,
+      "lines": 323,
       "syntaxTreeComplete": true
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "file": "Papi/CoffeeDomain/CoffeeArchive.swift",
-      "lines": 371,
+      "lines": 379,
       "syntaxTreeComplete": true
     },
     {
@@ -100,12 +100,12 @@
     },
     {
       "file": "Papi/CoffeeHouse/Counter/CoffeeCounter.swift",
-      "lines": 313,
+      "lines": 351,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
-      "lines": 397,
+      "lines": 398,
       "syntaxTreeComplete": true
     },
     {
@@ -115,7 +115,7 @@
     },
     {
       "file": "Papi/CoffeeHouse/Tables/CoffeeTables.swift",
-      "lines": 294,
+      "lines": 470,
       "syntaxTreeComplete": true
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "file": "Papi/Persistence/CoffeeArchiveStore.swift",
-      "lines": 218,
+      "lines": 229,
       "syntaxTreeComplete": true
     },
     {

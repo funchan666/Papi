@@ -1,4 +1,22 @@
 import SwiftUI
+import AVFoundation
+
+private struct TableDemoEvent:Identifiable {
+    let id=UUID()
+    let memberID:String
+    let message:String
+    let giftAsset:String?
+}
+@MainActor private final class TableSampleVoice:ObservableObject {
+    private let speaker=AVSpeechSynthesizer()
+    func play(_ text:String,language:String) {
+        speaker.stopSpeaking(at:.immediate)
+        let utterance=AVSpeechUtterance(string:text)
+        utterance.voice=AVSpeechSynthesisVoice(language:language)
+        speaker.speak(utterance)
+    }
+    func stop() {speaker.stopSpeaking(at:.immediate)}
+}
 
 struct CoffeeTablesView:View {
     @EnvironmentObject private var store:CoffeeHouse
@@ -43,7 +61,7 @@ struct CoffeeTablesView:View {
                             }.padding(5).background(Color.white.opacity(0.88),in:RoundedRectangle(cornerRadius:19))
                             HStack(spacing:8) {
                                 PapiArtworkFit(asset:"audioTableMark").frame(width:32,height:32)
-                                PapiText("Live audio and room messaging are unavailable.").font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
+                                PapiText("Demo rooms · Sample voices, messages and gifts").font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
                             }.foregroundStyle(Color.mutedCoffee).frame(maxWidth:.infinity,alignment:.leading)
                             if let id=store.activeRoomID,let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {
                                 Button {router.go(.room(id))} label:{HStack {Image("voiceOn").resizable().scaledToFit().frame(width:26,height:26);PapiText("Return to \(room.title)");Spacer();PapiText("Open")}.padding(12).background(Color.butter,in:RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)
@@ -74,7 +92,7 @@ struct CoffeeTablesView:View {
                     VStack(alignment:.leading,spacing:5) {
                         PapiText(room.title).font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true)
                         PapiText(room.category).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
-                        PapiText("No live session").font(CoffeeType.face(.caption2,weight:.medium)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                        PapiText("Demo room").font(CoffeeType.face(.caption2,weight:.medium)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                     }.padding(12).frame(maxWidth:.infinity,alignment:.leading)
                 }.contentShape(Rectangle())
             }.buttonStyle(.plain)
@@ -100,7 +118,23 @@ struct CoffeeTableView:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.scenePhase) private var phase
+    @StateObject private var sampleVoice=TableSampleVoice()
     @State private var leave=false
+    @State private var noteAnnouncement:TableNoteEntry?
+    @State private var giftAnnouncement:GiftPreview?
+    @State private var observedGiftID:String?
+    @State private var giftTrackingReady=false
+    @State private var demoEvents:[TableDemoEvent]=[]
+    @State private var demoIndex=0
+    @State private var demoGiftAnnouncement:TableDemoEvent?
+    private var demoMembers:[CoffeeMember] {
+        let available=CoffeeMember.portraits.filter{!store.isUserHidden($0.id) && $0.id != room.hostMemberID}
+        guard !available.isEmpty else{return []}
+        let offset=(CoffeeTable.previews.firstIndex(where:{$0.id==room.id}) ?? 0)%available.count
+        return Array((Array(available[offset...])+Array(available[..<offset])).prefix(3))
+    }
     private var draft:Binding<String> {Binding(get:{store.state.tableNotes[room.id] ?? ""},set:{new in _ = store.commit{$0.tableNotes[room.id]=String(new.prefix(2000))}})}
     var body:some View {
         PapiScreen(background:"roomBackground") {
@@ -111,39 +145,55 @@ struct CoffeeTableView:View {
                     }.buttonStyle(.plain)
                     Spacer(minLength:0)
                     PapiIconButton(asset:"moreLight",label:"Report room") {router.sheet = .safety(.init(kind:.room,contentReference:room.id,authorID:room.hostMemberID))}
-                    PapiIconButton(asset:"close",label:"Leave room") {leave=true}
+                    PapiIconButton(asset:"close",label:"Leave room") {sampleVoice.stop();leave=true}
                 }.padding(.horizontal,16).padding(.vertical,8).foregroundStyle(.white).papiAvoidReserved()
+                ScrollViewReader {reader in
                 ScrollView {
                     VStack(alignment:.leading,spacing:18) {
-                        VStack(alignment:.leading,spacing:0) {
-                            ZStack(alignment:.bottomLeading) {
-                                PapiArtworkFill(asset:room.image).frame(height:180).clipped()
-                                HStack(spacing:7) {
-                                    PapiArtworkFit(asset:"audioTableMark").frame(width:34,height:34)
-                                    PapiText("No live session").font(CoffeeType.face(.caption,weight:.bold))
-                                }.padding(.horizontal,10).padding(.vertical,5).background(Color.cream.opacity(0.96),in:Capsule()).padding(14)
+                        VStack(spacing:12) {
+                            HStack {
+                                HStack(spacing:6) {
+                                    PapiArtworkFit(asset:"audioTableMark").frame(width:24,height:24)
+                                    PapiText("Demo room").font(CoffeeType.face(.caption,weight:.bold))
+                                }.foregroundStyle(Color.coffee).padding(.horizontal,10).padding(.vertical,5).background(Color.cream.opacity(0.96),in:Capsule())
+                                Spacer(minLength:0)
                             }
-                            VStack(alignment:.leading,spacing:14) {
-                                PapiText(room.title).font(CoffeeType.display(.title2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
-                                PapiText(room.category).font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.mutedCoffee)
-                                if let portrait=store.person(room.hostMemberID),!store.isUserHidden(portrait.id) {
-                                    Button {router.go(.person(portrait.id))} label:{
-                                        HStack(spacing:10) {
-                                            Avatar(name:portrait.portrait,size:52)
-                                            VStack(alignment:.leading,spacing:4) {
-                                                PapiText(verbatim:portrait.name).font(CoffeeType.face(.headline))
-                                                PapiText("Coffee portrait").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                                            }.frame(maxWidth:.infinity,alignment:.leading)
-                                        }.frame(minHeight:52).contentShape(Rectangle())
-                                    }.buttonStyle(.plain)
-                                }
-                                PapiText("Live audio and room messaging are unavailable.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
-                            }.padding(16).frame(maxWidth:.infinity,alignment:.leading)
-                        }.foregroundStyle(Color.coffee).background(Color.cream,in:RoundedRectangle(cornerRadius:22)).clipShape(RoundedRectangle(cornerRadius:22))
+                            if let portrait=store.person(room.hostMemberID),!store.isUserHidden(portrait.id) {
+                                Button {router.go(.person(portrait.id))} label:{
+                                    VStack(spacing:6) {
+                                        Avatar(name:portrait.portrait,size:72)
+                                        PapiText(verbatim:portrait.name).font(CoffeeType.face(.headline)).lineLimit(2).multilineTextAlignment(.center)
+                                    }.frame(minWidth:88,minHeight:88).contentShape(Rectangle())
+                                }.buttonStyle(.plain)
+                            }
+                            PapiText(room.title).font(CoffeeType.display(.title2,weight:.bold)).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
+                            PapiText(room.category).font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.cream.opacity(0.85))
+                        }.padding(18).frame(maxWidth:.infinity,minHeight:250)
+                            .background {ZStack {PapiArtworkFill(asset:room.image);Color.coffee.opacity(0.68)}}
+                            .clipShape(RoundedRectangle(cornerRadius:22))
+                        demoStage
                         VStack(alignment:.leading,spacing:10) {
                             PapiText("A topic to bring to your next coffee table").font(CoffeeType.display(.title3,weight:.bold))
                             PapiText("Which beans are you brewing, and what changed in the cup?").font(CoffeeType.face(.body)).fixedSize(horizontal:false,vertical:true)
                         }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee.opacity(0.82),in:RoundedRectangle(cornerRadius:18))
+                        VStack(alignment:.leading,spacing:10) {
+                            HStack {
+                                PapiText("Table notes").font(CoffeeType.face(.headline))
+                                Spacer(minLength:8)
+                                PapiText("Only you can see these notes").font(CoffeeType.face(.caption2)).multilineTextAlignment(.trailing).fixedSize(horizontal:false,vertical:true)
+                            }
+                            let notes=store.state.tableNoteHistory?[room.id] ?? []
+                            if notes.isEmpty {PapiText("No notes yet").font(CoffeeType.face(.caption)).foregroundStyle(Color.cream.opacity(0.8))}
+                            ForEach(notes) {note in
+                                HStack(alignment:.top,spacing:9) {
+                                    Avatar(name:store.state.passport.portraitReference,size:32)
+                                    VStack(alignment:.leading,spacing:4) {
+                                        PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.caption,weight:.bold))
+                                        PapiText(verbatim:note.text).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
+                                    }.frame(maxWidth:.infinity,alignment:.leading)
+                                }.padding(10).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee.opacity(0.72),in:RoundedRectangle(cornerRadius:15)).id(note.id)
+                            }
+                        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee.opacity(0.55),in:RoundedRectangle(cornerRadius:18))
                         ForEach(store.state.giftHistory.filter{$0.context==room.id}.prefix(6)) {event in
                             if let gift=CoffeeCollectible.all.first(where:{$0.id==event.giftID}) {
                                 HStack {Image(gift.asset).resizable().scaledToFit().frame(width:42,height:42);PapiText("\(gift.name) × \(event.quantity)");Spacer();PapiText("Not sent").font(CoffeeType.face(.caption))}.padding(10).background(Color.white.opacity(0.12),in:RoundedRectangle(cornerRadius:15))
@@ -155,24 +205,150 @@ struct CoffeeTableView:View {
                 .safeAreaInset(edge:.bottom,spacing:0) {
                     PapiInputBar {
                         VStack(alignment:.leading,spacing:5) {
-                            if !compactControls {PapiText("Table notes").font(CoffeeType.face(.caption,weight:.bold))}
-                            PapiInput("A thought for the coffee table…",text:draft,axis:.vertical).lineLimit(1...3).padding(12).background(Color.white.opacity(0.18),in:RoundedRectangle(cornerRadius:18))
+                            if !compactControls {PapiText("Private note").font(CoffeeType.face(.caption,weight:.bold)).foregroundStyle(Color.cream)}
+                            PapiInput("A thought for the coffee table…",text:draft,axis:.vertical).lineLimit(1...3).foregroundStyle(Color.coffee).tint(Color.coffee).padding(12).background(Color.cream,in:RoundedRectangle(cornerRadius:18))
                         }
                     } actions: {
                         HStack(spacing:8) {
-                            PapiIconButton(asset:"check",label:"Keep table note") {
-                                let note=draft.wrappedValue
-                                if store.commit({$0.tableNotes[room.id]=note}) {store.inform("Table note kept","Your note is in your coffee book. It has not been sent to a room.")}
-                            }.background(Color.cream,in:RoundedRectangle(cornerRadius:12)).disabled(draft.wrappedValue.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
-                            PapiIconButton(asset:"gift",label:"Gifts",size:35) {router.sheet = .gifts(room.id)}
+                            PapiIconButton(asset:"roomNoteButton",label:"Keep table note",size:36) {
+                                if store.keepTableNote(room),let saved=store.state.tableNoteHistory?[room.id]?.last {
+                                    withAnimation(reduceMotion ? nil:.easeOut(duration:0.3)){noteAnnouncement=saved}
+                                }
+                            }.disabled(draft.wrappedValue.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
+                                .opacity(draft.wrappedValue.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty ? 0.45:1)
+                            PapiIconButton(asset:"roomGiftButton",label:"Gifts",size:36) {router.sheet = .gifts(room.id)}
                         }
                     }
+                }
+                .onChange(of:store.state.tableNoteHistory?[room.id]?.count ?? 0) {_,_ in
+                    if let id=store.state.tableNoteHistory?[room.id]?.last?.id {
+                        withAnimation(reduceMotion ? nil:.easeOut(duration:0.25)){reader.scrollTo(id,anchor:.bottom)}
+                    }
+                }
                 }
             }.foregroundStyle(.white)
             .overlay {
                 if leave {PapiDialog(title:"Leave the room?",message:"Your draft and room history will be kept.",confirm:"Leave room",cancel:"Stay here",action:{store.activeRoomID=nil;store.roomMicRequested=false;dismiss()},dismiss:{leave=false})}
 
             }
+            .overlay(alignment:.topLeading) {
+                if !leave,let event=giftAnnouncement,let gift=CoffeeCollectible.all.first(where:{$0.id==event.giftID}) {
+                    HStack(spacing:10) {
+                        Image(gift.asset).resizable().scaledToFit().frame(width:44,height:44).accessibilityHidden(true)
+                        VStack(alignment:.leading,spacing:3) {
+                            PapiText("Gift idea · Not sent").font(CoffeeType.face(.caption,weight:.bold))
+                            PapiText("\(gift.name) × \(event.quantity)").font(CoffeeType.face(.subheadline))
+                        }
+                    }.foregroundStyle(Color.cream).padding(12).background(Color.coffee.opacity(0.94),in:RoundedRectangle(cornerRadius:18))
+                        .padding(.horizontal,16).padding(.top,70).transition(reduceMotion ? .opacity:.move(edge:.leading).combined(with:.opacity)).allowsHitTesting(false).papiAvoidReserved()
+                } else if !leave,let note=noteAnnouncement {
+                    HStack(alignment:.top,spacing:8) {
+                        Avatar(name:store.state.passport.portraitReference,size:32)
+                        VStack(alignment:.leading,spacing:3) {
+                            PapiText("Private note").font(CoffeeType.face(.caption,weight:.bold))
+                            PapiText(verbatim:note.text).font(CoffeeType.face(.subheadline)).lineLimit(2)
+                        }
+                    }.foregroundStyle(Color.cream).padding(10).background(Color.coffee.opacity(0.94),in:RoundedRectangle(cornerRadius:16))
+                        .padding(.horizontal,16).padding(.top,70).transition(reduceMotion ? .opacity:.move(edge:.trailing).combined(with:.opacity)).allowsHitTesting(false).papiAvoidReserved()
+                } else if !leave,let event=demoGiftAnnouncement,!store.isUserHidden(event.memberID),let member=store.person(event.memberID),let asset=event.giftAsset {
+                    HStack(spacing:10) {
+                        Avatar(name:member.portrait,size:32)
+                        VStack(alignment:.leading,spacing:3) {
+                            PapiText("Demo gift").font(CoffeeType.face(.caption2,weight:.bold))
+                            PapiText(verbatim:member.name).font(CoffeeType.face(.caption,weight:.semibold))
+                        }
+                        PapiArtworkFit(asset:asset).frame(width:42,height:42)
+                    }.foregroundStyle(Color.cream).padding(10).background(Color.coffee.opacity(0.94),in:RoundedRectangle(cornerRadius:16))
+                        .padding(.horizontal,16).padding(.top,70).transition(reduceMotion ? .opacity:.move(edge:.leading).combined(with:.opacity)).allowsHitTesting(false).papiAvoidReserved()
+                }
+            }
+        }.onAppear {
+            if !giftTrackingReady {observedGiftID=store.state.giftHistory.first(where:{$0.context==room.id})?.id;giftTrackingReady=true}
+        }.onChange(of:router.sheet?.id){_,value in if value != nil {sampleVoice.stop()};showNewGiftIfReady()}
+            .onChange(of:store.notice?.id){_,_ in showNewGiftIfReady()}
+            .onChange(of:phase){_,value in if value != .active {sampleVoice.stop()}}
+            .onDisappear {sampleVoice.stop()}
+            .task {
+                if demoEvents.isEmpty {appendDemoEvent();appendDemoEvent()}
+                while !Task.isCancelled {
+                    try? await Task.sleep(for:.seconds(5))
+                    if Task.isCancelled {break}
+                    if phase == .active && router.sheet == nil && !leave {appendDemoEvent()}
+                }
+            }
+            .task(id:noteAnnouncement?.id) {
+                guard let id=noteAnnouncement?.id else{return}
+                try? await Task.sleep(for:.seconds(3))
+                if !Task.isCancelled,noteAnnouncement?.id==id {withAnimation(reduceMotion ? nil:.easeInOut(duration:0.2)){noteAnnouncement=nil}}
+            }
+            .task(id:giftAnnouncement?.id) {
+                guard let id=giftAnnouncement?.id else{return}
+                try? await Task.sleep(for:.seconds(3))
+                if !Task.isCancelled,giftAnnouncement?.id==id {withAnimation(reduceMotion ? nil:.easeInOut(duration:0.2)){giftAnnouncement=nil}}
+            }
+            .task(id:demoGiftAnnouncement?.id) {
+                guard let id=demoGiftAnnouncement?.id else{return}
+                try? await Task.sleep(for:.seconds(3))
+                if !Task.isCancelled,demoGiftAnnouncement?.id==id {withAnimation(reduceMotion ? nil:.easeInOut(duration:0.2)){demoGiftAnnouncement=nil}}
+            }
+    }
+    private func showNewGiftIfReady() {
+        guard giftTrackingReady,router.sheet==nil,store.notice==nil,
+              let event=store.state.giftHistory.first(where:{$0.context==room.id}),event.id != observedGiftID else{return}
+        observedGiftID=event.id
+        withAnimation(reduceMotion ? nil:.spring(response:0.4,dampingFraction:0.85)){giftAnnouncement=event}
+    }
+    private var demoStage:some View {
+        VStack(alignment:.leading,spacing:12) {
+            HStack {
+                PapiText("Sample participants").font(CoffeeType.face(.headline))
+                Spacer(minLength:8)
+                PapiText("Demo").font(CoffeeType.face(.caption2,weight:.bold)).padding(.horizontal,10).padding(.vertical,5).background(Color.cream.opacity(0.2),in:Capsule())
+            }
+            ScrollView(.horizontal,showsIndicators:false) {
+                HStack(alignment:.top,spacing:14) {
+                    ForEach(demoMembers) {member in
+                        Button {sampleVoice.stop();router.go(.person(member.id))} label:{
+                            VStack(spacing:5) {
+                                Avatar(name:member.portrait,size:48)
+                                PapiText(verbatim:member.name).font(CoffeeType.face(.caption2,weight:.semibold)).lineLimit(1)
+                            }.frame(width:80).frame(minHeight:72).contentShape(Rectangle())
+                        }.buttonStyle(.plain)
+                    }
+                }
+            }
+            PapiTextButton("Play sample voice") {
+                sampleVoice.play(store.text("Welcome to the coffee table. What are you brewing today?"),language:store.state.language)
+            }.font(CoffeeType.face(.caption,weight:.bold)).padding(.horizontal,12).frame(minHeight:44).background(Color.cream.opacity(0.16),in:Capsule())
+            PapiText("Synthetic sample voice").font(CoffeeType.face(.caption2)).foregroundStyle(Color.cream.opacity(0.8))
+            VStack(alignment:.leading,spacing:8) {
+                ForEach(demoEvents.filter{!store.isUserHidden($0.memberID)}) {event in
+                    if let member=store.person(event.memberID) {
+                        HStack(alignment:.center,spacing:8) {
+                            Button {sampleVoice.stop();router.go(.person(member.id))} label:{Avatar(name:member.portrait,size:32)}.buttonStyle(.plain)
+                            VStack(alignment:.leading,spacing:3) {
+                                Button {sampleVoice.stop();router.go(.person(member.id))} label:{PapiText(verbatim:member.name).font(CoffeeType.face(.caption,weight:.bold))}.buttonStyle(.plain)
+                                PapiText(event.message).font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
+                            }.frame(maxWidth:.infinity,alignment:.leading)
+                            if let asset=event.giftAsset {PapiArtworkFit(asset:asset).frame(width:38,height:38)}
+                        }.padding(9).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee.opacity(0.65),in:RoundedRectangle(cornerRadius:14))
+                            .transition(reduceMotion ? .opacity:.move(edge:.leading).combined(with:.opacity))
+                    }
+                }
+            }
+        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee.opacity(0.74),in:RoundedRectangle(cornerRadius:20))
+    }
+    private func appendDemoEvent() {
+        let members=demoMembers
+        guard !members.isEmpty else{return}
+        let messages=["That first sip is always the best.","What beans are in your cup today?","I love a slow morning brew.","A little gift for the table · Demo"]
+        let index=demoIndex
+        let event=TableDemoEvent(memberID:members[index % members.count].id,message:messages[index % messages.count],giftAsset:index % messages.count == 3 ? "giftUmbrella":nil)
+        demoIndex += 1
+        withAnimation(reduceMotion ? nil:.easeOut(duration:0.3)) {
+            demoEvents.append(event)
+            if demoEvents.count>4 {demoEvents.removeFirst(demoEvents.count-4)}
+            if event.giftAsset != nil {demoGiftAnnouncement=event}
         }
     }
 }

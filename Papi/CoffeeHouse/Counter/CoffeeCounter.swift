@@ -2,47 +2,38 @@ import SwiftUI
 import StoreKit
 
 struct CollectibleCounterView:View {
-    @ScaledMetric(relativeTo:.body) private var giftColumnWidth:CGFloat=135
+    @ScaledMetric(relativeTo:.body) private var giftColumnWidth:CGFloat=96
+    @ScaledMetric(relativeTo:.body) private var compactHeight:CGFloat=550
     var context:String
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
+    @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.verticalSizeClass) private var heightClass
     @State private var selected=CoffeeCollectible.all[0].id
     @State private var quantity=1
     @State private var confirmCollect=false
     private var gift:CoffeeCollectible {CoffeeCollectible.all.first{$0.id==selected} ?? CoffeeCollectible.all[0]}
     var body:some View {
         PapiScreen {
-            VStack(spacing:0) {
-                PapiHeader(context=="backpack" ? "Collect a gift":"Gifts")
-                ScrollView {
-                    VStack(spacing:18) {
-                        CoffeeSectionIntro(artwork:"passportKeepsakeArt",title:"Collect a gift",detail:"Gifts are optional backpack collectibles. Displaying an owned gift and saving gift ideas are free.")
-                        HStack {PapiText("My coins").font(CoffeeType.face(.headline));Spacer();CoinLabel(value:store.state.coinBalance)}
-                        LazyVGrid(columns:[GridItem(.adaptive(minimum:giftColumnWidth),spacing:12)],spacing:12) {
-                            ForEach(CoffeeCollectible.all) {item in
-                                Button {selected=item.id} label:{
-                                    VStack(spacing:8) {
-                                        PapiArtworkFit(asset:item.asset).frame(height:100)
-                                        PapiText(item.name).font(CoffeeType.face(.subheadline)).lineLimit(2).frame(minHeight:38)
-                                        CoinLabel(value:item.cost).font(CoffeeType.face(.caption))
-                                        if selected==item.id {PapiText("Selected").font(CoffeeType.face(.caption,weight:.bold))} else {PapiText(" ").font(CoffeeType.face(.caption))}
-                                    }.padding(12).frame(maxWidth:.infinity).background(selected==item.id ? Color.butter:Color.white.opacity(0.8),in:RoundedRectangle(cornerRadius:20))
-                                }.buttonStyle(.plain)
+            GeometryReader {viewport in
+                let width=max(0,min(680,viewport.size.width)-32)
+                let columns=typeSize.isAccessibilitySize ? 1:(width >= giftColumnWidth*3+16 ? 3:(width >= giftColumnWidth*2+8 ? 2:1))
+                let inlineActions=typeSize.isAccessibilitySize || heightClass == .compact || viewport.size.height<compactHeight || width<240
+                VStack(spacing:0) {
+                    PapiHeader(context=="backpack" ? "Collect a gift":"Gifts")
+                    ScrollView {
+                        VStack(alignment:.leading,spacing:14) {
+                            giftIntroduction
+                            LazyVGrid(columns:Array(repeating:GridItem(.flexible(),spacing:8),count:columns),spacing:8) {
+                                ForEach(CoffeeCollectible.all) {item in
+                                    Button {selected=item.id} label:{giftTile(item)}.buttonStyle(.plain)
+                                        .accessibilityAddTraits(selected==item.id ? .isSelected:[])
+                                }
                             }
-                        }
-                        PapiActionGroup {
-                            PapiTextButton("Less"){quantity=max(1,quantity-1)}.frame(minWidth:44,minHeight:44).disabled(quantity==1)
-                            PapiText("Quantity \(quantity)").font(CoffeeType.face(.headline)).monospacedDigit()
-                            PapiTextButton("More"){quantity=min(99,quantity+1)}.frame(minWidth:44,minHeight:44).disabled(quantity==99)
-                        }.padding(15).background(Color.white,in:Capsule())
-                        HStack {PapiText("Total");Spacer();CoinLabel(value:gift.cost*quantity)}
-                        PapiTextButton("Collect for my backpack"){confirmCollect=true}.buttonStyle(PapiButtonStyle()).frame(maxWidth:.infinity)
-                        if context != "backpack" {
-                            PapiTextButton("Save gift idea"){store.previewGift(gift,quantity:quantity,context:context)}.buttonStyle(PapiButtonStyle(light:true))
-                            PapiText("Gift ideas are not sent and do not cost coins.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.center)
-                        }
-                        PapiTextButton("Open wallet"){router.openWallet()}.font(CoffeeType.face(.subheadline,weight:.bold)).padding(12)
-                    }.padding(20).frame(maxWidth:800).frame(maxWidth:.infinity)
+                            if inlineActions {giftActions}
+                        }.padding(.horizontal,16).padding(.top,10).padding(.bottom,16).frame(maxWidth:680).frame(maxWidth:.infinity)
+                    }
+                    if !inlineActions {giftActions.padding(.horizontal,16).padding(.bottom,10).frame(maxWidth:680).frame(maxWidth:.infinity)}
                 }
             }.overlay {
                 if confirmCollect {
@@ -50,6 +41,53 @@ struct CollectibleCounterView:View {
                 }
             }
         }
+    }
+    private var giftIntroduction:some View {
+        HStack(spacing:12) {
+            VStack(alignment:.leading,spacing:6) {
+                PapiText("Collect a gift").font(CoffeeType.display(.title2,weight:.bold))
+                PapiTextButton("Open wallet"){router.openWallet()}.font(CoffeeType.face(.caption,weight:.bold))
+                    .padding(.horizontal,12).frame(minHeight:44).background(Color.cream.opacity(0.9),in:Capsule())
+            }.frame(maxWidth:.infinity,alignment:.leading)
+            VStack(alignment:.trailing,spacing:4) {
+                PapiArtworkFit(asset:"giftCounterArt").frame(width:72,height:60)
+                CoinLabel(value:store.state.coinBalance).font(CoffeeType.face(.subheadline,weight:.bold))
+                PapiText("My coins").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
+            }
+        }.padding(.horizontal,16).padding(.vertical,12).frame(maxWidth:.infinity)
+            .background(Color.cream.opacity(0.85),in:RoundedRectangle(cornerRadius:20)).papiAvoidReserved()
+    }
+    private func giftTile(_ item:CoffeeCollectible)->some View {
+        let isSelected=selected==item.id
+        return VStack(spacing:5) {
+            PapiArtworkFit(asset:item.asset).frame(height:62)
+            PapiText(item.name).font(CoffeeType.face(.caption,weight:.semibold)).multilineTextAlignment(.center).lineLimit(2).frame(maxWidth:.infinity,minHeight:34)
+            CoinLabel(value:item.cost).font(CoffeeType.face(.caption2,weight:.semibold))
+            PapiText(isSelected ? "Selected":" ").font(CoffeeType.face(.caption2,weight:.bold)).foregroundStyle(Color.coffee)
+        }.padding(.horizontal,6).padding(.vertical,10).frame(maxWidth:.infinity,minHeight:144)
+            .background(isSelected ? Color.butter:Color.cream.opacity(0.9),in:RoundedRectangle(cornerRadius:16))
+            .overlay(RoundedRectangle(cornerRadius:16).stroke(isSelected ? Color.coffee.opacity(0.55):Color.clear,lineWidth:1.5))
+            .contentShape(RoundedRectangle(cornerRadius:16)).papiAvoidReserved()
+    }
+    private var giftActions:some View {
+        VStack(spacing:8) {
+            HStack(spacing:8) {
+                PapiTextButton("Less"){quantity=max(1,quantity-1)}.frame(minWidth:44,minHeight:44).disabled(quantity==1)
+                PapiText("Quantity \(quantity)").font(CoffeeType.face(.subheadline,weight:.semibold)).monospacedDigit().frame(maxWidth:.infinity)
+                PapiTextButton("More"){quantity=min(99,quantity+1)}.frame(minWidth:44,minHeight:44).disabled(quantity==99)
+            }
+            HStack(spacing:8) {
+                PapiText(gift.name).font(CoffeeType.face(.caption,weight:.semibold)).lineLimit(2)
+                Spacer(minLength:8)
+                PapiText("Total").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                CoinLabel(value:gift.cost*quantity).font(CoffeeType.face(.subheadline,weight:.bold))
+            }
+            PapiTextButton("Collect for my backpack"){confirmCollect=true}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16))
+            if context != "backpack" {
+                PapiTextButton("Save gift idea"){store.previewGift(gift,quantity:quantity,context:context)}.font(CoffeeType.face(.subheadline,weight:.bold)).frame(maxWidth:.infinity,minHeight:44)
+                PapiText("Gift ideas are not sent and do not cost coins.").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
+            }
+        }.padding(12).frame(maxWidth:.infinity).background(Color.cream.opacity(0.97),in:RoundedRectangle(cornerRadius:20)).papiAvoidReserved()
     }
 }
 struct CoffeeCollectionView:View {

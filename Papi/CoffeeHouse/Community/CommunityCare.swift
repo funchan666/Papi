@@ -127,7 +127,7 @@ struct CoffeeReceiptView:View {
     let notice:CoffeeReceipt
     var close:()->Void
     var body:some View {
-        CoffeeModal(maximumWidth:370,maximumHeight:570,shade:Color.black.opacity(0.5),artwork:notice.kind == .safety ? nil:"dialogBackground") {
+        CoffeeModal(maximumWidth:370,maximumHeight:570,shade:Color.coffee.opacity(0.62),artwork:nil) {
             VStack(alignment:.leading,spacing:18) {
                 HStack(alignment:.center) {
                     Image(notice.kind == .safety ? "coffeeSafetyArt":(notice.kind == .review ? "coffeeUpdates":"brandMark")).resizable().scaledToFit().frame(width:notice.kind == .safety ? 82:58,height:notice.kind == .safety ? 82:58)
@@ -135,8 +135,8 @@ struct CoffeeReceiptView:View {
                     PapiText("Papi").font(CoffeeType.display(size:25,weight:.bold)).italic()
                 }
                 Divider().overlay(Color.coffee.opacity(0.25))
-                PapiText(notice.title).font(CoffeeType.display(.title2,weight:.bold))
-                PapiText(notice.message).font(CoffeeType.face(.subheadline)).lineSpacing(4)
+                PapiText(notice.title).font(CoffeeType.display(.title2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                PapiText(notice.message).font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).lineSpacing(4).fixedSize(horizontal:false,vertical:true)
                 if notice.kind == .review {
                     status("Saved privately",asset:"check")
                     status("Awaiting moderation connection",asset:"coffeeUpdates")
