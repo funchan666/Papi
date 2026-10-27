@@ -99,4 +99,3 @@ end;
 $$;
 revoke all on function papi_private.submit_moment(uuid, text, text, text) from public, anon;
 grant execute on function papi_private.submit_moment(uuid, text, text, text) to authenticated;
-

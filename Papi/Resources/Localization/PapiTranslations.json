@@ -6655,5 +6655,124 @@
     "ar": "ستُحفظ نسخة جهازك الحالية هنا قبل استعادة هذا الإصدار.",
     "vi": "Bản hiện tại trên thiết bị sẽ được lưu trước khi khôi phục phiên bản trực tuyến này.",
     "ko": "이 온라인 버전을 복원하기 전에 현재 기기의 사본을 저장합니다."
+  },
+  "Retry members": {
+    "es": "Reintentar cargar miembros",
+    "th": "ลองโหลดสมาชิกอีกครั้ง",
+    "ar": "إعادة محاولة تحميل الأعضاء",
+    "vi": "Thử tải lại thành viên",
+    "ko": "회원 다시 불러오기"
+  },
+  "Coffee members": {
+    "es": "Miembros de café",
+    "th": "สมาชิกคอกาแฟ",
+    "ar": "أعضاء القهوة",
+    "vi": "Thành viên yêu cà phê",
+    "ko": "커피 회원"
+  },
+  "Posts unavailable": {
+    "es": "Publicaciones no disponibles",
+    "th": "ไม่สามารถโหลดโพสต์",
+    "ar": "المنشورات غير متاحة",
+    "vi": "Không thể tải bài đăng",
+    "ko": "게시물을 사용할 수 없어요"
+  },
+  "Friend requests": {
+    "es": "Solicitudes de amistad",
+    "th": "คำขอเป็นเพื่อน",
+    "ar": "طلبات الصداقة",
+    "vi": "Lời mời kết bạn",
+    "ko": "친구 요청"
+  },
+  "Respond to request": {
+    "es": "Responder a la solicitud",
+    "th": "ตอบรับคำขอ",
+    "ar": "الرد على الطلب",
+    "vi": "Trả lời lời mời",
+    "ko": "요청에 응답"
+  },
+  "Accept": {
+    "es": "Aceptar",
+    "th": "ยอมรับ",
+    "ar": "قبول",
+    "vi": "Chấp nhận",
+    "ko": "수락"
+  },
+  "Decline": {
+    "es": "Rechazar",
+    "th": "ปฏิเสธ",
+    "ar": "رفض",
+    "vi": "Từ chối",
+    "ko": "거절"
+  },
+  "Finish friend request": {
+    "es": "Completar solicitud de amistad",
+    "th": "ดำเนินการคำขอเป็นเพื่อนต่อ",
+    "ar": "إكمال طلب الصداقة",
+    "vi": "Hoàn tất lời mời kết bạn",
+    "ko": "친구 요청 마무리"
+  },
+  "Finish pending message": {
+    "es": "Completar mensaje pendiente",
+    "th": "ดำเนินการข้อความที่ค้างอยู่ต่อ",
+    "ar": "إكمال الرسالة المعلقة",
+    "vi": "Hoàn tất tin nhắn đang chờ",
+    "ko": "대기 중인 메시지 마무리"
+  },
+  "Finish pending report": {
+    "es": "Completar informe pendiente",
+    "th": "ดำเนินการรายงานที่ค้างอยู่ต่อ",
+    "ar": "إكمال البلاغ المعلق",
+    "vi": "Hoàn tất báo cáo đang chờ",
+    "ko": "대기 중인 신고 마무리"
+  },
+  "Only text messages are available right now.": {
+    "es": "Por ahora solo se pueden enviar mensajes de texto.",
+    "th": "ขณะนี้ส่งได้เฉพาะข้อความ",
+    "ar": "الرسائل النصية فقط متاحة حاليًا.",
+    "vi": "Hiện chỉ có thể gửi tin nhắn văn bản.",
+    "ko": "현재는 문자 메시지만 보낼 수 있어요."
+  },
+  "Messages could not be refreshed.": {
+    "es": "No se pudieron actualizar los mensajes.",
+    "th": "ไม่สามารถรีเฟรชข้อความได้",
+    "ar": "تعذر تحديث الرسائل.",
+    "vi": "Không thể làm mới tin nhắn.",
+    "ko": "메시지를 새로고침하지 못했어요."
+  },
+  "Retry the saved message to confirm its result.": {
+    "es": "Reintenta el mensaje guardado para confirmar el resultado.",
+    "th": "ลองส่งข้อความที่บันทึกไว้อีกครั้งเพื่อยืนยันผล",
+    "ar": "أعد محاولة الرسالة المحفوظة لتأكيد نتيجتها.",
+    "vi": "Thử lại tin nhắn đã lưu để xác nhận kết quả.",
+    "ko": "결과를 확인하려면 저장된 메시지를 다시 시도하세요."
+  },
+  "The report will be sent for review and the item will be hidden.": {
+    "es": "El informe se enviará para revisión y el contenido quedará oculto.",
+    "th": "รายงานจะถูกส่งเพื่อตรวจสอบและซ่อนรายการนี้",
+    "ar": "سيُرسل البلاغ للمراجعة وسيُخفى العنصر.",
+    "vi": "Báo cáo sẽ được gửi để xem xét và mục này sẽ bị ẩn.",
+    "ko": "신고를 검토용으로 보내고 해당 항목을 숨깁니다."
+  },
+  "Photo changes are temporarily unavailable.": {
+    "es": "Los cambios de fotos no están disponibles por ahora.",
+    "th": "ยังไม่สามารถเปลี่ยนรูปภาพได้ในขณะนี้",
+    "ar": "تغيير الصور غير متاح مؤقتًا.",
+    "vi": "Tạm thời chưa thể thay đổi ảnh.",
+    "ko": "현재 사진을 변경할 수 없습니다."
+  },
+  "Finish profile changes": {
+    "es": "Completar los cambios del perfil",
+    "th": "ดำเนินการเปลี่ยนแปลงโปรไฟล์ต่อ",
+    "ar": "إكمال تغييرات الملف الشخصي",
+    "vi": "Hoàn tất thay đổi hồ sơ",
+    "ko": "프로필 변경 완료"
+  },
+  "Your coffee book and balance use this account. Account recovery and some community features are still unavailable.": {
+    "es": "Tu libro de café y tu saldo usan esta cuenta. La recuperación de la cuenta y algunas funciones de la comunidad aún no están disponibles.",
+    "th": "สมุดกาแฟและยอดคงเหลือใช้บัญชีนี้ การกู้คืนบัญชีและฟีเจอร์ชุมชนบางส่วนยังไม่พร้อมใช้งาน",
+    "ar": "يستخدم دفتر القهوة والرصيد هذا الحساب. لا تتوفر استعادة الحساب وبعض ميزات المجتمع بعد.",
+    "vi": "Sổ cà phê và số dư dùng tài khoản này. Khôi phục tài khoản và một số tính năng cộng đồng chưa khả dụng.",
+    "ko": "커피 노트와 잔액은 이 계정을 사용합니다. 계정 복구와 일부 커뮤니티 기능은 아직 사용할 수 없습니다."
   }
 }

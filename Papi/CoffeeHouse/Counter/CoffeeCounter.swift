@@ -375,7 +375,7 @@ struct CoffeeJourneyView:View {
                     VStack(spacing:18) {
                         CoffeeSectionIntro(artwork:"passportBrewArt",title:"Your Coffee Journey",detail:"Your coffee journey stays with this account.").padding(.horizontal,20)
                         VStack(alignment:.leading,spacing:16) {
-                            HStack {Avatar(name:store.state.passport.portraitReference,size:48);PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.title3,weight:.bold));Spacer()}
+                            HStack {Avatar(name:store.state.passport.portraitReference,size:48);PapiText(verbatim:store.visiblePassport.name).font(CoffeeType.face(.title3,weight:.bold));Spacer()}
                             if let experience=store.currentExperience {
                                 PapiText("Lv.\(experience/100+1)").font(CoffeeType.counter(size:32,weight:.heavy))
                                 ProgressView(value:Double(experience%100),total:100).tint(.coffee)

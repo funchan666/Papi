@@ -2,7 +2,7 @@
 // refund notifications, runtime compatibility and sandbox delivery are verified.
 import { Buffer } from "node:buffer";
 import { X509Certificate } from "node:crypto";
-import { Environment, SignedDataVerifier, Type } from "npm:@apple/app-store-server-library@3.1.0";
+import { AppStoreServerAPIClient, Environment, SignedDataVerifier, Type } from "npm:@apple/app-store-server-library@3.1.0";
 import { createClient } from "npm:@supabase/supabase-js@2.118.0";
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -20,8 +20,11 @@ Deno.serve(async (request: Request) => {
   const bundleID = Deno.env.get("APPLE_BUNDLE_ID");
   const configuredEnvironment = Deno.env.get("APPLE_ENVIRONMENT");
   const appIDText = Deno.env.get("APPLE_APP_ID");
+  const signingKey = Deno.env.get("APPLE_API_PRIVATE_KEY");
+  const keyID = Deno.env.get("APPLE_API_KEY_ID");
+  const issuerID = Deno.env.get("APPLE_API_ISSUER_ID");
   const appID = appIDText && /^[1-9][0-9]*$/.test(appIDText) ? Number(appIDText) : undefined;
-  if (!url || !anonKey || !serviceKey || !bundleID ||
+  if (!url || !anonKey || !serviceKey || !bundleID || !signingKey || !keyID || !issuerID ||
       (configuredEnvironment !== "Sandbox" && configuredEnvironment !== "Production") ||
       (configuredEnvironment === "Production" && (!appID || !Number.isSafeInteger(appID)))) {
     return response(503, { error: "Purchase verification is not configured" });
@@ -57,21 +60,34 @@ Deno.serve(async (request: Request) => {
   if (!order || order.owner_id !== identity.user.id) return response(404, { error: "Order unavailable" });
 
   let transaction;
+  let currentTransaction;
   try {
     const root = await Deno.readTextFile(new URL("./AppleRootCA-G3.pem", import.meta.url));
     const rootDER = Buffer.from(new X509Certificate(root).raw);
     const environment = configuredEnvironment === "Production" ? Environment.PRODUCTION : Environment.SANDBOX;
     const verifier = new SignedDataVerifier([rootDER], true, environment, bundleID, appID);
     transaction = await verifier.verifyAndDecodeTransaction(signed_transaction);
+    if (!transaction.transactionId || !/^[0-9]{1,32}$/.test(transaction.transactionId)) {
+      return response(422, { error: "Transaction does not match this order" });
+    }
+    // The device's signed payload can predate a refund. Ask Apple for the
+    // current transaction and verify that response independently before credit.
+    const api = new AppStoreServerAPIClient(signingKey, keyID, issuerID, bundleID, environment);
+    const latest = await api.getTransactionInfo(transaction.transactionId);
+    if (!latest.signedTransactionInfo) throw new Error("Missing Apple transaction");
+    currentTransaction = await verifier.verifyAndDecodeTransaction(latest.signedTransactionInfo);
   } catch {
     // Certificate checks can fail temporarily; leave the transaction unfinished for retry.
     return response(503, { error: "Apple verification unavailable or invalid" });
   }
 
-  if (!transaction.transactionId || !/^[0-9]{1,32}$/.test(transaction.transactionId) ||
+  if (currentTransaction.transactionId !== transaction.transactionId ||
       transaction.productId !== order.product_id || transaction.type !== Type.CONSUMABLE ||
       transaction.quantity !== 1 || transaction.revocationDate != null ||
-      transaction.appAccountToken?.toLowerCase() !== order.id.toLowerCase()) {
+      transaction.appAccountToken?.toLowerCase() !== order.id.toLowerCase() ||
+      currentTransaction.productId !== order.product_id || currentTransaction.type !== Type.CONSUMABLE ||
+      currentTransaction.quantity !== 1 || currentTransaction.revocationDate != null ||
+      currentTransaction.appAccountToken?.toLowerCase() !== order.id.toLowerCase()) {
     return response(422, { error: "Transaction does not match this order" });
   }
 

@@ -101,7 +101,7 @@ enum CoffeeMedia {
         posterTasks.removeValue(forKey:name)
         return image
     }
-    private static func downsample(_ data:Data)->UIImage? {
+    fileprivate static func downsample(_ data:Data)->UIImage? {
         guard let source=CGImageSourceCreateWithData(data as CFData,[kCGImageSourceShouldCache:false] as CFDictionary),
               let frame=CGImageSourceCreateThumbnailAtIndex(source,0,[kCGImageSourceCreateThumbnailFromImageAlways:true,kCGImageSourceCreateThumbnailWithTransform:true,kCGImageSourceThumbnailMaxPixelSize:1600,kCGImageSourceShouldCacheImmediately:true] as CFDictionary) else{return nil}
         return UIImage(cgImage:frame)
@@ -158,6 +158,45 @@ enum CoffeeMedia {
     enum MediaError: LocalizedError {
         case invalid, tooLarge
         var errorDescription: String? { self == .invalid ? "This image could not be opened. Choose another image under 40 MB." : "Choose a video smaller than 150 MB." }
+    }
+}
+
+// Signed URLs and decoded images for private submissions stay in memory only.
+struct PrivateSubmissionPhoto:View {
+    let path:String
+    @EnvironmentObject private var store:CoffeeHouse
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var image:UIImage?
+    @State private var imageOwner:UUID?
+    @State private var imagePath:String?
+    private static let session:URLSession = {
+        let config=URLSessionConfiguration.ephemeral
+        config.urlCache=nil;config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.httpCookieStorage=nil;config.httpShouldSetCookies=false
+        config.timeoutIntervalForRequest=20;config.timeoutIntervalForResource=30
+        return URLSession(configuration:config)
+    }()
+    var body:some View {
+        Group {
+            if store.state.signedIn,scenePhase == .active,imageOwner==store.state.cloudAccountID,imagePath==path,let image {
+                Image(uiImage:image).resizable().scaledToFill()
+            } else {Image("emptyCup").resizable().scaledToFit().padding(8).background(Color.cream)}
+        }.clipped().task(id:"\(store.state.cloudAccountID?.uuidString ?? "none")|\(path)|\(scenePhase == .active)|\(store.state.signedIn)") {
+            image=nil;imageOwner=nil;imagePath=nil
+            guard scenePhase == .active,store.state.signedIn,let account=store.state.cloudAccountID,
+                  path.lowercased().hasPrefix(account.uuidString.lowercased()+"/") else{return}
+            do {
+                let url=try await CoffeeCloud.shared.mediaURL(path:path,account:account)
+                guard url.scheme=="https",url.host=="cquoffowtjnxmgaxavym.supabase.co" else{return}
+                let (data,response)=try await Self.session.data(from:url)
+                guard let response=response as? HTTPURLResponse,response.statusCode==200,
+                      response.url?.scheme=="https",response.url?.host==url.host,
+                      response.mimeType?.hasPrefix("image/")==true,data.count<=40_000_000 else{return}
+                let decoded=await Task.detached(priority:.utility){CoffeeMedia.downsample(data)}.value
+                guard !Task.isCancelled,store.state.signedIn,store.state.cloudAccountID==account,scenePhase == .active else{return}
+                image=decoded;imageOwner=account;imagePath=path
+            } catch {return}
+        }
     }
 }
 

@@ -353,7 +353,7 @@ struct CoffeeTableView:View {
                     HStack(alignment:.top,spacing:8) {
                         Avatar(name:store.state.passport.portraitReference,size:32)
                         VStack(alignment:.leading,spacing:3) {
-                            PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.caption,weight:.bold))
+                            PapiText(verbatim:store.visiblePassport.name).font(CoffeeType.face(.caption,weight:.bold))
                             PapiText(verbatim:note.text).font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
                             PapiText("Only you can see these notes").font(CoffeeType.face(.caption2)).foregroundStyle(Color.cream.opacity(0.8))
                         }.frame(maxWidth:.infinity,alignment:.leading)
@@ -397,7 +397,9 @@ struct MemberPassportView:View {
                             portraitCover(person,width:container.size.width,height:coverHeight+topInset,topInset:topInset)
                             VStack(alignment:.leading,spacing:24) {
                                 memberDetails(person,width:contentWidth)
-                                collectionShelf(person,posts:posts,width:contentWidth)
+                                if store.usesCloudWallet && UUID(uuidString:person.id) != nil {
+                                    PapiEmpty(title:"Posts unavailable")
+                                } else {collectionShelf(person,posts:posts,width:contentWidth)}
                             }
                             .padding(.horizontal,20).padding(.top,-28).padding(.bottom,28)
                             .frame(maxWidth:720).frame(maxWidth:.infinity)
@@ -439,7 +441,7 @@ struct MemberPassportView:View {
                     }
                 }.frame(maxWidth:.infinity,alignment:.leading)
             }
-            PapiText(person.bio).font(CoffeeType.face(.subheadline)).lineSpacing(3)
+            PapiText(verbatim:store.usesCloudWallet && UUID(uuidString:person.id) != nil ? person.bio:store.text(person.bio)).font(CoffeeType.face(.subheadline)).lineSpacing(3)
                 .fixedSize(horizontal:false,vertical:true)
             let actionLayout=typeSize.isAccessibilitySize || width<320 ? AnyLayout(VStackLayout(spacing:10)):AnyLayout(HStackLayout(spacing:12))
             actionLayout {
@@ -448,7 +450,13 @@ struct MemberPassportView:View {
                 PapiTextButton("Chatting"){router.go(.chat(person.id))}
                     .buttonStyle(PapiButtonStyle(light:true,wide:true,cornerRadius:16))
             }
-            if person.id != CoffeeMember.editorial.id && !store.usesCloudWallet {
+            if store.usesCloudWallet,let member=UUID(uuidString:person.id) {
+                PapiRow(asset:"plus",title:store.isFriend(person.id) ? "Friends":(store.incomingFriendship(from:person.id) != nil ? "Respond to request":(store.outgoingFriendship(to:person.id) == nil ? "Request friendship":"Cancel friend request"))) {
+                    if store.incomingFriendship(from:person.id) != nil {router.go(.relationships(2))}
+                    else if let request=store.outgoingFriendship(to:person.id) {Task {await store.cancelCloudFriendship(request.id)}}
+                    else {Task {await store.requestCloudFriendship(member)}}
+                }.disabled(store.isFriend(person.id) || store.cloudSocialBusy).background(Color.white.opacity(0.8),in:RoundedRectangle(cornerRadius:16))
+            } else if person.id != CoffeeMember.editorial.id && !store.usesCloudWallet {
                 PapiRow(asset:"plus",title:store.isFriend(person.id) ? "Friends":(store.community.friendshipRequests[person.id] == nil ? "Request friendship":"Cancel friend request")) {
                     if store.community.friendshipRequests[person.id] != nil {store.cancelFriendshipRequest(person.id)} else {store.requestFriendship(person.id)}
                 }.disabled(store.isFriend(person.id)).background(Color.white.opacity(0.8),in:RoundedRectangle(cornerRadius:16))

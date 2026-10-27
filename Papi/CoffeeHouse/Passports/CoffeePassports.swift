@@ -30,19 +30,21 @@ struct MyCoffeePassportView:View {
                                     Button {router.go(.editProfile)} label:{Avatar(name:store.state.passport.portraitReference,size:72)}
                                         .buttonStyle(.plain).papiAccessibilityLabel("Change avatar")
                                     VStack(alignment:.leading,spacing:5) {
-                                        PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.title3,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                                        PapiText(verbatim:store.visiblePassport.name).font(CoffeeType.face(.title3,weight:.bold)).fixedSize(horizontal:false,vertical:true)
                                         PapiText("Your coffee passport").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                                     }.frame(maxWidth:.infinity,alignment:.leading)
                                     if let id=store.state.displayedGift,(store.collectedItems[id] ?? 0)>0,let gift=CoffeeCollectible.all.first(where:{$0.id==id}) {Image(gift.asset).resizable().scaledToFit().frame(width:44,height:44).papiAccessibilityLabel(gift.name)}
                                 }
-                                PapiText(verbatim:store.state.passport.bio).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
+                                PapiText(verbatim:store.visiblePassport.bio).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
                                 PapiText("\(store.brewBook.cups.count) cups in your book").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                             }.padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.cream,in:RoundedRectangle(cornerRadius:24)).padding(.top,-28)
-                            HStack(spacing:0) {
+                            if store.usesCloudWallet && store.cloudProfiles==nil {
+                                PapiTextButton("Retry members"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)
+                            } else {HStack(spacing:0) {
                                 countButton(store.followingIDs.filter{!store.isUserHidden($0)}.count,"Following")
                                 countButton(store.followers.count,"Follower")
                                 countButton(store.friends.count,"Friends")
-                            }.padding(.vertical,14).background(Color.coffee,in:RoundedRectangle(cornerRadius:18))
+                            }.padding(.vertical,14).background(Color.coffee,in:RoundedRectangle(cornerRadius:18))}
                             HStack(spacing:12) {
                                 Button {router.go(.wallet)} label:{Image("walletBanner").resizable().scaledToFit().frame(maxWidth:.infinity)}.papiAccessibilityLabel("My wallet")
                                 Button {router.go(.level)} label:{Image("levelBanner").resizable().scaledToFit().frame(maxWidth:.infinity)}.papiAccessibilityLabel("My level")
@@ -117,6 +119,7 @@ struct EditCoffeePassportView:View {
     @State private var target="cover"
     @State private var showPicker=false
     @State private var importing=false
+    @State private var waitingForProfile=false
     var body:some View {
         PapiScreen {
             VStack(spacing:0) {
@@ -125,17 +128,20 @@ struct EditCoffeePassportView:View {
                     VStack(spacing:18) {
                         CoffeeSectionIntro(artwork:"passportBrewArt",title:"Your coffee passport",detail:"Tap Save to keep these changes.")
                         PapiImage(name:passport.cover).frame(height:210).clipped().clipShape(RoundedRectangle(cornerRadius:20))
-                        PapiActionGroup {pickButton("Change background",kind:"cover");pickButton("Change avatar",kind:"avatar")}
+                        if !store.usesCloudWallet {PapiActionGroup {pickButton("Change background",kind:"cover");pickButton("Change avatar",kind:"avatar")}}
+                        else {PapiText("Photo changes are temporarily unavailable.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
                         HStack {Avatar(name:passport.portraitReference,size:64);PapiText("Your coffee passport").font(CoffeeType.face(.headline));Spacer()}
                         VStack(alignment:.leading,spacing:8) {
-                            PapiText("Name").font(CoffeeType.face(.caption,weight:.semibold));PapiTextField(prompt:"Please enter the name…",text:$passport.name)
-                            PapiText("About you").font(CoffeeType.face(.caption,weight:.semibold));PapiTextField(prompt:"Keeping the cups I want to brew again.",text:$passport.bio)
-                        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.88),in:RoundedRectangle(cornerRadius:20))
-                        HStack {PapiText("Photo album").font(CoffeeType.face(.headline));Spacer();pickButton("Add photo",kind:"album")}
+                            PapiText("Name").font(CoffeeType.face(.caption,weight:.semibold));PapiTextField(prompt:"Please enter the name…",text:$passport.name).disabled(store.cloudSocialBusy || store.state.pendingCloudProfile != nil)
+                            PapiText("About you").font(CoffeeType.face(.caption,weight:.semibold));PapiTextField(prompt:"Keeping the cups I want to brew again.",text:$passport.bio).disabled(store.cloudSocialBusy || store.state.pendingCloudProfile != nil)
+                        }.disabled(waitingForProfile).padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.88),in:RoundedRectangle(cornerRadius:20))
+                        if waitingForProfile {PapiTextButton("Retry members"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)}
+                        if !store.usesCloudWallet {HStack {PapiText("Photo album").font(CoffeeType.face(.headline));Spacer();pickButton("Add photo",kind:"album")}
                         LazyVGrid(columns:[GridItem(.adaptive(minimum:95),spacing:10)],spacing:10) {
                             ForEach(passport.photos,id:\.self) {name in
                                 ZStack(alignment:.topTrailing){PapiImage(name:name).frame(height:120).clipped().clipShape(RoundedRectangle(cornerRadius:12));PapiIconButton(asset:"close",label:"Remove album photo",size:24){passport.photos.removeAll{$0==name}}}
                             }
+                        }
                         }
                         if importing {PapiText("Importing photo…").font(CoffeeType.face(.caption))}
                         PapiTextButton(store.text("Save")) {
@@ -145,14 +151,20 @@ struct EditCoffeePassportView:View {
                             guard passport.id==store.state.passport.id else {store.inform("Account changed","Reopen this page to edit the current coffee account.");return}
                             passport.name=name
                             passport.avatar=passport.portraitReference
-                            if store.commit({$0.passport=passport}) {dismiss()}
-                        }.buttonStyle(PapiButtonStyle()).disabled(importing)
+                            if store.usesCloudWallet {
+                                let bio=passport.bio
+                                Task {if await store.saveCloudProfile(name:name,biography:bio){dismiss()}}
+                            } else if store.commit({$0.passport=passport}) {dismiss()}
+                        }.buttonStyle(PapiButtonStyle()).disabled(importing || store.cloudSocialBusy || waitingForProfile)
                         PapiText("Tap Save to keep these changes.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                     }.padding(20).frame(maxWidth:620).frame(maxWidth:.infinity)
                 }.scrollDismissesKeyboard(.interactively)
             }
         }.photosPicker(isPresented:$showPicker,selection:$picker,matching:.images)
-            .onAppear{if !initialized {passport=store.state.passport;initialized=true}}
+            .onAppear{if !initialized {passport=store.visiblePassport;waitingForProfile=store.usesCloudWallet && store.cloudProfiles?.contains(where:{$0.id==store.state.cloudAccountID}) != true && store.state.pendingCloudProfile==nil;if let pending=store.state.pendingCloudProfile {passport.name=pending.name;passport.bio=pending.biography};initialized=true}}
+            .onChange(of:store.cloudProfiles?.first(where:{$0.id==store.state.cloudAccountID})?.revision) {_,_ in
+                if waitingForProfile,store.cloudProfiles?.contains(where:{$0.id==store.state.cloudAccountID}) == true {passport=store.visiblePassport;waitingForProfile=false}
+            }
             .onChange(of:picker){_,item in if let item {let destination=target;Task {await importPhoto(item,destination:destination)}}}
     }
     private func pickButton(_ label:String,kind:String)->some View {
@@ -189,7 +201,23 @@ struct RelationshipsView:View {
                     }.padding(5).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:18))
                     let following=store.followingIDs.sorted().compactMap{store.person($0)}.filter{!store.isUserHidden($0.id)}
                     let people=selected==0 ? following:(selected==1 ? store.followers:store.friends)
-                    if people.isEmpty {PapiEmpty(title:selected==0 ? "No following yet":(selected==1 ? "No followers":"No mutual connections"))}
+                    if selected==2 && store.usesCloudWallet && !store.incomingFriendships.isEmpty {
+                        PapiText("Friend requests").font(CoffeeType.face(.headline))
+                        ForEach(store.incomingFriendships) {request in
+                            if let person=store.person(request.requester_id.uuidString) {
+                                VStack(alignment:.leading,spacing:10) {
+                                    PapiUserLink(userID:person.id)
+                                    HStack {
+                                        PapiTextButton("Accept"){Task {await store.answerCloudFriendship(request.id,accepted:true)}}.disabled(store.cloudSocialBusy)
+                                        PapiTextButton("Decline"){Task {await store.answerCloudFriendship(request.id,accepted:false)}}.disabled(store.cloudSocialBusy)
+                                    }
+                                }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.92),in:RoundedRectangle(cornerRadius:18))
+                            }
+                        }
+                    }
+                    if store.usesCloudWallet && store.cloudProfiles==nil {
+                        PapiTextButton("Retry members"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)
+                    } else if people.isEmpty {PapiEmpty(title:selected==0 ? "No following yet":(selected==1 ? "No followers":"No mutual connections"))}
                     ForEach(people){person in
                         HStack(spacing:12) {PapiUserLink(userID:person.id);Spacer(minLength:0);PapiIconButton(asset:"comment",label:"Open chat"){router.go(.chat(person.id))}}.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.92),in:RoundedRectangle(cornerRadius:18))
                     }
@@ -207,13 +235,14 @@ struct BlacklistView:View {
             ScrollView {
                 VStack(alignment:.leading,spacing:14) {
                     CoffeeSectionIntro(artwork:"passportCareArt",title:"Blacklist",detail:"Manage the people you have blocked.")
-                    if store.state.blockedMembers.isEmpty {PapiEmpty(title:"Your blacklist is empty")}
-                    ForEach(store.state.blockedMembers.sorted(),id:\.self){id in
+                    if store.usesCloudWallet && store.cloudProfiles==nil {PapiTextButton("Retry members"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)}
+                    else if store.blockedIDs.isEmpty {PapiEmpty(title:"Your blacklist is empty")}
+                    ForEach(store.blockedIDs.sorted(),id:\.self){id in
                         let person=store.person(id)
                         HStack(spacing:12) {
                             Avatar(name:person?.portrait ?? "brandMark")
                             PapiText(verbatim:person?.name ?? "Hidden profile").font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true).frame(maxWidth:.infinity,alignment:.leading)
-                            PapiTextButton("Unblock"){store.unblock(id)}.font(CoffeeType.face(.caption,weight:.bold)).padding(10).frame(minHeight:44).background(Color.butter,in:Capsule())
+                            PapiTextButton("Unblock"){if store.usesCloudWallet,let member=UUID(uuidString:id) {Task {_ = await store.changeCloudBlock(member,enabled:false)}} else {store.unblock(id)}}.font(CoffeeType.face(.caption,weight:.bold)).padding(10).frame(minHeight:44).background(Color.butter,in:Capsule()).disabled(store.cloudSocialBusy)
                         }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.94),in:RoundedRectangle(cornerRadius:18))
                     }
                 }.padding(20).frame(maxWidth:650).frame(maxWidth:.infinity)
@@ -234,6 +263,10 @@ struct CoffeePreferencesView:View {
                     VStack(alignment:.leading,spacing:20) {
                         CoffeeSectionIntro(artwork:"settingsCoffeeArt",title:"Your coffee account",detail:"Papi 1.0 · Brew, taste, remember")
                         preferenceSection("Community & privacy") {
+                            if let pending=store.state.pendingCloudReport {PapiRow(title:"Finish pending report"){router.sheet = .report(pending.target)}}
+                            if store.state.pendingCloudMessage != nil {PapiRow(title:"Finish pending message"){Task {await store.retryPendingCloudMessage()}}}
+                            if let pending=store.state.pendingCloudFriendship {PapiRow(title:"Finish friend request"){Task {await store.requestCloudFriendship(pending.recipientID)}}}
+                            if store.state.pendingCloudProfile != nil {PapiRow(title:"Finish profile changes"){router.go(.editProfile)}}
                             row("Blacklist",.blacklist)
                             row("Community Guidelines",.legal("community"))
                             row("Privacy Policy",.legal("privacy"))
@@ -246,7 +279,7 @@ struct CoffeePreferencesView:View {
                             PapiRow(title:"Log Out"){confirmation="logout"}
                             PapiRow(title:"Delete account"){confirmation="delete"}
                         }
-                        PapiText("Your coffee book and balance do not sync between devices. Community sharing and messaging are unavailable.")
+                        PapiText(store.usesCloudWallet ? "Your coffee book and balance use this account. Account recovery and some community features are still unavailable." : "Your coffee book and balance do not sync between devices. Community sharing and messaging are unavailable.")
                             .font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                         if !store.storageAvailable {PapiTextButton("Retry"){store.reload()}.buttonStyle(PapiButtonStyle())}
                     }.padding(20).frame(maxWidth:650).frame(maxWidth:.infinity)

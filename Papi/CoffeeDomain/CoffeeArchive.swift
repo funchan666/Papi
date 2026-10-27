@@ -130,6 +130,29 @@ struct PendingCloudBrewWrite: Codable {
     let generation: Int
     let encodedBook: Data
 }
+struct PendingCloudReport: Codable {
+    let id: UUID
+    let accountID: UUID
+    let target: SafetyTarget
+    let reason: String
+}
+struct PendingCloudMessage: Codable {
+    let id: UUID
+    let accountID: UUID
+    let recipientID: UUID
+    let body: String
+}
+struct PendingCloudFriendship: Codable {
+    let id: UUID
+    let accountID: UUID
+    let recipientID: UUID
+}
+struct PendingCloudProfile: Codable {
+    let accountID: UUID
+    let name: String
+    let biography: String
+    let revision: Int
+}
 enum CoffeeEconomy {
     static let welcomeCoins = 800
     static func postCost(isVideo: Bool) -> Int { isVideo ? 80 : 40 }
@@ -166,6 +189,10 @@ struct CoffeeArchive: Codable {
     var pendingCloudBrewWrite: PendingCloudBrewWrite? = nil
     var cloudBrewConflict: Bool? = nil
     var cloudBrewLocalBackups: [BrewNotebook]? = nil
+    var pendingCloudReport: PendingCloudReport? = nil
+    var pendingCloudMessage: PendingCloudMessage? = nil
+    var pendingCloudFriendship: PendingCloudFriendship? = nil
+    var pendingCloudProfile: PendingCloudProfile? = nil
     var signedIn = false
     var sawOnboarding = false
     var acceptedPolicyVersion: String? = nil
@@ -226,6 +253,10 @@ struct CoffeeArchive: Codable {
         case pendingCloudBrewWrite = "pendingCloudBrewWrite"
         case cloudBrewConflict = "cloudBrewConflict"
         case cloudBrewLocalBackups = "cloudBrewLocalBackups"
+        case pendingCloudReport = "pendingCloudReport"
+        case pendingCloudMessage = "pendingCloudMessage"
+        case pendingCloudFriendship = "pendingCloudFriendship"
+        case pendingCloudProfile = "pendingCloudProfile"
         case signedIn = "signedIn"
         case sawOnboarding = "sawOnboarding"
         case acceptedPolicyVersion = "acceptedPolicyVersion"

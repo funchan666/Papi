@@ -56,15 +56,21 @@ struct SafetyMenuView:View {
                     }
                     .overlay {
                         if confirmBlock {
-                            safetyConfirmation(title:target.kind == .user ? "Block this user?":"Hide this content?",message:target.kind == .user ? "Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.":"This item will disappear from your lists.",confirm:target.kind == .user ? "Block user":"Hide content",action:{confirmBlock=false;if store.hide(target){dismiss()}},cancel:{confirmBlock=false})
+                            safetyConfirmation(title:target.kind == .user ? "Block this user?":"Hide this content?",message:target.kind == .user ? "Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.":"This item will disappear from your lists.",confirm:target.kind == .user ? "Block user":"Hide content",action:{confirmBlock=false;if target.kind == .user {blockUser(target.contentReference)} else if store.hide(target){dismiss()}},cancel:{confirmBlock=false})
                         }
                         if let authorToBlock {
-                            safetyConfirmation(title:"Block this user?",message:"Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.",confirm:"Block user",action:{self.authorToBlock=nil;if store.block(authorToBlock){dismiss()}},cancel:{self.authorToBlock=nil})
+                            safetyConfirmation(title:"Block this user?",message:"Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.",confirm:"Block user",action:{self.authorToBlock=nil;blockUser(authorToBlock)},cancel:{self.authorToBlock=nil})
                         }
                     }
                 }
             }
         }
+    }
+    private func blockUser(_ id:String) {
+        if store.usesCloudWallet {
+            guard let member=UUID(uuidString:id) else {return}
+            Task {if await store.changeCloudBlock(member,enabled:true){dismiss()}}
+        } else if store.block(id) {dismiss()}
     }
     private func safetyChoice(_ title:String,detail:String,tint:Color,action:@escaping ()->Void)->some View {
         Button(action:action) {
@@ -105,7 +111,7 @@ struct ReportView:View {
                         HStack(spacing:14) {
                             VStack(alignment:.leading,spacing:6) {
                                 PapiText("Choose a reason").font(CoffeeType.display(.title2,weight:.bold))
-                                PapiText("The item will be hidden after saving. Reports are not sent for review.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                                PapiText(store.usesCloudWallet ? "The report will be sent for review and the item will be hidden.":"The item will be hidden after saving. Reports are not sent for review.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                             }.frame(maxWidth:.infinity,alignment:.leading)
                             PapiArtworkFit(asset:"coffeeSafetyArt").frame(width:80,height:80)
                         }.padding(18).background(Color.cream.opacity(0.95),in:RoundedRectangle(cornerRadius:22))
@@ -113,14 +119,14 @@ struct ReportView:View {
                             Button {reason=item} label:{
                                 HStack(spacing:12) {PapiText(item).font(CoffeeType.face(.subheadline,weight:.medium)).multilineTextAlignment(.leading).fixedSize(horizontal:false,vertical:true);Spacer(minLength:0);if reason==item {Image("check").resizable().scaledToFit().frame(width:20,height:20).accessibilityHidden(true)}}
                                     .padding(16).frame(maxWidth:.infinity,minHeight:52,alignment:.leading).background(reason==item ? Color.butter:Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:16))
-                            }.buttonStyle(.plain).accessibilityAddTraits(reason==item ? .isSelected:[])
+                            }.buttonStyle(.plain).disabled(store.state.pendingCloudReport != nil).accessibilityAddTraits(reason==item ? .isSelected:[])
                         }
-                        PapiTextButton("Report") {if let reason,store.report(target,reason:reason){dismiss()}}
-                            .buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(reason==nil)
+                        PapiTextButton("Report") {if let reason {if store.usesCloudWallet {Task {if await store.submitCloudReport(target,reason:reason){dismiss()}}} else if store.report(target,reason:reason){dismiss()}}}
+                            .buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(reason==nil || store.cloudSocialBusy || (store.usesCloudWallet && UUID(uuidString:target.contentReference)==nil))
                     }.padding(20).frame(maxWidth:600).frame(maxWidth:.infinity)
                 }
             }
-        }
+        }.onAppear {if let pending=store.state.pendingCloudReport,pending.target.id==target.id {reason=pending.reason}}
     }
 }
 struct CoffeeReceiptView:View {
@@ -183,7 +189,10 @@ struct ReviewQueueView:View {
                                 ForEach(submissions) {post in
                                     PapiPanel {VStack(alignment:.leading,spacing:12) {
                                         HStack {Image("coffeeUpdates").resizable().scaledToFit().frame(width:24,height:28);PapiText(cloudStatus(post.moderation_status)).font(CoffeeType.face(.headline));Spacer()}
-                                        PapiText(verbatim:post.caption).fixedSize(horizontal:false,vertical:true)
+                                        HStack(alignment:.top,spacing:12) {
+                                            if post.media_kind=="photo" {PrivateSubmissionPhoto(path:post.media_path).frame(width:72,height:72).clipShape(RoundedRectangle(cornerRadius:14)).accessibilityHidden(true)}
+                                            PapiText(verbatim:post.caption).fixedSize(horizontal:false,vertical:true).frame(maxWidth:.infinity,alignment:.leading)
+                                        }
                                         PapiTextButton("Delete post"){removing=post.id.uuidString}.font(CoffeeType.face(.caption,weight:.bold)).disabled(store.cloudSubmissionsBusy || store.state.pendingCloudPostDeletion != nil)
                                     }}
                                 }
