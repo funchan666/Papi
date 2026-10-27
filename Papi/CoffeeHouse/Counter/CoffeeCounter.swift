@@ -26,7 +26,7 @@ struct CollectibleCounterView:View {
                             giftIntroduction
                             LazyVGrid(columns:Array(repeating:GridItem(.flexible(),spacing:8),count:columns),spacing:8) {
                                 ForEach(CoffeeCollectible.all) {item in
-                                    Button {selected=item.id} label:{giftTile(item)}.buttonStyle(.plain)
+                                    Button {selected=item.id} label:{giftTile(item)}.buttonStyle(.plain).disabled(store.state.pendingCloudCollectible != nil)
                                         .accessibilityAddTraits(selected==item.id ? .isSelected:[])
                                 }
                             }
@@ -37,8 +37,12 @@ struct CollectibleCounterView:View {
                 }
             }.overlay {
                 if confirmCollect {
-                    PapiDialog(title:"Collect \(gift.name)?",message:"Spend \(gift.cost*quantity) coins to add \(quantity) to your backpack. You can display an owned gift on your profile.",confirm:"Collect",cancel:"Cancel",action:{confirmCollect=false;if store.collect(gift,quantity:quantity){store.inform("Added to your backpack","\(gift.name) × \(quantity) is saved to this guest's collection.")}},dismiss:{confirmCollect=false})
+                    PapiDialog(title:"Collect \(gift.name)?",message:"Spend \(gift.cost*quantity) coins to add \(quantity) to your backpack. You can display an owned gift on your profile.",confirm:"Collect",cancel:"Cancel",action:{let selectedGift=gift;let selectedQuantity=quantity;confirmCollect=false;if store.usesCloudWallet {Task {await store.cloudCollect(selectedGift,quantity:selectedQuantity)}} else if store.collect(selectedGift,quantity:selectedQuantity){store.inform("Added to your backpack","\(selectedGift.name) × \(selectedQuantity) is saved to this guest's collection.")}},dismiss:{confirmCollect=false})
                 }
+            }
+        }.onAppear {
+            if let pending=store.state.pendingCloudCollectible,pending.accountID==store.state.cloudAccountID {
+                selected=pending.item;quantity=pending.quantity
             }
         }
     }
@@ -51,7 +55,7 @@ struct CollectibleCounterView:View {
             }.frame(maxWidth:.infinity,alignment:.leading)
             VStack(alignment:.trailing,spacing:4) {
                 PapiArtworkFit(asset:"giftCounterArt").frame(width:72,height:60)
-                CoinLabel(value:store.state.coinBalance).font(CoffeeType.face(.subheadline,weight:.bold))
+                CoffeeCurrentBalance().font(CoffeeType.face(.subheadline,weight:.bold))
                 PapiText("My coins").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
             }
         }.padding(.horizontal,16).padding(.vertical,12).frame(maxWidth:.infinity)
@@ -72,9 +76,9 @@ struct CollectibleCounterView:View {
     private var giftActions:some View {
         VStack(spacing:8) {
             HStack(spacing:8) {
-                PapiTextButton("Less"){quantity=max(1,quantity-1)}.frame(minWidth:44,minHeight:44).disabled(quantity==1)
+                PapiTextButton("Less"){quantity=max(1,quantity-1)}.frame(minWidth:44,minHeight:44).disabled(quantity==1 || store.state.pendingCloudCollectible != nil)
                 PapiText("Quantity \(quantity)").font(CoffeeType.face(.subheadline,weight:.semibold)).monospacedDigit().frame(maxWidth:.infinity)
-                PapiTextButton("More"){quantity=min(99,quantity+1)}.frame(minWidth:44,minHeight:44).disabled(quantity==99)
+                PapiTextButton("More"){quantity=min(99,quantity+1)}.frame(minWidth:44,minHeight:44).disabled(quantity==99 || store.state.pendingCloudCollectible != nil)
             }
             HStack(spacing:8) {
                 PapiText(gift.name).font(CoffeeType.face(.caption,weight:.semibold)).lineLimit(2)
@@ -82,7 +86,13 @@ struct CollectibleCounterView:View {
                 PapiText("Total").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                 CoinLabel(value:gift.cost*quantity).font(CoffeeType.face(.subheadline,weight:.bold))
             }
-            PapiTextButton("Collect for my backpack"){confirmCollect=true}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16))
+            PapiTextButton("Collect for my backpack"){confirmCollect=true}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(store.usesCloudWallet && (store.cloudWallet==nil || store.cloudWalletBusy))
+            if store.state.pendingCloudCollectible != nil {
+                PapiText("Retry the saved selection to confirm your purchase.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+            }
+            if store.usesCloudWallet && store.cloudWallet==nil {
+                PapiTextButton("Retry wallet"){Task {await store.refreshCloudWallet()}}.disabled(store.cloudWalletBusy)
+            }
             if context != "backpack" {
                 PapiTextButton("Save gift idea"){store.previewGift(gift,quantity:quantity,context:context)}.font(CoffeeType.face(.subheadline,weight:.bold)).frame(maxWidth:.infinity,minHeight:44)
                 PapiText("Gift ideas are not sent and do not cost coins.").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
@@ -100,9 +110,11 @@ struct CoffeeCollectionView:View {
                 PapiHeader(store.text("Backpack")) {PapiIconButton(asset:"plus",label:"Collect gifts"){router.go(.gifts("backpack"))}}
                 ScrollView {
                     VStack(spacing:20) {
-                        let owned=CoffeeCollectible.all.filter{(store.state.collectiblesOwned[$0.id] ?? 0)>0}
+                        let owned=CoffeeCollectible.all.filter{(store.collectedItems[$0.id] ?? 0)>0}
                         CoffeeSectionIntro(artwork:"passportKeepsakeArt",title:"My backpack",detail:"Collect a keepsake with coins, then display your favourite on your coffee passport.")
-                        if owned.isEmpty {
+                        if store.usesCloudWallet && store.cloudWallet==nil {
+                            PapiTextButton("Retry wallet"){Task {await store.refreshCloudWallet()}}.disabled(store.cloudWalletBusy)
+                        } else if owned.isEmpty {
                             PapiEmpty(title:"A little shelf of coffee keepsakes")
                             PapiTextButton("Explore gifts"){router.go(.gifts("backpack"))}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16))
                         }
@@ -111,7 +123,7 @@ struct CoffeeCollectionView:View {
                                 VStack(spacing:9) {
                                     PapiArtworkFit(asset:gift.asset).frame(height:110)
                                     PapiText(gift.name).font(CoffeeType.face(.headline))
-                                    PapiText("×\(store.state.collectiblesOwned[gift.id] ?? 0)").font(CoffeeType.face(.caption))
+                                    PapiText("×\(store.collectedItems[gift.id] ?? 0)").font(CoffeeType.face(.caption))
                                     PapiTextButton(store.state.displayedGift==gift.id ? "Remove display":"Display on profile") {
                                         _ = store.commit{$0.displayedGift = $0.displayedGift==gift.id ? nil:gift.id}
                                     }.font(CoffeeType.face(.caption,weight:.semibold)).padding(10).background(Color.butter,in:Capsule())
@@ -163,7 +175,8 @@ struct CoinReserveView:View {
                                     Image("coin").resizable().scaledToFit().frame(width:34,height:34).accessibilityHidden(true)
                                     VStack(alignment:.leading,spacing:3) {
                                         PapiText("Coffee reserve").font(CoffeeType.face(.caption,weight:.semibold))
-                                        Text(store.state.coinBalance,format:.number).font(CoffeeType.face(.title,weight:.heavy)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.5).contentTransition(.numericText())
+                                        if let balance=store.availableBalance {Text(balance,format:.number).font(CoffeeType.face(.title,weight:.heavy)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.5).contentTransition(.numericText())}
+                                        else {PapiText(store.cloudWalletBusy ? "Loading wallet…":"Wallet unavailable").font(CoffeeType.face(.subheadline))}
                                     }
                                 }.frame(maxWidth:.infinity,alignment:.leading)
                                 PapiArtworkFit(asset:"passportReserveArt").frame(width:typeSize.isAccessibilitySize ? 50:74,height:typeSize.isAccessibilitySize ? 50:74)
@@ -180,13 +193,33 @@ struct CoinReserveView:View {
                             }
                             if inlinePurchase {purchasePanel}
                             PapiText(commerce.status).font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).accessibilityAddTraits(.updatesFrequently)
-                            PapiTextButton("Recover purchases"){Task{await commerce.sync()}}.font(CoffeeType.face(.subheadline,weight:.bold)).frame(minHeight:44).disabled(commerce.busy || !store.storageAvailable)
+                            PapiTextButton("Recover purchases"){Task{await commerce.sync()}}.font(CoffeeType.face(.subheadline,weight:.bold)).frame(minHeight:44).disabled(commerce.busy || !store.storageAvailable || store.usesCloudWallet)
                             spendingGuide
-                            PapiText("Coins do not sync between devices. Deleting your account removes its balance; purchase records are kept to prevent duplicate delivery.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                            if store.usesCloudWallet {
+                                if store.cloudWallet==nil {PapiTextButton("Retry wallet"){Task {await store.refreshCloudWallet()}}.disabled(store.cloudWalletBusy)}
+                                PapiText("Purchases are temporarily unavailable.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                            } else {
+                                PapiText("Coins do not sync between devices. Deleting your account removes its balance; purchase records are kept to prevent duplicate delivery.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                            }
                             VStack(alignment:.leading,spacing:12) {
                                 PapiText("Wallet activity").font(CoffeeType.face(.headline))
-                                if store.state.coinMovements.isEmpty {PapiEmpty(title:"No transactions yet",detail:"Daily check-in is a free way to start collecting coins.")}
-                                ForEach(store.state.coinMovements.prefix(40)) {entry in
+                                if store.usesCloudWallet {
+                                    if let wallet=store.cloudWallet {
+                                        if wallet.movements.isEmpty {PapiEmpty(title:"No transactions yet",detail:"Daily check-in is a free way to start collecting coins.")}
+                                        ForEach(wallet.movements) {entry in
+                                            HStack(spacing:12) {
+                                                VStack(alignment:.leading,spacing:3) {
+                                                    PapiText(entry.reason).font(CoffeeType.face(.subheadline))
+                                                    if let date=entry.date {Text(date,style:.date).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
+                                                }
+                                                Spacer(minLength:4)
+                                                Text(entry.delta,format:.number.sign(strategy:.always())).monospacedDigit().fontWeight(.semibold)
+                                            }.padding(.vertical,12)
+                                            Divider().overlay(Color.coffee.opacity(0.15))
+                                        }
+                                    }
+                                } else if store.state.coinMovements.isEmpty {PapiEmpty(title:"No transactions yet",detail:"Daily check-in is a free way to start collecting coins.")}
+                                ForEach(store.usesCloudWallet ? []:Array(store.state.coinMovements.prefix(40))) {entry in
                                     HStack(spacing:12) {
                                         VStack(alignment:.leading,spacing:3) {PapiText(entry.reason).font(CoffeeType.face(.subheadline));Text(entry.createdAt,style:.date).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
                                         Spacer(minLength:4)
@@ -210,7 +243,7 @@ struct CoinReserveView:View {
                 let selectedPack=pack
                 let visit=purchaseVisitID
                 Task {await commerce.buy(selectedPack,canPresent:{visible && activeScene && purchaseVisitID==visit},purchase:{product,options in try await purchase(product,options:options)})}
-            }.buttonStyle(PapiButtonStyle(wide:true)).disabled(commerce.busy || commerce.unresolved || !store.storageAvailable || !store.state.purchaseIntents.isEmpty || store.state.activePurchaseToken != nil)
+            }.buttonStyle(PapiButtonStyle(wide:true)).disabled(commerce.busy || commerce.unresolved || !store.storageAvailable || store.usesCloudWallet || !store.state.purchaseIntents.isEmpty || store.state.activePurchaseToken != nil)
             PapiText("Apple confirms the price · No coins before verified payment").font(CoffeeType.face(.caption2)).multilineTextAlignment(.center).foregroundStyle(Color.mutedCoffee)
         }.padding(.horizontal,20).padding(.vertical,12).frame(maxWidth:680).frame(maxWidth:.infinity).background(Color.cream).papiAvoidReserved()
     }
@@ -305,20 +338,26 @@ struct DailyRitualView:View {
                 ScrollView {
                     VStack(spacing:20) {
                         CoffeeSectionIntro(artwork:"passportRitualArt",title:"Check in Rewards",detail:"A little reward for your daily ritual.")
-                        let completed=store.checkedInToday && !store.state.checkinDays.isEmpty && store.state.checkinDays.count%7==0 ? 7:store.state.checkinDays.count%7
-                        LazyVGrid(columns:[GridItem(.adaptive(minimum:70),spacing:8)],spacing:12) {
-                            ForEach(0..<7) {i in
-                                VStack(spacing:12) {
-                                    PapiText("Day \(i+1)").font(CoffeeType.face(.caption2))
-                                    Image("coin").resizable().scaledToFit().frame(width:30,height:30)
-                                    PapiText("\((i+1)*10)").font(CoffeeType.face(.headline))
-                                    if i < completed {Image("check").resizable().scaledToFit().frame(width:15,height:15)}
-                                }.padding(.vertical,15).frame(maxWidth:.infinity).background(!store.checkedInToday && i==completed ? Color.butter:Color.white,in:RoundedRectangle(cornerRadius:15))
+                        let completed=store.checkedInToday && store.checkinCount>0 && store.checkinCount%7==0 ? 7:store.checkinCount%7
+                        if !store.usesCloudWallet || store.cloudWallet != nil {
+                            LazyVGrid(columns:[GridItem(.adaptive(minimum:70),spacing:8)],spacing:12) {
+                                ForEach(0..<7) {i in
+                                    VStack(spacing:12) {
+                                        PapiText("Day \(i+1)").font(CoffeeType.face(.caption2))
+                                        Image("coin").resizable().scaledToFit().frame(width:30,height:30)
+                                        PapiText("\((i+1)*10)").font(CoffeeType.face(.headline))
+                                        if i < completed {Image("check").resizable().scaledToFit().frame(width:15,height:15)}
+                                    }.padding(.vertical,15).frame(maxWidth:.infinity).background(!store.checkedInToday && i==completed ? Color.butter:Color.white,in:RoundedRectangle(cornerRadius:15))
+                                }
                             }
                         }
                         PapiText("Seven check-ins complete a reward cycle. Each day starts at 00:00 UTC; missed days do not reset your collection.").font(CoffeeType.face(.caption)).multilineTextAlignment(.center).foregroundStyle(Color.mutedCoffee)
-                        PapiTextButton(store.checkedInToday ? "Checked in today":"Check in · \(store.nextCheckinReward) coins"){store.checkIn()}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(store.checkedInToday)
-                        PapiText("\(store.state.checkinDays.count) days collected").font(CoffeeType.face(.caption))
+                        if store.usesCloudWallet && store.cloudWallet==nil {
+                            PapiTextButton("Retry wallet"){Task {await store.refreshCloudWallet()}}.disabled(store.cloudWalletBusy)
+                        } else {
+                            PapiTextButton(store.checkedInToday ? "Checked in today":"Check in · \(store.nextCheckinReward) coins"){if store.usesCloudWallet {Task {await store.cloudCheckIn()}} else {store.checkIn()}}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(store.checkedInToday || store.cloudWalletBusy)
+                            PapiText("\(store.checkinCount) days collected").font(CoffeeType.face(.caption))
+                        }
                     }.padding(22).frame(maxWidth:600).frame(maxWidth:.infinity)
                 }
             }
@@ -337,9 +376,11 @@ struct CoffeeJourneyView:View {
                         CoffeeSectionIntro(artwork:"passportBrewArt",title:"Your Coffee Journey",detail:"Your coffee journey stays with this account.").padding(.horizontal,20)
                         VStack(alignment:.leading,spacing:16) {
                             HStack {Avatar(name:store.state.passport.portraitReference,size:48);PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.title3,weight:.bold));Spacer()}
-                            PapiText("Lv.\(store.state.experience/100+1)").font(CoffeeType.counter(size:32,weight:.heavy))
-                            ProgressView(value:Double(store.state.experience%100),total:100).tint(.coffee)
-                            PapiText("\(store.state.experience%100)/100 EXP").font(CoffeeType.face(.caption))
+                            if let experience=store.currentExperience {
+                                PapiText("Lv.\(experience/100+1)").font(CoffeeType.counter(size:32,weight:.heavy))
+                                ProgressView(value:Double(experience%100),total:100).tint(.coffee)
+                                PapiText("\(experience%100)/100 EXP").font(CoffeeType.face(.caption))
+                            } else {PapiTextButton("Retry wallet"){Task {await store.refreshCloudWallet()}}.disabled(store.cloudWalletBusy)}
                         }.padding(24).frame(minHeight:205).background{PapiArtworkFill(asset:"levelCard")}.padding(.horizontal,20)
                         PapiText("Check in for 20 EXP. Save a coffee post for 10 EXP. Every 100 EXP brings a new level.").font(CoffeeType.face(.subheadline)).multilineTextAlignment(.leading).fixedSize(horizontal:false,vertical:true).padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:18)).padding(.horizontal,20)
                         PapiTextButton("Open my brew book"){router.go(.brewArchive)}.buttonStyle(PapiButtonStyle(light:true,wide:true,cornerRadius:16)).padding(.horizontal,20)

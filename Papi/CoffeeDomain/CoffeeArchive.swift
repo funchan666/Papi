@@ -112,6 +112,24 @@ struct PendingCloudCollectible: Codable {
     let item: String
     let quantity: Int
 }
+struct PendingCloudMoment: Codable {
+    let id: UUID
+    let accountID: UUID
+    let caption: String
+    let media: String
+    let isVideo: Bool
+}
+struct PendingCloudPostDeletion: Codable {
+    let accountID: UUID
+    let postID: UUID
+}
+struct PendingCloudBrewWrite: Codable {
+    let id: UUID
+    let accountID: UUID
+    let revision: Int
+    let generation: Int
+    let encodedBook: Data
+}
 enum CoffeeEconomy {
     static let welcomeCoins = 800
     static func postCost(isVideo: Bool) -> Int { isVideo ? 80 : 40 }
@@ -140,6 +158,14 @@ struct CoffeeArchive: Codable {
     var cloudAccountID: UUID? = nil
     var cloudBootstrapPending: Bool? = nil
     var pendingCloudCollectible: PendingCloudCollectible? = nil
+    var pendingCloudMoment: PendingCloudMoment? = nil
+    var pendingCloudPostDeletion: PendingCloudPostDeletion? = nil
+    var cloudBrewRevision: Int? = nil
+    var cloudBrewGeneration: Int? = nil
+    var cloudBrewSyncedGeneration: Int? = nil
+    var pendingCloudBrewWrite: PendingCloudBrewWrite? = nil
+    var cloudBrewConflict: Bool? = nil
+    var cloudBrewLocalBackups: [BrewNotebook]? = nil
     var signedIn = false
     var sawOnboarding = false
     var acceptedPolicyVersion: String? = nil
@@ -192,6 +218,14 @@ struct CoffeeArchive: Codable {
         case cloudAccountID = "cloudAccountID"
         case cloudBootstrapPending = "cloudBootstrapPending"
         case pendingCloudCollectible = "pendingCloudCollectible"
+        case pendingCloudMoment = "pendingCloudMoment"
+        case pendingCloudPostDeletion = "pendingCloudPostDeletion"
+        case cloudBrewRevision = "cloudBrewRevision"
+        case cloudBrewGeneration = "cloudBrewGeneration"
+        case cloudBrewSyncedGeneration = "cloudBrewSyncedGeneration"
+        case pendingCloudBrewWrite = "pendingCloudBrewWrite"
+        case cloudBrewConflict = "cloudBrewConflict"
+        case cloudBrewLocalBackups = "cloudBrewLocalBackups"
         case signedIn = "signedIn"
         case sawOnboarding = "sawOnboarding"
         case acceptedPolicyVersion = "acceptedPolicyVersion"
@@ -232,6 +266,11 @@ struct CoffeeArchive: Codable {
         case historicalTransactionIDs = "historicalTransactionIDs"
         case pendingMediaDeletion = "pendingMediaDeletion"
         case community = "community"
+    }
+
+    mutating func setBrewNotebook(_ book:BrewNotebook) {
+        brewNotebook=book
+        if cloudAccountID != nil {cloudBrewGeneration=(cloudBrewGeneration ?? 0)+1}
     }
 }
 

@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import Supabase
+import UniformTypeIdentifiers
 
 struct CoffeeReceipt: Identifiable {
     let id = UUID()
@@ -23,7 +24,19 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var cloudWallet: CoffeeCloud.WalletSnapshot?
     @Published private(set) var cloudWalletBusy=false
     @Published private(set) var cloudWalletUnavailable=false
+    @Published private(set) var cloudSubmissions: [CoffeeCloud.Moment]?
+    @Published private(set) var cloudSubmissionsBusy=false
+    @Published private(set) var cloudBrewBusy=false
+    @Published private(set) var cloudBrewNeedsAttention=false
+    @Published private(set) var cloudBrewHistory: [CoffeeCloud.BrewBookHistory]?
+    @Published private(set) var cloudBrewHistoryBusy=false
+    @Published private(set) var cloudProfiles: [CoffeeCloud.Profile]?
+    @Published private(set) var cloudFollows: [CoffeeCloud.Follow] = []
+    @Published private(set) var cloudFriendships: [CoffeeCloud.Friendship] = []
+    @Published private(set) var cloudBlocks: [CoffeeCloud.Block] = []
+    @Published private(set) var cloudSocialBusy=false
     private var savedSnapshotExpected=false
+    private var brewSyncDebounce:Task<Void,Never>?
     init() {
         do {let saved=try CoffeeVault.read();state=saved ?? CoffeeArchive();savedSnapshotExpected=saved != nil}
         catch { state = CoffeeArchive(); storageAvailable = false
@@ -33,12 +46,20 @@ struct CoffeeReceipt: Identifiable {
     @discardableResult func commit(_ mutate: (inout CoffeeArchive) throws -> Void) -> Bool {
         guard accountAction==nil,!loginInProgress else {return false}
         guard storageAvailable else { inform("Saved data unavailable", "Unlock the device and use Retry in Settings. Your saved data will not be overwritten."); return false }
+        let priorBrewGeneration=state.cloudBrewGeneration
         var next = state
         do {
             try mutate(&next)
             try CoffeeVault.write(next)
             savedSnapshotExpected=true
             state = next
+            if next.cloudAccountID != nil,next.cloudBrewGeneration != priorBrewGeneration,!cloudBrewBusy {
+                brewSyncDebounce?.cancel()
+                brewSyncDebounce=Task {
+                    do {try await Task.sleep(for:.milliseconds(700))} catch {return}
+                    await syncCloudBrewBook()
+                }
+            }
             return true
         } catch {
             if let vaultError=error as? CoffeeVault.VaultError,case .verification=vaultError {savedSnapshotExpected=true}
@@ -90,6 +111,7 @@ struct CoffeeReceipt: Identifiable {
     func connectCloudAccount() async throws {
         let requiredPolicy = "2026-10-27-online-1"
         guard state.signedIn, storageAvailable, accountAction == nil, !loginInProgress, !cloudConnectionInProgress,
+              !checkoutActive, state.purchaseIntents.isEmpty, state.activePurchaseToken == nil,
               CoffeePolicyLibrary.version == requiredPolicy, state.acceptedPolicyVersion == requiredPolicy else {
             throw CoffeeCloud.ConnectionError.actionUnavailable
         }
@@ -110,6 +132,8 @@ struct CoffeeReceipt: Identifiable {
             throw CoffeeCloud.ConnectionError.actionUnavailable
         }
         await refreshCloudWallet()
+        await syncCloudBrewBook()
+        await refreshCloudSocial()
     }
     var usesCloudWallet: Bool { state.cloudAccountID != nil }
     var availableBalance: Int? { usesCloudWallet ? cloudWallet?.balance : state.coinBalance }
@@ -131,6 +155,209 @@ struct CoffeeReceipt: Identifiable {
         } catch {
             guard state.cloudAccountID==account else { return }
             cloudWallet=nil;cloudWalletUnavailable=true
+        }
+    }
+
+    func refreshCloudSubmissions() async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudSubmissionsBusy else {return}
+        cloudSubmissionsBusy=true
+        defer {cloudSubmissionsBusy=false}
+        do {
+            let items=try await CoffeeCloud.shared.ownMoments(for:account)
+            guard state.signedIn,state.cloudAccountID==account else {return}
+            cloudSubmissions=items
+        } catch {
+            guard state.cloudAccountID==account else {return}
+            cloudSubmissions=nil
+        }
+    }
+
+    func refreshCloudSocial() async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudSocialBusy else {return}
+        cloudSocialBusy=true
+        defer {cloudSocialBusy=false}
+        do {
+            let profiles=try await CoffeeCloud.shared.profiles(for:account)
+            let follows=try await CoffeeCloud.shared.follows(for:account)
+            let friendships=try await CoffeeCloud.shared.friendshipRequests(for:account)
+            let blocks=try await CoffeeCloud.shared.blocks(for:account)
+            guard state.signedIn,state.cloudAccountID==account else {return}
+            cloudProfiles=profiles;cloudFollows=follows;cloudFriendships=friendships;cloudBlocks=blocks
+        } catch {
+            guard state.cloudAccountID==account else {return}
+            cloudProfiles=nil
+        }
+    }
+
+    func changeCloudFollow(_ member:UUID,enabled:Bool) async {
+        guard let account=state.cloudAccountID,state.signedIn,member != account,!cloudSocialBusy else {return}
+        cloudSocialBusy=true
+        defer {cloudSocialBusy=false}
+        do {
+            try await CoffeeCloud.shared.setFollow(member,account:account,enabled:enabled)
+            let follows=try await CoffeeCloud.shared.follows(for:account)
+            guard state.signedIn,state.cloudAccountID==account else {return}
+            cloudFollows=follows
+        } catch {
+            guard state.cloudAccountID==account else {return}
+            // A failed response does not establish whether the server applied it.
+            if let follows=try? await CoffeeCloud.shared.follows(for:account),state.signedIn,state.cloudAccountID==account {
+                cloudFollows=follows
+                if follows.contains(where:{$0.follower_id==account && $0.followed_id==member}) == enabled {return}
+            }
+            inform("Follow needs attention", "The change could not be confirmed. Please try again.")
+        }
+    }
+
+    func syncCloudBrewBook() async {
+        guard let account=state.cloudAccountID,state.signedIn,storageAvailable,!cloudBrewBusy else {return}
+        guard state.cloudBrewConflict != true else {cloudBrewNeedsAttention=true;return}
+        cloudBrewBusy=true
+        defer {cloudBrewBusy=false}
+        do {
+            let remote=try await CoffeeCloud.shared.brewBook(for:account)
+            guard state.signedIn,state.cloudAccountID==account else {return}
+            if state.cloudBrewRevision == nil {
+                if let remoteBook=remote.contents {
+                    guard state.brewNotebook==nil,state.pendingCloudBrewWrite==nil else {
+                        _ = commit({$0.cloudBrewConflict=true});cloudBrewNeedsAttention=true;return
+                    }
+                    guard commit({value in
+                        value.brewNotebook=remoteBook;value.cloudBrewRevision=remote.revision
+                        value.cloudBrewGeneration=0;value.cloudBrewSyncedGeneration=0
+                    }) else {return}
+                } else {
+                    guard commit({value in
+                        value.cloudBrewRevision=remote.revision
+                        value.cloudBrewGeneration=value.cloudBrewGeneration ?? 0
+                        value.cloudBrewSyncedGeneration=value.brewNotebook==nil ? (value.cloudBrewGeneration ?? 0):-1
+                    }) else {return}
+                }
+            } else if state.pendingCloudBrewWrite==nil,remote.revision != state.cloudBrewRevision {
+                _ = commit({$0.cloudBrewConflict=true});cloudBrewNeedsAttention=true;return
+            }
+
+            while state.signedIn,state.cloudAccountID==account,state.cloudBrewConflict != true {
+                let pending:PendingCloudBrewWrite
+                if let existing=state.pendingCloudBrewWrite {
+                    guard existing.accountID==account else {cloudBrewNeedsAttention=true;return}
+                    pending=existing
+                } else {
+                    let generation=state.cloudBrewGeneration ?? 0
+                    guard generation != state.cloudBrewSyncedGeneration else {cloudBrewNeedsAttention=false;return}
+                    guard let revision=state.cloudBrewRevision else {cloudBrewNeedsAttention=true;return}
+                    let encoded=try await CoffeeCloud.shared.encodeBrewBook(state.brewNotebook ?? BrewNotebook())
+                    guard state.signedIn,state.cloudAccountID==account else {return}
+                    if generation != (state.cloudBrewGeneration ?? 0) {continue}
+                    pending = .init(id:UUID(),accountID:account,revision:revision,generation:generation,encodedBook:encoded)
+                    guard commit({$0.pendingCloudBrewWrite=pending}) else {return}
+                }
+                let result=try await CoffeeCloud.shared.saveBrewBook(requestID:pending.id,revision:pending.revision,
+                    encodedBook:pending.encodedBook,account:account)
+                guard state.signedIn,state.cloudAccountID==account,state.pendingCloudBrewWrite?.id==pending.id else {return}
+                if result.current_revision != result.committed_revision {
+                    _ = commit({$0.cloudBrewConflict=true});cloudBrewNeedsAttention=true;return
+                }
+                guard commit({value in
+                    value.cloudBrewRevision=result.committed_revision
+                    value.cloudBrewSyncedGeneration=pending.generation
+                    value.pendingCloudBrewWrite=nil
+                }) else {return}
+                cloudBrewHistory=nil
+            }
+        } catch {
+            guard state.cloudAccountID==account else {return}
+            if let databaseError=error as? PostgrestError,databaseError.code=="P0001",databaseError.message=="Brew book revision conflict" {
+                _ = commit({$0.cloudBrewConflict=true})
+            }
+            cloudBrewNeedsAttention=true
+        }
+    }
+
+    func resolveCloudBrewConflict(useCloud:Bool) async {
+        guard let account=state.cloudAccountID,state.signedIn,state.cloudBrewConflict==true,!cloudBrewBusy,brewBook.activePour==nil else {return}
+        cloudBrewBusy=true
+        defer {cloudBrewBusy=false}
+        do {
+            let remote=try await CoffeeCloud.shared.brewBook(for:account)
+            guard state.signedIn,state.cloudAccountID==account,state.cloudBrewConflict==true else {return}
+            guard commit({value in
+                if useCloud {
+                    if let local=value.brewNotebook {
+                        var backups=value.cloudBrewLocalBackups ?? []
+                        backups.append(local);value.cloudBrewLocalBackups=backups
+                    }
+                    value.brewNotebook=remote.contents
+                }
+                let generation=(value.cloudBrewGeneration ?? 0)+1
+                value.cloudBrewGeneration=generation
+                value.cloudBrewSyncedGeneration=useCloud ? generation:-1
+                value.cloudBrewRevision=remote.revision
+                value.pendingCloudBrewWrite=nil;value.cloudBrewConflict=false
+            }) else {return}
+            cloudBrewNeedsAttention=false;cloudBrewHistory=nil
+            if !useCloud {cloudBrewBusy=false;await syncCloudBrewBook()}
+        } catch {
+            guard state.cloudAccountID==account else {return}
+            cloudBrewNeedsAttention=true
+            inform("Brew book unavailable", "Your notes are still saved here. Check your connection and try again.")
+        }
+    }
+
+    func restoreLastLocalBrewBackup() {
+        guard state.cloudBrewConflict != true,!cloudBrewBusy,brewBook.activePour==nil,let saved=state.cloudBrewLocalBackups?.last else {return}
+        _ = commit {value in
+            var backups=value.cloudBrewLocalBackups ?? []
+            if let current=value.brewNotebook {backups.append(current)}
+            value.cloudBrewLocalBackups=backups
+            value.setBrewNotebook(saved)
+        }
+    }
+
+    func refreshCloudBrewHistory() async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudBrewHistoryBusy else {return}
+        cloudBrewHistoryBusy=true
+        defer {cloudBrewHistoryBusy=false}
+        do {
+            let history=try await CoffeeCloud.shared.brewBookHistory(for:account)
+            guard state.signedIn,state.cloudAccountID==account else {return}
+            cloudBrewHistory=history
+        } catch {if state.cloudAccountID==account {cloudBrewHistory=nil}}
+    }
+
+    func restoreCloudBrewHistory(_ revision:Int) {
+        guard state.cloudBrewConflict != true,!cloudBrewBusy,brewBook.activePour==nil,
+              let previous=cloudBrewHistory?.first(where:{$0.revision==revision}) else {return}
+        _ = commit {value in
+            var backups=value.cloudBrewLocalBackups ?? []
+            if let current=value.brewNotebook {backups.append(current)}
+            value.cloudBrewLocalBackups=backups
+            value.setBrewNotebook(previous.contents)
+        }
+    }
+
+    func deleteCloudSubmission(_ id:UUID) async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudSubmissionsBusy,!cloudWalletBusy else {return}
+        if let pending=state.pendingCloudPostDeletion {
+            guard pending.accountID==account,pending.postID==id else {
+                inform("Removal needs attention", "Finish removing the previous post before starting another.");return
+            }
+        } else {
+            guard commit({$0.pendingCloudPostDeletion = .init(accountID:account,postID:id)}) else {return}
+        }
+        cloudSubmissionsBusy=true
+        defer {cloudSubmissionsBusy=false}
+        do {
+            try await CoffeeCloud.shared.deleteMoment(id,account:account)
+            let items=try await CoffeeCloud.shared.ownMoments(for:account)
+            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudPostDeletion?.postID==id else {return}
+            guard commit({$0.pendingCloudPostDeletion=nil}) else {return}
+            cloudSubmissions=items
+            inform("Post removed", "Your post and its online media have been removed.")
+        } catch {
+            guard state.cloudAccountID==account else {return}
+            cloudSubmissions=nil
+            inform("Removal needs attention", "The removal could not be confirmed. Retry to finish removing the post and its online media.")
         }
     }
 
@@ -199,8 +426,76 @@ struct CoffeeReceipt: Identifiable {
             notice = .init(title:"A new recipe for your shelf",message:"Your recipe is ready. Every future pour with it is free.",kind:.purchase)
         } catch {
             guard state.cloudAccountID==account else { return }
+            if let databaseError=error as? PostgrestError, databaseError.code=="P0001", databaseError.message=="Insufficient coins" {
+                inform("Not enough coins", "This recipe was not unlocked.")
+                return
+            }
             cloudWallet=nil;cloudWalletUnavailable=true
             inform("Recipe needs attention", "The result could not be confirmed. Refresh your wallet and try again.")
+        }
+    }
+    func cloudSubmitMoment() async -> Bool {
+        guard let account=state.cloudAccountID, state.signedIn, cloudWallet != nil, !cloudWalletBusy else {return false}
+        let draft=state.momentDraft
+        let pending:PendingCloudMoment
+        if let saved=state.pendingCloudMoment {
+            guard saved.accountID==account, saved.media==draft.media, saved.caption==draft.text, saved.isVideo==draft.isVideo else {
+                inform("Submission needs attention", "Return to the saved draft and retry its pending submission.");return false
+            }
+            pending=saved
+        } else {
+            guard let media=draft.media, media.hasPrefix("local/\(state.passport.id.uuidString)/"),
+                  let file=CoffeeMedia.url(media),file.isFileURL else {
+                inform("Add a photo or video", "Choose a photo or video saved on this device.");return false
+            }
+            guard !draft.text.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty else {
+                inform("Add a caption", "Tell the story behind this coffee moment.");return false
+            }
+            guard draft.text.count<=2000,validateCommunityText(draft.text) else {return false}
+            guard let size=try? file.resourceValues(forKeys:[.fileSizeKey]).fileSize,
+                  size<=52_428_800 else {
+                inform("Media too large", "Choose a photo or video smaller than 50 MB. Your draft has been kept.");return false
+            }
+            let type=UTType(filenameExtension:file.pathExtension)?.preferredMIMEType
+            let allowed=draft.isVideo ? ["video/mp4","video/quicktime"]:["image/jpeg","image/png","image/heic"]
+            guard let type,allowed.contains(type) else {
+                inform("Unsupported media", "Choose a JPEG, PNG, HEIC, MP4 or QuickTime file. Your draft has been kept.");return false
+            }
+            pending = .init(id:UUID(),accountID:account,caption:draft.text,media:media,isVideo:draft.isVideo)
+            guard commit({$0.pendingCloudMoment=pending}) else {return false}
+        }
+        guard let file=CoffeeMedia.url(pending.media),file.isFileURL,
+              let contentType=UTType(filenameExtension:file.pathExtension)?.preferredMIMEType else {
+            inform("Media unavailable", "The saved file could not be opened. The submission has not been cleared.");return false
+        }
+        cloudWalletBusy=true
+        defer {cloudWalletBusy=false}
+        do {
+            let path=try await CoffeeCloud.shared.uploadMedia(file:file,objectID:pending.id,contentType:contentType,account:account)
+            _ = try await CoffeeCloud.shared.submitMoment(id:pending.id,caption:pending.caption,path:path,
+                kind:pending.isVideo ? "video":"photo",account:account)
+            let snapshot=try await CoffeeCloud.shared.walletSnapshot(for:account)
+            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudMoment?.id==pending.id else {return false}
+            guard commit({value in
+                value.pendingCloudMoment=nil
+                if value.momentDraft.media==pending.media && value.momentDraft.text==pending.caption && value.momentDraft.isVideo==pending.isVideo {
+                    value.momentDraft=MomentDraft()
+                }
+            }) else {return false}
+            cloudWallet=snapshot;cloudWalletUnavailable=false
+            await refreshCloudSubmissions()
+            notice = .init(title:"Post submitted for review",message:"Your post is pending review and is not public yet.",kind:.review)
+            return true
+        } catch {
+            guard state.cloudAccountID==account else {return false}
+            if let databaseError=error as? PostgrestError, databaseError.code=="P0001", databaseError.message=="Insufficient coins" {
+                guard commit({$0.pendingCloudMoment=nil}) else {return false}
+                inform("Not enough coins", "Your post was not submitted. Your draft has been kept.")
+                return false
+            }
+            cloudWallet=nil;cloudWalletUnavailable=true
+            inform("Submission needs attention", "The result could not be confirmed. Refresh your wallet and retry the saved submission.")
+            return false
         }
     }
     func acknowledgeWelcome() {
@@ -215,12 +510,12 @@ struct CoffeeReceipt: Identifiable {
         notice = .init(title:"A little more for your coffee reserve",message:"This needs \(cost) coins. Your balance is \(state.coinBalance). Your draft and selections are kept; recharge to continue.",kind:.insufficient)
     }
     func performAccountAction(_ action:AccountTransition) async {
-        guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,storageAvailable else{return}
+        guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,!cloudSubmissionsBusy,!cloudBrewBusy,!cloudBrewHistoryBusy,!cloudSocialBusy,storageAvailable else{return}
         if action == .delete && (state.cloudAccountID != nil || state.cloudBootstrapPending == true) {
             inform("Account deletion needs attention", "Your online account has not been removed. Please try again when account deletion is available.")
             return
         }
-        guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudCollectible==nil else {
+        guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudCollectible==nil,state.pendingCloudMoment==nil,state.pendingCloudPostDeletion==nil else {
             inform("Purchase awaiting review","Resolve the purchase before changing accounts.");return
         }
         accountAction=action
@@ -239,7 +534,8 @@ struct CoffeeReceipt: Identifiable {
         do {
             try await Task.detached(priority:.userInitiated) {try CoffeeVault.write(snapshot)}.value
             savedSnapshotExpected=true
-            state=next;cloudWallet=nil;cloudWalletUnavailable=false;activeRoomID=nil;roomMicRequested=false;selectedTab=0
+            brewSyncDebounce?.cancel();brewSyncDebounce=nil
+            state=next;cloudWallet=nil;cloudWalletUnavailable=false;cloudSubmissions=nil;cloudBrewNeedsAttention=false;cloudBrewHistory=nil;cloudProfiles=nil;cloudFollows=[];cloudFriendships=[];cloudBlocks=[];activeRoomID=nil;roomMicRequested=false;selectedTab=0
             if action == .delete {
                 let owners=next.pendingMediaDeletion
                 try await Task.detached(priority:.userInitiated) {
@@ -272,6 +568,12 @@ struct CoffeeReceipt: Identifiable {
     func toggleLike(_ id: String) {guard post(id) != nil else{return}; _ = commit { if !$0.appreciatedMoments.insert(id).inserted { $0.appreciatedMoments.remove(id) } } }
     func toggleBookmark(_ id: String) {guard post(id) != nil else{return}; _ = commit { if !$0.keptMoments.insert(id).inserted { $0.keptMoments.remove(id) } } }
     func follow(_ id: String) {
+        if usesCloudWallet {
+            guard cloudProfiles != nil,let member=UUID(uuidString:id) else {return}
+            let target = !isFollowing(id)
+            Task {await changeCloudFollow(member,enabled:target)}
+            return
+        }
         guard id != state.passport.id.uuidString, !isUserHidden(id) else { return }
         _ = commit { if !$0.followedMembers.insert(id).inserted { $0.followedMembers.remove(id) } }
     }
@@ -283,7 +585,7 @@ struct CoffeeReceipt: Identifiable {
         return commit { $0.tastingReplies.append(.init(momentID:momentID,text:clean,authorID:$0.passport.id.uuidString)) }
     }
     func publish() -> Bool {
-        guard !usesCloudWallet else {inform("Post unavailable", "Your draft is saved. Online submission is being prepared.");return false}
+        guard !usesCloudWallet else {inform("Post unavailable", "Your post could not be submitted. Your draft is saved.");return false}
         let draft = state.momentDraft
         let cost = CoffeeEconomy.postCost(isVideo:draft.isVideo)
         guard let media = draft.media, CoffeeMedia.url(media) != nil else { inform("Add a photo or video", "Choose a coffee moment before saving your post."); return false }
@@ -309,6 +611,7 @@ struct CoffeeReceipt: Identifiable {
     }
     var nextCheckinReward: Int { (checkinCount % 7 + 1) * 10 }
     func checkIn() {
+        guard !usesCloudWallet else {return}
         let day = dayKey; let reward = nextCheckinReward
         guard !state.checkinDays.contains(day) else { inform("Already checked in", "Come back after 00:00 UTC for your next reward."); return }
         if commit({
@@ -317,6 +620,7 @@ struct CoffeeReceipt: Identifiable {
         }) { inform("Check-in complete", "\(reward) coins have been added to your wallet.") }
     }
     func collect(_ gift: CoffeeCollectible, quantity: Int) -> Bool {
+        guard !usesCloudWallet else {return false}
         guard (1...99).contains(quantity), gift.cost <= Int.max / quantity else { return false }
         let total = gift.cost * quantity
         guard state.coinBalance >= total else {insufficientCoins(cost:total);return false}

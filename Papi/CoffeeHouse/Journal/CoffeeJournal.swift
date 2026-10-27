@@ -28,7 +28,10 @@ struct CoffeeJournalView:View {
                             Button {router.go(.cafes)} label:{Image("exploreBanner").resizable().scaledToFit().frame(width:bannerWidth)}
                             Button {router.go(.beans)} label:{Image("beansBanner").resizable().scaledToFit().frame(width:bannerWidth)}
                         }.buttonStyle(.plain)
-                        let portraits=CoffeeMember.previews.filter{!store.isUserHidden($0.id) && !(store.state.dismissedRecommendations?.contains($0.id) ?? false)}
+                        let portraits=store.communityPeople.filter{!store.isUserHidden($0.id) && !(store.state.dismissedRecommendations?.contains($0.id) ?? false)}
+                        if store.usesCloudWallet && store.cloudProfiles==nil {
+                            PapiTextButton("Retry members"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)
+                        }
                         if !portraits.isEmpty || lastDismissedPortrait != nil {
                             VStack(alignment:.leading,spacing:8) {
                                 HStack(alignment:.firstTextBaseline,spacing:8) {
@@ -39,7 +42,7 @@ struct CoffeeJournalView:View {
                                             if store.commit({state in _ = state.dismissedRecommendations?.remove(lastDismissedPortrait)}) {self.lastDismissedPortrait=nil}
                                         }.font(CoffeeType.face(.caption,weight:.semibold)).frame(minHeight:44)
                                     } else {
-                                        PapiText("Collection portraits").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.trailing).fixedSize(horizontal:false,vertical:true)
+                                        PapiText(store.usesCloudWallet ? "Coffee members":"Collection portraits").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.trailing).fixedSize(horizontal:false,vertical:true)
                                     }
                                 }
                                 if !portraits.isEmpty {ScrollView(.horizontal) {
@@ -248,7 +251,7 @@ struct CoffeeMomentComposer:View {
     @State private var camera=false
     @State private var movieCamera=false
     @State private var confirm=false
-    private var caption:Binding<String> {Binding(get:{store.state.momentDraft.text},set:{newValue in _ = store.commit{$0.momentDraft.text=String(newValue.prefix(2000))}})}
+    private var caption:Binding<String> {Binding(get:{store.state.momentDraft.text},set:{newValue in if store.state.pendingCloudMoment==nil {_ = store.commit{$0.momentDraft.text=String(newValue.prefix(2000))}}})}
     var body:some View {
         PapiScreen {
             VStack(spacing:0) {
@@ -274,15 +277,15 @@ struct CoffeeMomentComposer:View {
                                 }.frame(maxWidth:.infinity,alignment:.leading)
                                 Image("chevron").resizable().scaledToFit().scaleEffect(x:direction == .rightToLeft ? -1:1,y:1).frame(width:12,height:12).accessibilityHidden(true)
                             }.padding(16).frame(maxWidth:.infinity,minHeight:70,alignment:.leading).background(Color.white.opacity(0.93),in:RoundedRectangle(cornerRadius:22)).contentShape(Rectangle())
-                        }.buttonStyle(.plain).disabled(importing)
+                        }.buttonStyle(.plain).disabled(importing || store.state.pendingCloudMoment != nil)
                         let cameraLayout=typeSize.isAccessibilitySize || (bounds.width>0 && bounds.width<330) ? AnyLayout(VStackLayout(spacing:10)):AnyLayout(HStackLayout(spacing:10))
                         cameraLayout {
                             PapiTextButton("Take photo"){openCamera(movie:false)}.buttonStyle(PapiButtonStyle(light:true,wide:true,cornerRadius:15))
                             PapiTextButton("Record video"){openCamera(movie:true)}.buttonStyle(PapiButtonStyle(light:true,wide:true,cornerRadius:15))
-                        }.disabled(importing)
+                        }.disabled(importing || store.state.pendingCloudMoment != nil)
                         VStack(alignment:.leading,spacing:10) {
                             PapiText("Your coffee note").font(CoffeeType.face(.headline))
-                            PapiInput("Say something about your coffee…",text:caption,axis:.vertical).lineLimit(4...10).foregroundStyle(Color.coffee).tint(Color.coffee).padding(14).background(Color.cream,in:RoundedRectangle(cornerRadius:15))
+                            PapiInput("Say something about your coffee…",text:caption,axis:.vertical).lineLimit(4...10).foregroundStyle(Color.coffee).tint(Color.coffee).padding(14).background(Color.cream,in:RoundedRectangle(cornerRadius:15)).disabled(store.state.pendingCloudMoment != nil)
                             HStack {PapiText("Draft");Spacer(minLength:8);PapiText("\(store.state.momentDraft.text.count)/2000").monospacedDigit()}.font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                         }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.93),in:RoundedRectangle(cornerRadius:22))
                         VStack(alignment:.leading,spacing:12) {
@@ -291,8 +294,10 @@ struct CoffeeMomentComposer:View {
                                 PapiText("Save a post for").frame(maxWidth:.infinity,alignment:.leading)
                                 HStack(spacing:6) {CoinLabel(value:CoffeeEconomy.postCost(isVideo:store.state.momentDraft.isVideo));PapiText("coins")}
                             }.font(CoffeeType.face(.subheadline,weight:.semibold))
-                            PapiText("Posts stay private until approved. No moderation server is connected yet; pending posts are never approved automatically.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
-                            PapiTextButton("Submit for review") {confirm=true}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(importing || store.state.momentDraft.media==nil)
+                            PapiText(store.usesCloudWallet ? "Posts remain private until reviewed and approved.":"Posts stay private until approved. No moderation server is connected yet; pending posts are never approved automatically.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                            if store.state.pendingCloudMoment != nil {PapiText("Retry the saved submission to confirm its result.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
+                            PapiTextButton("Submit for review") {confirm=true}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(importing || store.state.momentDraft.media==nil || store.cloudWalletBusy || (store.usesCloudWallet && store.cloudWallet==nil))
+                            if store.usesCloudWallet && store.cloudWallet==nil {PapiTextButton("Retry wallet"){Task {await store.refreshCloudWallet()}}.disabled(store.cloudWalletBusy)}
                         }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.butter.opacity(0.55),in:RoundedRectangle(cornerRadius:22))
                     }.padding(20).frame(maxWidth:620).frame(maxWidth:.infinity)
                 }.scrollDismissesKeyboard(.interactively)
@@ -302,8 +307,8 @@ struct CoffeeMomentComposer:View {
                         PapiArtworkFit(asset:"momentComposeArt").frame(width:90,height:90)
                         PapiText("Submit for review?").font(CoffeeType.display(.title2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
                         PapiText("\(CoffeeEconomy.postCost(isVideo:store.state.momentDraft.isVideo)) coins are used when this post is saved to your private review queue. It appears in the feed only after approval.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
-                        PapiText("Posts stay private until approved. No moderation server is connected yet; pending posts are never approved automatically.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
-                        PapiTextButton("Submit · \(CoffeeEconomy.postCost(isVideo:store.state.momentDraft.isVideo)) coins") {confirm=false;if store.publish(){dismiss();store.notice = .init(title:"Post saved for review",message:"Your post is saved privately in the review queue. It will appear only after approval. No moderation server is connected yet.",kind:.review)}}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16))
+                        PapiText(store.usesCloudWallet ? "Posts remain private until reviewed and approved.":"Posts stay private until approved. No moderation server is connected yet; pending posts are never approved automatically.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                        PapiTextButton("Submit · \(CoffeeEconomy.postCost(isVideo:store.state.momentDraft.isVideo)) coins") {confirm=false;if store.usesCloudWallet {Task {if await store.cloudSubmitMoment(){dismiss()}}} else if store.publish(){dismiss();store.notice = .init(title:"Post saved for review",message:"Your post is saved privately in the review queue. It will appear only after approval. No moderation server is connected yet.",kind:.review)}}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16))
                         PapiTextButton("Keep editing"){confirm=false}.buttonStyle(PapiButtonStyle(light:true,wide:true,cornerRadius:16))
                     }.frame(maxWidth:.infinity,alignment:.leading)
                 }}

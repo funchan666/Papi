@@ -11,7 +11,11 @@ as $$
     'collectibles', coalesce((select jsonb_agg(jsonb_build_object('collectible_id', i.collectible_id, 'quantity', i.quantity)
       order by i.collectible_id) from public.coffee_collectibles i where i.owner_id = w.owner_id), '[]'::jsonb),
     'recipes', coalesce((select jsonb_agg(r.recipe_id order by r.recipe_id)
-      from public.coffee_recipe_unlocks r where r.owner_id = w.owner_id), '[]'::jsonb)
+      from public.coffee_recipe_unlocks r where r.owner_id = w.owner_id), '[]'::jsonb),
+    'movements', coalesce((select jsonb_agg(jsonb_build_object('id', m.id, 'delta', m.delta,
+      'reason', m.reason, 'created_at', m.created_at) order by m.created_at desc)
+      from (select id, delta, reason, created_at from public.coffee_wallet_movements
+        where owner_id = w.owner_id order by created_at desc, id desc limit 40) m), '[]'::jsonb)
   )
   from public.coffee_wallets w join public.coffee_progress p on p.owner_id = w.owner_id
   where w.owner_id = (select auth.uid());

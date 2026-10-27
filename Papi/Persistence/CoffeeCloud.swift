@@ -1,5 +1,6 @@
 import Foundation
 import Supabase
+import CryptoKit
 
 /// Owns the network identity independently of the device's existing archive ID.
 actor CoffeeCloud {
@@ -65,6 +66,19 @@ actor CoffeeCloud {
         let quantity: Int
     }
     struct Progress: Decodable { let experience: Int }
+    struct WalletMovement: Decodable, Identifiable {
+        let id: UUID
+        let delta: Int
+        let reason: String
+        let created_at: String
+        var date: Date? {
+            let formatter=ISO8601DateFormatter()
+            formatter.formatOptions=[.withInternetDateTime,.withFractionalSeconds]
+            if let date=formatter.date(from:created_at) { return date }
+            formatter.formatOptions=[.withInternetDateTime]
+            return formatter.date(from:created_at)
+        }
+    }
     struct WalletSnapshot: Decodable {
         let balance: Int
         let experience: Int
@@ -72,6 +86,21 @@ actor CoffeeCloud {
         let checkins: [CheckInDay]
         let collectibles: [Collectible]
         let recipes: [String]
+        let movements: [WalletMovement]
+    }
+    struct BrewBookDocument: Decodable {
+        let revision: Int
+        let contents: BrewNotebook?
+    }
+    struct BrewBookWrite: Decodable {
+        let committed_revision: Int
+        let current_revision: Int
+    }
+    struct BrewBookHistory: Decodable, Identifiable {
+        let revision: Int
+        let contents: BrewNotebook
+        let saved_at: String
+        var id: Int {revision}
     }
     private struct PurchaseOrder: Codable {
         let id: UUID
@@ -112,6 +141,9 @@ actor CoffeeCloud {
     }
     private struct Unlock: Encodable { let recipe: String }
     private struct CollectionOrder: Encodable { let order_id: UUID; let item: String; let item_quantity: Int }
+    private struct RemovedPost: Encodable { let post_id: UUID }
+    private struct RemovedMedia: Encodable { let p_path: String }
+    private struct BrewBookSave: Encodable { let p_request: UUID; let p_revision: Int; let p_contents: AnyJSON }
     private struct Submission: Encodable {
         let moment_id: UUID
         let caption: String
@@ -190,6 +222,25 @@ actor CoffeeCloud {
     func moments(for account: UUID) async throws -> [Moment] {
         _ = try await identity(account)
         return try await client.from("coffee_posts").select().order("created_at", ascending: false).execute().value
+    }
+
+    func ownMoments(for account: UUID) async throws -> [Moment] {
+        let user=try await identity(account)
+        let moments:[Moment] = try await client.from("coffee_posts").select()
+            .eq("author_id",value:user.uuidString.lowercased()).order("created_at",ascending:false).execute().value
+        _ = try await identity(account)
+        return moments
+    }
+
+    func deleteMoment(_ id: UUID, account: UUID) async throws {
+        let user=try await identity(account)
+        let path:String = try await client.rpc("remove_coffee_post",params:RemovedPost(post_id:id)).execute().value
+        guard path.hasPrefix(user.uuidString.lowercased()+"/"),path.split(separator:"/").count==2,
+              !path.contains("..") else {throw ConnectionError.actionUnavailable}
+        _ = try await client.storage.from("coffee-media").remove(paths:[path])
+        let remains:Bool = try await client.rpc("removed_coffee_media_exists",params:RemovedMedia(p_path:path)).execute().value
+        guard !remains else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
     }
 
     func comments(for moment: UUID, account: UUID) async throws -> [Comment] {
@@ -297,6 +348,39 @@ actor CoffeeCloud {
         return snapshot
     }
 
+    func brewBook(for account: UUID) async throws -> BrewBookDocument {
+        let user=try await identity(account)
+        let document:BrewBookDocument = try await client.from("coffee_brew_books").select("revision,contents")
+            .eq("owner_id",value:user.uuidString.lowercased()).single().execute().value
+        _ = try await identity(account)
+        return document
+    }
+
+    func encodeBrewBook(_ book:BrewNotebook) throws -> Data {
+        let encoder=JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        return try encoder.encode(book)
+    }
+
+    func brewBookHistory(for account:UUID) async throws -> [BrewBookHistory] {
+        let user=try await identity(account)
+        let history:[BrewBookHistory] = try await client.from("coffee_brew_history").select("revision,contents,saved_at")
+            .eq("owner_id",value:user.uuidString.lowercased()).order("revision",ascending:false).execute().value
+        _ = try await identity(account)
+        return history
+    }
+
+    /// Persist the request ID, revision and exact encoded JSON before calling;
+    /// retry with those same bytes, not a freshly encoded Set or changing draft.
+    func saveBrewBook(requestID: UUID, revision: Int, encodedBook: Data, account: UUID) async throws -> BrewBookWrite {
+        _ = try await identity(account)
+        let frozen=try JSONDecoder().decode(AnyJSON.self,from:encodedBook)
+        let result:BrewBookWrite = try await client.rpc("save_coffee_brew_book",
+            params:BrewBookSave(p_request:requestID,p_revision:revision,p_contents:frozen)).execute().value
+        _ = try await identity(account)
+        return result
+    }
+
     func checkInDays(for account: UUID) async throws -> [CheckInDay] {
         let user = try await identity(account)
         return try await client.from("coffee_checkins").select("checkin_day,reward")
@@ -385,7 +469,16 @@ actor CoffeeCloud {
         let safeSuffix = suffix.unicodeScalars.allSatisfy { $0.isASCII && CharacterSet.alphanumerics.contains($0) } ? suffix : ""
         let name = objectID.uuidString.lowercased() + (safeSuffix.isEmpty ? "" : "." + safeSuffix)
         let path = user.uuidString.lowercased() + "/" + name
-        try await client.storage.from("coffee-media").upload(path, fileURL: file, options: FileOptions(contentType: contentType))
+        do {
+            try await client.storage.from("coffee-media").upload(path, fileURL: file, options: FileOptions(contentType: contentType))
+        } catch {
+            // A lost response may follow a successful upload. Reuse it only if
+            // its bytes match the saved local draft, never just its filename.
+            guard let remote=try? await client.storage.from("coffee-media").download(path: path),
+                  let local=try? Data(contentsOf:file,options:.mappedIfSafe),
+                  remote.count==local.count, SHA256.hash(data:remote)==SHA256.hash(data:local) else {throw error}
+        }
+        _ = try await identity(account)
         return path
     }
 

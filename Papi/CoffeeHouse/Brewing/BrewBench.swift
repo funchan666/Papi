@@ -74,6 +74,9 @@ struct CoffeeRatioStudioView:View {
 struct BrewBenchView:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
+    @State private var syncChoice:String?
+    @State private var selectedVersion:Int?
+    @State private var showHistory=false
     var body:some View {
         PapiScreen {
             VStack(spacing:0) {
@@ -81,6 +84,42 @@ struct BrewBenchView:View {
                 ScrollView {
                     VStack(alignment:.leading,spacing:24) {
                         BrewFrontispiece(artwork:"brewBenchArtwork",title:"One cup. Your own recipe.")
+                        if store.usesCloudWallet && store.cloudBrewNeedsAttention {
+                            VStack(alignment:.leading,spacing:8) {
+                                if store.state.cloudBrewConflict == true {
+                                    PapiText("Your brew book also changed on another device. Your notes are kept here while sync is paused.")
+                                    if store.brewBook.activePour != nil {PapiText("Finish or save the current pour before choosing a copy.")}
+                                    PapiTextButton("Use this device's copy"){syncChoice="local"}.disabled(store.cloudBrewBusy || store.brewBook.activePour != nil)
+                                    PapiTextButton("Use the online copy"){syncChoice="cloud"}.disabled(store.cloudBrewBusy || store.brewBook.activePour != nil)
+                                } else {
+                                    PapiText("Your brew book could not sync. Your notes are kept on this device.")
+                                    PapiTextButton("Retry sync"){Task {await store.syncCloudBrewBook()}}.disabled(store.cloudBrewBusy)
+                                }
+                            }.font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                        }
+                        if store.usesCloudWallet && store.state.cloudBrewConflict != true {
+                            VStack(alignment:.leading,spacing:8) {
+                                if !(store.state.cloudBrewLocalBackups ?? []).isEmpty {
+                                    PapiTextButton("Restore previous device copy"){syncChoice="backup"}.disabled(store.cloudBrewBusy || store.brewBook.activePour != nil)
+                                }
+                                PapiTextButton(showHistory ? "Hide online versions":"Previous online versions") {
+                                    showHistory.toggle()
+                                    if showHistory {Task {await store.refreshCloudBrewHistory()}}
+                                }.disabled(store.cloudBrewHistoryBusy)
+                                if showHistory {
+                                    if let history=store.cloudBrewHistory {
+                                        if history.isEmpty {PapiText("No earlier online versions")}
+                                        ForEach(history) {version in
+                                            PapiTextButton("Version \(version.revision)"){selectedVersion=version.revision}
+                                                .disabled(store.cloudBrewBusy || store.brewBook.activePour != nil)
+                                        }
+                                    } else {
+                                        PapiText(store.cloudBrewHistoryBusy ? "Loading versions…":"Versions unavailable")
+                                        PapiTextButton("Retry"){Task {await store.refreshCloudBrewHistory()}}.disabled(store.cloudBrewHistoryBusy)
+                                    }
+                                }
+                            }.font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                        }
                         if let active=store.brewBook.activePour,let recipe=BrewRecipe.recipe(active.recipeID) {
                             Button {router.go(.brewRecipe(recipe.id))} label:{
                                 HStack(spacing:12) {Image("brewDripper").resizable().scaledToFit().frame(width:44,height:44);VStack(alignment:.leading){PapiText("Return to your pour").font(CoffeeType.face(.headline));PapiText(verbatim:active.coffeeLot).font(CoffeeType.face(.subheadline))};Spacer();PapiText("Open").font(CoffeeType.face(.subheadline,weight:.bold))}
@@ -108,6 +147,14 @@ struct BrewBenchView:View {
                         PapiTextButton("Open my brew book"){router.go(.brewArchive)}.buttonStyle(PapiButtonStyle(wide:true))
                     }.padding(20).frame(maxWidth:760).frame(maxWidth:.infinity)
                 }
+            }
+        }.overlay {
+            if let syncChoice {
+                PapiDialog(title:"Choose a brew book?",
+                    message:syncChoice=="cloud" ? "Your current device copy will be saved here before the online copy is opened.":(syncChoice=="backup" ? "Your current device copy will be saved before the previous copy is restored.":"This device's copy will be synced. The previous online version remains in your version history."),
+                    confirm:"Continue",cancel:"Cancel",action:{self.syncChoice=nil;if syncChoice=="backup" {store.restoreLastLocalBrewBackup()} else {Task {await store.resolveCloudBrewConflict(useCloud:syncChoice=="cloud")}}},dismiss:{self.syncChoice=nil})
+            } else if let selectedVersion {
+                PapiDialog(title:"Restore this version?",message:"Your current device copy will be saved here before this online version is restored.",confirm:"Restore",cancel:"Cancel",action:{self.selectedVersion=nil;store.restoreCloudBrewHistory(selectedVersion)},dismiss:{self.selectedVersion=nil})
             }
         }
     }
@@ -162,6 +209,9 @@ struct BrewRecipeView:View {
                                 } else {
                                     PapiText("Unlock once for \(recipe.unlockCoins) coins. Brewing, saving cups and tasting comparisons stay free.").font(CoffeeType.face(.subheadline))
                                     PapiTextButton("Add recipe · \(recipe.unlockCoins) coins"){confirmUnlock=true}.buttonStyle(PapiButtonStyle(wide:true)).disabled(store.usesCloudWallet && (store.cloudWallet==nil || store.cloudWalletBusy))
+                                    if store.usesCloudWallet && store.cloudWallet==nil {
+                                        PapiTextButton("Retry wallet"){Task {await store.refreshCloudWallet()}}.disabled(store.cloudWalletBusy)
+                                    }
                                 }
                                 pourPlan(recipe,dose:store.brewBook.draft.doseGrams)
                             }

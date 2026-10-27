@@ -5,12 +5,41 @@ import Foundation
     var hiddenKeys:Set<String> {
         community.hiddenTargets.union(state.communityReports.compactMap{$0.target?.id ?? SafetyTarget.legacy($0.contentReference)?.id})
     }
-    var visibilityKeys:[String] {(hiddenKeys.union(state.blockedMembers.map{"blocked:"+$0})).sorted()}
+    var visibilityKeys:[String] {
+        (hiddenKeys.union(state.blockedMembers.map{"blocked:"+$0}).union(cloudBlocks.map{"blocked:"+$0.blocked_id.uuidString})).sorted()
+    }
+    var followingIDs:Set<String> {
+        guard let account=state.cloudAccountID else {return state.followedMembers}
+        return Set(cloudFollows.filter{$0.follower_id==account}.map{$0.followed_id.uuidString})
+    }
+    func isFollowing(_ id:String)->Bool {
+        guard usesCloudWallet else {return state.followedMembers.contains(id)}
+        guard let account=state.cloudAccountID,let member=UUID(uuidString:id) else {return false}
+        return cloudFollows.contains{$0.follower_id==account && $0.followed_id==member}
+    }
+    var communityPeople:[CoffeeMember] {
+        guard usesCloudWallet else {return CoffeeMember.previews}
+        guard let account=state.cloudAccountID else {return []}
+        return (cloudProfiles ?? []).filter{$0.id != account}.map {
+            CoffeeMember(id:$0.id.uuidString,name:$0.display_name,portrait:"emptyCup",bio:$0.biography)
+        }
+    }
     func person(_ id:String)->CoffeeMember? {
         if id==state.passport.id.uuidString {return .init(id:id,name:state.passport.name,portrait:state.passport.portraitReference,bio:state.passport.bio)}
+        if let member=UUID(uuidString:id),usesCloudWallet {
+            if member==state.cloudAccountID {return .init(id:id,name:state.passport.name,portrait:state.passport.portraitReference,bio:state.passport.bio)}
+            if let profile=cloudProfiles?.first(where:{$0.id==member}) {
+                return .init(id:profile.id.uuidString,name:profile.display_name,portrait:"emptyCup",bio:profile.biography)
+            }
+            return nil
+        }
         return CoffeeMember.find(id) ?? community.rememberedPeople[id]
     }
-    func isUserHidden(_ id:String)->Bool {state.blockedMembers.contains(id) || hiddenKeys.contains(SafetyTarget.user(id).id)}
+    func isUserHidden(_ id:String)->Bool {
+        if let member=UUID(uuidString:id),let account=state.cloudAccountID,
+           cloudBlocks.contains(where:{$0.blocker_id==account && $0.blocked_id==member}) {return true}
+        return state.blockedMembers.contains(id) || hiddenKeys.contains(SafetyTarget.user(id).id)
+    }
     func isTargetVisible(_ target:SafetyTarget)->Bool {
         !hiddenKeys.contains(target.id) && (target.authorID.map{!isUserHidden($0)} ?? true)
     }
@@ -33,16 +62,32 @@ import Foundation
     }
     func isRoomVisible(_ room:CoffeeTable)->Bool {isTargetVisible(.init(kind:.room,contentReference:room.id,authorID:room.hostMemberID))}
     func isMutual(_ id:String)->Bool {
+        if let account=state.cloudAccountID,let member=UUID(uuidString:id) {
+            return !isUserHidden(id) && cloudFollows.contains{$0.follower_id==account && $0.followed_id==member}
+                && cloudFollows.contains{$0.follower_id==member && $0.followed_id==account}
+        }
         guard !isUserHidden(id),state.followedMembers.contains(id),let consent=community.relationships[id] else{return false}
         return consent.correspondentID==id && consent.passportID==state.passport.id && consent.followsCurrentGuest && !consent.confirmationID.isEmpty
     }
-    func isFriend(_ id:String)->Bool {isMutual(id) && community.relationships[id]?.friendshipAccepted == true}
-    var followers:[CoffeeMember] {community.relationships.keys.sorted().compactMap {id -> CoffeeMember? in
+    func isFriend(_ id:String)->Bool {
+        if let account=state.cloudAccountID,let member=UUID(uuidString:id) {
+            return isMutual(id) && cloudFriendships.contains{$0.status=="accepted" && (($0.requester_id==account && $0.recipient_id==member) || ($0.requester_id==member && $0.recipient_id==account))}
+        }
+        return isMutual(id) && community.relationships[id]?.friendshipAccepted == true
+    }
+    var followers:[CoffeeMember] {
+        if let account=state.cloudAccountID {
+            return cloudFollows.filter{$0.followed_id==account}.compactMap{person($0.follower_id.uuidString)}.filter{!isUserHidden($0.id)}
+        }
+        return community.relationships.keys.sorted().compactMap {id -> CoffeeMember? in
         guard !isUserHidden(id),let consent=community.relationships[id],consent.passportID==state.passport.id,
               consent.correspondentID==id,consent.followsCurrentGuest,!consent.confirmationID.isEmpty else{return nil}
         return person(id)
     }}
-    var friends:[CoffeeMember] {community.relationships.keys.sorted().filter{isFriend($0)}.compactMap{person($0)}}
+    var friends:[CoffeeMember] {
+        if usesCloudWallet {return communityPeople.filter{isFriend($0.id)}}
+        return community.relationships.keys.sorted().filter{isFriend($0)}.compactMap{person($0)}
+    }
     @discardableResult func requireMutual(_ id:String)->Bool {
         guard state.signedIn,!isUserHidden(id),person(id) != nil else {inform("Profile unavailable","This profile is unavailable or hidden. Your conversation is still saved.");return false}
         guard isMutual(id) else {

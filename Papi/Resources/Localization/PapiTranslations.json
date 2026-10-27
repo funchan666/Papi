@@ -406,11 +406,11 @@
     "ko": "구매 복구"
   },
   "Not enough coins": {
-    "es": "Monedas insuficientes",
-    "th": "เหรียญไม่พอ",
-    "ar": "عملات غير كافية",
+    "es": "No tienes suficientes monedas",
+    "th": "เหรียญไม่เพียงพอ",
+    "ar": "الرصيد غير كافٍ",
     "vi": "Không đủ xu",
-    "ko": "코인 부족"
+    "ko": "코인이 부족해요"
   },
   "Added to your backpack": {
     "es": "Añadido a tu colección",
@@ -6319,5 +6319,341 @@
     "ar": "الحساب",
     "vi": "Tài khoản",
     "ko": "계정"
+  },
+  "Loading wallet…": {
+    "es": "Cargando la cartera…",
+    "th": "กำลังโหลดกระเป๋า…",
+    "ar": "جارٍ تحميل المحفظة…",
+    "vi": "Đang tải ví…",
+    "ko": "지갑을 불러오는 중…"
+  },
+  "Wallet unavailable": {
+    "es": "Cartera no disponible",
+    "th": "กระเป๋าไม่พร้อมใช้งาน",
+    "ar": "المحفظة غير متاحة",
+    "vi": "Ví chưa khả dụng",
+    "ko": "지갑을 사용할 수 없어요"
+  },
+  "Retry wallet": {
+    "es": "Reintentar cartera",
+    "th": "ลองโหลดกระเป๋าอีกครั้ง",
+    "ar": "إعادة محاولة تحميل المحفظة",
+    "vi": "Thử tải lại ví",
+    "ko": "지갑 다시 불러오기"
+  },
+  "Retry the saved selection to confirm your purchase.": {
+    "es": "Vuelve a intentar la selección guardada para confirmar tu compra.",
+    "th": "ลองรายการที่บันทึกไว้อีกครั้งเพื่อยืนยันการซื้อ",
+    "ar": "أعد محاولة الاختيار المحفوظ لتأكيد عملية الشراء.",
+    "vi": "Thử lại lựa chọn đã lưu để xác nhận giao dịch.",
+    "ko": "구매를 확인하려면 저장된 선택을 다시 시도하세요."
+  },
+  "Online purchase recovery is being prepared.": {
+    "es": "Se está preparando la recuperación de compras en línea.",
+    "th": "กำลังเตรียมการกู้คืนการซื้อออนไลน์",
+    "ar": "يجري إعداد استرداد المشتريات عبر الإنترنت.",
+    "vi": "Tính năng khôi phục giao dịch trực tuyến đang được chuẩn bị.",
+    "ko": "온라인 구매 복구 기능을 준비 중입니다."
+  },
+  "Your backpack selection was not purchased.": {
+    "es": "No se ha comprado el artículo seleccionado.",
+    "th": "ยังไม่ได้ซื้อรายการที่เลือก",
+    "ar": "لم يتم شراء العنصر المحدد.",
+    "vi": "Chưa mua món đồ đã chọn.",
+    "ko": "선택한 아이템을 구매하지 않았어요."
+  },
+  "Purchase needs attention": {
+    "es": "La compra requiere atención",
+    "th": "การซื้อต้องได้รับการตรวจสอบ",
+    "ar": "تحتاج عملية الشراء إلى مراجعة",
+    "vi": "Giao dịch cần được kiểm tra",
+    "ko": "구매 확인이 필요해요"
+  },
+  "Check-in needs attention": {
+    "es": "El registro requiere atención",
+    "th": "การเช็กอินต้องได้รับการตรวจสอบ",
+    "ar": "يحتاج تسجيل الحضور إلى مراجعة",
+    "vi": "Điểm danh cần được kiểm tra",
+    "ko": "출석 확인이 필요해요"
+  },
+  "Recipe needs attention": {
+    "es": "La receta requiere atención",
+    "th": "สูตรต้องได้รับการตรวจสอบ",
+    "ar": "تحتاج الوصفة إلى مراجعة",
+    "vi": "Công thức cần được kiểm tra",
+    "ko": "레시피 확인이 필요해요"
+  },
+  "Post unavailable": {
+    "es": "Publicación no disponible",
+    "th": "ยังไม่สามารถเผยแพร่โพสต์",
+    "ar": "النشر غير متاح",
+    "vi": "Bài đăng chưa khả dụng",
+    "ko": "게시물을 올릴 수 없어요"
+  },
+  "Posts remain private until reviewed and approved.": {
+    "es": "Las publicaciones permanecen privadas hasta que se revisen y aprueben.",
+    "th": "โพสต์จะเป็นส่วนตัวจนกว่าจะผ่านการตรวจสอบและอนุมัติ",
+    "ar": "تبقى المنشورات خاصة حتى تتم مراجعتها والموافقة عليها.",
+    "vi": "Bài đăng ở chế độ riêng tư cho đến khi được duyệt.",
+    "ko": "게시물은 검토 및 승인될 때까지 비공개입니다."
+  },
+  "Retry the saved submission to confirm its result.": {
+    "es": "Vuelve a intentar el envío guardado para confirmar el resultado.",
+    "th": "ลองส่งรายการที่บันทึกไว้อีกครั้งเพื่อยืนยันผล",
+    "ar": "أعد محاولة الإرسال المحفوظ للتأكد من نتيجته.",
+    "vi": "Thử lại bài gửi đã lưu để xác nhận kết quả.",
+    "ko": "결과를 확인하려면 저장된 제출을 다시 시도하세요."
+  },
+  "Submission needs attention": {
+    "es": "El envío requiere atención",
+    "th": "การส่งต้องได้รับการตรวจสอบ",
+    "ar": "يحتاج الإرسال إلى مراجعة",
+    "vi": "Bài gửi cần được kiểm tra",
+    "ko": "제출 확인이 필요해요"
+  },
+  "Media too large": {
+    "es": "Archivo demasiado grande",
+    "th": "ไฟล์มีขนาดใหญ่เกินไป",
+    "ar": "الملف كبير جدًا",
+    "vi": "Tệp quá lớn",
+    "ko": "파일이 너무 커요"
+  },
+  "Unsupported media": {
+    "es": "Archivo no compatible",
+    "th": "ไม่รองรับไฟล์นี้",
+    "ar": "نوع الملف غير مدعوم",
+    "vi": "Tệp không được hỗ trợ",
+    "ko": "지원하지 않는 파일이에요"
+  },
+  "Media unavailable": {
+    "es": "Archivo no disponible",
+    "th": "ไม่พบไฟล์",
+    "ar": "الملف غير متاح",
+    "vi": "Tệp không khả dụng",
+    "ko": "파일을 사용할 수 없어요"
+  },
+  "Post submitted for review": {
+    "es": "Publicación enviada para revisión",
+    "th": "ส่งโพสต์เพื่อตรวจสอบแล้ว",
+    "ar": "تم إرسال المنشور للمراجعة",
+    "vi": "Đã gửi bài để duyệt",
+    "ko": "검토할 게시물을 제출했어요"
+  },
+  "Your post is pending review and is not public yet.": {
+    "es": "Tu publicación está pendiente de revisión y aún no es pública.",
+    "th": "โพสต์กำลังรอการตรวจสอบและยังไม่เผยแพร่",
+    "ar": "منشورك قيد المراجعة ولم يُنشر بعد.",
+    "vi": "Bài đăng đang chờ duyệt và chưa được công khai.",
+    "ko": "게시물이 검토 중이며 아직 공개되지 않았어요."
+  },
+  "Loading submissions…": {
+    "es": "Cargando envíos…",
+    "th": "กำลังโหลดรายการที่ส่ง…",
+    "ar": "جارٍ تحميل المنشورات المرسلة…",
+    "vi": "Đang tải bài đã gửi…",
+    "ko": "제출 내역을 불러오는 중…"
+  },
+  "Submissions unavailable": {
+    "es": "Envíos no disponibles",
+    "th": "ไม่สามารถโหลดรายการที่ส่ง",
+    "ar": "المنشورات المرسلة غير متاحة",
+    "vi": "Không thể tải bài đã gửi",
+    "ko": "제출 내역을 사용할 수 없어요"
+  },
+  "Status unavailable": {
+    "es": "Estado no disponible",
+    "th": "ไม่สามารถดูสถานะได้",
+    "ar": "الحالة غير متاحة",
+    "vi": "Trạng thái không khả dụng",
+    "ko": "상태를 확인할 수 없어요"
+  },
+  "The result could not be confirmed. Refresh your wallet and retry the saved submission.": {
+    "es": "No se pudo confirmar el resultado. Actualiza tu cartera y vuelve a intentar el envío guardado.",
+    "th": "ไม่สามารถยืนยันผลได้ โปรดโหลดกระเป๋าใหม่แล้วลองส่งรายการเดิม",
+    "ar": "تعذر تأكيد النتيجة. حدّث المحفظة وأعد إرسال المسودة المحفوظة.",
+    "vi": "Không thể xác nhận kết quả. Hãy tải lại ví và thử gửi lại bài đã lưu.",
+    "ko": "결과를 확인할 수 없어요. 지갑을 새로고침하고 저장된 제출을 다시 시도하세요."
+  },
+  "A post removal is waiting for confirmation.": {
+    "es": "Hay una eliminación pendiente de confirmación.",
+    "th": "การลบโพสต์กำลังรอการยืนยัน",
+    "ar": "تنتظر إزالة منشور التأكيد.",
+    "vi": "Đang chờ xác nhận xóa bài đăng.",
+    "ko": "게시물 삭제 확인을 기다리고 있어요."
+  },
+  "Retry removal": {
+    "es": "Reintentar eliminación",
+    "th": "ลองลบอีกครั้ง",
+    "ar": "إعادة محاولة الإزالة",
+    "vi": "Thử xóa lại",
+    "ko": "삭제 다시 시도"
+  },
+  "Removal needs attention": {
+    "es": "La eliminación requiere atención",
+    "th": "การลบต้องได้รับการตรวจสอบ",
+    "ar": "تحتاج الإزالة إلى مراجعة",
+    "vi": "Việc xóa cần được kiểm tra",
+    "ko": "삭제 확인이 필요해요"
+  },
+  "Post removed": {
+    "es": "Publicación eliminada",
+    "th": "ลบโพสต์แล้ว",
+    "ar": "تمت إزالة المنشور",
+    "vi": "Đã xóa bài đăng",
+    "ko": "게시물을 삭제했어요"
+  },
+  "Your post and its online media have been removed.": {
+    "es": "Se han eliminado tu publicación y sus archivos en línea.",
+    "th": "ลบโพสต์และไฟล์ออนไลน์แล้ว",
+    "ar": "تمت إزالة منشورك وملفاته عبر الإنترنت.",
+    "vi": "Đã xóa bài đăng và tệp trực tuyến.",
+    "ko": "게시물과 온라인 미디어를 삭제했어요."
+  },
+  "Purchases are temporarily unavailable.": {
+    "es": "Las compras no están disponibles temporalmente.",
+    "th": "การซื้อไม่พร้อมใช้งานชั่วคราว",
+    "ar": "المشتريات غير متاحة مؤقتًا.",
+    "vi": "Tính năng mua hàng tạm thời không khả dụng.",
+    "ko": "구매를 일시적으로 사용할 수 없어요."
+  },
+  "This recipe was not unlocked.": {
+    "es": "No se ha desbloqueado esta receta.",
+    "th": "ยังไม่ได้ปลดล็อกสูตรนี้",
+    "ar": "لم يتم فتح هذه الوصفة.",
+    "vi": "Công thức này chưa được mở khóa.",
+    "ko": "이 레시피는 잠금 해제되지 않았어요."
+  },
+  "Your post was not submitted. Your draft has been kept.": {
+    "es": "No se ha enviado tu publicación. Se ha conservado el borrador.",
+    "th": "ยังไม่ได้ส่งโพสต์ และเก็บฉบับร่างไว้แล้ว",
+    "ar": "لم يُرسل منشورك وتم الاحتفاظ بالمسودة.",
+    "vi": "Bài đăng chưa được gửi và bản nháp vẫn được giữ.",
+    "ko": "게시물이 제출되지 않았으며 초안은 보관되어 있어요."
+  },
+  "Your brew book also changed on another device. Your notes are kept here while sync is paused.": {
+    "es": "Tu cuaderno también cambió en otro dispositivo. Tus notas se conservan aquí mientras la sincronización está en pausa.",
+    "th": "สมุดชงกาแฟมีการเปลี่ยนแปลงบนอุปกรณ์อื่นด้วย บันทึกของคุณยังอยู่ที่นี่ระหว่างหยุดการซิงก์",
+    "ar": "تغير دفتر التحضير على جهاز آخر أيضًا. ستبقى ملاحظاتك هنا أثناء توقف المزامنة.",
+    "vi": "Sổ pha cà phê cũng đã thay đổi trên thiết bị khác. Ghi chú vẫn được giữ tại đây khi tạm dừng đồng bộ.",
+    "ko": "다른 기기에서도 브루 북이 변경되었어요. 동기화를 일시 중지하는 동안 이 기기의 기록은 보관됩니다."
+  },
+  "Your brew book could not sync. Your notes are kept on this device.": {
+    "es": "No se pudo sincronizar tu cuaderno. Tus notas se conservan en este dispositivo.",
+    "th": "ไม่สามารถซิงก์สมุดชงกาแฟได้ บันทึกของคุณยังอยู่บนอุปกรณ์นี้",
+    "ar": "تعذرت مزامنة دفتر التحضير. ملاحظاتك محفوظة على هذا الجهاز.",
+    "vi": "Không thể đồng bộ sổ pha cà phê. Ghi chú vẫn được giữ trên thiết bị này.",
+    "ko": "브루 북을 동기화하지 못했어요. 기록은 이 기기에 보관되어 있어요."
+  },
+  "Retry sync": {
+    "es": "Reintentar sincronización",
+    "th": "ลองซิงก์อีกครั้ง",
+    "ar": "إعادة محاولة المزامنة",
+    "vi": "Thử đồng bộ lại",
+    "ko": "동기화 다시 시도"
+  },
+  "Use this device's copy": {
+    "es": "Usar la copia de este dispositivo",
+    "th": "ใช้สำเนาบนอุปกรณ์นี้",
+    "ar": "استخدام نسخة هذا الجهاز",
+    "vi": "Dùng bản trên thiết bị này",
+    "ko": "이 기기의 사본 사용"
+  },
+  "Use the online copy": {
+    "es": "Usar la copia en línea",
+    "th": "ใช้สำเนาออนไลน์",
+    "ar": "استخدام النسخة عبر الإنترنت",
+    "vi": "Dùng bản trực tuyến",
+    "ko": "온라인 사본 사용"
+  },
+  "Finish or save the current pour before choosing a copy.": {
+    "es": "Termina o guarda la preparación actual antes de elegir una copia.",
+    "th": "ชงให้เสร็จหรือบันทึกก่อนเลือกสำเนา",
+    "ar": "أكمل التحضير الحالي أو احفظه قبل اختيار نسخة.",
+    "vi": "Hoàn thành hoặc lưu lần pha hiện tại trước khi chọn bản sao.",
+    "ko": "사본을 선택하기 전에 현재 추출을 마치거나 저장하세요."
+  },
+  "Restore previous device copy": {
+    "es": "Restaurar la copia anterior del dispositivo",
+    "th": "กู้คืนสำเนาก่อนหน้าบนอุปกรณ์",
+    "ar": "استعادة نسخة الجهاز السابقة",
+    "vi": "Khôi phục bản trước trên thiết bị",
+    "ko": "이전 기기 사본 복원"
+  },
+  "Previous online versions": {
+    "es": "Versiones anteriores en línea",
+    "th": "เวอร์ชันออนไลน์ก่อนหน้า",
+    "ar": "الإصدارات السابقة عبر الإنترنت",
+    "vi": "Các phiên bản trực tuyến trước",
+    "ko": "이전 온라인 버전"
+  },
+  "Hide online versions": {
+    "es": "Ocultar versiones en línea",
+    "th": "ซ่อนเวอร์ชันออนไลน์",
+    "ar": "إخفاء الإصدارات عبر الإنترنت",
+    "vi": "Ẩn phiên bản trực tuyến",
+    "ko": "온라인 버전 숨기기"
+  },
+  "No earlier online versions": {
+    "es": "No hay versiones anteriores en línea",
+    "th": "ไม่มีเวอร์ชันออนไลน์ก่อนหน้า",
+    "ar": "لا توجد إصدارات سابقة عبر الإنترنت",
+    "vi": "Không có phiên bản trực tuyến trước",
+    "ko": "이전 온라인 버전이 없어요"
+  },
+  "Loading versions…": {
+    "es": "Cargando versiones…",
+    "th": "กำลังโหลดเวอร์ชัน…",
+    "ar": "جارٍ تحميل الإصدارات…",
+    "vi": "Đang tải phiên bản…",
+    "ko": "버전을 불러오는 중…"
+  },
+  "Versions unavailable": {
+    "es": "Versiones no disponibles",
+    "th": "ไม่สามารถโหลดเวอร์ชัน",
+    "ar": "الإصدارات غير متاحة",
+    "vi": "Không thể tải phiên bản",
+    "ko": "버전을 사용할 수 없어요"
+  },
+  "Choose a brew book?": {
+    "es": "¿Elegir un cuaderno de preparación?",
+    "th": "เลือกสมุดชงกาแฟหรือไม่",
+    "ar": "هل تريد اختيار دفتر تحضير؟",
+    "vi": "Chọn sổ pha cà phê?",
+    "ko": "브루 북을 선택할까요?"
+  },
+  "Restore this version?": {
+    "es": "¿Restaurar esta versión?",
+    "th": "กู้คืนเวอร์ชันนี้หรือไม่",
+    "ar": "هل تريد استعادة هذا الإصدار؟",
+    "vi": "Khôi phục phiên bản này?",
+    "ko": "이 버전을 복원할까요?"
+  },
+  "Your current device copy will be saved here before the online copy is opened.": {
+    "es": "La copia actual del dispositivo se guardará aquí antes de abrir la copia en línea.",
+    "th": "ระบบจะบันทึกสำเนาปัจจุบันบนอุปกรณ์ก่อนเปิดสำเนาออนไลน์",
+    "ar": "ستُحفظ نسخة جهازك الحالية هنا قبل فتح النسخة عبر الإنترنت.",
+    "vi": "Bản hiện tại trên thiết bị sẽ được lưu tại đây trước khi mở bản trực tuyến.",
+    "ko": "온라인 사본을 열기 전에 현재 기기의 사본을 이곳에 저장합니다."
+  },
+  "Your current device copy will be saved before the previous copy is restored.": {
+    "es": "La copia actual se guardará antes de restaurar la anterior.",
+    "th": "ระบบจะบันทึกสำเนาปัจจุบันก่อนกู้คืนสำเนาก่อนหน้า",
+    "ar": "ستُحفظ النسخة الحالية قبل استعادة النسخة السابقة.",
+    "vi": "Bản hiện tại sẽ được lưu trước khi khôi phục bản trước.",
+    "ko": "이전 사본을 복원하기 전에 현재 사본을 저장합니다."
+  },
+  "This device's copy will be synced. The previous online version remains in your version history.": {
+    "es": "Se sincronizará la copia de este dispositivo. La versión anterior seguirá en el historial.",
+    "th": "สำเนาบนอุปกรณ์นี้จะซิงก์ และเวอร์ชันออนไลน์ก่อนหน้ายังอยู่ในประวัติ",
+    "ar": "ستتم مزامنة نسخة هذا الجهاز وسيبقى الإصدار السابق في سجل الإصدارات.",
+    "vi": "Bản trên thiết bị này sẽ được đồng bộ; phiên bản trực tuyến trước vẫn ở trong lịch sử.",
+    "ko": "이 기기의 사본을 동기화합니다. 이전 온라인 버전은 기록에 남습니다."
+  },
+  "Your current device copy will be saved here before this online version is restored.": {
+    "es": "La copia actual se guardará aquí antes de restaurar esta versión en línea.",
+    "th": "ระบบจะบันทึกสำเนาบนอุปกรณ์ก่อนกู้คืนเวอร์ชันออนไลน์นี้",
+    "ar": "ستُحفظ نسخة جهازك الحالية هنا قبل استعادة هذا الإصدار.",
+    "vi": "Bản hiện tại trên thiết bị sẽ được lưu trước khi khôi phục phiên bản trực tuyến này.",
+    "ko": "이 온라인 버전을 복원하기 전에 현재 기기의 사본을 저장합니다."
   }
 }

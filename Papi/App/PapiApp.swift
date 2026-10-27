@@ -25,11 +25,11 @@ import SwiftUI
                 do {try await Task.sleep(for:.milliseconds(700))} catch {return}
                 showingLaunch=false
             }
-            .task {commerce.start(store:store);store.presentWelcomeIfNeeded();await store.refreshCloudWallet()}
-            .onChange(of:scenePhase) { _,phase in if phase == .active {store.presentWelcomeIfNeeded();Task {await commerce.recover();await store.refreshCloudWallet()}} }
+            .task {commerce.start(store:store);store.presentWelcomeIfNeeded();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}
+            .onChange(of:scenePhase) { _,phase in if phase == .active {store.presentWelcomeIfNeeded();Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}} }
             .onChange(of:store.state.signedIn) { _,signedIn in
                 router.resetForAccountChange()
-                if signedIn {Task {await commerce.recover();await store.refreshCloudWallet()}}
+                if signedIn {Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}}
             }
             .onChange(of:store.storageAvailable) {_,available in if available {Task {await commerce.recover()}}}
             .onChange(of:store.accountAction) {_,action in if action==nil {Task {await commerce.recover()}}}

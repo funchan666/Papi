@@ -172,7 +172,26 @@ struct ReviewQueueView:View {
                 PapiHeader("My submissions")
                 ScrollView {
                     VStack(alignment:.leading,spacing:16) {
-                        CoffeeSectionIntro(artwork:"momentComposeArt",title:"My submissions",detail:"Posts stay private until approved. No moderation server is connected yet; pending posts are never approved automatically.")
+                        CoffeeSectionIntro(artwork:"momentComposeArt",title:"My submissions",detail:store.usesCloudWallet ? "Posts remain private until reviewed and approved.":"Posts stay private until approved. No moderation server is connected yet; pending posts are never approved automatically.")
+                        if store.usesCloudWallet {
+                            if let pending=store.state.pendingCloudPostDeletion {
+                                PapiText("A post removal is waiting for confirmation.").font(CoffeeType.face(.caption))
+                                PapiTextButton("Retry removal"){Task {await store.deleteCloudSubmission(pending.postID)}}.disabled(store.cloudSubmissionsBusy)
+                            }
+                            if let submissions=store.cloudSubmissions {
+                                if submissions.isEmpty {PapiEmpty(title:"No submissions yet")}
+                                ForEach(submissions) {post in
+                                    PapiPanel {VStack(alignment:.leading,spacing:12) {
+                                        HStack {Image("coffeeUpdates").resizable().scaledToFit().frame(width:24,height:28);PapiText(cloudStatus(post.moderation_status)).font(CoffeeType.face(.headline));Spacer()}
+                                        PapiText(verbatim:post.caption).fixedSize(horizontal:false,vertical:true)
+                                        PapiTextButton("Delete post"){removing=post.id.uuidString}.font(CoffeeType.face(.caption,weight:.bold)).disabled(store.cloudSubmissionsBusy || store.state.pendingCloudPostDeletion != nil)
+                                    }}
+                                }
+                            } else {
+                                PapiText(store.cloudSubmissionsBusy ? "Loading submissions…":"Submissions unavailable")
+                                PapiTextButton("Retry"){Task {await store.refreshCloudSubmissions()}}.disabled(store.cloudSubmissionsBusy)
+                            }
+                        } else {
                         if store.state.ownMoments.isEmpty {PapiEmpty(title:"No submissions yet")}
                         ForEach(store.state.ownMoments) {post in
                             PapiPanel {VStack(alignment:.leading,spacing:12) {
@@ -187,12 +206,16 @@ struct ReviewQueueView:View {
                                 PapiTextButton("Delete post"){removing=post.id}.font(CoffeeType.face(.caption,weight:.bold))
                             }}
                         }
+                        }
                     }.padding(20).frame(maxWidth:700).frame(maxWidth:.infinity)
                 }
             }.overlay {
-                if let removing {PapiDialog(title:"Remove this coffee moment?",message:"This moment will be removed from your coffee book. Coins already used are not refunded.",confirm:"Delete post",cancel:"Cancel",action:{store.deletePost(removing);self.removing=nil},dismiss:{self.removing=nil})}
+                if let removing {PapiDialog(title:"Remove this coffee moment?",message:"This moment will be removed from your coffee book. Coins already used are not refunded.",confirm:"Delete post",cancel:"Cancel",action:{self.removing=nil;if store.usesCloudWallet {if let id=UUID(uuidString:removing) {Task {await store.deleteCloudSubmission(id)}}} else {store.deletePost(removing)}},dismiss:{self.removing=nil})}
             }
-        }
+        }.task {if store.usesCloudWallet {await store.refreshCloudSubmissions()}}
+    }
+    private func cloudStatus(_ value:String)->String {
+        switch value {case "pending":return "Under review";case "approved":return "Approved";case "rejected":return "Not approved";default:return "Status unavailable"}
     }
     private func status(_ post:CoffeeMoment)->String {
         switch post.moderation ?? .awaitingSubmission {
