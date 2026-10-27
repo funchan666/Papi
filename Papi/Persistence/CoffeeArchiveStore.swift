@@ -22,12 +22,12 @@ struct CoffeeReceipt: Identifiable {
     init() {
         do {let saved=try CoffeeVault.read();state=saved ?? CoffeeArchive();savedSnapshotExpected=saved != nil}
         catch { state = CoffeeArchive(); storageAvailable = false
-            notice = .init(title: "Local data unavailable", message: error.localizedDescription) }
+            notice = .init(title: "Saved data unavailable", message: error.localizedDescription) }
         if storageAvailable {cleanupPendingMedia()}
     }
     @discardableResult func commit(_ mutate: (inout CoffeeArchive) throws -> Void) -> Bool {
         guard accountAction==nil,!loginInProgress else {return false}
-        guard storageAvailable else { inform("Local data unavailable", "Unlock the device and use Retry in Settings. Your saved data will not be overwritten."); return false }
+        guard storageAvailable else { inform("Saved data unavailable", "Unlock the device and use Retry in Settings. Your saved data will not be overwritten."); return false }
         var next = state
         do {
             try mutate(&next)
@@ -46,7 +46,7 @@ struct CoffeeReceipt: Identifiable {
             if let saved=try CoffeeVault.read() {state=saved;savedSnapshotExpected=true}
             else if savedSnapshotExpected {throw CoffeeVault.VaultError.missingSnapshot}
             storageAvailable=true;cleanupPendingMedia()
-        } catch {storageAvailable=false;inform("Local data unavailable",error.localizedDescription)}
+        } catch {storageAvailable=false;inform("Saved data unavailable",error.localizedDescription)}
     }
     func inform(_ title: String, _ message: String) { notice = .init(title:title,message:message) }
     func login() async {
@@ -94,7 +94,7 @@ struct CoffeeReceipt: Identifiable {
     func performAccountAction(_ action:AccountTransition) async {
         guard accountAction==nil,!loginInProgress,storageAvailable else{return}
         guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil else {
-            inform("Purchase awaiting review","Resolve the purchase before changing this local guest.");return
+            inform("Purchase awaiting review","Resolve the purchase before changing accounts.");return
         }
         accountAction=action
         defer {accountAction=nil}
@@ -182,7 +182,7 @@ struct CoffeeReceipt: Identifiable {
         if commit({
             $0.checkinDays.insert(day); $0.coinBalance += reward; $0.experience += 20
             $0.coinMovements.insert(.init(id:"checkin-"+day,delta:reward,reason:"Daily check-in"),at:0)
-        }) { inform("Check-in complete", "\(reward) coins have been added to your local wallet.") }
+        }) { inform("Check-in complete", "\(reward) coins have been added to your wallet.") }
     }
     func collect(_ gift: CoffeeCollectible, quantity: Int) -> Bool {
         guard (1...99).contains(quantity), gift.cost <= Int.max / quantity else { return false }
@@ -196,7 +196,7 @@ struct CoffeeReceipt: Identifiable {
     func previewGift(_ gift: CoffeeCollectible, quantity: Int, context: String) {
         guard (1...99).contains(quantity) else { return }
         if commit({ $0.giftHistory.insert(.init(giftID:gift.id,quantity:quantity,context:context),at:0) }) {
-            inform("Gift preview saved", "\(gift.name) × \(quantity). No recipient is connected; no coins or inventory were spent. You can collect this gift for your local backpack.")
+            inform("Gift idea saved", "\(gift.name) × \(quantity). No recipient is connected; no coins or inventory were spent. You can collect this gift for your backpack.")
         }
     }
     @discardableResult func enter(_ room: CoffeeTable)->Bool {

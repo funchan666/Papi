@@ -95,9 +95,8 @@ struct BrewBenchView:View {
                                     HStack(alignment:.firstTextBaseline,spacing:12) {PapiText(recipe.title).font(CoffeeType.face(.title3,weight:.bold));Spacer(minLength:4);if store.ownsRecipe(recipe){PapiText(recipe.unlockCoins==0 ? "Included":"On your shelf").font(CoffeeType.face(.caption,weight:.bold))}else{CoinLabel(value:recipe.unlockCoins).font(CoffeeType.face(.subheadline))}}
                                     PapiText(recipe.brewer).font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
                                     PapiText("\(recipe.coffeeGrams) g coffee · \(recipe.hotWaterGrams) g hot water · \(recipe.waterCelsius) °C").font(CoffeeType.face(.caption))
-                                }.frame(maxWidth:.infinity,alignment:.leading).padding(.vertical,16)
+                                }.frame(maxWidth:.infinity,alignment:.leading).padding(16).background(Color.white.opacity(0.92),in:RoundedRectangle(cornerRadius:18))
                             }.buttonStyle(.plain).papiAvoidReserved()
-                            Divider().overlay(Color.coffee.opacity(0.15))
                         }
                         Button {router.go(.cuppingFlight)} label:{
                             VStack(alignment:.leading,spacing:14) {
@@ -234,11 +233,10 @@ struct BrewArchiveView:View {
         PapiScreen {VStack(spacing:0) {
             PapiHeader("My brew book")
             ScrollView {VStack(alignment:.leading,spacing:22) {
-                BrewFrontispiece(artwork:"brewBenchArtwork",title:"A record of your own cups.")
+                CoffeeSectionIntro(artwork:"passportBrewArt",title:"A record of your own cups.",detail:"Brew records and two-cup tastings are free. No coins are used here.")
                 if store.brewBook.cups.isEmpty {PapiEmpty(title:"The first page is yours",detail:"Begin a pour on the brew bench, then keep the cup here.")}
                 ForEach(store.brewBook.cups) {cup in
-                    Button {router.go(.brewCup(cup.id))} label:{BrewRecordRow(cup:cup)}.buttonStyle(.plain)
-                    Divider()
+                    Button {router.go(.brewCup(cup.id))} label:{BrewRecordRow(cup:cup).padding(.horizontal,16).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:18))}.buttonStyle(.plain)
                 }
                 PapiTextButton("Compare two cups"){router.go(.cuppingFlight)}.buttonStyle(PapiButtonStyle(wide:true))
                 if !store.brewBook.flights.isEmpty {
@@ -258,8 +256,7 @@ struct BrewArchiveView:View {
                                 }
                                 if !flight.tastingNote.isEmpty {PapiText(verbatim:flight.tastingNote).font(CoffeeType.face(.subheadline))}
                                 Text(flight.tastedAt,style:.date).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                            }.padding(.vertical,12)
-                            Divider()
+                            }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:18))
                         }
                     }
                 }

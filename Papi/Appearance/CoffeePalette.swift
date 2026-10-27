@@ -172,6 +172,23 @@ struct PapiPanel<Content:View>:View {
     @ViewBuilder var content:()->Content
     var body:some View { content().padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.88),in:RoundedRectangle(cornerRadius:20)) }
 }
+struct CoffeeSectionIntro:View {
+    let artwork:String
+    let title:String
+    let detail:String
+    @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.papiBounds) private var bounds
+    var body:some View {
+        let layout=typeSize.isAccessibilitySize || (bounds.width>0 && bounds.width<360) ? AnyLayout(VStackLayout(alignment:.leading,spacing:10)):AnyLayout(HStackLayout(spacing:12))
+        layout {
+            VStack(alignment:.leading,spacing:6) {
+                PapiText(title).font(CoffeeType.display(.title2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                PapiText(detail).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+            }.frame(maxWidth:.infinity,alignment:.leading)
+            PapiArtworkFit(asset:artwork).frame(width:94,height:94)
+        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.cream.opacity(0.96),in:RoundedRectangle(cornerRadius:22))
+    }
+}
 struct PapiRow: View {
     @Environment(\.layoutDirection) private var direction
     var asset: String?
@@ -210,6 +227,7 @@ struct PapiInputBar<Field:View,Actions:View>:View {
     @ScaledMetric(relativeTo:.body) private var inputWidth:CGFloat=140
     @ScaledMetric(relativeTo:.body) private var lineHeight:CGFloat=24
     @Environment(\.papiBounds) private var bounds
+    var background:Color = .coffee
     @ViewBuilder var field:()->Field
     @ViewBuilder var actions:()->Actions
     var body:some View {
@@ -218,7 +236,7 @@ struct PapiInputBar<Field:View,Actions:View>:View {
             field().frame(maxWidth:.infinity)
             actions()
         }.environment(\.papiComposerLines,compact ? 1:3)
-            .padding(10).background {Color.coffee.ignoresSafeArea(.container,edges:.bottom)}.papiAvoidReserved()
+            .padding(10).background {background.ignoresSafeArea(.container,edges:.bottom)}.papiAvoidReserved()
     }
 }
 private struct CoffeeModalHeightKey:PreferenceKey {

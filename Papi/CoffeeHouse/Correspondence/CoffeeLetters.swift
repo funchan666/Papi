@@ -5,49 +5,60 @@ struct CorrespondenceInbox:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
     @Environment(\.layoutDirection) private var direction
+    @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.papiBounds) private var bounds
     @State private var confirmClear=false
     var body:some View {
         PapiScreen {
             ScrollView {
-                VStack(alignment:.leading,spacing:22) {
+                VStack(alignment:.leading,spacing:18) {
                     HStack {Image("chatTitle").resizable().scaledToFit().frame(width:110,height:58).papiAccessibilityLabel("Chat");Spacer();PapiIconButton(asset:"clean",label:"Clear chat drafts"){confirmClear=true}}
+                    let heroLayout=typeSize.isAccessibilitySize || (bounds.width>0 && bounds.width<370) ? AnyLayout(VStackLayout(alignment:.leading,spacing:12)):AnyLayout(HStackLayout(spacing:12))
+                    heroLayout {
+                        VStack(alignment:.leading,spacing:8) {
+                            PapiText("Coffee conversations").font(CoffeeType.display(.title2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                            PapiText("Messaging is not available yet.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                        }.frame(maxWidth:.infinity,alignment:.leading)
+                        PapiArtworkFit(asset:"coffeePostArt").frame(width:128,height:112)
+                    }.padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.butter.opacity(0.72),in:RoundedRectangle(cornerRadius:24))
                     Button {router.go(.notifications)} label:{
                         HStack(spacing:14) {
-                            Avatar(name:"brandMark",size:52)
+                            Avatar(name:"brandMark",size:54)
                             VStack(alignment:.leading,spacing:5) {
                                 PapiText("Coffee desk").font(CoffeeType.face(.headline))
-                                PapiText("Your brews and saved reports").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                                    .fixedSize(horizontal:false,vertical:true)
-                            }
-                            Spacer(minLength:8)
-                            Image("chevron").resizable().scaledToFit().scaleEffect(x:direction == .rightToLeft ? -1:1,y:1).frame(width:12,height:12)
-                        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.cream.opacity(0.96),in:RoundedRectangle(cornerRadius:20))
+                                PapiText("Your brews and saved reports").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                            }.frame(maxWidth:.infinity,alignment:.leading)
+                            Image("chevron").resizable().scaledToFit().scaleEffect(x:direction == .rightToLeft ? -1:1,y:1).frame(width:12,height:12).accessibilityHidden(true)
+                        }.padding(16).frame(maxWidth:.infinity,minHeight:76,alignment:.leading).background(Color.white.opacity(0.94),in:RoundedRectangle(cornerRadius:20)).contentShape(Rectangle())
                     }.buttonStyle(.plain)
                     let followed=CoffeeMember.previews.filter{store.state.followedMembers.contains($0.id) && !store.isUserHidden($0.id)}
                     if !followed.isEmpty {
-                        PapiText("Following").font(CoffeeType.face(.headline))
-                        ScrollView(.horizontal,showsIndicators:false) {HStack(spacing:18) {
+                        PapiText("Following").font(CoffeeType.face(.headline)).padding(.top,2)
+                        ScrollView(.horizontal,showsIndicators:false) {HStack(spacing:16) {
                             ForEach(followed) {person in
-                                VStack(spacing:7) {PapiUserLink(userID:person.id,size:54,showsName:false);Button{router.go(.person(person.id))}label:{PapiText(verbatim:person.name).font(CoffeeType.face(.caption))}.buttonStyle(.plain)}
+                                VStack(spacing:7) {
+                                    PapiUserLink(userID:person.id,size:54,showsName:false)
+                                    Button{router.go(.person(person.id))}label:{PapiText(verbatim:person.name).font(CoffeeType.face(.caption)).lineLimit(2).multilineTextAlignment(.center)}.buttonStyle(.plain)
+                                }.frame(width:82,alignment:.top)
                             }
-                        }}
+                        }.padding(.vertical,4)}
                     }
-                    PapiText("Your conversations").font(CoffeeType.face(.title3,weight:.bold))
+                    PapiText("Your conversations").font(CoffeeType.face(.title3,weight:.bold)).padding(.top,2)
                     if store.conversationPeople.isEmpty {emptyInbox}
                     ForEach(store.conversationPeople) {person in
                         HStack(alignment:.center,spacing:12) {
                             PapiUserLink(userID:person.id,size:50,showsName:false)
-                            VStack(alignment:.leading,spacing:6) {
+                            VStack(alignment:.leading,spacing:5) {
                                 Button {router.go(.person(person.id))} label:{PapiText(verbatim:person.name).font(CoffeeType.face(.headline)).frame(maxWidth:.infinity,alignment:.leading)}.buttonStyle(.plain)
                                 Button {router.go(.chat(person.id))} label:{
                                     VStack(alignment:.leading,spacing:4) {
                                         PapiText(store.hasChatDraft(person.id) ? "Draft":"Conversation").font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.mutedCoffee)
                                         PapiText(verbatim:preview(person.id)).font(CoffeeType.face(.subheadline)).lineLimit(2).frame(maxWidth:.infinity,alignment:.leading)
-                                    }.contentShape(Rectangle())
+                                    }.frame(maxWidth:.infinity,minHeight:44,alignment:.leading).contentShape(Rectangle())
                                 }.buttonStyle(.plain)
-                            }
+                            }.frame(maxWidth:.infinity,alignment:.leading)
                             PapiIconButton(asset:"comment",label:"Open chat"){router.go(.chat(person.id))}
-                        }.padding(16).background(Color.white,in:RoundedRectangle(cornerRadius:16))
+                        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.94),in:RoundedRectangle(cornerRadius:20))
                     }
                 }.padding(20).frame(maxWidth:800).frame(maxWidth:.infinity)
             }
@@ -56,17 +67,12 @@ struct CorrespondenceInbox:View {
         }
     }
     private var emptyInbox:some View {
-        VStack(alignment:.leading,spacing:16) {
-            PapiArtworkFill(asset:"coffeeNoteArtwork").frame(height:165).clipShape(RoundedRectangle(cornerRadius:20))
-            VStack(alignment:.leading,spacing:9) {
-                PapiText("No conversations yet").font(CoffeeType.face(.title3,weight:.bold))
-                PapiText("Open a profile to start a draft. Sending messages requires both people to follow each other.")
-                    .font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
-                PapiText("Collection portraits are previews. Messaging is not connected yet.")
-                    .font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
-            }
-            PapiTextButton("Explore coffee community"){store.selectedTab=0}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16))
-        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.82),in:RoundedRectangle(cornerRadius:24))
+        VStack(alignment:.leading,spacing:12) {
+            PapiText("No conversations yet").font(CoffeeType.face(.headline))
+            PapiText("Open a profile to start a draft. Sending messages requires both people to follow each other.")
+                .font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+            PapiTextButton("Explore coffee community"){store.selectedTab=0}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).padding(.top,3)
+        }.padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.86),in:RoundedRectangle(cornerRadius:22))
     }
     private func preview(_ id:String)->String {
         if store.hasChatDraft(id){return store.chatPreview(id)}

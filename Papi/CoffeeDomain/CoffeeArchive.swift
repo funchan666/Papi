@@ -136,6 +136,7 @@ struct CoffeeArchive: Codable {
     var keptMoments: Set<String> = []
     // Optional so older guest snapshots keep their existing data.
     var savedCoffeeScenes: Set<String>? = nil
+    var dismissedRecommendations: Set<String>? = nil
     var ownMoments: [CoffeeMoment] = []
     var tastingReplies: [TastingReply] = []
     var communityReports: [CommunityReport] = []
@@ -180,6 +181,7 @@ struct CoffeeArchive: Codable {
         case appreciatedMoments = "likes"
         case keptMoments = "bookmarks"
         case savedCoffeeScenes = "savedCoffeeScenes"
+        case dismissedRecommendations = "dismissedRecommendations"
         case ownMoments = "localPosts"
         case tastingReplies = "comments"
         case communityReports = "reports"
@@ -241,12 +243,12 @@ extension CoffeeCollectible {
 }
 extension CoffeeTable {
     static let previews: [CoffeeTable] = [
-        .init(id: "room-chat", title: "Slow mornings", category: "Coffee rituals", image: "garden-coffee-seat", hostMemberID: "preview-member-0"),
-        .init(id: "room-learn", title: "The brewing table", category: "Brew notes", image: "home-espresso-corner", hostMemberID: "preview-member-1"),
-        .init(id: "room-match", title: "Recipes over coffee", category: "Pour over", image: "croissant-table", hostMemberID: "preview-member-2"),
-        .init(id: "room-vibe", title: "Evening espresso", category: "Roast notes", image: "coffee-and-dates", hostMemberID: "preview-member-3"),
-        .init(id: "room-breeze", title: "Window seat", category: "Café reading", image: "courtyard-brunch", hostMemberID: "preview-member-4"),
-        .init(id: "room-dream", title: "Coffee daydreams", category: "Slow coffee", image: "corner-latte", hostMemberID: "preview-member-5")
+        .init(id: "room-chat", title: "Slow mornings", category: "Coffee rituals", image: "roomMorningArt", hostMemberID: "preview-member-0"),
+        .init(id: "room-learn", title: "The brewing table", category: "Brew notes", image: "roomBrewingArt", hostMemberID: "preview-member-1"),
+        .init(id: "room-match", title: "Recipes over coffee", category: "Pour over", image: "roomRecipeArt", hostMemberID: "preview-member-2"),
+        .init(id: "room-vibe", title: "Evening espresso", category: "Roast notes", image: "roomEveningArt", hostMemberID: "preview-member-3"),
+        .init(id: "room-breeze", title: "Window seat", category: "Café reading", image: "roomWindowArt", hostMemberID: "preview-member-4"),
+        .init(id: "room-dream", title: "Coffee daydreams", category: "Slow coffee", image: "roomDreamArt", hostMemberID: "preview-member-5")
     ]
 }
 extension CoffeeMoment {

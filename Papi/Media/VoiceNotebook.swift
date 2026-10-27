@@ -119,7 +119,7 @@ struct VoiceNotePlayer:View {
     @Environment(\.scenePhase) private var phase
     var body:some View {
         VStack(spacing:8) {
-            Button {playback.toggle(name)} label:{HStack{Image("speaker").resizable().scaledToFit().frame(width:32,height:32);PapiText(playback.playing ? "Stop voice draft":"Play local voice draft")}.padding(10).background(Color.butter,in:Capsule())}.buttonStyle(.plain)
+            Button {playback.toggle(name)} label:{HStack{Image("speaker").resizable().scaledToFit().frame(width:32,height:32);PapiText(playback.playing ? "Stop voice draft":"Play voice draft")}.padding(10).background(Color.butter,in:Capsule())}.buttonStyle(.plain)
             if let error=playback.errorMessage {PapiText(error).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
         }.onDisappear{playback.stop()}.onChange(of:phase){_,p in if p != .active {playback.stop()}}
     }

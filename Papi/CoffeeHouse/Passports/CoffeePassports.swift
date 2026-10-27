@@ -47,23 +47,28 @@ struct MyCoffeePassportView:View {
                                 Button {router.go(.wallet)} label:{Image("walletBanner").resizable().scaledToFit().frame(maxWidth:.infinity)}.papiAccessibilityLabel("My wallet")
                                 Button {router.go(.level)} label:{Image("levelBanner").resizable().scaledToFit().frame(maxWidth:.infinity)}.papiAccessibilityLabel("My level")
                             }.buttonStyle(.plain)
-                            VStack(spacing:0) {
-                                PapiRow(asset:"brewDripper",title:"Brew bench"){router.go(.brewBench)}
-                                Divider().padding(.leading,52)
-                                PapiRow(asset:"brewDripper",title:"My brew book"){router.go(.brewArchive)}
-                                Divider().padding(.leading,52)
-                                PapiRow(asset:"voiceOn",title:"Coffee tables"){router.go(.tables)}
-                                Divider().padding(.leading,52)
-                                PapiRow(asset:"blocked",title:"Blacklist"){router.go(.blacklist)}
-                                Divider().padding(.leading,52)
-                                PapiRow(asset:"calendar",title:store.text("Check in")){router.sheet = .checkin}
-                                Divider().padding(.leading,52)
-                                PapiRow(asset:"bag",title:"My backpack"){router.go(.backpack)}
-                                Divider().padding(.leading,52)
-                                PapiRow(asset:"globe",title:store.text("Language")){router.go(.language)}
-                                Divider().padding(.leading,52)
-                                PapiRow(asset:"coffeeUpdates",title:"My submissions"){router.go(.reviewQueue)}
-                            }.background(Color.white,in:RoundedRectangle(cornerRadius:18))
+                            VStack(alignment:.leading,spacing:10) {
+                                PapiText("Your coffee spaces").font(CoffeeType.face(.headline)).padding(.horizontal,4)
+                                VStack(spacing:0) {
+                                    PapiRow(asset:"brewDripper",title:"Brew bench"){router.go(.brewBench)}
+                                    Divider().padding(.leading,52)
+                                    PapiRow(asset:"brewDripper",title:"My brew book"){router.go(.brewArchive)}
+                                    Divider().padding(.leading,52)
+                                    PapiRow(asset:"voiceOn",title:"Coffee tables"){router.go(.tables)}
+                                }.background(Color.white.opacity(0.94),in:RoundedRectangle(cornerRadius:18))
+                                PapiText("Your account").font(CoffeeType.face(.headline)).padding(.horizontal,4).padding(.top,6)
+                                VStack(spacing:0) {
+                                    PapiRow(asset:"calendar",title:store.text("Check in")){router.sheet = .checkin}
+                                    Divider().padding(.leading,52)
+                                    PapiRow(asset:"bag",title:"My backpack"){router.go(.backpack)}
+                                    Divider().padding(.leading,52)
+                                    PapiRow(asset:"coffeeUpdates",title:"My submissions"){router.go(.reviewQueue)}
+                                    Divider().padding(.leading,52)
+                                    PapiRow(asset:"blocked",title:"Blacklist"){router.go(.blacklist)}
+                                    Divider().padding(.leading,52)
+                                    PapiRow(asset:"globe",title:store.text("Language")){router.go(.language)}
+                                }.background(Color.white.opacity(0.94),in:RoundedRectangle(cornerRadius:18))
+                            }
                             let shelfLayout=typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing:4)):AnyLayout(HStackLayout(spacing:4))
                             shelfLayout {
                                 ForEach(0..<3) {i in
@@ -118,13 +123,14 @@ struct EditCoffeePassportView:View {
                 PapiHeader("Edit Profile")
                 ScrollView {
                     VStack(spacing:18) {
+                        CoffeeSectionIntro(artwork:"passportBrewArt",title:"Your coffee passport",detail:"Tap Save to keep these changes.")
                         PapiImage(name:passport.cover).frame(height:210).clipped().clipShape(RoundedRectangle(cornerRadius:20))
                         PapiActionGroup {pickButton("Change background",kind:"cover");pickButton("Change avatar",kind:"avatar")}
                         HStack {Avatar(name:passport.portraitReference,size:64);PapiText("Your coffee passport").font(CoffeeType.face(.headline));Spacer()}
                         VStack(alignment:.leading,spacing:8) {
                             PapiText("Name").font(CoffeeType.face(.caption,weight:.semibold));PapiTextField(prompt:"Please enter the name…",text:$passport.name)
                             PapiText("About you").font(CoffeeType.face(.caption,weight:.semibold));PapiTextField(prompt:"Keeping the cups I want to brew again.",text:$passport.bio)
-                        }
+                        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.88),in:RoundedRectangle(cornerRadius:20))
                         HStack {PapiText("Photo album").font(CoffeeType.face(.headline));Spacer();pickButton("Add photo",kind:"album")}
                         LazyVGrid(columns:[GridItem(.adaptive(minimum:95),spacing:10)],spacing:10) {
                             ForEach(passport.photos,id:\.self) {name in
@@ -165,19 +171,29 @@ struct EditCoffeePassportView:View {
 struct RelationshipsView:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var selected:Int
     init(initialTab:Int=0) {_selected=State(initialValue:initialTab)}
     var body:some View {
-        PapiScreen {VStack(spacing:12){
+        PapiScreen {VStack(spacing:0){
             PapiHeader("Connections")
-            HStack {ForEach(0..<3){i in PapiTextButton(["Following","Follower","Friends"][i]){selected=i}.padding(10).frame(maxWidth:.infinity).background(selected==i ? Color.butter:.clear,in:Capsule())}}.buttonStyle(.plain).padding(.horizontal,16)
             ScrollView {
+                VStack(alignment:.leading,spacing:16) {
+                    CoffeeSectionIntro(artwork:"coffeePostArt",title:"Connections",detail:"No relationships are created automatically. Friendship needs the other person's acceptance.")
+                    let filterLayout=typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing:5)):AnyLayout(HStackLayout(spacing:5))
+                    filterLayout {
+                        ForEach(0..<3){i in
+                            Button {selected=i} label:{PapiText(["Following","Follower","Friends"][i]).font(CoffeeType.face(.subheadline,weight:.semibold)).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true).frame(maxWidth:.infinity,minHeight:44).background(selected==i ? Color.butter:Color.clear,in:RoundedRectangle(cornerRadius:14)).contentShape(Rectangle())}
+                                .buttonStyle(.plain).accessibilityAddTraits(selected==i ? .isSelected:[])
+                        }
+                    }.padding(5).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:18))
                     let following=store.state.followedMembers.sorted().compactMap{store.person($0)}.filter{!store.isUserHidden($0.id)}
                     let people=selected==0 ? following:(selected==1 ? store.followers:store.friends)
-                    if people.isEmpty {PapiEmpty(title:selected==0 ? "No following yet":(selected==1 ? "No followers":"No mutual connections"),detail:"No relationships are created automatically. Friendship needs the other person's acceptance.")}
+                    if people.isEmpty {PapiEmpty(title:selected==0 ? "No following yet":(selected==1 ? "No followers":"No mutual connections"))}
                     ForEach(people){person in
-                        HStack {Button {router.go(.person(person.id))} label:{HStack {Avatar(name:person.portrait);PapiText(verbatim:person.name)}}.buttonStyle(.plain);Spacer();PapiIconButton(asset:"comment",label:"Open chat"){router.go(.chat(person.id))}}.padding(16).background(Color.white,in:RoundedRectangle(cornerRadius:14)).padding(.horizontal,16)
+                        HStack(spacing:12) {PapiUserLink(userID:person.id);Spacer(minLength:0);PapiIconButton(asset:"comment",label:"Open chat"){router.go(.chat(person.id))}}.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.92),in:RoundedRectangle(cornerRadius:18))
                     }
+                }.padding(20).frame(maxWidth:650).frame(maxWidth:.infinity)
             }
         }}
     }
@@ -186,14 +202,21 @@ struct BlacklistView:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
     var body:some View {
-        PapiScreen {VStack {
+        PapiScreen {VStack(spacing:0) {
             PapiHeader("Blacklist")
             ScrollView {
-                if store.state.blockedMembers.isEmpty {PapiEmpty(title:"Your blacklist is empty")}
-                ForEach(store.state.blockedMembers.sorted(),id:\.self){id in
-                    let person=store.person(id)
-                    HStack {Avatar(name:person?.portrait ?? "brandMark");PapiText(verbatim:person?.name ?? "Hidden profile");Spacer();PapiTextButton("Unblock"){store.unblock(id)}.font(CoffeeType.face(.caption,weight:.bold)).padding(10).frame(minHeight:44).background(Color.butter,in:Capsule())}.padding(16).background(Color.white,in:RoundedRectangle(cornerRadius:15)).padding(.horizontal,18).padding(.bottom,8)
-                }
+                VStack(alignment:.leading,spacing:14) {
+                    CoffeeSectionIntro(artwork:"passportCareArt",title:"Blacklist",detail:"Manage the people you have blocked.")
+                    if store.state.blockedMembers.isEmpty {PapiEmpty(title:"Your blacklist is empty")}
+                    ForEach(store.state.blockedMembers.sorted(),id:\.self){id in
+                        let person=store.person(id)
+                        HStack(spacing:12) {
+                            Avatar(name:person?.portrait ?? "brandMark")
+                            PapiText(verbatim:person?.name ?? "Hidden profile").font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true).frame(maxWidth:.infinity,alignment:.leading)
+                            PapiTextButton("Unblock"){store.unblock(id)}.font(CoffeeType.face(.caption,weight:.bold)).padding(10).frame(minHeight:44).background(Color.butter,in:Capsule())
+                        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.94),in:RoundedRectangle(cornerRadius:18))
+                    }
+                }.padding(20).frame(maxWidth:650).frame(maxWidth:.infinity)
             }
         }}
     }
@@ -217,20 +240,20 @@ struct CoffeePreferencesView:View {
                         PapiPanel {
                             VStack(alignment:.leading,spacing:10) {
                                 PapiText("Your coffee account").font(CoffeeType.face(.headline))
-                                PapiText("Your coffee account, brew book and balance are stored on this device. Community sharing is not connected. Collection portraits are not available chat contacts.").font(CoffeeType.face(.subheadline))
+                                PapiText("Your coffee book and balance do not sync between devices. Community sharing and messaging are unavailable.").font(CoffeeType.face(.subheadline))
                                 PapiText("Papi 1.0 · Brew, taste, remember").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                             }
                         }
-                        if !store.storageAvailable {PapiTextButton("Retry local storage"){store.reload()}.buttonStyle(PapiButtonStyle())}
+                        if !store.storageAvailable {PapiTextButton("Retry"){store.reload()}.buttonStyle(PapiButtonStyle())}
                     }.padding(20).frame(maxWidth:650).frame(maxWidth:.infinity)
                 }
             }.overlay {
                 if let confirmation {
                     PapiDialog(title:confirmation=="delete" ? "Delete this coffee account?":"Log out?",
-                               message:confirmation=="delete" ? "This removes your passport, brew book, recipes, moments, media, coins and keepsakes. Purchase ownership records are retained to prevent duplicate delivery. This cannot be undone.":"Your coffee book stays on this device. One-tap login reopens this account.",
-                               confirm:confirmation=="delete" ? "Delete local data":"Log out",cancel:"Cancel",action:{
+                               message:confirmation=="delete" ? "This removes your passport, brew book, recipes, moments, media, coins and keepsakes. Purchase ownership records are retained to prevent duplicate delivery. This cannot be undone.":"Your coffee book will be here when you return.",
+                               confirm:confirmation=="delete" ? "Delete account":"Log out",cancel:"Cancel",action:{
                         self.confirmation=nil
-                        if commerce.busy || commerce.unresolved {store.inform("Purchase recovery active","Resolve the purchase before changing this local guest.");return}
+                        if commerce.busy || commerce.unresolved {store.inform("Purchase recovery active","Resolve the purchase before changing accounts.");return}
                         Task {await store.performAccountAction(confirmation=="delete" ? .delete:.logout)}
                     },dismiss:{self.confirmation=nil})
                 }
@@ -247,10 +270,10 @@ struct LanguageView:View {
             PapiHeader(store.text("Language"))
             ScrollView {
                 VStack(spacing:12) {
+                    CoffeeSectionIntro(artwork:"passportCareArt",title:"Language",detail:"App controls follow your selected language. Your writing and original artwork keep their original language.")
                     ForEach(PapiStrings.languages,id:\.id) {language in
                         Button {pending=language.id} label:{HStack {PapiText(language.name);Spacer();if store.state.language==language.id {Image("check").resizable().scaledToFit().frame(width:18,height:18)}}.padding(19).frame(maxWidth:.infinity).background(store.state.language==language.id ? Color.butter:Color.white,in:RoundedRectangle(cornerRadius:13))}.buttonStyle(.plain)
                     }
-                    PapiText("App controls follow your selected language. Your writing and original artwork keep their original language.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).padding(.vertical,14)
                 }.padding(20).frame(maxWidth:620).frame(maxWidth:.infinity)
             }
         }.overlay {

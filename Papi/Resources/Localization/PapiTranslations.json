@@ -5661,5 +5661,313 @@
     "ar": "حفظ المشهد",
     "vi": "Lưu góc cà phê",
     "ko": "풍경 저장"
+  },
+  "Coffee collection": {
+    "es": "Colección de café",
+    "th": "คอลเลกชันกาแฟ",
+    "ar": "مجموعة القهوة",
+    "vi": "Bộ sưu tập cà phê",
+    "ko": "커피 컬렉션"
+  },
+  "Your draft and room history will be kept.": {
+    "es": "Se conservarán tu borrador y el historial de la sala.",
+    "th": "ร่างและประวัติห้องจะยังคงอยู่",
+    "ar": "ستبقى المسودة وسجل الغرفة محفوظين.",
+    "vi": "Bản nháp và lịch sử phòng sẽ được giữ lại.",
+    "ko": "초안과 방 기록이 유지됩니다."
+  },
+  "This item will disappear from your lists.": {
+    "es": "Este elemento desaparecerá de tus listas.",
+    "th": "รายการนี้จะหายไปจากรายการของคุณ",
+    "ar": "سيختفي هذا العنصر من قوائمك.",
+    "vi": "Mục này sẽ biến mất khỏi danh sách của bạn.",
+    "ko": "이 항목이 목록에서 사라집니다."
+  },
+  "Saved data unavailable": {
+    "es": "Datos guardados no disponibles",
+    "th": "ไม่สามารถเข้าถึงข้อมูลที่บันทึก",
+    "ar": "البيانات المحفوظة غير متاحة",
+    "vi": "Không thể truy cập dữ liệu đã lưu",
+    "ko": "저장된 데이터를 사용할 수 없음"
+  },
+  "Resolve the purchase before changing accounts.": {
+    "es": "Resuelve la compra antes de cambiar de cuenta.",
+    "th": "จัดการรายการซื้อให้เสร็จก่อนเปลี่ยนบัญชี",
+    "ar": "أكمل معالجة الشراء قبل تغيير الحساب.",
+    "vi": "Hãy xử lý giao dịch trước khi đổi tài khoản.",
+    "ko": "계정을 변경하기 전에 구매를 처리해 주세요."
+  },
+  "Play voice draft": {
+    "es": "Reproducir borrador de voz",
+    "th": "เล่นเสียงร่าง",
+    "ar": "تشغيل المسودة الصوتية",
+    "vi": "Phát bản nháp giọng nói",
+    "ko": "음성 초안 재생"
+  },
+  "Save gift idea": {
+    "es": "Guardar idea de regalo",
+    "th": "บันทึกไอเดียของขวัญ",
+    "ar": "حفظ فكرة الهدية",
+    "vi": "Lưu ý tưởng quà tặng",
+    "ko": "선물 아이디어 저장"
+  },
+  "Gift ideas": {
+    "es": "Ideas de regalo",
+    "th": "ไอเดียของขวัญ",
+    "ar": "أفكار الهدايا",
+    "vi": "Ý tưởng quà tặng",
+    "ko": "선물 아이디어"
+  },
+  "Gift idea saved": {
+    "es": "Idea de regalo guardada",
+    "th": "บันทึกไอเดียของขวัญแล้ว",
+    "ar": "تم حفظ فكرة الهدية",
+    "vi": "Đã lưu ý tưởng quà tặng",
+    "ko": "선물 아이디어 저장됨"
+  },
+  "Messaging is not available yet.": {
+    "es": "La mensajería aún no está disponible.",
+    "th": "ยังไม่สามารถส่งข้อความได้",
+    "ar": "المراسلة غير متاحة بعد.",
+    "vi": "Tính năng nhắn tin chưa khả dụng.",
+    "ko": "메시지 기능은 아직 사용할 수 없습니다."
+  },
+  "Your coffee book will be here when you return.": {
+    "es": "Tu cuaderno de café estará aquí cuando vuelvas.",
+    "th": "สมุดกาแฟของคุณจะอยู่ที่นี่เมื่อคุณกลับมา",
+    "ar": "سيبقى دفتر قهوتك هنا عند عودتك.",
+    "vi": "Sổ cà phê sẽ vẫn ở đây khi bạn quay lại.",
+    "ko": "돌아오면 커피 북을 다시 볼 수 있습니다."
+  },
+  "The item will be hidden after saving. Reports are not sent for review.": {
+    "es": "El elemento se ocultará al guardar. Las denuncias no se envían para revisión.",
+    "th": "รายการจะถูกซ่อนเมื่อบันทึก รายงานจะไม่ถูกส่งเพื่อตรวจสอบ",
+    "ar": "سيُخفى العنصر بعد الحفظ. لا تُرسل البلاغات للمراجعة.",
+    "vi": "Mục sẽ được ẩn sau khi lưu. Báo cáo không được gửi để xét duyệt.",
+    "ko": "저장하면 항목이 숨겨집니다. 신고는 검토를 위해 전송되지 않습니다."
+  },
+  "No live session": {
+    "es": "Sin sesión en directo",
+    "th": "ไม่มีการถ่ายทอดสด",
+    "ar": "لا توجد جلسة مباشرة",
+    "vi": "Không có phiên trực tiếp",
+    "ko": "진행 중인 라이브 없음"
+  },
+  "Live audio and room messaging are unavailable.": {
+    "es": "El audio en directo y los mensajes de la sala no están disponibles.",
+    "th": "ยังไม่สามารถใช้เสียงสดและข้อความในห้องได้",
+    "ar": "الصوت المباشر ورسائل الغرفة غير متاحة.",
+    "vi": "Âm thanh trực tiếp và tin nhắn phòng chưa khả dụng.",
+    "ko": "실시간 음성 및 방 메시지를 사용할 수 없습니다."
+  },
+  "Not delivered": {
+    "es": "Sin entregar",
+    "th": "ยังไม่ส่งถึง",
+    "ar": "لم تُسلّم",
+    "vi": "Chưa gửi đến",
+    "ko": "전달되지 않음"
+  },
+  "Your message was saved but not delivered. Messaging is unavailable.": {
+    "es": "Tu mensaje se guardó, pero no se entregó. La mensajería no está disponible.",
+    "th": "บันทึกข้อความแล้วแต่ยังไม่ส่งถึง ขณะนี้ไม่สามารถส่งข้อความได้",
+    "ar": "حُفظت رسالتك لكنها لم تُسلّم. المراسلة غير متاحة.",
+    "vi": "Tin nhắn đã được lưu nhưng chưa gửi đến. Tính năng nhắn tin chưa khả dụng.",
+    "ko": "메시지는 저장되었지만 전달되지 않았습니다. 메시지 기능을 사용할 수 없습니다."
+  },
+  "This item is hidden. The report has not been sent for review.": {
+    "es": "Este elemento está oculto. La denuncia no se ha enviado para revisión.",
+    "th": "ซ่อนรายการแล้ว แต่ยังไม่ได้ส่งรายงานเพื่อตรวจสอบ",
+    "ar": "العنصر مخفي. لم يُرسل البلاغ للمراجعة.",
+    "vi": "Mục đã được ẩn. Báo cáo chưa được gửi để xét duyệt.",
+    "ko": "항목이 숨겨졌습니다. 신고는 검토를 위해 전송되지 않았습니다."
+  },
+  "Your coffee book and balance do not sync between devices. Community sharing and messaging are unavailable.": {
+    "es": "Tu cuaderno y saldo no se sincronizan entre dispositivos. Compartir y enviar mensajes no está disponible.",
+    "th": "สมุดกาแฟและยอดเหรียญไม่ซิงก์ข้ามอุปกรณ์ ยังไม่สามารถแชร์หรือส่งข้อความได้",
+    "ar": "لا يتزامن دفتر القهوة والرصيد بين الأجهزة. المشاركة والمراسلة غير متاحتين.",
+    "vi": "Sổ cà phê và số dư không đồng bộ giữa các thiết bị. Chia sẻ và nhắn tin chưa khả dụng.",
+    "ko": "커피 북과 잔액은 기기 간에 동기화되지 않습니다. 공유와 메시지는 사용할 수 없습니다."
+  },
+  "Your camera is visible only to you. No call is connected.": {
+    "es": "Solo tú puedes ver tu cámara. No hay ninguna llamada conectada.",
+    "th": "มีเพียงคุณที่เห็นกล้อง ยังไม่มีการเชื่อมต่อสาย",
+    "ar": "الكاميرا ظاهرة لك وحدك. لا توجد مكالمة متصلة.",
+    "vi": "Chỉ bạn nhìn thấy camera. Chưa có cuộc gọi kết nối.",
+    "ko": "카메라는 나에게만 보입니다. 연결된 통화가 없습니다."
+  },
+  "Not sent": {
+    "es": "Sin enviar",
+    "th": "ยังไม่ส่ง",
+    "ar": "لم تُرسل",
+    "vi": "Chưa gửi",
+    "ko": "미전송"
+  },
+  "Gift ideas are not sent and do not cost coins.": {
+    "es": "Las ideas de regalo no se envían ni cuestan monedas.",
+    "th": "ไอเดียของขวัญจะไม่ถูกส่งและไม่เสียเหรียญ",
+    "ar": "أفكار الهدايا لا تُرسل ولا تستهلك عملات.",
+    "vi": "Ý tưởng quà tặng không được gửi và không tốn xu.",
+    "ko": "선물 아이디어는 전송되지 않으며 코인이 들지 않습니다."
+  },
+  "Gifts are optional backpack collectibles. Displaying an owned gift and saving gift ideas are free.": {
+    "es": "Los regalos son objetos opcionales. Mostrar un regalo propio y guardar ideas es gratis.",
+    "th": "ของขวัญเป็นของสะสมตามใจคุณ การแสดงของขวัญและบันทึกไอเดียไม่มีค่าใช้จ่าย",
+    "ar": "الهدايا مقتنيات اختيارية. عرض هدية تملكها وحفظ الأفكار مجانيان.",
+    "vi": "Quà tặng là vật sưu tầm tùy chọn. Trưng bày quà đã sở hữu và lưu ý tưởng đều miễn phí.",
+    "ko": "선물은 선택적으로 수집할 수 있습니다. 보유한 선물 전시와 아이디어 저장은 무료입니다."
+  },
+  "Check in for 20 EXP. Save a coffee post for 10 EXP. Every 100 EXP brings a new level.": {
+    "es": "Gana 20 EXP al registrar tu visita y 10 al guardar una publicación. Cada 100 EXP alcanzas un nuevo nivel.",
+    "th": "รับ 20 EXP เมื่อเช็กอิน และ 10 EXP เมื่อบันทึกโพสต์กาแฟ ทุก 100 EXP จะเพิ่มหนึ่งระดับ",
+    "ar": "احصل على 20 نقطة خبرة بالتسجيل و10 بحفظ منشور قهوة. كل 100 نقطة ترفع مستواك.",
+    "vi": "Nhận 20 EXP khi điểm danh và 10 EXP khi lưu bài cà phê. Mỗi 100 EXP tăng một cấp.",
+    "ko": "체크인하면 20 EXP, 커피 게시물을 저장하면 10 EXP를 얻습니다. 100 EXP마다 레벨이 오릅니다."
+  },
+  "This profile is unavailable or hidden. Your conversation is still saved.": {
+    "es": "Este perfil no está disponible o está oculto. Tu conversación sigue guardada.",
+    "th": "โปรไฟล์นี้ไม่พร้อมใช้งานหรือถูกซ่อน บทสนทนาของคุณยังคงบันทึกไว้",
+    "ar": "الملف غير متاح أو مخفي. لا تزال محادثتك محفوظة.",
+    "vi": "Hồ sơ này không khả dụng hoặc đã bị ẩn. Cuộc trò chuyện vẫn được lưu.",
+    "ko": "프로필을 사용할 수 없거나 숨겨져 있습니다. 대화는 저장되어 있습니다."
+  },
+  "Your request has not been sent or accepted. No friend has been added.": {
+    "es": "Tu solicitud no se ha enviado ni aceptado. No se ha añadido ningún amigo.",
+    "th": "คำขอยังไม่ได้ส่งหรือได้รับการยอมรับ ยังไม่มีการเพิ่มเพื่อน",
+    "ar": "لم يُرسل طلبك أو يُقبل. لم تُضف أي صداقة.",
+    "vi": "Yêu cầu chưa được gửi hoặc chấp nhận. Chưa có bạn bè nào được thêm.",
+    "ko": "요청이 전송되거나 수락되지 않았습니다. 친구가 추가되지 않았습니다."
+  },
+  "Your saved coffee account could not be found. Changes are paused to protect your balance. Please try again later.": {
+    "es": "No se encontró tu cuenta de café. Los cambios están en pausa para proteger tu saldo. Inténtalo más tarde.",
+    "th": "ไม่พบบัญชีกาแฟที่บันทึกไว้ ระบบหยุดการเปลี่ยนแปลงเพื่อปกป้องยอดเหรียญ โปรดลองอีกครั้งภายหลัง",
+    "ar": "تعذر العثور على حساب القهوة المحفوظ. أُوقفت التغييرات لحماية رصيدك. حاول لاحقاً.",
+    "vi": "Không tìm thấy tài khoản cà phê đã lưu. Các thay đổi tạm dừng để bảo vệ số dư. Hãy thử lại sau.",
+    "ko": "저장된 커피 계정을 찾을 수 없습니다. 잔액 보호를 위해 변경이 일시 중지됩니다. 나중에 다시 시도해 주세요."
+  },
+  "Your saved data could not be verified. Unlock your device and try again before making more changes.": {
+    "es": "No se pudieron verificar tus datos. Desbloquea el dispositivo y vuelve a intentarlo antes de hacer cambios.",
+    "th": "ไม่สามารถตรวจสอบข้อมูลที่บันทึกได้ ปลดล็อกอุปกรณ์แล้วลองอีกครั้งก่อนทำการเปลี่ยนแปลง",
+    "ar": "تعذر التحقق من بياناتك المحفوظة. افتح جهازك وحاول مجدداً قبل إجراء تغييرات.",
+    "vi": "Không thể xác minh dữ liệu đã lưu. Hãy mở khóa thiết bị và thử lại trước khi thay đổi.",
+    "ko": "저장된 데이터를 확인할 수 없습니다. 기기를 잠금 해제하고 다시 시도해 주세요."
+  },
+  "Coins do not sync between devices. Deleting your account removes its balance; purchase records are kept to prevent duplicate delivery.": {
+    "es": "Las monedas no se sincronizan entre dispositivos. Al eliminar la cuenta se elimina el saldo; se conservan los registros de compra para evitar entregas duplicadas.",
+    "th": "เหรียญไม่ซิงก์ข้ามอุปกรณ์ การลบบัญชีจะลบยอดเหรียญ โดยเก็บประวัติการซื้อเพื่อป้องกันการเติมซ้ำ",
+    "ar": "لا تتزامن العملات بين الأجهزة. حذف الحساب يزيل الرصيد؛ وتُحفظ سجلات الشراء لمنع التسليم المتكرر.",
+    "vi": "Xu không đồng bộ giữa các thiết bị. Xóa tài khoản sẽ xóa số dư; lịch sử mua được giữ để tránh cộng trùng.",
+    "ko": "코인은 기기 간 동기화되지 않습니다. 계정을 삭제하면 잔액도 삭제되며, 중복 지급을 막기 위해 구매 기록은 유지됩니다."
+  },
+  "{0} coins added to your wallet.": {
+    "es": "Se añadieron {0} monedas a tu cartera.",
+    "th": "เพิ่ม {0} เหรียญในกระเป๋าของคุณแล้ว",
+    "ar": "أُضيفت {0} عملة إلى محفظتك.",
+    "vi": "Đã thêm {0} xu vào ví của bạn.",
+    "ko": "지갑에 코인 {0}개가 추가되었습니다."
+  },
+  "{0} coins have been added to your wallet.": {
+    "es": "Se añadieron {0} monedas a tu cartera.",
+    "th": "เพิ่ม {0} เหรียญในกระเป๋าของคุณแล้ว",
+    "ar": "أُضيفت {0} عملة إلى محفظتك.",
+    "vi": "Đã thêm {0} xu vào ví của bạn.",
+    "ko": "지갑에 코인 {0}개가 추가되었습니다."
+  },
+  "Spend {0} coins to add {1} to your backpack. You can display an owned gift on your profile.": {
+    "es": "Gasta {0} monedas para añadir {1} a tu mochila. Puedes mostrar un regalo en tu perfil.",
+    "th": "ใช้ {0} เหรียญเพื่อเพิ่ม {1} ในกระเป๋า คุณสามารถแสดงของขวัญในโปรไฟล์",
+    "ar": "أنفق {0} عملة لإضافة {1} إلى حقيبتك. يمكنك عرض هدية تملكها في ملفك.",
+    "vi": "Dùng {0} xu để thêm {1} vào ba lô. Bạn có thể trưng bày quà trên hồ sơ.",
+    "ko": "코인 {0}개를 사용해 {1}개를 가방에 추가합니다. 보유한 선물을 프로필에 전시할 수 있습니다."
+  },
+  "{0} × {1}. No recipient is connected; no coins or inventory were spent. You can collect this gift for your backpack.": {
+    "es": "{0} × {1}. No se ha enviado a nadie ni se han gastado monedas u objetos. Puedes añadir el regalo a tu mochila.",
+    "th": "{0} × {1} ไม่มีการส่งให้ผู้รับและไม่เสียเหรียญหรือสิ่งของ คุณสามารถสะสมของขวัญนี้ในกระเป๋า",
+    "ar": "{0} × {1}. لم تُرسل إلى أحد ولم تُنفق عملات أو مقتنيات. يمكنك جمع هذه الهدية في حقيبتك.",
+    "vi": "{0} × {1}. Chưa gửi cho ai và không tốn xu hay vật phẩm. Bạn có thể sưu tầm quà này trong ba lô.",
+    "ko": "{0} × {1}. 받는 사람에게 전송되지 않았으며 코인과 아이템을 사용하지 않았습니다. 이 선물을 가방에 수집할 수 있습니다."
+  },
+  "Comments": {
+    "es": "Comentarios",
+    "th": "ความคิดเห็น",
+    "ar": "تعليقات",
+    "vi": "Bình luận",
+    "ko": "댓글"
+  },
+  "Open photo": {
+    "es": "Abrir foto",
+    "th": "เปิดรูปภาพ",
+    "ar": "فتح الصورة",
+    "vi": "Mở ảnh",
+    "ko": "사진 열기"
+  },
+  "Coffee bean guide": {
+    "es": "Guía de granos de café",
+    "th": "คู่มือเมล็ดกาแฟ",
+    "ar": "دليل حبوب القهوة",
+    "vi": "Cẩm nang hạt cà phê",
+    "ko": "커피 원두 안내"
+  },
+  "Read notes": {
+    "es": "Ver notas",
+    "th": "อ่านบันทึก",
+    "ar": "اقرأ الملاحظات",
+    "vi": "Xem ghi chú",
+    "ko": "노트 보기"
+  },
+  "Tasting notes": {
+    "es": "Notas de cata",
+    "th": "บันทึกการชิม",
+    "ar": "ملاحظات التذوق",
+    "vi": "Ghi chú nếm",
+    "ko": "시음 노트"
+  },
+  "Undo": {
+    "es": "Deshacer",
+    "th": "เลิกทำ",
+    "ar": "تراجع",
+    "vi": "Hoàn tác",
+    "ko": "실행 취소"
+  },
+  "Remove recommendation for {0}": {
+    "es": "Quitar recomendación de {0}",
+    "th": "นำ {0} ออกจากคำแนะนำ",
+    "ar": "إزالة {0} من الاقتراحات",
+    "vi": "Bỏ đề xuất cho {0}",
+    "ko": "{0} 추천에서 제외"
+  },
+  "Your coffee note": {
+    "es": "Tu nota de café",
+    "th": "บันทึกกาแฟของคุณ",
+    "ar": "ملاحظة قهوتك",
+    "vi": "Ghi chú cà phê của bạn",
+    "ko": "나의 커피 노트"
+  },
+  "Coffee conversations": {
+    "es": "Conversaciones de café",
+    "th": "บทสนทนากาแฟ",
+    "ar": "أحاديث القهوة",
+    "vi": "Chuyện trò bên cà phê",
+    "ko": "커피와 대화"
+  },
+  "Manage the people you have blocked.": {
+    "es": "Gestiona las personas que has bloqueado.",
+    "th": "จัดการผู้คนที่คุณบล็อก",
+    "ar": "إدارة الأشخاص الذين حظرتهم.",
+    "vi": "Quản lý những người bạn đã chặn.",
+    "ko": "차단한 사용자를 관리하세요."
+  },
+  "Your coffee spaces": {
+    "es": "Tus espacios de café",
+    "th": "พื้นที่กาแฟของคุณ",
+    "ar": "مساحات قهوتك",
+    "vi": "Không gian cà phê của bạn",
+    "ko": "나의 커피 공간"
+  },
+  "Your account": {
+    "es": "Tu cuenta",
+    "th": "บัญชีของคุณ",
+    "ar": "حسابك",
+    "vi": "Tài khoản của bạn",
+    "ko": "내 계정"
   }
 }

@@ -6,7 +6,7 @@
     "tree-sitter-swift": "0.7.4"
   },
   "fileCount": 30,
-  "lineCount": 5150,
+  "lineCount": 5442,
   "inMemoryGrammarNormalisations": [
     {
       "file": "Papi/Appearance/DisplayContinuity.swift",
@@ -16,7 +16,7 @@
     },
     {
       "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
-      "line": 319,
+      "line": 387,
       "original": "scale*$0",
       "reason": "Parser grammar ambiguity; equivalent spaces in memory only."
     }
@@ -40,7 +40,7 @@
     },
     {
       "file": "Papi/Appearance/CoffeePalette.swift",
-      "lines": 297,
+      "lines": 315,
       "syntaxTreeComplete": true
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "file": "Papi/CoffeeDomain/CoffeeArchive.swift",
-      "lines": 366,
+      "lines": 371,
       "syntaxTreeComplete": true
     },
     {
@@ -75,47 +75,47 @@
     },
     {
       "file": "Papi/CoffeeHouse/Beans/BeanVarieties.swift",
-      "lines": 21,
+      "lines": 63,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Brewing/BrewBench.swift",
-      "lines": 415,
+      "lines": 412,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Cafes/CafeNotebook.swift",
-      "lines": 41,
+      "lines": 86,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Community/CommunityCare.swift",
-      "lines": 166,
+      "lines": 205,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Correspondence/CoffeeLetters.swift",
-      "lines": 187,
+      "lines": 193,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Counter/CoffeeCounter.swift",
-      "lines": 308,
+      "lines": 313,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
-      "lines": 329,
+      "lines": 397,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Passports/CoffeePassports.swift",
-      "lines": 435,
+      "lines": 458,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Tables/CoffeeTables.swift",
-      "lines": 250,
+      "lines": 294,
       "syntaxTreeComplete": true
     },
     {

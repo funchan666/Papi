@@ -44,7 +44,7 @@ import Foundation
     }}
     var friends:[CoffeeMember] {community.relationships.keys.sorted().filter{isFriend($0)}.compactMap{person($0)}}
     @discardableResult func requireMutual(_ id:String)->Bool {
-        guard state.signedIn,!isUserHidden(id),person(id) != nil else {inform("Profile unavailable","This profile is unavailable or hidden. Your saved conversation stays on this device.");return false}
+        guard state.signedIn,!isUserHidden(id),person(id) != nil else {inform("Profile unavailable","This profile is unavailable or hidden. Your conversation is still saved.");return false}
         guard isMutual(id) else {
             inform("Follow each other first","Both people must choose to follow each other before sending messages or starting a video call. Your draft has been kept.");return false
         }
@@ -57,7 +57,7 @@ import Foundation
             var data=value.community ?? CorrespondenceLedger()
             if data.friendshipRequests[id]==nil {data.friendshipRequests[id] = .init(correspondentID:id)}
             value.community=data
-        }) {inform("Friend request saved","The request is saved on this device. No community service is connected, so it has not been sent or accepted. Nobody has been added as a friend.")}
+        }) {inform("Friend request saved","Your request has not been sent or accepted. No friend has been added.")}
     }
     func cancelFriendshipRequest(_ id:String) {
         _ = commit {value in
@@ -138,7 +138,7 @@ import Foundation
             if let voice {data.messages.append(.init(correspondentID:id,authorID:owner,kind:.voice,value:voice))}
             value.community=data;value.letterDrafts.removeValue(forKey:id);value.letterPhotos.removeValue(forKey:id);value.letterVoiceNotes.removeValue(forKey:id)
         }
-        if saved {inform("Saved to outbox","Your message is saved locally, not delivered. A connected messaging service is required to send it to another person.")}
+        if saved {inform("Saved to outbox","Your message was saved but not delivered. Messaging is unavailable.")}
         return saved
     }
 }

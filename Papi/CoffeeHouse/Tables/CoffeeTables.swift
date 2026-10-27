@@ -14,51 +14,82 @@ struct CoffeeTablesView:View {
         }
     }
     var body:some View {
-        PapiScreen() {
+        PapiScreen {
             GeometryReader {geo in
                 let topInset=geo.safeAreaInsets.top
-                let bannerHeight=min(280,max(180,geo.size.width*0.57))
+                let bannerHeight=(typeSize.isAccessibilitySize ? 260:min(230,max(180,geo.size.width*0.48)))+topInset
+                let contentWidth=max(0,min(1100,geo.size.width)-32)
+                let columnCount=typeSize.isAccessibilitySize || contentWidth<330 ? 1:min(4,max(1,Int((contentWidth+12)/170)))
                 ScrollView {
                     VStack(spacing:0) {
-                        ZStack(alignment:.top) {
-                            Image("roomListBackground").resizable().scaledToFill()
-                                .frame(width:geo.size.width,height:bannerHeight+topInset,alignment:.top).clipped().accessibilityHidden(true)
-                            Image("roomListBackground").resizable().scaledToFill()
-                                .frame(width:geo.size.width,height:bannerHeight,alignment:.top).clipped().padding(.top,topInset)
-                        }.frame(width:geo.size.width,height:bannerHeight+topInset).papiAccessibilityLabel("Welcome Coffee Party")
-                        VStack(spacing:14) {
-                            HStack {
+                        ZStack(alignment:.topLeading) {
+                            Image("coffeeAudioHero").resizable().scaledToFill()
+                                .frame(width:geo.size.width,height:bannerHeight,alignment:.trailing).clipped()
+                                .overlay(Color.cream.opacity(0.38)).accessibilityHidden(true)
+                            VStack(alignment:.leading,spacing:8) {
+                                PapiText("Coffee tables").font(CoffeeType.display(.largeTitle,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                                PapiText("Around the coffee table").font(CoffeeType.face(.subheadline,weight:.medium)).fixedSize(horizontal:false,vertical:true)
+                            }.padding(14).background(Color.cream.opacity(0.92),in:RoundedRectangle(cornerRadius:18))
+                                .padding(.horizontal,20).padding(.top,topInset+18).frame(maxWidth:480,alignment:.leading).papiAvoidReserved()
+                        }.frame(width:geo.size.width,height:bannerHeight)
+                        VStack(alignment:.leading,spacing:16) {
+                            HStack(spacing:4) {
                                 ForEach(0..<3) {i in
-                                    PapiTextButton(store.text(["All","Following","Recent"][i])){filter=i}
-                                        .font(CoffeeType.face(.subheadline,weight:.medium)).padding(.vertical,9).frame(maxWidth:.infinity)
-                                        .foregroundStyle(filter==i ? Color.white:Color.mutedCoffee)
-                                        .background(filter==i ? Color.peach:Color.clear,in:Capsule())
+                                    Button {filter=i} label:{
+                                        PapiText(["All","Following","Recent"][i]).font(CoffeeType.face(.subheadline,weight:.medium)).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
+                                            .frame(maxWidth:.infinity,minHeight:44).background(filter==i ? Color.peach:Color.clear,in:RoundedRectangle(cornerRadius:14)).contentShape(Rectangle())
+                                    }.buttonStyle(.plain).foregroundStyle(filter==i ? Color.white:Color.mutedCoffee).accessibilityAddTraits(filter==i ? .isSelected:[])
                                 }
-                            }.padding(6).background(Color.cream,in:RoundedRectangle(cornerRadius:22))
+                            }.padding(5).background(Color.white.opacity(0.88),in:RoundedRectangle(cornerRadius:19))
+                            HStack(spacing:8) {
+                                PapiArtworkFit(asset:"audioTableMark").frame(width:32,height:32)
+                                PapiText("Live audio and room messaging are unavailable.").font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
+                            }.foregroundStyle(Color.mutedCoffee).frame(maxWidth:.infinity,alignment:.leading)
                             if let id=store.activeRoomID,let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {
                                 Button {router.go(.room(id))} label:{HStack {Image("voiceOn").resizable().scaledToFit().frame(width:26,height:26);PapiText("Return to \(room.title)");Spacer();PapiText("Open")}.padding(12).background(Color.butter,in:RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)
                             }
                             if rooms.isEmpty {PapiEmpty(title:filter==1 ? "No followed rooms yet":"No recent rooms",detail:"Open a coffee topic to keep it here.")}
-                            LazyVGrid(columns:Array(repeating:GridItem(.flexible(),spacing:12),count:typeSize.isAccessibilitySize ? 1:max(1,Int((min(1100,geo.size.width)-20)/170))),spacing:14) {
+                            LazyVGrid(columns:Array(repeating:GridItem(.flexible(),spacing:12),count:columnCount),spacing:14) {
                                 ForEach(rooms) {room in
-                                    Button {if store.enter(room){router.go(.room(room.id))}} label:{
-                                        VStack(alignment:.leading,spacing:8) {
-                                            PapiText(room.category).font(CoffeeType.face(.caption,weight:.bold)).padding(.horizontal,10).padding(.vertical,5).background(Color.peach,in:Capsule())
-                                            Spacer(minLength:12)
-                                            PapiText(room.title).font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true).shadow(color:.black,radius:4)
-                                            HStack {Image("soundWave").resizable().scaledToFit().frame(width:18,height:18);PapiText("Coffee topic").font(CoffeeType.face(.caption));Spacer()}.padding(8).background(Color.coffee.opacity(0.85),in:Capsule())
-                                        }.padding(10).frame(maxWidth:.infinity,minHeight:235,alignment:.bottomLeading).foregroundStyle(.white)
-                                            .background {PapiImage(name:room.image)}.clipShape(RoundedRectangle(cornerRadius:17))
-                                    }.buttonStyle(.plain)
+                                    roomCard(room)
                                 }
                             }
-                        }.padding(.horizontal,16).padding(.top,14).padding(.bottom,20).frame(maxWidth:1100).frame(maxWidth:.infinity)
+                        }.padding(.horizontal,16).padding(.top,16).padding(.bottom,24).frame(maxWidth:1100).frame(maxWidth:.infinity)
                     }
-                }
-                .ignoresSafeArea(.container,edges:.top)
-                .contentMargins(.top,0,for:.scrollContent)
+                }.ignoresSafeArea(.container,edges:.top).contentMargins(.top,0,for:.scrollContent)
             }
         }
+    }
+    private func roomCard(_ room:CoffeeTable)->some View {
+        VStack(alignment:.leading,spacing:0) {
+            Button {if store.enter(room){router.go(.room(room.id))}} label:{
+                VStack(alignment:.leading,spacing:0) {
+                    ZStack(alignment:.topLeading) {
+                        PapiArtworkFill(asset:room.image).frame(height:150).clipped()
+                        HStack(spacing:4) {
+                            PapiArtworkFit(asset:"audioTableMark").frame(width:26,height:26)
+                            PapiText("Coffee topic").font(CoffeeType.face(.caption2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                        }.padding(.horizontal,8).padding(.vertical,4).background(Color.cream.opacity(0.94),in:Capsule()).padding(9)
+                    }
+                    VStack(alignment:.leading,spacing:5) {
+                        PapiText(room.title).font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true)
+                        PapiText(room.category).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                        PapiText("No live session").font(CoffeeType.face(.caption2,weight:.medium)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                    }.padding(12).frame(maxWidth:.infinity,alignment:.leading)
+                }.contentShape(Rectangle())
+            }.buttonStyle(.plain)
+            if let portrait=store.person(room.hostMemberID),!store.isUserHidden(portrait.id) {
+                Button {router.go(.person(portrait.id))} label:{
+                    HStack(spacing:8) {
+                        Avatar(name:portrait.portrait,size:32)
+                        VStack(alignment:.leading,spacing:2) {
+                            PapiText(verbatim:portrait.name).font(CoffeeType.face(.caption,weight:.semibold)).lineLimit(1).minimumScaleFactor(0.8)
+                            PapiText("Coffee portrait").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).lineLimit(1)
+                        }.frame(maxWidth:.infinity,alignment:.leading)
+                    }.frame(maxWidth:.infinity,minHeight:44,alignment:.leading).contentShape(Rectangle())
+                }.buttonStyle(.plain).padding(.horizontal,12).padding(.bottom,10)
+            }
+        }.frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.95),in:RoundedRectangle(cornerRadius:20)).clipShape(RoundedRectangle(cornerRadius:20))
     }
 }
 struct CoffeeTableView:View {
@@ -83,19 +114,39 @@ struct CoffeeTableView:View {
                     PapiIconButton(asset:"close",label:"Leave room") {leave=true}
                 }.padding(.horizontal,16).padding(.vertical,8).foregroundStyle(.white).papiAvoidReserved()
                 ScrollView {
-                    VStack(alignment:.leading,spacing:24) {
-                        HStack {PreviewLabel(text:"Coffee table concept · No live session");Spacer()}
-                        if let host=CoffeeMember.find(room.hostMemberID) {
-                            Button {router.go(.person(host.id))} label:{VStack(spacing:7){Avatar(name:host.portrait,size:82);PapiText(host.name).font(CoffeeType.face(.headline))}}.buttonStyle(.plain)
-                        }
-                        PapiText("A topic to bring to your next coffee table").font(CoffeeType.display(.title2))
-                        PapiText("Which beans are you brewing, and what changed in the cup?").font(CoffeeType.face(.body))
-                        Spacer(minLength:100)
-                        PapiText("A little space for coffee and conversation.").font(CoffeeType.display(.title3)).italic().foregroundStyle(Color.cream.opacity(0.8))
-                        PapiText("This is a coffee-table concept. Live audio and room messaging are not connected.").font(CoffeeType.face(.caption)).foregroundStyle(Color.cream.opacity(0.75))
+                    VStack(alignment:.leading,spacing:18) {
+                        VStack(alignment:.leading,spacing:0) {
+                            ZStack(alignment:.bottomLeading) {
+                                PapiArtworkFill(asset:room.image).frame(height:180).clipped()
+                                HStack(spacing:7) {
+                                    PapiArtworkFit(asset:"audioTableMark").frame(width:34,height:34)
+                                    PapiText("No live session").font(CoffeeType.face(.caption,weight:.bold))
+                                }.padding(.horizontal,10).padding(.vertical,5).background(Color.cream.opacity(0.96),in:Capsule()).padding(14)
+                            }
+                            VStack(alignment:.leading,spacing:14) {
+                                PapiText(room.title).font(CoffeeType.display(.title2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                                PapiText(room.category).font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.mutedCoffee)
+                                if let portrait=store.person(room.hostMemberID),!store.isUserHidden(portrait.id) {
+                                    Button {router.go(.person(portrait.id))} label:{
+                                        HStack(spacing:10) {
+                                            Avatar(name:portrait.portrait,size:52)
+                                            VStack(alignment:.leading,spacing:4) {
+                                                PapiText(verbatim:portrait.name).font(CoffeeType.face(.headline))
+                                                PapiText("Coffee portrait").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                                            }.frame(maxWidth:.infinity,alignment:.leading)
+                                        }.frame(minHeight:52).contentShape(Rectangle())
+                                    }.buttonStyle(.plain)
+                                }
+                                PapiText("Live audio and room messaging are unavailable.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                            }.padding(16).frame(maxWidth:.infinity,alignment:.leading)
+                        }.foregroundStyle(Color.coffee).background(Color.cream,in:RoundedRectangle(cornerRadius:22)).clipShape(RoundedRectangle(cornerRadius:22))
+                        VStack(alignment:.leading,spacing:10) {
+                            PapiText("A topic to bring to your next coffee table").font(CoffeeType.display(.title3,weight:.bold))
+                            PapiText("Which beans are you brewing, and what changed in the cup?").font(CoffeeType.face(.body)).fixedSize(horizontal:false,vertical:true)
+                        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee.opacity(0.82),in:RoundedRectangle(cornerRadius:18))
                         ForEach(store.state.giftHistory.filter{$0.context==room.id}.prefix(6)) {event in
                             if let gift=CoffeeCollectible.all.first(where:{$0.id==event.giftID}) {
-                                HStack {Image(gift.asset).resizable().scaledToFit().frame(width:42,height:42);PapiText("\(gift.name) × \(event.quantity)");Spacer();PapiText("Preview").font(CoffeeType.face(.caption))}.padding(10).background(Color.white.opacity(0.12),in:RoundedRectangle(cornerRadius:15))
+                                HStack {Image(gift.asset).resizable().scaledToFit().frame(width:42,height:42);PapiText("\(gift.name) × \(event.quantity)");Spacer();PapiText("Not sent").font(CoffeeType.face(.caption))}.padding(10).background(Color.white.opacity(0.12),in:RoundedRectangle(cornerRadius:15))
                             }
                         }
                     }.padding(20).frame(maxWidth:820).frame(maxWidth:.infinity)
@@ -119,7 +170,7 @@ struct CoffeeTableView:View {
                 }
             }.foregroundStyle(.white)
             .overlay {
-                if leave {PapiDialog(title:"Leave the room?",message:"Your local draft and room history will be kept.",confirm:"Leave room",cancel:"Stay here",action:{store.activeRoomID=nil;store.roomMicRequested=false;dismiss()},dismiss:{leave=false})}
+                if leave {PapiDialog(title:"Leave the room?",message:"Your draft and room history will be kept.",confirm:"Leave room",cancel:"Stay here",action:{store.activeRoomID=nil;store.roomMicRequested=false;dismiss()},dismiss:{leave=false})}
 
             }
         }
@@ -196,18 +247,11 @@ struct MemberPassportView:View {
                 PapiTextButton("Chatting"){router.go(.chat(person.id))}
                     .buttonStyle(PapiButtonStyle(light:true,wide:true,cornerRadius:16))
             }
-            VStack(spacing:0) {
-                if person.id != CoffeeMember.editorial.id {
-                    PapiRow(asset:"plus",title:store.isFriend(person.id) ? "Friends":(store.community.friendshipRequests[person.id] == nil ? "Request friendship":"Cancel friend request")) {
-                        if store.community.friendshipRequests[person.id] != nil {store.cancelFriendshipRequest(person.id)} else {store.requestFriendship(person.id)}
-                    }.disabled(store.isFriend(person.id))
-                    Divider().padding(.horizontal,14)
-                }
-                PapiRow(asset:"gift",title:"Gift preview"){router.sheet = .gifts(person.id)}
-            }.background(Color.white.opacity(0.8),in:RoundedRectangle(cornerRadius:16))
-            PapiText("A portrait in the coffee collection, not an available chat contact.")
-                .font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).lineSpacing(3)
-                .fixedSize(horizontal:false,vertical:true)
+            if person.id != CoffeeMember.editorial.id {
+                PapiRow(asset:"plus",title:store.isFriend(person.id) ? "Friends":(store.community.friendshipRequests[person.id] == nil ? "Request friendship":"Cancel friend request")) {
+                    if store.community.friendshipRequests[person.id] != nil {store.cancelFriendshipRequest(person.id)} else {store.requestFriendship(person.id)}
+                }.disabled(store.isFriend(person.id)).background(Color.white.opacity(0.8),in:RoundedRectangle(cornerRadius:16))
+            }
         }.padding(18).frame(maxWidth:.infinity,alignment:.leading)
             .background(Color.cream,in:RoundedRectangle(cornerRadius:26))
     }

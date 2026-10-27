@@ -59,8 +59,8 @@ enum CoffeeVault {
         case access(OSStatus), verification, missingSnapshot
         var errorDescription: String? {
             switch self {
-            case .missingSnapshot:return "Your saved coffee account could not be found. Local changes are paused to protect your balance. Please try again later."
-            case .access,.verification:return "Your local data could not be verified. Unlock this device and retry local storage before making more changes."
+            case .missingSnapshot:return "Your saved coffee account could not be found. Changes are paused to protect your balance. Please try again later."
+            case .access,.verification:return "Your saved data could not be verified. Unlock your device and try again before making more changes."
             }
         }
     }

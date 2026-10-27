@@ -204,7 +204,7 @@ struct CoinPack: Identifiable {
             // Keychain write + readback includes balance, immutable order terms and transaction ID.
             await transaction.finish()
             unresolvedIDs.remove(transaction.id);unresolved = !unresolvedIDs.isEmpty
-            status=revoked ? "This transaction was revoked. No coins were added.":"\(coins) coins added to your local wallet."
+            status=revoked ? "This transaction was revoked. No coins were added.":"\(coins) coins added to your wallet."
             if store.state.signedIn,store.notice==nil {
                 store.notice = .init(title:revoked ? "Purchase revoked":"Your coffee reserve is topped up",message:status,kind:.purchase)
             }

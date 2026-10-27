@@ -38,7 +38,7 @@ struct FirstCupWelcomeView:View {
                             PapiTextButton(store.text("Log in")) {Task{await store.login()}}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:12)).frame(maxWidth:.infinity)
                                 .disabled(!store.storageAvailable || store.loginInProgress).padding(.horizontal,16)
                             PapiText("Your recipes, coffee moments and tasting notes, kept together.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).padding(.top,10).padding(.horizontal,20).multilineTextAlignment(.center)
-                            if !store.storageAvailable {PapiTextButton("Retry local storage"){store.reload()}.buttonStyle(PapiButtonStyle(light:true))}
+                            if !store.storageAvailable {PapiTextButton("Retry"){store.reload()}.buttonStyle(PapiButtonStyle(light:true))}
                             Spacer(minLength:30)
                             VStack(spacing:4) {
                                 PapiText(store.text("By continuing, you agree to our")).font(CoffeeType.face(.caption))
@@ -52,7 +52,7 @@ struct FirstCupWelcomeView:View {
                 }
             }
         }.safeAreaInset(edge:.bottom) {
-            if !store.storageAvailable && !store.state.sawOnboarding {PapiTextButton("Retry local storage"){store.reload()}.buttonStyle(PapiButtonStyle(light:true,wide:true)).padding(16).background(Color.cream)}
+            if !store.storageAvailable && !store.state.sawOnboarding {PapiTextButton("Retry"){store.reload()}.buttonStyle(PapiButtonStyle(light:true,wide:true)).padding(16).background(Color.cream)}
         }.sheet(isPresented:Binding(get:{legal != nil},set:{if !$0 {legal=nil}})) {
             PapiDeviceContainer {NavigationStack {LegalView(type:legal ?? "privacy")}}
                 .presentationBackground {PapiBackground()}.presentationDragIndicator(.hidden).interactiveDismissDisabled(router.hasBlockingModal)
