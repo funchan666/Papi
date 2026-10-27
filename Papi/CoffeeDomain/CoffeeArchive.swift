@@ -178,6 +178,7 @@ struct PendingCloudAttachment:Codable {
 }
 struct PendingCloudCall:Codable {let id:UUID;let accountID:UUID;let recipientID:UUID}
 struct PendingCloudCallEnd:Codable {let id:UUID;let accountID:UUID}
+struct PendingCloudVoice:Codable {let id:UUID;let accountID:UUID;let topic:String;var closing:Bool}
 enum CoffeeEconomy {
     static let welcomeCoins = 800
     static func postCost(isVideo: Bool) -> Int { isVideo ? 80 : 40 }
@@ -205,6 +206,7 @@ struct CoffeeArchive: Codable {
     // session from silently creating a different remote guest.
     var cloudAccountID: UUID? = nil
     var cloudBootstrapPending: Bool? = nil
+    var pendingCloudRecoveryID: UUID? = nil
     var pendingCloudCollectible: PendingCloudCollectible? = nil
     var pendingCloudMoment: PendingCloudMoment? = nil
     var pendingCloudPostDeletion: PendingCloudPostDeletion? = nil
@@ -224,6 +226,7 @@ struct CoffeeArchive: Codable {
     var pendingCloudAttachment: PendingCloudAttachment? = nil
     var pendingCloudCall: PendingCloudCall? = nil
     var pendingCloudCallEnd: PendingCloudCallEnd? = nil
+    var pendingCloudVoice: PendingCloudVoice? = nil
     var signedIn = false
     var sawOnboarding = false
     var acceptedPolicyVersion: String? = nil
@@ -275,6 +278,7 @@ struct CoffeeArchive: Codable {
         case passport = "profile"
         case cloudAccountID = "cloudAccountID"
         case cloudBootstrapPending = "cloudBootstrapPending"
+        case pendingCloudRecoveryID = "pendingCloudRecoveryID"
         case pendingCloudCollectible = "pendingCloudCollectible"
         case pendingCloudMoment = "pendingCloudMoment"
         case pendingCloudPostDeletion = "pendingCloudPostDeletion"
@@ -294,6 +298,7 @@ struct CoffeeArchive: Codable {
         case pendingCloudAttachment = "pendingCloudAttachment"
         case pendingCloudCall = "pendingCloudCall"
         case pendingCloudCallEnd = "pendingCloudCallEnd"
+        case pendingCloudVoice = "pendingCloudVoice"
         case signedIn = "signedIn"
         case sawOnboarding = "sawOnboarding"
         case acceptedPolicyVersion = "acceptedPolicyVersion"

@@ -74,8 +74,12 @@ import Foundation
         return approved && isTargetVisible(.post(value))
     }
     var visiblePosts:[CoffeeMoment] {
-        guard let account=state.cloudAccountID else {return (state.ownMoments+CoffeeMoment.editorial).filter{isPostVisible($0)}}
-        return (cloudFeed ?? []).compactMap {item -> CoffeeMoment? in
+        guard state.cloudAccountID != nil else {return (state.ownMoments+CoffeeMoment.editorial).filter{isPostVisible($0)}}
+        return visibleCloudMoments(cloudFeed ?? [])
+    }
+    func visibleCloudMoments(_ items:[CoffeeCloud.FeedMoment])->[CoffeeMoment] {
+        guard let account=state.cloudAccountID else{return []}
+        return items.compactMap {item -> CoffeeMoment? in
             guard item.moderation_status=="approved",["photo","video"].contains(item.media_kind),
                   item.media_path.lowercased().hasPrefix(item.author_id.uuidString.lowercased()+"/"),
                   item.media_path.split(separator:"/").count==2,!item.media_path.contains(".."),
@@ -100,8 +104,24 @@ import Foundation
         guard let account=state.cloudAccountID else{return []}
         return (cloudCalls ?? []).filter{$0.recipient_id==account && $0.status=="pending" && (cloudDate($0.expires_at) ?? .distantPast)>Date()}
     }
-    func cloudFeedItem(_ id:String)->CoffeeCloud.FeedMoment? {cloudFeed?.first{$0.id.uuidString==id}}
-    func post(_ id:String)->CoffeeMoment? {visiblePosts.first{$0.id==id}}
+    func cloudFeedItem(_ id:String)->CoffeeCloud.FeedMoment? {
+        if let item=(cloudFeed ?? []).first(where:{$0.id.uuidString==id}) {return item}
+        for shelf in cloudShelves.values {if let item=shelf.first(where:{$0.id.uuidString==id}) {return item}}
+        return nil
+    }
+    func post(_ id:String)->CoffeeMoment? {
+        if let found=visiblePosts.first(where:{$0.id==id}) {return found}
+        guard let item=cloudFeedItem(id) else{return nil}
+        return visibleCloudMoments([item]).first
+    }
+    func cloudShelfPosts(author:UUID?,saved:Bool)->[CoffeeMoment] {
+        let items=cloudShelves[cloudShelfKey(author:author,saved:saved)] ?? []
+        return visibleCloudMoments(saved ? items.filter(\.bookmarked):items)
+    }
+    func isVisibleCloudVideo(_ media:String)->Bool {
+        let items=(cloudFeed ?? []) + cloudShelves.values.flatMap{$0}
+        return visibleCloudMoments(items).contains{$0.media==media && $0.isVideo}
+    }
     func appreciationCount(for post:CoffeeMoment)->Int {
         if usesCloudWallet {return cloudFeedItem(post.id)?.like_count ?? 0}
         let sample=post.isOwnMoment ? 0:(CollectionConversation.entry(post.id)?.appreciationCount ?? 0)

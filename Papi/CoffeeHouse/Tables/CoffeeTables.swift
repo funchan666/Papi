@@ -41,10 +41,21 @@ struct CoffeeTablesView:View {
     @Environment(\.dynamicTypeSize) private var typeSize
     @State private var filter=0
     private var rooms:[CoffeeTable] {
-        CoffeeTable.previews.filter {room in
-            store.isRoomVisible(room) && (filter==0 || (filter==1 && store.state.followedMembers.contains(room.hostMemberID)) || (filter==2 && store.state.recentRooms.contains(room.id)))
+        let source:[CoffeeTable]
+        if store.usesCloudWallet {
+            source=(store.cloudVoiceTopics ?? []).compactMap {topic in
+                guard let art=CoffeeTable.previews.first(where:{$0.id==topic.id}) else{return nil}
+                return CoffeeTable(id:topic.id,title:topic.title,category:topic.category,image:art.coverReference,hostMemberID:"")
+            }
+        } else {source=CoffeeTable.previews}
+        return source.filter {room in
+            if store.usesCloudWallet {return store.isRoomVisible(room) && (filter==0 || store.state.recentRooms.contains(room.id))}
+            return store.isRoomVisible(room) && (filter==0 || (filter==1 && store.state.followedMembers.contains(room.hostMemberID)) || (filter==2 && store.state.recentRooms.contains(room.id)))
         }.sorted {a,b in
-            guard filter==2 else{return a.id<b.id}
+            guard (store.usesCloudWallet ? filter==1:filter==2) else {
+                if store.usesCloudWallet {return (store.cloudVoiceTopics?.first(where:{$0.id==a.id})?.sort_order ?? 0)<(store.cloudVoiceTopics?.first(where:{$0.id==b.id})?.sort_order ?? 0)}
+                return a.id<b.id
+            }
             return (store.state.recentRooms.firstIndex(of:a.id) ?? 99)<(store.state.recentRooms.firstIndex(of:b.id) ?? 99)
         }
     }
@@ -74,21 +85,22 @@ struct CoffeeTablesView:View {
                         VStack(alignment:.leading,spacing:16) {
                             let filterLayout=typeSize.isAccessibilitySize || contentWidth<300 ? AnyLayout(VStackLayout(spacing:4)):AnyLayout(HStackLayout(spacing:4))
                             filterLayout {
-                                ForEach(0..<3) {i in
+                                ForEach(0..<(store.usesCloudWallet ? 2:3)) {i in
                                     Button {filter=i} label:{
-                                        PapiText(["All","Following","Recent"][i]).font(CoffeeType.face(.subheadline,weight:filter==i ? .bold:.medium)).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
+                                        PapiText((store.usesCloudWallet ? ["All","Recent"]:["All","Following","Recent"])[i]).font(CoffeeType.face(.subheadline,weight:filter==i ? .bold:.medium)).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
                                             .frame(maxWidth:.infinity,minHeight:44).background(filter==i ? Color.coffee:Color.clear,in:Capsule()).contentShape(Rectangle())
                                     }.buttonStyle(.plain).foregroundStyle(filter==i ? Color.cream:Color.mutedCoffee).accessibilityAddTraits(filter==i ? .isSelected:[])
                                 }
                             }.padding(5).background(Color.cream.opacity(0.96),in:RoundedRectangle(cornerRadius:22)).papiAvoidReserved()
                             HStack(spacing:8) {
                                 PapiArtworkFit(asset:"audioTableMark").frame(width:32,height:32)
-                                PapiText("Sample rooms · Voices, messages and gifts").font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
+                                PapiText(store.usesCloudWallet ? "Coffee topics · Audio unavailable":"Sample rooms · Voices, messages and gifts").font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
                             }.foregroundStyle(Color.mutedCoffee).frame(maxWidth:.infinity,alignment:.leading)
-                            if let id=store.activeRoomID,let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {
+                            if !store.usesCloudWallet,let id=store.activeRoomID,let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {
                                 Button {router.go(.room(id))} label:{HStack {Image("voiceOn").resizable().scaledToFit().frame(width:26,height:26);PapiText("Return to \(room.title)");Spacer();PapiText("Open")}.padding(12).background(Color.butter,in:RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)
                             }
-                            if rooms.isEmpty {PapiEmpty(title:filter==1 ? "No followed rooms yet":"No recent rooms",detail:"Open a coffee topic to keep it here.")}
+                            if store.usesCloudWallet && store.cloudVoiceTopics==nil {PapiTextButton("Retry topics"){Task {await store.refreshCloudVoiceTopics()}}.disabled(store.cloudVoiceTopicsBusy)}
+                            else if rooms.isEmpty {PapiEmpty(title:store.usesCloudWallet ? "No topics available":(filter==1 ? "No followed rooms yet":"No recent rooms"),detail:"Open a coffee topic to keep it here.")}
                             LazyVGrid(columns:Array(repeating:GridItem(.flexible(),spacing:12),count:columnCount),spacing:14) {
                                 ForEach(rooms) {room in
                                     roomCard(room)
@@ -98,7 +110,7 @@ struct CoffeeTablesView:View {
                     }
                 }.ignoresSafeArea(.container,edges:.top).contentMargins(.top,0,for:.scrollContent)
             }
-        }
+        }.task(id:store.state.cloudAccountID) {if store.usesCloudWallet {filter=0;await store.refreshCloudVoiceTopics()}}
     }
     private func roomCard(_ room:CoffeeTable)->some View {
         VStack(alignment:.leading,spacing:0) {
@@ -116,7 +128,7 @@ struct CoffeeTablesView:View {
                         PapiText(TableRoomStory.forRoom(room.id).description).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                     }.padding(12).frame(maxWidth:.infinity,alignment:.leading)
                 }.contentShape(Rectangle())
-            }.buttonStyle(.plain)
+            }.buttonStyle(.plain).disabled(store.usesCloudWallet && !store.liveVoiceEnabled)
             if let portrait=store.person(room.hostMemberID),!store.isUserHidden(portrait.id) {
                 Button {router.go(.person(portrait.id))} label:{
                     HStack(spacing:8) {
@@ -391,7 +403,10 @@ struct MemberPassportView:View {
                     let topInset=container.safeAreaInsets.top
                     let coverHeight=min(520,max(340,container.size.width*1.08))
                     let contentWidth=max(0,min(720,container.size.width)-40)
-                    let posts=store.visiblePosts.filter{$0.authorID==person.id}
+                    let posts: [CoffeeMoment] = {
+                        if store.usesCloudWallet,let member=UUID(uuidString:person.id) {return store.cloudShelfPosts(author:member,saved:false)}
+                        return store.visiblePosts.filter{$0.authorID==person.id}
+                    }()
                     ScrollView {
                         VStack(spacing:0) {
                             portraitCover(person,width:container.size.width,height:coverHeight+topInset,topInset:topInset)
@@ -405,12 +420,17 @@ struct MemberPassportView:View {
                                                 PapiText("Photo album").font(CoffeeType.face(.headline))
                                                 LazyVGrid(columns:[GridItem(.adaptive(minimum:145),spacing:12)],spacing:12) {ForEach(photos,id:\.self) {photo in Button {router.go(.photo(photo))} label:{PapiImage(name:photo).frame(height:180).clipped().clipShape(RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)}}
                                             } else if store.cloudProfileImages[member]==nil {PapiTextButton("Retry photos"){Task {await store.refreshCloudProfileImages(owner:member)}}.disabled(store.cloudProfileMediaBusy)}
+                                            if store.cloudProfileImagesHasMore[member]==true {PapiTextButton("Load more photos"){Task {await store.loadMoreCloudProfileImages(owner:member)}}.disabled(store.cloudProfileMediaBusy)}
                                         }
-                                        PapiText("Showing loaded moments").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                                        if store.cloudFeed==nil {PapiTextButton("Retry"){Task {await store.refreshCloudFeed()}}.disabled(store.cloudFeedBusy)}
-                                        else if posts.isEmpty {PapiEmpty(title:"No loaded moments")}
-                                        LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:14) {ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}
-                                        if store.cloudFeedHasMore {PapiTextButton("Load more"){Task {await store.loadMoreCloudFeed()}}.disabled(store.cloudFeedBusy)}
+                                        if let member=UUID(uuidString:person.id) {
+                                            let key=store.cloudShelfKey(author:member,saved:false)
+                                            if store.cloudShelves[key]==nil {
+                                                PapiText(store.cloudShelfBusy.contains(key) ? "Loading moments…":"Moments unavailable")
+                                                PapiTextButton("Retry"){Task {await store.loadCloudShelf(author:member,saved:false)}}.disabled(store.cloudShelfBusy.contains(key))
+                                            } else if posts.isEmpty {PapiEmpty(title:"No moments yet")}
+                                            LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:14) {ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}
+                                            if store.cloudShelfHasMore[key]==true {PapiTextButton("Load more"){Task {await store.loadCloudShelf(author:member,saved:false,more:true)}}.disabled(store.cloudShelfBusy.contains(key))}
+                                        }
                                     }
                                 } else {collectionShelf(person,posts:posts,width:contentWidth)}
                             }
@@ -423,7 +443,7 @@ struct MemberPassportView:View {
                     .contentMargins(.top,0,for:.scrollContent)
                 }
             } else {VStack(spacing:0){PapiHeader("Profile");ScrollView {PapiEmpty(title:"Profile unavailable")}}}
-        }.task(id:memberID) {if store.usesCloudWallet {if store.cloudFeed==nil {await store.refreshCloudFeed()};if let member=UUID(uuidString:memberID) {await store.refreshCloudProfileImages(owner:member)}}}
+        }.task(id:memberID) {if store.usesCloudWallet {if store.cloudFeed==nil {await store.refreshCloudFeed()};if let member=UUID(uuidString:memberID) {await store.refreshCloudProfileImages(owner:member);await store.loadCloudShelf(author:member,saved:false)}}}
     }
 
     private func portraitCover(_ person:CoffeeMember,width:CGFloat,height:CGFloat,topInset:CGFloat)->some View {

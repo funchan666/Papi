@@ -37,7 +37,7 @@ import SwiftUI
     }
 }
 enum CoffeeDestination:Hashable {
-    case room(String),post(String),person(String),chat(String),liveCall(UUID),beans,cafes,settings,editProfile,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,photo(String),gifts(String),reviewQueue,tables,brewBench,brewRecipe(String),brewArchive,brewCup(UUID),cuppingFlight,cupChoice(Int)
+    case room(String),post(String),person(String),chat(String),liveCall(UUID),beans,cafes,settings,editProfile,linkEmail,recoverEmail,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,photo(String),gifts(String),reviewQueue,tables,brewBench,brewRecipe(String),brewArchive,brewCup(UUID),cuppingFlight,cupChoice(Int)
 }
 enum CoffeePresentation:Identifiable {
     case compose,checkin,report(SafetyTarget),safety(SafetyTarget),more(String),gifts(String)
@@ -104,7 +104,8 @@ struct PapiRootView:View {
     @ViewBuilder private func destination(_ route:CoffeeDestination)->some View {
         switch route {
         case .room(let id):
-            if let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {CoffeeTableView(room:room)}
+            if store.usesCloudWallet {PapiScreen {VStack(spacing:0){PapiHeader("Coffee tables");ScrollView {PapiEmpty(title:"Voice rooms unavailable")}}}}
+            else if let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {CoffeeTableView(room:room)}
             else {PapiScreen {VStack(spacing:0){PapiHeader("Coffee tables");ScrollView {PapiEmpty(title:"This content is unavailable")}}}}
         case .post(let id):CoffeeMomentView(momentID:id)
         case .person(let id):
@@ -118,6 +119,12 @@ struct PapiRootView:View {
         case .cafes:CafeInspirationView()
         case .settings:CoffeePreferencesView()
         case .editProfile:EditCoffeePassportView()
+        case .linkEmail:
+            if store.emailLinkEnabled {CoffeeEmailLinkView()}
+            else {PapiScreen {PapiEmpty(title:"Account recovery unavailable")}}
+        case .recoverEmail:
+            if store.emailLinkEnabled {CoffeeEmailRecoveryView()}
+            else {PapiScreen {PapiEmpty(title:"Account recovery unavailable")}}
         case .wallet:CoinReserveView()
         case .backpack:CoffeeCollectionView()
         case .level:CoffeeJourneyView()

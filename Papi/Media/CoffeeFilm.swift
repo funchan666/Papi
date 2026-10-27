@@ -122,11 +122,11 @@ struct CloudMomentVideo:View {
         }.task(id:"\(store.state.cloudAccountID?.uuidString ?? "none")|\(media)|\(scenePhase == .active)|\(reload)") {
             signedURL=nil;owner=nil;failed=false
             guard scenePhase == .active,store.state.signedIn,let account=store.state.cloudAccountID,
-                  media.hasPrefix("cloud/"),store.visiblePosts.contains(where:{$0.media==media && $0.isVideo}) else{return}
+                  media.hasPrefix("cloud/"),store.isVisibleCloudVideo(media) else{return}
             do {
                 let url=try await CoffeeCloud.shared.mediaURL(path:String(media.dropFirst(6)),account:account,expiresIn:300)
                 guard !Task.isCancelled,store.state.signedIn,store.state.cloudAccountID==account,
-                      store.visiblePosts.contains(where:{$0.media==media && $0.isVideo}),
+                      store.isVisibleCloudVideo(media),
                       url.scheme=="https",url.host=="cquoffowtjnxmgaxavym.supabase.co" else{return}
                 owner=account;signedURL=url
             } catch {if !Task.isCancelled {failed=true}}

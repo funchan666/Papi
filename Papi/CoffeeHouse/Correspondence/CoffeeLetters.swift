@@ -45,6 +45,18 @@ struct CorrespondenceInbox:View {
                         }.padding(.vertical,4)}
                     }
                     PapiText("Your conversations").font(CoffeeType.face(.title3,weight:.bold)).padding(.top,2)
+                    if store.liveCallsEnabled {
+                        ForEach(store.incomingCloudCalls) {incoming in
+                            PapiPanel {VStack(alignment:.leading,spacing:10) {
+                                PapiUserLink(userID:incoming.caller_id.uuidString)
+                                PapiText("Incoming video call").font(CoffeeType.face(.headline))
+                                HStack {
+                                    PapiTextButton("Accept"){Task {if await store.answerCloudCall(incoming.id,accept:true) {router.go(.liveCall(incoming.id))}}}.disabled(store.cloudCallsBusy)
+                                    PapiTextButton("Decline"){Task {_ = await store.answerCloudCall(incoming.id,accept:false)}}.disabled(store.cloudCallsBusy)
+                                }
+                            }}
+                        }
+                    }
                     if store.usesCloudWallet && store.cloudProfiles==nil {PapiTextButton("Retry members"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)}
                     else if store.conversationPeople.isEmpty {emptyInbox}
                     if store.cloudMessagesUnavailable {PapiText("Messages could not be refreshed.").font(CoffeeType.face(.caption));PapiTextButton("Retry"){Task {await store.refreshCloudMessages()}}.disabled(store.cloudSocialBusy)}
@@ -68,7 +80,7 @@ struct CorrespondenceInbox:View {
         }.task(id:store.state.cloudAccountID) {
             guard store.usesCloudWallet else {return}
             while !Task.isCancelled {
-                if store.usesCloudWallet && scenePhase == .active {await store.refreshCloudMessages()}
+                if store.usesCloudWallet && scenePhase == .active {await store.refreshCloudMessages();await store.refreshCloudCalls()}
                 do {try await Task.sleep(for:.seconds(10))} catch {break}
             }
         }.overlay {
@@ -123,8 +135,27 @@ struct CoffeeConversationView:View {
                                 PapiUserLink(userID:memberID,size:66)
                                 PapiText(store.isMutual(memberID) ? "Mutual following confirmed":"Messages require mutual following.").font(CoffeeType.face(.subheadline)).multilineTextAlignment(.center)
                                 PapiActionGroup {
-                                    PapiTextButton("Video call"){if store.requireMutual(memberID){requestCallMicrophone=true;showCamera=true}}.font(CoffeeType.face(.caption,weight:.bold)).padding(10).frame(minHeight:44).background(Color.butter,in:Capsule()).disabled(store.usesCloudWallet)
+                                    PapiTextButton("Video call"){
+                                        if store.usesCloudWallet {
+                                            if let peer=UUID(uuidString:memberID) {Task {
+                                                if let session=await store.requestCloudCall(peer) {
+                                                    if session.status=="accepted" {router.go(.liveCall(session.id))}
+                                                    else {store.inform("Call requested", "Waiting for the other person to accept.")}
+                                                }
+                                            }}
+                                        } else if store.requireMutual(memberID){requestCallMicrophone=true;showCamera=true}
+                                    }.font(CoffeeType.face(.caption,weight:.bold)).padding(10).frame(minHeight:44).background(Color.butter,in:Capsule()).disabled(store.usesCloudWallet && (!store.liveCallsEnabled || store.cloudCallsBusy))
                                     PapiTextButton("Preview my camera"){requestCallMicrophone=false;showCamera=true}.font(CoffeeType.face(.caption,weight:.bold)).padding(10).frame(minHeight:44).background(Color.butter,in:Capsule())
+                                }
+                                if store.liveCallsEnabled,let peer=UUID(uuidString:memberID),let session=store.activeCloudCall(with:peer) {
+                                    if session.status=="accepted" {PapiTextButton("Join call"){router.go(.liveCall(session.id))}.disabled(store.cloudCallsBusy)}
+                                    else if session.caller_id==store.state.cloudAccountID {
+                                        PapiText("Waiting for the other person to accept.").font(CoffeeType.face(.caption))
+                                        PapiTextButton("Cancel call"){Task {await store.endCloudCall(session.id)}}.disabled(store.cloudCallsBusy)
+                                    } else {HStack {
+                                        PapiTextButton("Accept"){Task {if await store.answerCloudCall(session.id,accept:true) {router.go(.liveCall(session.id))}}}.disabled(store.cloudCallsBusy)
+                                        PapiTextButton("Decline"){Task {_ = await store.answerCloudCall(session.id,accept:false)}}.disabled(store.cloudCallsBusy)
+                                    }}
                                 }
                                 if store.usesCloudWallet,let peer=UUID(uuidString:memberID),store.cloudConversationHasMore[peer]==true {PapiTextButton("Load earlier messages"){Task {await store.loadEarlierCloudConversation(peer)}}.disabled(store.cloudConversationBusy.contains(peer))}
                                 ForEach(store.messages(with:memberID)) {message in ChatMessageView(message:message).id(message.id)}
@@ -156,7 +187,7 @@ struct CoffeeConversationView:View {
         }.task(id:store.state.cloudAccountID) {
             guard store.usesCloudWallet else {return}
             while !Task.isCancelled {
-                if store.usesCloudWallet && scenePhase == .active {await store.refreshCloudMessages();if let peer=UUID(uuidString:memberID) {await store.refreshCloudConversation(peer)}}
+                if store.usesCloudWallet && scenePhase == .active {await store.refreshCloudMessages();await store.refreshCloudCalls();if let peer=UUID(uuidString:memberID) {await store.refreshCloudConversation(peer)}}
                 do {try await Task.sleep(for:.seconds(10))} catch {break}
             }
         }.onChange(of:picker){_,item in

@@ -92,13 +92,22 @@ struct MyCoffeePassportView:View {
                                 LazyVGrid(columns:[GridItem(.adaptive(minimum:145),spacing:12)],spacing:12) {
                                     ForEach(photos,id:\.self) {name in Button{router.go(.photo(name))} label:{PapiImage(name:name).frame(height:180).clipped().clipShape(RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)}
                                 }
+                                if let account=store.state.cloudAccountID,store.cloudProfileImagesHasMore[account]==true {PapiTextButton("Load more photos"){Task {await store.loadMoreCloudProfileImages(owner:account)}}.disabled(store.cloudProfileMediaBusy)}
+                            } else if let account=store.state.cloudAccountID {
+                                let saved=collection==2
+                                let author:UUID?=saved ? nil:account
+                                let key=store.cloudShelfKey(author:author,saved:saved)
+                                let posts=store.cloudShelfPosts(author:author,saved:saved)
+                                if store.cloudShelves[key]==nil {
+                                    PapiText(store.cloudShelfBusy.contains(key) ? "Loading moments…":"Moments unavailable")
+                                    PapiTextButton("Retry"){Task {await store.loadCloudShelf(author:author,saved:saved)}}.disabled(store.cloudShelfBusy.contains(key))
+                                } else if posts.isEmpty {PapiEmpty(title:saved ? "No saved moments":"Your coffee journal is waiting",detail:saved ? "Save a moment from its detail page to find it here.":"Use the plus button on Home to keep your first coffee moment.")}
+                                LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:12) {ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}
+                                if store.cloudShelfHasMore[key]==true {PapiTextButton("Load more"){Task {await store.loadCloudShelf(author:author,saved:saved,more:true)}}.disabled(store.cloudShelfBusy.contains(key))}
                             } else {
-                                let owner=store.state.cloudAccountID?.uuidString ?? store.state.passport.id.uuidString
-                                let posts=collection==0 ? store.visiblePosts.filter{$0.authorID==owner}:store.visiblePosts.filter{store.usesCloudWallet ? (store.cloudFeedItem($0.id)?.bookmarked ?? false):store.state.keptMoments.contains($0.id)}
-                                if store.usesCloudWallet {PapiText("Showing loaded moments").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
+                                let posts=collection==0 ? store.visiblePosts.filter{$0.authorID==store.state.passport.id.uuidString}:store.visiblePosts.filter{store.state.keptMoments.contains($0.id)}
                                 if posts.isEmpty {PapiEmpty(title:collection==0 ? "Your coffee journal is waiting":"No saved moments",detail:collection==0 ? "Use the plus button on Home to keep your first coffee moment.":"Save a moment from its detail page to find it here.")}
                                 LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:12) {ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}
-                                if store.usesCloudWallet && store.cloudFeedHasMore {PapiTextButton("Load more"){Task {await store.loadMoreCloudFeed()}}.disabled(store.cloudFeedBusy)}
                             }
                         }.padding(.horizontal,18).padding(.bottom,24).frame(maxWidth:820).frame(maxWidth:.infinity)
                     }
@@ -110,6 +119,11 @@ struct MyCoffeePassportView:View {
                 .clipped().offset(y:-topInset)
             }
         }.task(id:store.state.cloudAccountID) {if store.usesCloudWallet {if store.cloudFeed==nil {await store.refreshCloudFeed()};if let account=store.state.cloudAccountID {await store.refreshCloudProfileImages(owner:account)}}}
+            .task(id:"\(store.state.cloudAccountID?.uuidString ?? "none")|\(collection)") {
+                guard let account=store.state.cloudAccountID,collection != 1 else{return}
+                let saved=collection==2
+                await store.loadCloudShelf(author:saved ? nil:account,saved:saved)
+            }
     }
     private func countButton(_ count:Int,_ title:String)->some View {
         Button {router.go(.relationships(["Following","Follower","Friends"].firstIndex(of:title) ?? 0))} label:{
@@ -166,6 +180,7 @@ struct EditCoffeePassportView:View {
                                         PapiIconButton(asset:"trash",label:"Remove photo",size:20){removingImage=item.id}.disabled(store.cloudProfileMediaBusy || store.state.pendingCloudProfileImageRemoval != nil)
                                     }.padding(12).background(Color.white.opacity(0.88),in:RoundedRectangle(cornerRadius:16))
                                 }
+                                if store.cloudProfileImagesHasMore[account]==true {PapiTextButton("Load more photos"){Task {await store.loadMoreCloudProfileImages(owner:account)}}.disabled(store.cloudProfileMediaBusy)}
                             } else {PapiTextButton("Retry photos"){Task {await store.refreshCloudProfileImages(owner:account)}}.disabled(store.cloudProfileMediaBusy)}
                         }
                         if importing {PapiText("Importing photo…").font(CoffeeType.face(.caption))}
@@ -297,6 +312,9 @@ struct CoffeePreferencesView:View {
                             if let pending=store.state.pendingCloudReport {PapiRow(title:"Finish pending report"){router.sheet = .report(pending.target)}}
                             if store.state.pendingCloudMessage != nil {PapiRow(title:"Finish pending message"){Task {await store.retryPendingCloudMessage()}}}
                             if let pending=store.state.pendingCloudAttachment {PapiRow(title:"Finish pending attachment"){Task {_ = await store.sendCloudAttachment(to:pending.recipientID.uuidString,reference:pending.reference,kind:pending.kind)}}.disabled(store.cloudSocialBusy)}
+                            if store.liveCallsEnabled,let pending=store.state.pendingCloudCall {PapiRow(title:"Retry call request"){Task {_ = await store.requestCloudCall(pending.recipientID)}}.disabled(store.cloudCallsBusy)}
+                            if store.liveCallsEnabled,let pending=store.state.pendingCloudCallEnd {PapiRow(title:"Finish ending call"){Task {await store.endCloudCall(pending.id)}}.disabled(store.cloudCallsBusy)}
+                            if store.state.pendingCloudVoice != nil {PapiRow(title:"Finish voice session"){Task {await store.finishCloudVoice()}}.disabled(store.cloudVoiceBusy)}
                             if let pending=store.state.pendingCloudFriendship {PapiRow(title:"Finish friend request"){Task {await store.requestCloudFriendship(pending.recipientID)}}}
                             if store.state.pendingCloudProfile != nil {PapiRow(title:"Finish profile changes"){router.go(.editProfile)}}
                             if let pending=store.state.pendingCloudProfileImage {PapiRow(title:"Retry photo upload"){Task {_ = await store.submitCloudProfileImage(reference:pending.reference,kind:pending.kind)}}.disabled(store.cloudProfileMediaBusy)}
@@ -314,6 +332,8 @@ struct CoffeePreferencesView:View {
                             row("Language",.language)
                         }
                         preferenceSection("Account") {
+                            if store.usesCloudWallet && store.emailLinkEnabled {PapiRow(title:"Link email"){router.go(.linkEmail)}}
+                            if !store.usesCloudWallet && store.emailLinkEnabled {PapiRow(title:"Recover account"){router.go(.recoverEmail)}}
                             PapiRow(title:"Log Out"){confirmation="logout"}
                             PapiRow(title:"Delete account"){confirmation="delete"}
                         }
@@ -342,6 +362,79 @@ struct CoffeePreferencesView:View {
             PapiText(title).font(CoffeeType.face(.caption,weight:.bold)).foregroundStyle(Color.mutedCoffee).padding(.horizontal,4)
             VStack(spacing:2) {content()}.background(Color.white.opacity(0.94),in:RoundedRectangle(cornerRadius:20))
         }.frame(maxWidth:.infinity,alignment:.leading)
+    }
+}
+struct CoffeeEmailLinkView:View {
+    @EnvironmentObject private var store:CoffeeHouse
+    @State private var email=""
+    @State private var code=""
+    @State private var sent=false
+    var body:some View {
+        PapiScreen {
+            VStack(spacing:0) {
+                PapiHeader("Link email")
+                ScrollView {
+                    VStack(alignment:.leading,spacing:16) {
+                        CoffeeSectionIntro(artwork:"settingsCoffeeArt",title:"Keep your coffee account",detail:"Verify an email for this guest account. Your current coffee book stays on this device.")
+                        PapiText("Email address").font(CoffeeType.face(.caption,weight:.semibold))
+                        PapiInput("Email address",text:$email).keyboardType(.emailAddress).textContentType(.emailAddress)
+                            .textInputAutocapitalization(.never).autocorrectionDisabled().padding(15)
+                            .background(Color.white,in:RoundedRectangle(cornerRadius:15)).disabled(store.emailLinkBusy || sent)
+                        PapiTextButton("Send verification code") {Task {if await store.requestEmailLink(email) {sent=true}}}
+                            .buttonStyle(PapiButtonStyle()).disabled(store.emailLinkBusy || email.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
+                        if sent {
+                            PapiText("Verification code").font(CoffeeType.face(.caption,weight:.semibold))
+                            PapiInput("Verification code",text:$code).keyboardType(.numberPad).textContentType(.oneTimeCode)
+                                .padding(15).background(Color.white,in:RoundedRectangle(cornerRadius:15)).disabled(store.emailLinkBusy)
+                            PapiTextButton("Verify email") {Task {if await store.verifyEmailLink(email,code:code) {code="";sent=false}}}
+                                .buttonStyle(PapiButtonStyle()).disabled(store.emailLinkBusy || code.isEmpty)
+                            PapiTextButton("Use another email") {sent=false;code=""}.disabled(store.emailLinkBusy)
+                        }
+                        PapiText("Account recovery on another device is not available yet. Keep this device and its saved data.")
+                            .font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                        PapiTextButton("Retry saved verification") {Task {await store.resumeEmailLink()}}.disabled(store.emailLinkBusy)
+                    }.padding(20).frame(maxWidth:650).frame(maxWidth:.infinity)
+                }.scrollDismissesKeyboard(.interactively)
+            }
+        }.task {await store.resumeEmailLink()}
+    }
+}
+struct CoffeeEmailRecoveryView:View {
+    @EnvironmentObject private var store:CoffeeHouse
+    @Environment(\.dismiss) private var dismiss
+    @State private var email=""
+    @State private var code=""
+    @State private var sent=false
+    @State private var confirm=false
+    var body:some View {
+        PapiScreen {
+            VStack(spacing:0) {
+                PapiHeader("Recover account")
+                ScrollView {
+                    VStack(alignment:.leading,spacing:16) {
+                        CoffeeSectionIntro(artwork:"settingsCoffeeArt",title:"Open your online account",detail:"Enter the email previously verified for your account.")
+                        PapiText("Email address").font(CoffeeType.face(.caption,weight:.semibold))
+                        PapiInput("Email address",text:$email).keyboardType(.emailAddress).textContentType(.emailAddress)
+                            .textInputAutocapitalization(.never).autocorrectionDisabled().padding(15)
+                            .background(Color.white,in:RoundedRectangle(cornerRadius:15)).disabled(store.emailLinkBusy || sent)
+                        PapiTextButton("Send verification code") {Task {if await store.requestEmailRecovery(email) {sent=true}}}
+                            .buttonStyle(PapiButtonStyle()).disabled(store.emailLinkBusy || email.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
+                        if sent {
+                            PapiText("Verification code").font(CoffeeType.face(.caption,weight:.semibold))
+                            PapiInput("Verification code",text:$code).keyboardType(.numberPad).textContentType(.oneTimeCode)
+                                .padding(15).background(Color.white,in:RoundedRectangle(cornerRadius:15)).disabled(store.emailLinkBusy)
+                            PapiTextButton("Recover account") {confirm=true}.buttonStyle(PapiButtonStyle()).disabled(store.emailLinkBusy || code.isEmpty)
+                            PapiTextButton("Use another email") {sent=false;code=""}.disabled(store.emailLinkBusy)
+                        }
+                        PapiText("Device data stays saved here. Online and device data are not merged automatically.")
+                            .font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                        PapiTextButton("Retry saved recovery") {Task {if await store.resumeEmailRecovery() {dismiss()}}}.disabled(store.emailLinkBusy)
+                    }.padding(20).frame(maxWidth:650).frame(maxWidth:.infinity)
+                }.scrollDismissesKeyboard(.interactively)
+            }.overlay {
+                if confirm {PapiDialog(title:"Open online account?",message:"Your existing device data stays saved here. Online and device data will not be merged automatically.",confirm:"Continue",cancel:"Cancel",action:{confirm=false;Task {if await store.verifyEmailRecovery(email,code:code) {code="";dismiss()}}},dismiss:{confirm=false})}
+            }
+        }
     }
 }
 struct LanguageView:View {

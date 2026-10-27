@@ -210,7 +210,7 @@ struct CoffeeMomentView:View {
                                     VStack(alignment:.leading,spacing:3) {
                                         PapiText("Cup notes").font(CoffeeType.display(.title3,weight:.bold))
                                         HStack(spacing:4) {
-                                            Text(tastingReplies.count,format:.number).monospacedDigit()
+                                            Text(store.usesCloudWallet ? (store.cloudFeedItem(momentID)?.comment_count ?? 0):tastingReplies.count,format:.number).monospacedDigit()
                                             PapiText("Comments")
                                         }.font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                                     }
@@ -220,13 +220,14 @@ struct CoffeeMomentView:View {
                                     PapiText(store.cloudCommentsBusy ? "Loading comments…":"Comments unavailable")
                                     PapiTextButton("Retry"){Task {await store.refreshCloudComments(id)}}.disabled(store.cloudCommentsBusy)
                                 } else if tastingReplies.isEmpty {PapiText("Keep a tasting note or thought about this moment.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)}
+                                if let id=UUID(uuidString:momentID),store.usesCloudWallet,store.cloudCommentsHasMore[id]==true {PapiTextButton("Load earlier comments"){Task {await store.loadEarlierCloudComments(id)}}.disabled(store.cloudCommentsBusy)}
                                 ForEach(tastingReplies) { note in
                                     HStack(alignment:.top,spacing:10) {
                                         PapiUserLink(userID:note.authorID ?? store.state.passport.id.uuidString,size:38,showsName:false)
                                         VStack(alignment:.leading,spacing:6) {
                                             Button {router.go(.person(note.authorID ?? store.state.passport.id.uuidString))} label:{PapiText(verbatim:store.person(note.authorID ?? store.state.passport.id.uuidString)?.name ?? "My coffee corner").font(CoffeeType.face(.caption,weight:.bold))}.buttonStyle(.plain)
                                             PapiText(verbatim:note.text).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
-                                            if store.usesCloudWallet,let moment=UUID(uuidString:momentID),let noteID=UUID(uuidString:note.id),let value=store.cloudComments[moment]?.first(where:{$0.id==noteID}),value.moderation_status != "approved" {PapiText("Under review").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)}
+                                            if store.usesCloudWallet,let moment=UUID(uuidString:momentID),let noteID=UUID(uuidString:note.id),let value=store.cloudComments[moment]?.first(where:{$0.id==noteID}),value.moderation_status != "approved" {PapiText(value.moderation_status == "rejected" ? "Not approved":"Under review").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)}
                                             Text(note.createdAt,style:.date).font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
                                         }.frame(maxWidth:.infinity,alignment:.leading)
                                         PapiIconButton(asset:"more",label:"Comment options",size:19) {router.sheet = .safety(.comment(note,owner:store.state.passport.id.uuidString))}

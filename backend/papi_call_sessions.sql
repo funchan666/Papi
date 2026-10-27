@@ -46,7 +46,7 @@ as $$ select papi_private.request_coffee_call(p_id,p_recipient); $$;
 revoke all on function public.request_coffee_call(uuid,uuid) from public,anon;
 grant execute on function public.request_coffee_call(uuid,uuid) to authenticated;
 
-create function papi_private.answer_coffee_call(p_id uuid,p_accept boolean) returns boolean
+create or replace function papi_private.answer_coffee_call(p_id uuid,p_accept boolean) returns boolean
 language plpgsql security definer set search_path = '' as $$
 declare actor uuid := (select auth.uid()); session_row public.coffee_calls%rowtype;
 begin
@@ -55,7 +55,10 @@ begin
   perform papi_private.lock_social_pair(session_row.caller_id,session_row.recipient_id);
   select * into session_row from public.coffee_calls c where c.id=p_id and c.recipient_id=actor for update;
   if not found then raise exception 'Call unavailable'; end if;
-  if (p_accept and session_row.status='accepted') or (not p_accept and session_row.status='declined') then return true; end if;
+  if not p_accept and session_row.status='declined' then return true; end if;
+  if p_accept and session_row.status='accepted' then
+    return session_row.expires_at>now() and papi_private.mutual_follow(session_row.caller_id,session_row.recipient_id);
+  end if;
   if session_row.status<>'pending' or session_row.expires_at<=now() or not papi_private.mutual_follow(session_row.caller_id,session_row.recipient_id) then return false; end if;
   update public.coffee_calls set status=case when p_accept then 'accepted' else 'declined' end,
     expires_at=case when p_accept then now()+interval '1 hour' else expires_at end where id=p_id;

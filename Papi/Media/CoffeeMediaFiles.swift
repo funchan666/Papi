@@ -195,7 +195,7 @@ struct PrivateSubmissionPhoto:View {
                 let (data,response)=try await Self.session.data(from:url)
                 guard let response=response as? HTTPURLResponse,response.statusCode==200,
                       response.url?.scheme=="https",response.url?.host==url.host,
-                      response.mimeType?.hasPrefix("image/")==true,data.count<=40_000_000 else{return}
+                      response.mimeType?.hasPrefix("image/")==true,data.count<=52_428_800 else{return}
                 let decoded=await Task.detached(priority:.utility){CoffeeMedia.downsample(data)}.value
                 guard !Task.isCancelled,store.state.signedIn,store.state.cloudAccountID==account,scenePhase == .active else{return}
                 image=decoded;imageOwner=account;imagePath=path

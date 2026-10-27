@@ -83,7 +83,7 @@ struct CoffeeLiveCallView:View {
                 } else {PapiTextButton(call.connecting ? "Connecting…":"Join call"){Task {await call.join(call:callID,account:accountID)}}.disabled(call.connecting)}
             }.padding(16)
         }.onDisappear {Task {await finish()}}
-            .onChange(of:scenePhase){_,phase in if phase != .active {Task {await finish()}}}
+            .onChange(of:scenePhase){_,phase in if phase == .background {Task {await finish()}}}
     }
     private func finish() async {await call.disconnect();await store.endCloudCall(callID)}
 }

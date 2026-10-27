@@ -10,8 +10,20 @@ Deno.serve(async (request:Request) => {
   if (Number(request.headers.get("content-length") || 0)>2048) return reply(413,{error:"Request too large"});
   let secret:unknown;
   try {
-    const bytes=await request.arrayBuffer();
-    if (bytes.byteLength>2048) return reply(413,{error:"Request too large"});
+    const reader=request.body?.getReader();
+    if (!reader) return reply(400,{error:"Invalid request"});
+    const chunks:Uint8Array[]=[];
+    let size=0;
+    while (true) {
+      const {done,value}=await reader.read();
+      if (done) break;
+      size+=value.byteLength;
+      if (size>2048) {await reader.cancel();return reply(413,{error:"Request too large"});}
+      chunks.push(value);
+    }
+    const bytes=new Uint8Array(size);
+    let offset=0;
+    for (const chunk of chunks) {bytes.set(chunk,offset);offset+=chunk.byteLength;}
     const body:unknown=JSON.parse(new TextDecoder().decode(bytes));
     if (!body || typeof body!=="object" || Array.isArray(body)) return reply(400,{error:"Invalid request"});
     secret=(body as Record<string,unknown>).receipt;

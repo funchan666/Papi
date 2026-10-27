@@ -10,6 +10,14 @@ actor CoffeeCloud {
         supabaseKey: "sb_publishable_srmPaTaw81JT37tSvfmCww_vqBh73A5"
     )
     private let sessionKey = "sb-cquoffowtjnxmgaxavym-auth-token"
+    private let emailVerificationKey = "papi-email-verification-session"
+    private let emailVerificationStorage = KeychainLocalStorage(service:"Papi.EmailVerification.v1")
+    private let emailVerifier = SupabaseClient(
+        supabaseURL: URL(string:"https://cquoffowtjnxmgaxavym.supabase.co")!,
+        supabaseKey: "sb_publishable_srmPaTaw81JT37tSvfmCww_vqBh73A5",
+        options: SupabaseClientOptions(auth:.init(storage:KeychainLocalStorage(service:"Papi.EmailVerification.v1"),
+                                                  storageKey:"papi-email-verification-session",autoRefreshToken:false))
+    )
 
     struct Profile: Codable {
         let id: UUID
@@ -18,6 +26,11 @@ actor CoffeeCloud {
         let avatar_path: String?
         let cover_path: String?
         let revision: Int?
+    }
+    private struct ProfileCreate: Encodable {
+        let id: UUID
+        let display_name: String
+        let biography: String
     }
     struct ProfileImage:Decodable,Identifiable {
         let id:UUID
@@ -31,6 +44,12 @@ actor CoffeeCloud {
         let owner_id:UUID
         let avatar_path:String?
         let cover_path:String?
+    }
+    struct VoiceTopic:Decodable,Identifiable {
+        let id:String
+        let title:String
+        let category:String
+        let sort_order:Int
     }
 
     struct Follow: Codable {
@@ -183,9 +202,12 @@ actor CoffeeCloud {
     private struct MessageSend: Encodable { let p_id: UUID; let p_recipient: UUID; let p_body: String }
     private struct MessageAttachment: Encodable {let p_id:UUID;let p_recipient:UUID;let p_kind:String}
     private struct ConversationCursor:Encodable {let p_peer:UUID;let p_before_time:String?;let p_before_id:UUID?}
+    private struct CommentCursor:Encodable {let p_post:UUID;let p_before_time:String?;let p_before_id:UUID?}
+    private struct ImageCursor:Encodable {let p_owner:UUID;let p_before_time:String?;let p_before_id:UUID?}
     private struct PairAction: Encodable { let p_member: UUID; let p_enabled: Bool }
     private struct ProfilePatch: Encodable { let display_name: String; let biography: String }
     private struct FeedCursor: Encodable { let p_before_time:String?;let p_before_id:UUID?;let p_target:UUID? }
+    private struct ShelfCursor: Encodable { let p_author:UUID?;let p_saved:Bool;let p_before_time:String?;let p_before_id:UUID? }
     private struct ProfileMembers:Encodable {let p_members:[UUID]}
     private struct ProfileImageSubmit:Encodable {let p_id:UUID;let p_kind:String}
     private struct ProfileImageID:Encodable {let p_id:UUID}
@@ -193,6 +215,9 @@ actor CoffeeCloud {
     private struct CallAnswer:Encodable {let p_id:UUID;let p_accept:Bool}
     private struct CallID:Encodable {let p_id:UUID}
     private struct CallTokenRequest:Encodable {let call_id:UUID}
+    private struct VoiceSession:Encodable {let p_topic:String;let p_session:UUID}
+    private struct VoiceTokenRequest:Encodable {let topic_id:String;let session_id:UUID}
+    enum VoiceOperation {case enter,heartbeat,leave,canJoin}
     private struct Submission: Encodable {
         let moment_id: UUID
         let caption: String
@@ -250,8 +275,8 @@ actor CoffeeCloud {
         if profiles.isEmpty {
             guard expectedID == nil else { throw ConnectionError.profileUnavailable }
             let name = passport.name.trimmingCharacters(in: .whitespacesAndNewlines)
-            let profile = Profile(id: userID, display_name: String((name.isEmpty ? "My coffee corner" : name).prefix(80)),
-                                  biography: String(passport.bio.prefix(2000)), avatar_path: passport.avatar, cover_path: passport.cover, revision:nil)
+            let profile = ProfileCreate(id: userID, display_name: String((name.isEmpty ? "My coffee corner" : name).prefix(80)),
+                                        biography: String(passport.bio.prefix(2000)))
             try await client.from("coffee_profiles").insert(profile).execute()
         }
         return userID
@@ -264,9 +289,127 @@ actor CoffeeCloud {
         return userID
     }
 
+    // Email verification uses a separate Keychain session so an OTP can never
+    // replace the guest account before its identity has been checked.
+    func beginEmailLink(_ email:String,account:UUID) async throws {
+        _ = try await identity(account)
+        guard try emailVerificationStorage.retrieve(key:emailVerificationKey)==nil else {throw ConnectionError.unboundSession}
+        let current=try await client.auth.user()
+        guard current.id==account,current.isAnonymous else {throw ConnectionError.actionUnavailable}
+        let updated=try await client.auth.update(user:UserAttributes(email:email))
+        guard updated.id==account else {throw ConnectionError.wrongAccount}
+        _ = try await identity(account)
+    }
+
+    func verifyEmailLink(_ email:String,code:String,account:UUID) async throws {
+        _ = try await identity(account)
+        guard try emailVerificationStorage.retrieve(key:emailVerificationKey)==nil else {throw ConnectionError.unboundSession}
+        let response=try await emailVerifier.auth.verifyOTP(email:email,token:code,type:.emailChange)
+        guard let session=response.session,session.user.id==account,!session.user.isAnonymous,
+              session.user.emailConfirmedAt != nil,session.user.email?.lowercased()==email.lowercased() else {
+            try? emailVerificationStorage.remove(key:emailVerificationKey)
+            throw ConnectionError.wrongAccount
+        }
+        let data=try JSONEncoder().encode(session)
+        try emailVerificationStorage.store(key:emailVerificationKey,value:data)
+        guard try emailVerificationStorage.retrieve(key:emailVerificationKey)==data else {throw ConnectionError.sessionNotSaved}
+        _ = try await resumeEmailLink(account:account)
+    }
+
+    func resumeEmailLink(account:UUID) async throws -> Bool {
+        guard let data=try emailVerificationStorage.retrieve(key:emailVerificationKey) else{return false}
+        let saved=try JSONDecoder().decode(Session.self,from:data)
+        guard saved.user.id==account,!saved.user.isAnonymous,saved.user.emailConfirmedAt != nil else {throw ConnectionError.wrongAccount}
+        if let current=client.auth.currentSession,current.user.id != account {throw ConnectionError.wrongAccount}
+        let adopted=try await client.auth.setSession(accessToken:saved.accessToken,refreshToken:saved.refreshToken)
+        guard adopted.user.id==account,let stored=try KeychainLocalStorage().retrieve(key:sessionKey),
+              let persisted=try? JSONDecoder().decode(Session.self,from:stored),persisted.user.id==account,
+              persisted.refreshToken==adopted.refreshToken else {throw ConnectionError.sessionNotSaved}
+        try emailVerificationStorage.remove(key:emailVerificationKey)
+        return true
+    }
+
+    func requestEmailRecovery(_ email:String) async throws {
+        try requireFreshBootstrap()
+        guard try emailVerificationStorage.retrieve(key:emailVerificationKey)==nil else {throw ConnectionError.unboundSession}
+        try await emailVerifier.auth.signInWithOTP(email:email,shouldCreateUser:false)
+    }
+
+    func verifyEmailRecovery(_ email:String,code:String) async throws -> UUID {
+        try requireFreshBootstrap()
+        guard try emailVerificationStorage.retrieve(key:emailVerificationKey)==nil else {throw ConnectionError.unboundSession}
+        let response=try await emailVerifier.auth.verifyOTP(email:email,token:code,type:.email)
+        guard let session=response.session,!session.user.isAnonymous,session.user.emailConfirmedAt != nil,
+              session.user.email?.lowercased()==email.lowercased() else {
+            try? emailVerificationStorage.remove(key:emailVerificationKey)
+            throw ConnectionError.wrongAccount
+        }
+        let data=try JSONEncoder().encode(session)
+        try emailVerificationStorage.store(key:emailVerificationKey,value:data)
+        guard try emailVerificationStorage.retrieve(key:emailVerificationKey)==data else {throw ConnectionError.sessionNotSaved}
+        return session.user.id
+    }
+
+    func pendingEmailRecoveryAccount() throws -> UUID? {
+        guard let data=try emailVerificationStorage.retrieve(key:emailVerificationKey) else{return nil}
+        let saved=try JSONDecoder().decode(Session.self,from:data)
+        guard !saved.user.isAnonymous,saved.user.emailConfirmedAt != nil else {throw ConnectionError.actionUnavailable}
+        return saved.user.id
+    }
+
+    func finishEmailRecovery(account:UUID) async throws {
+        if let stored=try KeychainLocalStorage().retrieve(key:sessionKey) {
+            let saved=try JSONDecoder().decode(Session.self,from:stored)
+            guard saved.user.id==account,client.auth.currentSession?.user.id==account else {throw ConnectionError.wrongAccount}
+            _ = try await identity(account)
+            if let recoveryData=try emailVerificationStorage.retrieve(key:emailVerificationKey) {
+                let recovery=try JSONDecoder().decode(Session.self,from:recoveryData)
+                guard recovery.user.id==account else {throw ConnectionError.wrongAccount}
+                try emailVerificationStorage.remove(key:emailVerificationKey)
+            }
+            return
+        }
+        guard client.auth.currentSession==nil,try await resumeEmailLink(account:account) else {throw ConnectionError.missingSession}
+    }
+
     func profiles(for account: UUID) async throws -> [Profile] {
         _ = try await identity(account)
         return try await client.from("coffee_profiles").select("id,display_name,biography,avatar_path,cover_path,revision").execute().value
+    }
+    func profiles(ids:[UUID],account:UUID) async throws -> [Profile] {
+        _ = try await identity(account)
+        guard !ids.isEmpty else{return []}
+        let result:[Profile] = try await client.from("coffee_profiles").select("id,display_name,biography,avatar_path,cover_path,revision")
+            .in("id",values:ids).execute().value
+        _ = try await identity(account)
+        return result
+    }
+    func voiceTopics(account:UUID) async throws -> [VoiceTopic] {
+        _ = try await identity(account)
+        let topics:[VoiceTopic] = try await client.from("coffee_voice_topics").select("id,title,category,sort_order").order("sort_order",ascending:true).execute().value
+        _ = try await identity(account)
+        return topics
+    }
+
+    func voiceSession(topic:String,id:UUID,account:UUID,operation:VoiceOperation) async throws -> Bool {
+        _ = try await identity(account)
+        let rpc:String
+        switch operation {
+        case .enter:rpc="enter_coffee_voice"
+        case .heartbeat:rpc="heartbeat_coffee_voice"
+        case .leave:rpc="leave_coffee_voice"
+        case .canJoin:rpc="can_join_coffee_voice"
+        }
+        let result:Bool = try await client.rpc(rpc,params:VoiceSession(p_topic:topic,p_session:id)).execute().value
+        _ = try await identity(account)
+        return result
+    }
+    func voiceToken(topic:String,id:UUID,account:UUID) async throws -> CallToken {
+        _ = try await identity(account)
+        let result:CallToken = try await client.functions.invoke("livekit-voice-token",options:FunctionInvokeOptions(body:VoiceTokenRequest(topic_id:topic,session_id:id)))
+        guard let url=URL(string:result.server_url),url.scheme=="wss",url.host=="papi-umze01cq.livekit.cloud",!result.participant_token.isEmpty else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
+        return result
     }
 
     func profileImageSummaries(_ members:[UUID],account:UUID) async throws -> [ProfileImageSummary] {
@@ -277,9 +420,10 @@ actor CoffeeCloud {
         return result
     }
 
-    func profileImages(owner:UUID,account:UUID) async throws -> [ProfileImage] {
+    func profileImages(owner:UUID,account:UUID,before:ProfileImage?=nil) async throws -> [ProfileImage] {
         _ = try await identity(account)
-        let result:[ProfileImage] = try await client.from("coffee_profile_images").select().eq("owner_id",value:owner.uuidString.lowercased()).order("created_at",ascending:false).limit(500).execute().value
+        let cursor=ImageCursor(p_owner:owner,p_before_time:before?.created_at,p_before_id:before?.id)
+        let result:[ProfileImage] = try await client.rpc("coffee_profile_image_page",params:cursor).execute().value
         _ = try await identity(account)
         return result
     }
@@ -353,6 +497,14 @@ actor CoffeeCloud {
         return moments
     }
 
+    func momentShelf(for account:UUID,author:UUID?,saved:Bool,before:FeedMoment?=nil) async throws -> [FeedMoment] {
+        _ = try await identity(account)
+        let cursor=ShelfCursor(p_author:author,p_saved:saved,p_before_time:before?.created_at,p_before_id:before?.id)
+        let moments:[FeedMoment] = try await client.rpc("coffee_moment_shelf",params:cursor).execute().value
+        _ = try await identity(account)
+        return moments
+    }
+
     func ownMoments(for account: UUID) async throws -> [Moment] {
         let user=try await identity(account)
         let moments:[Moment] = try await client.from("coffee_posts").select()
@@ -372,10 +524,13 @@ actor CoffeeCloud {
         _ = try await identity(account)
     }
 
-    func comments(for moment: UUID, account: UUID) async throws -> [Comment] {
+    func comments(for moment: UUID, account: UUID,before:Comment?=nil) async throws -> [Comment] {
         _ = try await identity(account)
-        return try await client.from("coffee_comments").select().eq("post_id", value: moment.uuidString.lowercased())
-            .order("created_at", ascending: false).limit(100).execute().value
+        if before != nil && before?.created_at==nil {throw ConnectionError.actionUnavailable}
+        let cursor=CommentCursor(p_post:moment,p_before_time:before?.created_at,p_before_id:before?.id)
+        let result:[Comment] = try await client.rpc("coffee_comment_page",params:cursor).execute().value
+        _ = try await identity(account)
+        return result
     }
 
     func follows(for account: UUID) async throws -> [Follow] {
