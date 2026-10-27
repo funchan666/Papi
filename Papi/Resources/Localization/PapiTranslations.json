@@ -6081,5 +6081,33 @@
     "ar": "هدية صغيرة للطاولة · تجريبي",
     "vi": "Một món quà nhỏ cho bàn cà phê · Trải nghiệm",
     "ko": "커피 테이블을 위한 작은 선물 · 체험"
+  },
+  "Sample room": {
+    "es": "Sala de muestra",
+    "th": "ห้องตัวอย่าง",
+    "ar": "غرفة نموذجية",
+    "vi": "Phòng mẫu",
+    "ko": "샘플 룸"
+  },
+  "Sample gift": {
+    "es": "Regalo de muestra",
+    "th": "ของขวัญตัวอย่าง",
+    "ar": "هدية نموذجية",
+    "vi": "Quà mẫu",
+    "ko": "샘플 선물"
+  },
+  "Sample rooms · Voices, messages and gifts": {
+    "es": "Salas de muestra · Voces, mensajes y regalos",
+    "th": "ห้องตัวอย่าง · เสียง ข้อความ และของขวัญ",
+    "ar": "غرف نموذجية · أصوات ورسائل وهدايا",
+    "vi": "Phòng mẫu · Giọng nói, tin nhắn và quà",
+    "ko": "샘플 룸 · 음성, 메시지와 선물"
+  },
+  "A little gift for the table · Sample": {
+    "es": "Un pequeño regalo para la mesa · Muestra",
+    "th": "ของขวัญเล็ก ๆ สำหรับโต๊ะกาแฟ · ตัวอย่าง",
+    "ar": "هدية صغيرة للطاولة · نموذج",
+    "vi": "Một món quà nhỏ cho bàn cà phê · Mẫu",
+    "ko": "커피 테이블을 위한 작은 선물 · 샘플"
   }
 }

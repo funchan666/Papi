@@ -6,7 +6,7 @@
     "tree-sitter-swift": "0.7.4"
   },
   "fileCount": 30,
-  "lineCount": 5684,
+  "lineCount": 5683,
   "inMemoryGrammarNormalisations": [
     {
       "file": "Papi/Appearance/DisplayContinuity.swift",
@@ -115,7 +115,7 @@
     },
     {
       "file": "Papi/CoffeeHouse/Tables/CoffeeTables.swift",
-      "lines": 470,
+      "lines": 469,
       "syntaxTreeComplete": true
     },
     {

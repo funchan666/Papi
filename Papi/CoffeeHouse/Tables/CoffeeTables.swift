@@ -61,7 +61,7 @@ struct CoffeeTablesView:View {
                             }.padding(5).background(Color.white.opacity(0.88),in:RoundedRectangle(cornerRadius:19))
                             HStack(spacing:8) {
                                 PapiArtworkFit(asset:"audioTableMark").frame(width:32,height:32)
-                                PapiText("Demo rooms · Sample voices, messages and gifts").font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
+                                PapiText("Sample rooms · Voices, messages and gifts").font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
                             }.foregroundStyle(Color.mutedCoffee).frame(maxWidth:.infinity,alignment:.leading)
                             if let id=store.activeRoomID,let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {
                                 Button {router.go(.room(id))} label:{HStack {Image("voiceOn").resizable().scaledToFit().frame(width:26,height:26);PapiText("Return to \(room.title)");Spacer();PapiText("Open")}.padding(12).background(Color.butter,in:RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)
@@ -92,7 +92,7 @@ struct CoffeeTablesView:View {
                     VStack(alignment:.leading,spacing:5) {
                         PapiText(room.title).font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true)
                         PapiText(room.category).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
-                        PapiText("Demo room").font(CoffeeType.face(.caption2,weight:.medium)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                        PapiText("Sample room").font(CoffeeType.face(.caption2,weight:.medium)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                     }.padding(12).frame(maxWidth:.infinity,alignment:.leading)
                 }.contentShape(Rectangle())
             }.buttonStyle(.plain)
@@ -154,7 +154,7 @@ struct CoffeeTableView:View {
                             HStack {
                                 HStack(spacing:6) {
                                     PapiArtworkFit(asset:"audioTableMark").frame(width:24,height:24)
-                                    PapiText("Demo room").font(CoffeeType.face(.caption,weight:.bold))
+                                    PapiText("Sample room").font(CoffeeType.face(.caption,weight:.bold))
                                 }.foregroundStyle(Color.coffee).padding(.horizontal,10).padding(.vertical,5).background(Color.cream.opacity(0.96),in:Capsule())
                                 Spacer(minLength:0)
                             }
@@ -172,28 +172,6 @@ struct CoffeeTableView:View {
                             .background {ZStack {PapiArtworkFill(asset:room.image);Color.coffee.opacity(0.68)}}
                             .clipShape(RoundedRectangle(cornerRadius:22))
                         demoStage
-                        VStack(alignment:.leading,spacing:10) {
-                            PapiText("A topic to bring to your next coffee table").font(CoffeeType.display(.title3,weight:.bold))
-                            PapiText("Which beans are you brewing, and what changed in the cup?").font(CoffeeType.face(.body)).fixedSize(horizontal:false,vertical:true)
-                        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee.opacity(0.82),in:RoundedRectangle(cornerRadius:18))
-                        VStack(alignment:.leading,spacing:10) {
-                            HStack {
-                                PapiText("Table notes").font(CoffeeType.face(.headline))
-                                Spacer(minLength:8)
-                                PapiText("Only you can see these notes").font(CoffeeType.face(.caption2)).multilineTextAlignment(.trailing).fixedSize(horizontal:false,vertical:true)
-                            }
-                            let notes=store.state.tableNoteHistory?[room.id] ?? []
-                            if notes.isEmpty {PapiText("No notes yet").font(CoffeeType.face(.caption)).foregroundStyle(Color.cream.opacity(0.8))}
-                            ForEach(notes) {note in
-                                HStack(alignment:.top,spacing:9) {
-                                    Avatar(name:store.state.passport.portraitReference,size:32)
-                                    VStack(alignment:.leading,spacing:4) {
-                                        PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.caption,weight:.bold))
-                                        PapiText(verbatim:note.text).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
-                                    }.frame(maxWidth:.infinity,alignment:.leading)
-                                }.padding(10).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee.opacity(0.72),in:RoundedRectangle(cornerRadius:15)).id(note.id)
-                            }
-                        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee.opacity(0.55),in:RoundedRectangle(cornerRadius:18))
                         ForEach(store.state.giftHistory.filter{$0.context==room.id}.prefix(6)) {event in
                             if let gift=CoffeeCollectible.all.first(where:{$0.id==event.giftID}) {
                                 HStack {Image(gift.asset).resizable().scaledToFit().frame(width:42,height:42);PapiText("\(gift.name) × \(event.quantity)");Spacer();PapiText("Not sent").font(CoffeeType.face(.caption))}.padding(10).background(Color.white.opacity(0.12),in:RoundedRectangle(cornerRadius:15))
@@ -205,7 +183,7 @@ struct CoffeeTableView:View {
                 .safeAreaInset(edge:.bottom,spacing:0) {
                     PapiInputBar {
                         VStack(alignment:.leading,spacing:5) {
-                            if !compactControls {PapiText("Private note").font(CoffeeType.face(.caption,weight:.bold)).foregroundStyle(Color.cream)}
+                            if !compactControls {PapiText("Only you can see these notes").font(CoffeeType.face(.caption,weight:.bold)).foregroundStyle(Color.cream)}
                             PapiInput("A thought for the coffee table…",text:draft,axis:.vertical).lineLimit(1...3).foregroundStyle(Color.coffee).tint(Color.coffee).padding(12).background(Color.cream,in:RoundedRectangle(cornerRadius:18))
                         }
                     } actions: {
@@ -245,7 +223,7 @@ struct CoffeeTableView:View {
                     HStack(alignment:.top,spacing:8) {
                         Avatar(name:store.state.passport.portraitReference,size:32)
                         VStack(alignment:.leading,spacing:3) {
-                            PapiText("Private note").font(CoffeeType.face(.caption,weight:.bold))
+                            PapiText("Only you can see these notes").font(CoffeeType.face(.caption,weight:.bold))
                             PapiText(verbatim:note.text).font(CoffeeType.face(.subheadline)).lineLimit(2)
                         }
                     }.foregroundStyle(Color.cream).padding(10).background(Color.coffee.opacity(0.94),in:RoundedRectangle(cornerRadius:16))
@@ -254,7 +232,7 @@ struct CoffeeTableView:View {
                     HStack(spacing:10) {
                         Avatar(name:member.portrait,size:32)
                         VStack(alignment:.leading,spacing:3) {
-                            PapiText("Demo gift").font(CoffeeType.face(.caption2,weight:.bold))
+                            PapiText("Sample gift").font(CoffeeType.face(.caption2,weight:.bold))
                             PapiText(verbatim:member.name).font(CoffeeType.face(.caption,weight:.semibold))
                         }
                         PapiArtworkFit(asset:asset).frame(width:42,height:42)
@@ -303,7 +281,6 @@ struct CoffeeTableView:View {
             HStack {
                 PapiText("Sample participants").font(CoffeeType.face(.headline))
                 Spacer(minLength:8)
-                PapiText("Demo").font(CoffeeType.face(.caption2,weight:.bold)).padding(.horizontal,10).padding(.vertical,5).background(Color.cream.opacity(0.2),in:Capsule())
             }
             ScrollView(.horizontal,showsIndicators:false) {
                 HStack(alignment:.top,spacing:14) {
@@ -335,13 +312,23 @@ struct CoffeeTableView:View {
                             .transition(reduceMotion ? .opacity:.move(edge:.leading).combined(with:.opacity))
                     }
                 }
+                ForEach(store.state.tableNoteHistory?[room.id] ?? []) {note in
+                    HStack(alignment:.top,spacing:8) {
+                        Avatar(name:store.state.passport.portraitReference,size:32)
+                        VStack(alignment:.leading,spacing:3) {
+                            PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.caption,weight:.bold))
+                            PapiText(note.text).font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
+                            PapiText("Only you can see these notes").font(CoffeeType.face(.caption2)).foregroundStyle(Color.cream.opacity(0.8))
+                        }.frame(maxWidth:.infinity,alignment:.leading)
+                    }.padding(9).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee.opacity(0.65),in:RoundedRectangle(cornerRadius:14)).id(note.id)
+                }
             }
         }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee.opacity(0.74),in:RoundedRectangle(cornerRadius:20))
     }
     private func appendDemoEvent() {
         let members=demoMembers
         guard !members.isEmpty else{return}
-        let messages=["That first sip is always the best.","What beans are in your cup today?","I love a slow morning brew.","A little gift for the table · Demo"]
+        let messages=["That first sip is always the best.","What beans are in your cup today?","I love a slow morning brew.","A little gift for the table · Sample"]
         let index=demoIndex
         let event=TableDemoEvent(memberID:members[index % members.count].id,message:messages[index % messages.count],giftAsset:index % messages.count == 3 ? "giftUmbrella":nil)
         demoIndex += 1
