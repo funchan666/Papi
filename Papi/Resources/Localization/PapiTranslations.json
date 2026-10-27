@@ -6109,5 +6109,215 @@
     "ar": "هدية صغيرة للطاولة · نموذج",
     "vi": "Một món quà nhỏ cho bàn cà phê · Mẫu",
     "ko": "커피 테이블을 위한 작은 선물 · 샘플"
+  },
+  "Coffee prompt": {
+    "es": "Pregunta de café",
+    "th": "คำถามกาแฟ",
+    "ar": "سؤال عن القهوة",
+    "vi": "Gợi ý cà phê",
+    "ko": "커피 질문"
+  },
+  "Write a note": {
+    "es": "Escribir una nota",
+    "th": "เขียนบันทึก",
+    "ar": "اكتب ملاحظة",
+    "vi": "Viết ghi chú",
+    "ko": "메모 쓰기"
+  },
+  "A gentle start, one cup at a time.": {
+    "es": "Un comienzo tranquilo, taza a taza.",
+    "th": "เริ่มวันอย่างสบาย ๆ ทีละแก้ว",
+    "ar": "بداية هادئة، كوباً بعد كوب.",
+    "vi": "Bắt đầu dịu dàng với từng tách.",
+    "ko": "한 잔씩 여유롭게 시작해요."
+  },
+  "What makes your first cup feel special?": {
+    "es": "¿Qué hace especial tu primera taza?",
+    "th": "อะไรทำให้กาแฟแก้วแรกของคุณพิเศษ",
+    "ar": "ما الذي يجعل كوبك الأول مميزاً؟",
+    "vi": "Điều gì khiến tách đầu tiên của bạn đặc biệt?",
+    "ko": "첫 잔을 특별하게 만드는 것은 무엇인가요?"
+  },
+  "My morning starts with a warm mug.": {
+    "es": "Mi mañana empieza con una taza caliente.",
+    "th": "เช้าของฉันเริ่มด้วยกาแฟอุ่น ๆ",
+    "ar": "يبدأ صباحي بكوب دافئ.",
+    "vi": "Buổi sáng của mình bắt đầu bằng một tách ấm.",
+    "ko": "따뜻한 한 잔으로 아침을 시작해요."
+  },
+  "A quiet pour sets the pace for my day.": {
+    "es": "Preparar café sin prisa marca mi día.",
+    "th": "การชงอย่างสงบช่วยกำหนดจังหวะวันของฉัน",
+    "ar": "تحضير القهوة بهدوء يحدد إيقاع يومي.",
+    "vi": "Pha cà phê thong thả giúp mình bắt đầu ngày mới.",
+    "ko": "차분한 추출로 하루의 속도를 정해요."
+  },
+  "Small adjustments, better brews.": {
+    "es": "Pequeños cambios, mejores tazas.",
+    "th": "ปรับเล็กน้อยเพื่อกาแฟที่ดีขึ้น",
+    "ar": "تعديلات صغيرة لقهوة أفضل.",
+    "vi": "Điều chỉnh nhỏ cho tách cà phê ngon hơn.",
+    "ko": "작은 조정으로 더 좋은 커피를."
+  },
+  "Which brewing detail would you change next?": {
+    "es": "¿Qué detalle de preparación cambiarías?",
+    "th": "คุณอยากปรับขั้นตอนการชงอะไรต่อ",
+    "ar": "ما تفصيل التحضير الذي ستغيره لاحقاً؟",
+    "vi": "Bạn muốn thay đổi bước pha nào tiếp theo?",
+    "ko": "다음에는 어떤 추출 과정을 바꾸고 싶나요?"
+  },
+  "I tried a coarser grind today.": {
+    "es": "Hoy probé una molienda más gruesa.",
+    "th": "วันนี้ลองบดหยาบขึ้น",
+    "ar": "جربت طحناً أكثر خشونة اليوم.",
+    "vi": "Hôm nay mình thử xay thô hơn.",
+    "ko": "오늘은 더 굵게 갈아봤어요."
+  },
+  "A little more bloom made the cup brighter.": {
+    "es": "Una preinfusión más larga dio más viveza a la taza.",
+    "th": "การบลูมนานขึ้นเล็กน้อยทำให้รสสดใสขึ้น",
+    "ar": "زاد الترطيب الأولي قليلاً من إشراق النكهة.",
+    "vi": "Ủ nở lâu hơn một chút làm vị tươi sáng hơn.",
+    "ko": "뜸을 조금 더 들였더니 맛이 산뜻해졌어요."
+  },
+  "Compare recipes and pouring styles.": {
+    "es": "Compara recetas y formas de verter.",
+    "th": "เปรียบเทียบสูตรและวิธีริน",
+    "ar": "قارن وصفات التحضير وأساليب السكب.",
+    "vi": "So sánh công thức và cách rót.",
+    "ko": "레시피와 물 붓는 방법을 비교해요."
+  },
+  "What is your favourite coffee-to-water ratio?": {
+    "es": "¿Cuál es tu proporción favorita de café y agua?",
+    "th": "คุณชอบสัดส่วนกาแฟต่อน้ำเท่าไร",
+    "ar": "ما نسبة القهوة إلى الماء المفضلة لديك؟",
+    "vi": "Bạn thích tỷ lệ cà phê và nước nào?",
+    "ko": "좋아하는 커피와 물의 비율은 무엇인가요?"
+  },
+  "I keep coming back to a one-to-sixteen ratio.": {
+    "es": "Siempre vuelvo a la proporción uno a dieciséis.",
+    "th": "ฉันกลับมาใช้สัดส่วนหนึ่งต่อสิบหกเสมอ",
+    "ar": "أعود دائماً إلى نسبة واحد إلى ستة عشر.",
+    "vi": "Mình luôn quay lại tỷ lệ một trên mười sáu.",
+    "ko": "저는 늘 1 대 16 비율로 돌아와요."
+  },
+  "A slower pour helped me find more sweetness.": {
+    "es": "Verter más despacio resaltó el dulzor.",
+    "th": "การรินช้าลงช่วยให้ได้รสหวานมากขึ้น",
+    "ar": "أظهر السكب الأبطأ مزيداً من الحلاوة.",
+    "vi": "Rót chậm hơn giúp mình cảm nhận vị ngọt rõ hơn.",
+    "ko": "천천히 부으니 단맛이 더 느껴졌어요."
+  },
+  "Espresso and the flavours of the evening.": {
+    "es": "Espresso y sabores para la tarde.",
+    "th": "เอสเพรสโซและรสชาติยามเย็น",
+    "ar": "الإسبريسو ونكهات المساء.",
+    "vi": "Espresso và hương vị buổi tối.",
+    "ko": "에스프레소와 저녁의 풍미."
+  },
+  "Which flavour would you pair with espresso?": {
+    "es": "¿Qué sabor combinarías con espresso?",
+    "th": "คุณจะจับคู่เอสเพรสโซกับรสชาติอะไร",
+    "ar": "أي نكهة تفضل مع الإسبريسو؟",
+    "vi": "Bạn muốn kết hợp espresso với hương vị nào?",
+    "ko": "에스프레소와 어떤 맛을 곁들이고 싶나요?"
+  },
+  "This roast has a lovely chocolate finish.": {
+    "es": "Este tueste deja un agradable final de chocolate.",
+    "th": "กาแฟคั่วนี้มีรสช็อกโกแลตตอนท้าย",
+    "ar": "لهذا التحميص مذاق شوكولاتة جميل في النهاية.",
+    "vi": "Mẻ rang này có hậu vị sô cô la dễ chịu.",
+    "ko": "이 원두는 초콜릿 같은 여운이 좋아요."
+  },
+  "I like a little orange alongside espresso.": {
+    "es": "Me gusta acompañar el espresso con un toque de naranja.",
+    "th": "ฉันชอบทานส้มเล็กน้อยคู่กับเอสเพรสโซ",
+    "ar": "أحب قليلاً من البرتقال مع الإسبريسو.",
+    "vi": "Mình thích chút cam bên cạnh espresso.",
+    "ko": "에스프레소에 오렌지를 조금 곁들이는 걸 좋아해요."
+  },
+  "Books, pastries and a window-side cup.": {
+    "es": "Libros, bollería y una taza junto a la ventana.",
+    "th": "หนังสือ ขนม และกาแฟริมหน้าต่าง",
+    "ar": "كتب ومعجنات وكوب بجانب النافذة.",
+    "vi": "Sách, bánh và tách cà phê bên cửa sổ.",
+    "ko": "책과 페이스트리, 창가의 커피 한 잔."
+  },
+  "What would you read with your next coffee?": {
+    "es": "¿Qué leerías con tu próximo café?",
+    "th": "คุณอยากอ่านอะไรพร้อมกาแฟแก้วต่อไป",
+    "ar": "ماذا ستقرأ مع كوب قهوتك القادم؟",
+    "vi": "Bạn sẽ đọc gì cùng tách cà phê tiếp theo?",
+    "ko": "다음 커피와 함께 무엇을 읽고 싶나요?"
+  },
+  "A good book makes this cup last longer.": {
+    "es": "Un buen libro hace que disfrute más de la taza.",
+    "th": "หนังสือดี ๆ ทำให้ฉันดื่มกาแฟแก้วนี้ได้นานขึ้น",
+    "ar": "الكتاب الجيد يجعلني أستمتع بالكوب مدة أطول.",
+    "vi": "Một cuốn sách hay khiến mình nhâm nhi tách này lâu hơn.",
+    "ko": "좋은 책이 있으면 이 커피를 더 오래 즐기게 돼요."
+  },
+  "I would bring a croissant to this table.": {
+    "es": "Yo traería un cruasán a esta mesa.",
+    "th": "ฉันจะนำครัวซองต์มาที่โต๊ะนี้",
+    "ar": "سأحضر كرواسون إلى هذه الطاولة.",
+    "vi": "Mình sẽ mang một chiếc croissant đến bàn này.",
+    "ko": "이 테이블에 크루아상을 가져오고 싶어요."
+  },
+  "Unhurried cups and little café discoveries.": {
+    "es": "Tazas sin prisa y pequeños hallazgos cafeteros.",
+    "th": "กาแฟสบาย ๆ และการค้นพบเล็ก ๆ ในคาเฟ่",
+    "ar": "أكواب هادئة واكتشافات صغيرة في المقاهي.",
+    "vi": "Những tách cà phê thong thả và khám phá nhỏ.",
+    "ko": "여유로운 커피와 카페의 작은 발견들."
+  },
+  "Describe your ideal coffee break in one sentence.": {
+    "es": "Describe tu pausa de café ideal en una frase.",
+    "th": "บรรยายช่วงพักดื่มกาแฟในอุดมคติด้วยหนึ่งประโยค",
+    "ar": "صف استراحة القهوة المثالية بجملة واحدة.",
+    "vi": "Hãy tả giờ nghỉ cà phê lý tưởng bằng một câu.",
+    "ko": "이상적인 커피 휴식을 한 문장으로 표현해 주세요."
+  },
+  "I found a quiet corner for my afternoon cup.": {
+    "es": "Encontré un rincón tranquilo para mi café de la tarde.",
+    "th": "ฉันพบมุมเงียบ ๆ สำหรับกาแฟยามบ่าย",
+    "ar": "وجدت ركناً هادئاً لقهوة بعد الظهر.",
+    "vi": "Mình tìm được một góc yên tĩnh cho tách cà phê chiều.",
+    "ko": "오후 커피를 위한 조용한 자리를 찾았어요."
+  },
+  "A little time to pause changes everything.": {
+    "es": "Una pequeña pausa lo cambia todo.",
+    "th": "การได้หยุดพักสักนิดเปลี่ยนอะไรได้มากมาย",
+    "ar": "قليل من الوقت للتوقف يغير كل شيء.",
+    "vi": "Chỉ một chút thời gian nghỉ ngơi cũng tạo nên khác biệt.",
+    "ko": "잠깐의 여유가 모든 것을 바꿔 줘요."
+  },
+  "Add prompt to note": {
+    "es": "Añadir pregunta a la nota",
+    "th": "เพิ่มคำถามลงในบันทึก",
+    "ar": "أضف السؤال إلى الملاحظة",
+    "vi": "Thêm câu hỏi vào ghi chú",
+    "ko": "질문을 메모에 추가"
+  },
+  "Community & privacy": {
+    "es": "Comunidad y privacidad",
+    "th": "ชุมชนและความเป็นส่วนตัว",
+    "ar": "المجتمع والخصوصية",
+    "vi": "Cộng đồng và quyền riêng tư",
+    "ko": "커뮤니티와 개인정보"
+  },
+  "Preferences": {
+    "es": "Preferencias",
+    "th": "การตั้งค่า",
+    "ar": "التفضيلات",
+    "vi": "Tùy chọn",
+    "ko": "환경설정"
+  },
+  "Account": {
+    "es": "Cuenta",
+    "th": "บัญชี",
+    "ar": "الحساب",
+    "vi": "Tài khoản",
+    "ko": "계정"
   }
 }

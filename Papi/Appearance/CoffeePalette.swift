@@ -11,6 +11,7 @@ extension Color {
 struct PapiImage: View {
     var name: String
     var fit = false
+    var fallback:String? = nil
     @State private var poster:UIImage?
     @State private var posterName:String?
     @Environment(\.scenePhase) private var scenePhase
@@ -19,6 +20,9 @@ struct PapiImage: View {
             Group {
                 if let image = CoffeeMedia.image(name) ?? (posterName==name ? poster:nil) {
                     Image(uiImage:image).resizable().aspectRatio(contentMode:fit ? .fit : .fill)
+                        .frame(width:proxy.size.width,height:proxy.size.height).clipped()
+                } else if let fallback {
+                    Image(fallback).resizable().scaledToFill()
                         .frame(width:proxy.size.width,height:proxy.size.height).clipped()
                 } else {
                     Image("emptyCup").resizable().scaledToFit().padding(8)

@@ -231,19 +231,23 @@ struct CoffeePreferencesView:View {
             VStack(spacing:0) {
                 PapiHeader(store.text("Settings"))
                 ScrollView {
-                    VStack(spacing:12) {
-                        row("Blacklist",.blacklist);row(store.text("Privacy Policy"),.legal("privacy"));row(store.text("User Agreement"),.legal("terms"))
-                        row("Community Guidelines",.legal("community"))
-                        PapiRow(title:"Delete account"){confirmation="delete"}.background(Color.white,in:RoundedRectangle(cornerRadius:14))
-                        PapiRow(title:store.text("Log Out")){confirmation="logout"}.background(Color.white,in:RoundedRectangle(cornerRadius:14))
-                        row(store.text("Language"),.language)
-                        PapiPanel {
-                            VStack(alignment:.leading,spacing:10) {
-                                PapiText("Your coffee account").font(CoffeeType.face(.headline))
-                                PapiText("Your coffee book and balance do not sync between devices. Community sharing and messaging are unavailable.").font(CoffeeType.face(.subheadline))
-                                PapiText("Papi 1.0 · Brew, taste, remember").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                            }
+                    VStack(alignment:.leading,spacing:20) {
+                        CoffeeSectionIntro(artwork:"settingsCoffeeArt",title:"Your coffee account",detail:"Papi 1.0 · Brew, taste, remember")
+                        preferenceSection("Community & privacy") {
+                            row("Blacklist",.blacklist)
+                            row("Community Guidelines",.legal("community"))
+                            row("Privacy Policy",.legal("privacy"))
+                            row("User Agreement",.legal("terms"))
                         }
+                        preferenceSection("Preferences") {
+                            row("Language",.language)
+                        }
+                        preferenceSection("Account") {
+                            PapiRow(title:"Log Out"){confirmation="logout"}
+                            PapiRow(title:"Delete account"){confirmation="delete"}
+                        }
+                        PapiText("Your coffee book and balance do not sync between devices. Community sharing and messaging are unavailable.")
+                            .font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                         if !store.storageAvailable {PapiTextButton("Retry"){store.reload()}.buttonStyle(PapiButtonStyle())}
                     }.padding(20).frame(maxWidth:650).frame(maxWidth:.infinity)
                 }
@@ -260,7 +264,13 @@ struct CoffeePreferencesView:View {
             }
         }
     }
-    private func row(_ title:String,_ route:CoffeeDestination)->some View {PapiRow(title:title){router.go(route)}.background(Color.white,in:RoundedRectangle(cornerRadius:14))}
+    private func row(_ title:String,_ route:CoffeeDestination)->some View {PapiRow(title:title){router.go(route)}}
+    private func preferenceSection<Content:View>(_ title:String,@ViewBuilder content:()->Content)->some View {
+        VStack(alignment:.leading,spacing:8) {
+            PapiText(title).font(CoffeeType.face(.caption,weight:.bold)).foregroundStyle(Color.mutedCoffee).padding(.horizontal,4)
+            VStack(spacing:2) {content()}.background(Color.white.opacity(0.94),in:RoundedRectangle(cornerRadius:20))
+        }.frame(maxWidth:.infinity,alignment:.leading)
+    }
 }
 struct LanguageView:View {
     @EnvironmentObject private var store:CoffeeHouse
@@ -282,14 +292,11 @@ struct LanguageView:View {
     }
 }
 struct CoffeePolicyDocument:Decodable,Identifiable {
-    struct Section:Decodable {let heading:String;let paragraphs:[String]}
     let id:String
     let title:String
     let subtitle:String
     let updated:String
     let publishedURL:String
-    let introduction:[String]
-    let sections:[Section]
     var url:URL? {
         guard let url=URL(string:publishedURL),url.scheme=="https",url.host=="docs.google.com",
               url.path.hasPrefix("/document/d/e/"),url.path.hasSuffix("/pub") else{return nil}
@@ -302,7 +309,7 @@ enum CoffeePolicyLibrary {
         guard let url=Bundle.main.url(forResource:"PapiPolicies",withExtension:"json",subdirectory:"Localization"),let data=try? Data(contentsOf:url) else{return nil}
         return try? JSONDecoder().decode(Book.self,from:data)
     }()
-    static var version:String {book?.version ?? "2026-10-26"}
+    static var version:String {book?.version ?? "2026-10-27"}
     static func document(_ id:String)->CoffeePolicyDocument? {book?.documents.first{$0.id==id}}
 }
 struct LegalView:View {
@@ -318,19 +325,12 @@ private struct PublishedCoffeePolicyView:View {
     @Environment(\.openURL) private var openURL
     @State private var loading=true
     @State private var unavailable=false
-    @State private var savedCopy=false
     @State private var reloadID=UUID()
     @Environment(\.papiRegions) private var reservedRegions
     var body:some View {
         PapiScreen {
             VStack(spacing:0) {
-                PapiHeader(document.id=="privacy" ? "Privacy Policy":"User Agreement") {
-                    PapiTextButton(savedCopy ? "Online":"Saved copy") {
-                        if savedCopy {loading=true;unavailable=false;reloadID=UUID()}
-                        savedCopy.toggle()
-                    }
-                        .font(CoffeeType.face(.caption,weight:.bold)).padding(.horizontal,6)
-                }
+                PapiHeader(document.id=="privacy" ? "Privacy Policy":"User Agreement")
                 GeometryReader {proxy in
                     let frame=proxy.frame(in:.named("PapiContainer"))
                     let regions=reservedRegions.map{$0.offsetBy(dx:-frame.minX,dy:-frame.minY)}
@@ -345,8 +345,7 @@ private struct PublishedCoffeePolicyView:View {
         }
     }
     @ViewBuilder private var readingContent:some View {
-        if savedCopy {savedBody}
-        else if let url=document.url {
+        if let url=document.url {
             ZStack {
                 CoffeePolicyWebPage(url:url,loading:$loading,unavailable:$unavailable,openExternal:{openURL($0)}).id(reloadID)
                     .opacity(unavailable ? 0:1).accessibilityHidden(unavailable)
@@ -356,34 +355,14 @@ private struct PublishedCoffeePolicyView:View {
                             Image("brandMark").resizable().scaledToFit().frame(width:54,height:54).accessibilityHidden(true)
                             PapiText(unavailable ? "Online policy unavailable":"Opening the policy…").font(CoffeeType.face(.headline)).multilineTextAlignment(.center)
                             if unavailable {
-                                PapiText("Read the saved copy now, or retry the public page.").font(CoffeeType.face(.subheadline)).multilineTextAlignment(.center)
+                                PapiText("Please check your connection and try again.").font(CoffeeType.face(.subheadline)).multilineTextAlignment(.center)
                                 PapiTextButton("Retry") {loading=true;unavailable=false;reloadID=UUID()}.buttonStyle(PapiButtonStyle())
                             }
-                            PapiTextButton("Read saved copy") {savedCopy=true}.buttonStyle(PapiButtonStyle(light:true))
                         }.padding(24).frame(maxWidth:520).frame(maxWidth:.infinity)
                     }.frame(maxWidth:.infinity,maxHeight:.infinity).background {PapiBackground()}
                 }
             }.frame(maxWidth:.infinity,maxHeight:.infinity)
-        } else {savedBody}
-    }
-
-    private var savedBody:some View {
-        ScrollView {
-            VStack(alignment:.leading,spacing:18) {
-                PapiText("Saved copy · English").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                PapiText(verbatim:document.title).font(CoffeeType.face(.title2,weight:.bold))
-                PapiText(verbatim:document.subtitle).font(CoffeeType.face(.subheadline))
-                PapiText(verbatim:"Updated "+document.updated).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                ForEach(document.introduction,id:\.self) {text in PapiText(verbatim:text)}
-                ForEach(document.sections, id:\.heading) {section in
-                    VStack(alignment:.leading,spacing:10) {
-                        PapiText(verbatim:section.heading).font(CoffeeType.face(.headline)).accessibilityAddTraits(.isHeader)
-                        ForEach(section.paragraphs,id:\.self) {text in PapiText(verbatim:text)}
-                    }
-                }
-            }.font(CoffeeType.face(.body)).lineSpacing(4).textSelection(.enabled)
-                .environment(\.layoutDirection,.leftToRight).padding(24).frame(maxWidth:700).frame(maxWidth:.infinity,alignment:.leading)
-        }
+        } else {PapiEmpty(title:"Policy unavailable",detail:"Please reopen this page to try again.")}
     }
 }
 private struct CoffeePolicyWebPage:UIViewRepresentable {

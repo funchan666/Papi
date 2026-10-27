@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-26",
+  "date": "2026-10-27",
   "method": "Google Docs native readback and unauthenticated HTTPS published-page paragraph comparison.",
   "documents": [
     {
@@ -9,7 +9,7 @@
       "exactParagraphs": true,
       "paragraphs": 48,
       "emailBlank": true,
-      "canonicalSHA256": "5e45491390eec1e2cec6c1910539647464209be1cf47142f7cfb46484840a97b"
+      "canonicalSHA256": "ec86addcf683465b82540603b96acdcadded9f51163d339b83207582c6275251"
     },
     {
       "policy": "privacy",
@@ -18,7 +18,7 @@
       "exactParagraphs": true,
       "paragraphs": 42,
       "emailBlank": true,
-      "canonicalSHA256": "a6d69eae6a277c65afd1e30afe39f55512bedf34dec3af496791efa20068d008"
+      "canonicalSHA256": "16cd2cff07e018464113d5f91e83d136b03e0902882817c8068b5580883ad51c"
     }
   ],
   "appExecuted": false

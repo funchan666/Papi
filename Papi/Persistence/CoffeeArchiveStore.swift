@@ -18,6 +18,7 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var accountAction:AccountTransition?
     @Published private(set) var checkoutActive = false
     @Published private(set) var loginInProgress=false
+    @Published private(set) var cloudConnectionInProgress=false
     private var savedSnapshotExpected=false
     init() {
         do {let saved=try CoffeeVault.read();state=saved ?? CoffeeArchive();savedSnapshotExpected=saved != nil}
@@ -80,6 +81,31 @@ struct CoffeeReceipt: Identifiable {
         guard state.signedIn, let grant=state.welcomeGrant, !grant.acknowledged, notice == nil else{return}
         notice = .init(title:"Your first brew is on Papi",message:"\(grant.coins) welcome coins are already in your wallet.",kind:.welcome)
     }
+    /// Called only after the online policy is published and explicitly accepted.
+    /// The existing device ID, wallet, drafts and transaction records are kept.
+    func connectCloudAccount() async throws {
+        let requiredPolicy = "2026-10-27-online-1"
+        guard state.signedIn, storageAvailable, accountAction == nil, !loginInProgress, !cloudConnectionInProgress,
+              CoffeePolicyLibrary.version == requiredPolicy, state.acceptedPolicyVersion == requiredPolicy else {
+            throw CoffeeCloud.ConnectionError.actionUnavailable
+        }
+        cloudConnectionInProgress = true
+        defer { cloudConnectionInProgress = false }
+        let owner = state.passport.id
+        if state.cloudAccountID == nil, state.cloudBootstrapPending != true {
+            try await CoffeeCloud.shared.requireFreshBootstrap()
+            guard state.passport.id == owner, state.signedIn,
+                  commit({ $0.cloudBootstrapPending = true }) else {
+                throw CoffeeCloud.ConnectionError.actionUnavailable
+            }
+        }
+        let account = try await CoffeeCloud.shared.openGuest(expectedID: state.cloudAccountID,
+            passport: state.passport, hasPendingBootstrap: state.cloudBootstrapPending == true)
+        guard state.passport.id == owner, state.signedIn,
+              commit({ $0.cloudAccountID = account; $0.cloudBootstrapPending = false }) else {
+            throw CoffeeCloud.ConnectionError.actionUnavailable
+        }
+    }
     func acknowledgeWelcome() {
         if commit({$0.welcomeGrant?.acknowledged=true}) {notice=nil}
     }
@@ -92,7 +118,11 @@ struct CoffeeReceipt: Identifiable {
         notice = .init(title:"A little more for your coffee reserve",message:"This needs \(cost) coins. Your balance is \(state.coinBalance). Your draft and selections are kept; recharge to continue.",kind:.insufficient)
     }
     func performAccountAction(_ action:AccountTransition) async {
-        guard accountAction==nil,!loginInProgress,storageAvailable else{return}
+        guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,storageAvailable else{return}
+        if action == .delete && (state.cloudAccountID != nil || state.cloudBootstrapPending == true) {
+            inform("Account deletion needs attention", "Your online account has not been removed. Please try again when account deletion is available.")
+            return
+        }
         guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil else {
             inform("Purchase awaiting review","Resolve the purchase before changing accounts.");return
         }

@@ -72,6 +72,7 @@ struct CoffeeTable: Identifiable, Hashable {
     let category: String
     let image: String
     let hostMemberID: String
+    var coverReference:String {CoffeeMember.find(hostMemberID)?.portrait ?? image}
 }
 struct TableNoteEntry:Identifiable,Codable {
     var id=UUID().uuidString
@@ -128,6 +129,10 @@ struct MomentDraft: Codable {
 struct CoffeeArchive: Codable {
     var version = 1
     var passport = CoffeePassport()
+    // Optional fields keep pre-cloud snapshots readable and prevent a lost
+    // session from silently creating a different remote guest.
+    var cloudAccountID: UUID? = nil
+    var cloudBootstrapPending: Bool? = nil
     var signedIn = false
     var sawOnboarding = false
     var acceptedPolicyVersion: String? = nil
@@ -177,6 +182,8 @@ struct CoffeeArchive: Codable {
     enum CodingKeys:String,CodingKey {
         case version = "version"
         case passport = "profile"
+        case cloudAccountID = "cloudAccountID"
+        case cloudBootstrapPending = "cloudBootstrapPending"
         case signedIn = "signedIn"
         case sawOnboarding = "sawOnboarding"
         case acceptedPolicyVersion = "acceptedPolicyVersion"

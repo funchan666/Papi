@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A31000000000000000000001 /* CoffeeCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31000000000000000000002 /* CoffeeCloud.swift */; };
+		A31000000000000000000003 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = A31000000000000000000004 /* Supabase */; };
 		099EEFA527F597BA007303BD /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 27A0CDF6DC8AD2039DB2FE42 /* Fonts */; };
 		0B435EA45CDD20FC21B39031 /* CoffeeTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D322BE2569BF299BC539 /* CoffeeTypography.swift */; };
 		16F44EFDB03632CEABE29F9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D3B1EEE617173D2D3D68807 /* Assets.xcassets */; };
@@ -46,6 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A31000000000000000000002 /* CoffeeCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeCloud.swift; sourceTree = "<group>"; };
 		0CCC58D9339AE955DD821BFC /* CoffeeMediaFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeMediaFiles.swift; sourceTree = "<group>"; };
 		0E50E0C719AB1C74BBB4661B /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		13FA9F6AFFFCAC005A949200 /* CoffeeLetters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeLetters.swift; sourceTree = "<group>"; };
@@ -90,6 +93,15 @@
 		FFA18C600E2058DE7B4E223F /* CoffeeArchiveStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeArchiveStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		A31000000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (A31000000000000000000003 /* Supabase in Frameworks */,);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
 		0ACBCCD69E6506D13D239920 /* App */ = {
 			isa = PBXGroup;
@@ -102,6 +114,7 @@
 		1D2F6E9265C79ACC297914F9 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				A31000000000000000000002 /* CoffeeCloud.swift */,
 				9E1F97BC92B7B11E080723B6 /* AppleCoinCounter.swift */,
 				F37AC883A000A1270BD4EE71 /* BrewNotebook.swift */,
 				FFA18C600E2058DE7B4E223F /* CoffeeArchiveStore.swift */,
@@ -304,6 +317,7 @@
 			buildConfigurationList = F8642A4E6B12D9F1D8D2647C /* Build configuration list for PBXNativeTarget "Papi" */;
 			buildPhases = (
 				BCD74A11B9CCBB18995F9011 /* Sources */,
+				A31000000000000000000005 /* Frameworks */,
 				EE55E4CA5E68DF1DA989D3F5 /* Resources */,
 			);
 			buildRules = (
@@ -312,6 +326,7 @@
 			);
 			name = Papi;
 			packageProductDependencies = (
+				A31000000000000000000004 /* Supabase */,
 			);
 			productName = Papi;
 			productReference = 42A248A52B0FC1E4CA949A43 /* Papi.app */;
@@ -343,6 +358,7 @@
 			minimizedProjectReferenceProxies = 1;
 			projectDirPath = "";
 			projectRoot = "";
+			packageReferences = (A31000000000000000000006 /* supabase-swift */,);
 			targets = (
 				E1D3306E9DEA98AA9F4E128C /* Papi */,
 			);
@@ -370,6 +386,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A31000000000000000000001 /* CoffeeCloud.swift in Sources */,
 				511032DC01E8F8C6CADF47CF /* AppleCoinCounter.swift in Sources */,
 				C115BF7429837B4DEEA21E58 /* AudioFocus.swift in Sources */,
 				9F0F2A7FDD40515B874A89EB /* BeanVarieties.swift in Sources */,
@@ -404,6 +421,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A31000000000000000000006 /* supabase-swift */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift.git";
+			requirement = {kind = exactVersion; version = 2.55.4;};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A31000000000000000000004 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A31000000000000000000006 /* supabase-swift */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin PBXVariantGroup section */
 		564FB2D01F692E89A598CC1E /* InfoPlist.strings */ = {
