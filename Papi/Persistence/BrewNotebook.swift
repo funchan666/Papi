@@ -5,7 +5,9 @@ import Foundation
     func updateBrewBook(_ change:(inout BrewNotebook)->Void) {
         _ = commit {archive in var book=archive.brewNotebook ?? BrewNotebook();change(&book);archive.brewNotebook=book}
     }
-    func ownsRecipe(_ recipe:BrewRecipe)->Bool {recipe.unlockCoins==0 || brewBook.unlockedRecipes.contains(recipe.id)}
+    func ownsRecipe(_ recipe:BrewRecipe)->Bool {
+        recipe.unlockCoins==0 || (usesCloudWallet ? (cloudWallet?.recipes.contains(recipe.id) ?? false):brewBook.unlockedRecipes.contains(recipe.id))
+    }
     @discardableResult func unlockRecipe(_ recipe:BrewRecipe)->Bool {
         guard !ownsRecipe(recipe) else{return true}
         guard state.coinBalance>=recipe.unlockCoins else{insufficientCoins(cost:recipe.unlockCoins);return false}

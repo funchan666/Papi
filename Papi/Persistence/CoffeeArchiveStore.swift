@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import Supabase
 
 struct CoffeeReceipt: Identifiable {
     let id = UUID()
@@ -19,6 +20,9 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var checkoutActive = false
     @Published private(set) var loginInProgress=false
     @Published private(set) var cloudConnectionInProgress=false
+    @Published private(set) var cloudWallet: CoffeeCloud.WalletSnapshot?
+    @Published private(set) var cloudWalletBusy=false
+    @Published private(set) var cloudWalletUnavailable=false
     private var savedSnapshotExpected=false
     init() {
         do {let saved=try CoffeeVault.read();state=saved ?? CoffeeArchive();savedSnapshotExpected=saved != nil}
@@ -105,12 +109,105 @@ struct CoffeeReceipt: Identifiable {
               commit({ $0.cloudAccountID = account; $0.cloudBootstrapPending = false }) else {
             throw CoffeeCloud.ConnectionError.actionUnavailable
         }
+        await refreshCloudWallet()
+    }
+    var usesCloudWallet: Bool { state.cloudAccountID != nil }
+    var availableBalance: Int? { usesCloudWallet ? cloudWallet?.balance : state.coinBalance }
+    var collectedItems: [String:Int] {
+        guard usesCloudWallet else { return state.collectiblesOwned }
+        return Dictionary(uniqueKeysWithValues: (cloudWallet?.collectibles ?? []).map { ($0.collectible_id, $0.quantity) })
+    }
+    var checkinCount: Int { usesCloudWallet ? (cloudWallet?.checkins.count ?? 0) : state.checkinDays.count }
+    var currentExperience: Int? { usesCloudWallet ? cloudWallet?.experience : state.experience }
+
+    func refreshCloudWallet() async {
+        guard let account=state.cloudAccountID, state.signedIn, !cloudWalletBusy else { return }
+        cloudWalletBusy=true
+        defer { cloudWalletBusy=false }
+        do {
+            let snapshot=try await CoffeeCloud.shared.walletSnapshot(for:account)
+            guard state.signedIn, state.cloudAccountID==account else { return }
+            cloudWallet=snapshot;cloudWalletUnavailable=false
+        } catch {
+            guard state.cloudAccountID==account else { return }
+            cloudWallet=nil;cloudWalletUnavailable=true
+        }
+    }
+
+    func cloudCheckIn() async {
+        guard let account=state.cloudAccountID, state.signedIn, cloudWallet != nil, !cloudWalletBusy else { return }
+        cloudWalletBusy=true
+        defer { cloudWalletBusy=false }
+        do {
+            let result=try await CoffeeCloud.shared.checkIn(account:account)
+            let snapshot=try await CoffeeCloud.shared.walletSnapshot(for:account)
+            guard state.signedIn, state.cloudAccountID==account else { return }
+            cloudWallet=snapshot;cloudWalletUnavailable=false
+            inform(result.awarded ? "Check-in complete":"Already checked in",
+                   result.awarded ? "\(result.reward) coins have been added to your wallet.":"Come back after 00:00 UTC for your next reward.")
+        } catch {
+            guard state.cloudAccountID==account else { return }
+            cloudWallet=nil;cloudWalletUnavailable=true
+            inform("Check-in needs attention", "The result could not be confirmed. Refresh your wallet before trying again.")
+        }
+    }
+
+    func cloudCollect(_ gift:CoffeeCollectible, quantity:Int) async {
+        guard let account=state.cloudAccountID, state.signedIn, cloudWallet != nil, !cloudWalletBusy,
+              (1...99).contains(quantity) else { return }
+        let pending:PendingCloudCollectible
+        if let saved=state.pendingCloudCollectible {
+            guard saved.accountID==account, saved.item==gift.id, saved.quantity==quantity else {
+                inform("Purchase needs attention", "Retry your previous backpack selection before starting another one.");return
+            }
+            pending=saved
+        } else {
+            pending = .init(id:UUID(),accountID:account,item:gift.id,quantity:quantity)
+            guard commit({$0.pendingCloudCollectible=pending}) else { return }
+        }
+        cloudWalletBusy=true
+        defer { cloudWalletBusy=false }
+        do {
+            _ = try await CoffeeCloud.shared.collect(item:pending.item,quantity:pending.quantity,orderID:pending.id,account:account)
+            let snapshot=try await CoffeeCloud.shared.walletSnapshot(for:account)
+            guard state.signedIn, state.cloudAccountID==account,
+                  state.pendingCloudCollectible?.id==pending.id else { return }
+            guard commit({$0.pendingCloudCollectible=nil}) else { return }
+            cloudWallet=snapshot;cloudWalletUnavailable=false
+            inform("Added to your backpack", "\(gift.name) × \(quantity) is saved to your account.")
+        } catch {
+            guard state.cloudAccountID==account else { return }
+            if let databaseError=error as? PostgrestError, databaseError.code=="P0001", databaseError.message=="Insufficient coins" {
+                _ = commit({$0.pendingCloudCollectible=nil})
+                inform("Not enough coins", "Your backpack selection was not purchased.")
+                return
+            }
+            cloudWallet=nil;cloudWalletUnavailable=true
+            inform("Purchase needs attention", "The result could not be confirmed. Refresh and retry the same selection; it will not be charged twice.")
+        }
+    }
+
+    func cloudUnlockRecipe(_ recipe:BrewRecipe) async {
+        guard let account=state.cloudAccountID, state.signedIn, cloudWallet != nil, !cloudWalletBusy else { return }
+        cloudWalletBusy=true
+        defer { cloudWalletBusy=false }
+        do {
+            _ = try await CoffeeCloud.shared.unlockRecipe(recipe.id,account:account)
+            let snapshot=try await CoffeeCloud.shared.walletSnapshot(for:account)
+            guard state.signedIn, state.cloudAccountID==account else { return }
+            cloudWallet=snapshot;cloudWalletUnavailable=false
+            notice = .init(title:"A new recipe for your shelf",message:"Your recipe is ready. Every future pour with it is free.",kind:.purchase)
+        } catch {
+            guard state.cloudAccountID==account else { return }
+            cloudWallet=nil;cloudWalletUnavailable=true
+            inform("Recipe needs attention", "The result could not be confirmed. Refresh your wallet and try again.")
+        }
     }
     func acknowledgeWelcome() {
         if commit({$0.welcomeGrant?.acknowledged=true}) {notice=nil}
     }
     func beginCheckout() -> Bool {
-        guard !checkoutActive,accountAction==nil,!loginInProgress,storageAvailable,state.signedIn else{return false}
+        guard !checkoutActive,accountAction==nil,!loginInProgress,!cloudWalletBusy,storageAvailable,state.signedIn else{return false}
         checkoutActive=true;return true
     }
     func endCheckout() {checkoutActive=false}
@@ -118,12 +215,12 @@ struct CoffeeReceipt: Identifiable {
         notice = .init(title:"A little more for your coffee reserve",message:"This needs \(cost) coins. Your balance is \(state.coinBalance). Your draft and selections are kept; recharge to continue.",kind:.insufficient)
     }
     func performAccountAction(_ action:AccountTransition) async {
-        guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,storageAvailable else{return}
+        guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,storageAvailable else{return}
         if action == .delete && (state.cloudAccountID != nil || state.cloudBootstrapPending == true) {
             inform("Account deletion needs attention", "Your online account has not been removed. Please try again when account deletion is available.")
             return
         }
-        guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil else {
+        guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudCollectible==nil else {
             inform("Purchase awaiting review","Resolve the purchase before changing accounts.");return
         }
         accountAction=action
@@ -142,7 +239,7 @@ struct CoffeeReceipt: Identifiable {
         do {
             try await Task.detached(priority:.userInitiated) {try CoffeeVault.write(snapshot)}.value
             savedSnapshotExpected=true
-            state=next;activeRoomID=nil;roomMicRequested=false;selectedTab=0
+            state=next;cloudWallet=nil;cloudWalletUnavailable=false;activeRoomID=nil;roomMicRequested=false;selectedTab=0
             if action == .delete {
                 let owners=next.pendingMediaDeletion
                 try await Task.detached(priority:.userInitiated) {
@@ -186,6 +283,7 @@ struct CoffeeReceipt: Identifiable {
         return commit { $0.tastingReplies.append(.init(momentID:momentID,text:clean,authorID:$0.passport.id.uuidString)) }
     }
     func publish() -> Bool {
+        guard !usesCloudWallet else {inform("Post unavailable", "Your draft is saved. Online submission is being prepared.");return false}
         let draft = state.momentDraft
         let cost = CoffeeEconomy.postCost(isVideo:draft.isVideo)
         guard let media = draft.media, CoffeeMedia.url(media) != nil else { inform("Add a photo or video", "Choose a coffee moment before saving your post."); return false }
@@ -204,8 +302,12 @@ struct CoffeeReceipt: Identifiable {
         let formatter = DateFormatter(); formatter.locale = Locale(identifier:"en_US_POSIX"); formatter.timeZone = TimeZone(secondsFromGMT:0); formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from:Date())
     }
-    var checkedInToday: Bool { state.checkinDays.contains(dayKey) }
-    var nextCheckinReward: Int { (state.checkinDays.count % 7 + 1) * 10 }
+    var checkedInToday: Bool {
+        guard usesCloudWallet else { return state.checkinDays.contains(dayKey) }
+        guard let snapshot=cloudWallet else { return false }
+        return dayKey==snapshot.server_day && snapshot.checkins.contains { $0.checkin_day==snapshot.server_day }
+    }
+    var nextCheckinReward: Int { (checkinCount % 7 + 1) * 10 }
     func checkIn() {
         let day = dayKey; let reward = nextCheckinReward
         guard !state.checkinDays.contains(day) else { inform("Already checked in", "Come back after 00:00 UTC for your next reward."); return }

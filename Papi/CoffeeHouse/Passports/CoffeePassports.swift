@@ -33,7 +33,7 @@ struct MyCoffeePassportView:View {
                                         PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.title3,weight:.bold)).fixedSize(horizontal:false,vertical:true)
                                         PapiText("Your coffee passport").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                                     }.frame(maxWidth:.infinity,alignment:.leading)
-                                    if let id=store.state.displayedGift,let gift=CoffeeCollectible.all.first(where:{$0.id==id}) {Image(gift.asset).resizable().scaledToFit().frame(width:44,height:44).papiAccessibilityLabel(gift.name)}
+                                    if let id=store.state.displayedGift,(store.collectedItems[id] ?? 0)>0,let gift=CoffeeCollectible.all.first(where:{$0.id==id}) {Image(gift.asset).resizable().scaledToFit().frame(width:44,height:44).papiAccessibilityLabel(gift.name)}
                                 }
                                 PapiText(verbatim:store.state.passport.bio).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
                                 PapiText("\(store.brewBook.cups.count) cups in your book").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)

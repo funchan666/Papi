@@ -106,6 +106,12 @@ struct CoinPurchaseTerms: Codable {
     // Each new checkout token can settle only one Apple transaction.
     var transactionID: String? = nil
 }
+struct PendingCloudCollectible: Codable {
+    let id: UUID
+    let accountID: UUID
+    let item: String
+    let quantity: Int
+}
 enum CoffeeEconomy {
     static let welcomeCoins = 800
     static func postCost(isVideo: Bool) -> Int { isVideo ? 80 : 40 }
@@ -133,6 +139,7 @@ struct CoffeeArchive: Codable {
     // session from silently creating a different remote guest.
     var cloudAccountID: UUID? = nil
     var cloudBootstrapPending: Bool? = nil
+    var pendingCloudCollectible: PendingCloudCollectible? = nil
     var signedIn = false
     var sawOnboarding = false
     var acceptedPolicyVersion: String? = nil
@@ -184,6 +191,7 @@ struct CoffeeArchive: Codable {
         case passport = "profile"
         case cloudAccountID = "cloudAccountID"
         case cloudBootstrapPending = "cloudBootstrapPending"
+        case pendingCloudCollectible = "pendingCloudCollectible"
         case signedIn = "signedIn"
         case sawOnboarding = "sawOnboarding"
         case acceptedPolicyVersion = "acceptedPolicyVersion"

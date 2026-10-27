@@ -56,6 +56,7 @@ struct CoinPack: Identifiable {
     }
     func buy(_ pack: CoinPack, canPresent: @MainActor ()->Bool, purchase: @MainActor (Product, Set<Product.PurchaseOption>) async throws -> Product.PurchaseResult) async {
         guard !busy,let store,store.state.signedIn,canPresent() else{return}
+        guard !store.usesCloudWallet else {fail("Online purchases are not available yet. No purchase was started.");return}
         guard !unresolved, store.state.purchaseIntents.isEmpty, store.state.activePurchaseToken==nil else {
             store.inform("Purchase pending", "An existing purchase is awaiting approval or recovery. No second purchase has been started.");return
         }
@@ -133,6 +134,13 @@ struct CoinPack: Identifiable {
     }
     private func receive(_ result: VerificationResult<Transaction>) async {
         guard let store,store.storageAvailable else{return}
+        if store.usesCloudWallet {
+            switch result {
+            case .verified(let transaction), .unverified(let transaction,_):
+                hold(transaction,"This purchase needs online recovery. It has not been finished or credited again.")
+            }
+            return
+        }
         switch result {
         case .unverified(let transaction,_):
             hold(transaction,"An unverified transaction is waiting for review. It has not been credited or finished.")

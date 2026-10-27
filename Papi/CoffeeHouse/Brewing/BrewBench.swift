@@ -87,7 +87,7 @@ struct BrewBenchView:View {
                                     .padding(18).background(Color.butter,in:RoundedRectangle(cornerRadius:18))
                             }.buttonStyle(.plain)
                         }
-                        HStack {PapiText("The recipe shelf").font(CoffeeType.face(.title2,weight:.bold));Spacer();Button{router.openWallet()}label:{CoinLabel(value:store.state.coinBalance)}.buttonStyle(.plain)}
+                        HStack {PapiText("The recipe shelf").font(CoffeeType.face(.title2,weight:.bold));Spacer();Button{router.openWallet()}label:{CoffeeCurrentBalance()}.buttonStyle(.plain)}
                         PapiText("Two recipes are yours from the start. Unlock another once, then brew it as often as you like.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
                         ForEach(BrewRecipe.collection) {recipe in
                             Button {router.go(.brewRecipe(recipe.id))} label:{
@@ -161,7 +161,7 @@ struct BrewRecipeView:View {
                                     if store.brewBook.activePour != nil {PapiText("Another pour is running. Return to it from the brew bench.").font(CoffeeType.face(.caption))}
                                 } else {
                                     PapiText("Unlock once for \(recipe.unlockCoins) coins. Brewing, saving cups and tasting comparisons stay free.").font(CoffeeType.face(.subheadline))
-                                    PapiTextButton("Add recipe · \(recipe.unlockCoins) coins"){confirmUnlock=true}.buttonStyle(PapiButtonStyle(wide:true))
+                                    PapiTextButton("Add recipe · \(recipe.unlockCoins) coins"){confirmUnlock=true}.buttonStyle(PapiButtonStyle(wide:true)).disabled(store.usesCloudWallet && (store.cloudWallet==nil || store.cloudWalletBusy))
                                 }
                                 pourPlan(recipe,dose:store.brewBook.draft.doseGrams)
                             }
@@ -169,7 +169,7 @@ struct BrewRecipeView:View {
                         }.padding(20).frame(maxWidth:720).frame(maxWidth:.infinity)
                     }.scrollDismissesKeyboard(.interactively)
                 }.overlay {
-                    if confirmUnlock {PapiDialog(title:"Make room on your recipe shelf?",message:"Spend \(recipe.unlockCoins) coins to unlock this recipe for this account. Future brews using it cost no coins.",confirm:"Unlock recipe",cancel:"Keep browsing",action:{confirmUnlock=false;if store.unlockRecipe(recipe){store.notice = .init(title:"A new recipe for your shelf",message:"Your recipe is ready. Every future pour with it is free.",kind:.purchase)}},dismiss:{confirmUnlock=false})}
+                    if confirmUnlock {PapiDialog(title:"Make room on your recipe shelf?",message:"Spend \(recipe.unlockCoins) coins to unlock this recipe for this account. Future brews using it cost no coins.",confirm:"Unlock recipe",cancel:"Keep browsing",action:{confirmUnlock=false;if store.usesCloudWallet {Task {await store.cloudUnlockRecipe(recipe)}} else if store.unlockRecipe(recipe){store.notice = .init(title:"A new recipe for your shelf",message:"Your recipe is ready. Every future pour with it is free.",kind:.purchase)}},dismiss:{confirmUnlock=false})}
                     if confirmSave {PapiDialog(title:"Keep this cup?",message:"Save the elapsed brew time and recipe to your book. Add tasting notes after the cup has cooled. Saving costs no coins.",confirm:"Save this cup",cancel:"Keep brewing",action:{confirmSave=false;if store.saveBrew(){router.go(.brewArchive)}},dismiss:{confirmSave=false})}
                     if confirmDiscard {PapiDialog(title:"Clear this pour?",message:"This removes the running timer. Your bean details and unlocked recipes stay in your book.",confirm:"Clear pour",cancel:"Keep brewing",action:{confirmDiscard=false;store.discardPour()},dismiss:{confirmDiscard=false})}
                 }

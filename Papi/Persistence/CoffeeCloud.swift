@@ -49,6 +49,40 @@ actor CoffeeCloud {
     struct Wallet: Decodable {
         let balance: Int
     }
+    struct CheckIn: Decodable {
+        let day: String
+        let total_days: Int
+        let reward: Int
+        let balance: Int
+        let awarded: Bool
+    }
+    struct CheckInDay: Decodable {
+        let checkin_day: String
+        let reward: Int
+    }
+    struct Collectible: Decodable {
+        let collectible_id: String
+        let quantity: Int
+    }
+    struct Progress: Decodable { let experience: Int }
+    struct WalletSnapshot: Decodable {
+        let balance: Int
+        let experience: Int
+        let server_day: String
+        let checkins: [CheckInDay]
+        let collectibles: [Collectible]
+        let recipes: [String]
+    }
+    private struct PurchaseOrder: Codable {
+        let id: UUID
+        let owner_id: UUID
+        let product_id: String
+    }
+    private struct PurchaseVerification: Encodable {
+        let order_id: UUID
+        let signed_transaction: String
+    }
+    private struct PurchaseSettlement: Decodable { let balance: Int }
     struct Block: Codable {
         let blocker_id: UUID
         let blocked_id: UUID
@@ -77,6 +111,7 @@ actor CoffeeCloud {
         let recipient_id: UUID
     }
     private struct Unlock: Encodable { let recipe: String }
+    private struct CollectionOrder: Encodable { let order_id: UUID; let item: String; let item_quantity: Int }
     private struct Submission: Encodable {
         let moment_id: UUID
         let caption: String
@@ -253,6 +288,85 @@ actor CoffeeCloud {
         let user = try await identity(account)
         return try await client.from("coffee_wallets").select("balance").eq("owner_id", value: user.uuidString.lowercased())
             .single().execute().value
+    }
+
+    func walletSnapshot(for account: UUID) async throws -> WalletSnapshot {
+        _ = try await identity(account)
+        let snapshot: WalletSnapshot = try await client.rpc("coffee_wallet_snapshot").execute().value
+        _ = try await identity(account)
+        return snapshot
+    }
+
+    func checkInDays(for account: UUID) async throws -> [CheckInDay] {
+        let user = try await identity(account)
+        return try await client.from("coffee_checkins").select("checkin_day,reward")
+            .eq("owner_id", value: user.uuidString.lowercased())
+            .order("checkin_day", ascending: false).execute().value
+    }
+
+    func checkIn(account: UUID) async throws -> CheckIn {
+        _ = try await identity(account)
+        let result: CheckIn = try await client.rpc("check_in_coffee").execute().value
+        _ = try await identity(account)
+        return result
+    }
+
+    func collectibles(for account: UUID) async throws -> [Collectible] {
+        let user = try await identity(account)
+        return try await client.from("coffee_collectibles").select("collectible_id,quantity")
+            .eq("owner_id", value: user.uuidString.lowercased()).execute().value
+    }
+
+    func progress(for account: UUID) async throws -> Progress {
+        let user = try await identity(account)
+        return try await client.from("coffee_progress").select("experience")
+            .eq("owner_id", value: user.uuidString.lowercased()).single().execute().value
+    }
+
+    /// Save and reuse the order ID when retrying an interrupted purchase.
+    func collect(item: String, quantity: Int, orderID: UUID, account: UUID) async throws -> Int {
+        _ = try await identity(account)
+        let balance: Int = try await client.rpc("collect_coffee_item",
+            params: CollectionOrder(order_id: orderID, item: item, item_quantity: quantity)).execute().value
+        _ = try await identity(account)
+        return balance
+    }
+
+    /// The order ID must be saved locally before this call and reused for retries.
+    /// It is also supplied to StoreKit as appAccountToken for this purchase.
+    func createPurchaseOrder(id: UUID, productID: String, account: UUID) async throws {
+        let user = try await identity(account)
+        let expected = PurchaseOrder(id: id, owner_id: user, product_id: productID)
+        func matchingOrder() async throws -> Bool {
+            let orders: [PurchaseOrder] = try await client.from("coffee_purchase_orders")
+                .select("id,owner_id,product_id").eq("id", value: id.uuidString.lowercased()).execute().value
+            guard let order = orders.first else { return false }
+            guard orders.count == 1, order.owner_id == user, order.product_id == productID else {
+                throw ConnectionError.actionUnavailable
+            }
+            return true
+        }
+        if try await matchingOrder() {
+            _ = try await identity(account)
+            return
+        }
+        do {
+            try await client.from("coffee_purchase_orders").insert(expected).execute()
+        } catch {
+            // An interrupted response may follow a successful insert.
+            guard (try? await matchingOrder()) == true else { throw error }
+        }
+        _ = try await identity(account)
+    }
+
+    /// Finish the StoreKit transaction only after this returns and the caller
+    /// has safely persisted the resulting server balance and order state.
+    func verifyPurchase(orderID: UUID, signedTransaction: String, account: UUID) async throws -> Int {
+        _ = try await identity(account)
+        let result: PurchaseSettlement = try await client.functions.invoke("verify-apple-purchase",
+            options: FunctionInvokeOptions(body: PurchaseVerification(order_id: orderID, signed_transaction: signedTransaction)))
+        _ = try await identity(account)
+        return result.balance
     }
 
     func unlockRecipe(_ recipe: String, account: UUID) async throws -> Int {

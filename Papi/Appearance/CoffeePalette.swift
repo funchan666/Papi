@@ -172,6 +172,13 @@ struct CoinLabel: View {
     var value: Int
     var body: some View { HStack(spacing:5) { Image("coin").resizable().scaledToFit().frame(width:23,height:23);Text(value,format:.number).fontWeight(.semibold).monospacedDigit() } }
 }
+struct CoffeeCurrentBalance: View {
+    @EnvironmentObject private var store: CoffeeHouse
+    var body: some View {
+        if let balance=store.availableBalance {CoinLabel(value:balance)}
+        else {PapiText(store.cloudWalletBusy ? "Loading wallet…":"Wallet unavailable")}
+    }
+}
 struct PapiPanel<Content:View>:View {
     @ViewBuilder var content:()->Content
     var body:some View { content().padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.88),in:RoundedRectangle(cornerRadius:20)) }

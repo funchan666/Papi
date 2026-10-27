@@ -1,3 +1,5 @@
+// Draft only: do not deploy or connect checkout until Apple transaction status,
+// refund notifications, runtime compatibility and sandbox delivery are verified.
 import { Buffer } from "node:buffer";
 import { X509Certificate } from "node:crypto";
 import { Environment, SignedDataVerifier, Type } from "npm:@apple/app-store-server-library@3.1.0";

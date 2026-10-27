@@ -78,7 +78,7 @@ struct CoffeeJournalView:View {
                             walletLayout {
                                 PapiText("Coffee reserve").font(CoffeeType.face(.subheadline,weight:.semibold)).fixedSize(horizontal:false,vertical:true).frame(maxWidth:.infinity,alignment:.leading)
                                 HStack(spacing:8) {
-                                    CoinLabel(value:store.state.coinBalance)
+                                    CoffeeCurrentBalance()
                                     PapiText("Recharge").font(CoffeeType.face(.caption,weight:.bold)).fixedSize(horizontal:false,vertical:true)
                                 }
                             }.padding(.horizontal,16).padding(.vertical,13).frame(minHeight:52).background(Color.butter,in:RoundedRectangle(cornerRadius:16))
