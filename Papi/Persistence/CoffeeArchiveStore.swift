@@ -38,6 +38,22 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var cloudMessages: [CoffeeCloud.Message] = []
     @Published private(set) var cloudMessagesUnavailable=false
     @Published private(set) var cloudSocialBusy=false
+    @Published private(set) var cloudFeed:[CoffeeCloud.FeedMoment]?
+    @Published private(set) var cloudFeedBusy=false
+    @Published private(set) var cloudFeedHasMore=false
+    @Published private(set) var cloudComments:[UUID:[CoffeeCloud.Comment]] = [:]
+    @Published private(set) var cloudCommentsBusy=false
+    @Published private(set) var cloudImageSummaries:[UUID:CoffeeCloud.ProfileImageSummary] = [:]
+    @Published private(set) var cloudProfileImages:[UUID:[CoffeeCloud.ProfileImage]] = [:]
+    @Published private(set) var cloudProfileMediaBusy=false
+    @Published private(set) var cloudConversations:[UUID:[CoffeeCloud.Message]] = [:]
+    @Published private(set) var cloudConversationHasMore:[UUID:Bool] = [:]
+    @Published private(set) var cloudConversationBusy:Set<UUID> = []
+    @Published private(set) var cloudConversationUnavailable:Set<UUID> = []
+    @Published private(set) var cloudCalls:[CoffeeCloud.CallSession]?
+    @Published private(set) var cloudCallsBusy=false
+    // Keep disabled until LiveKit credentials, session revocation and acceptance are verified.
+    let liveCallsEnabled=false
     private var savedSnapshotExpected=false
     private var brewSyncDebounce:Task<Void,Never>?
     init() {
@@ -181,16 +197,202 @@ struct CoffeeReceipt: Identifiable {
         defer {cloudSocialBusy=false}
         do {
             let profiles=try await CoffeeCloud.shared.profiles(for:account)
+            let imageSummaries=try await CoffeeCloud.shared.profileImageSummaries(profiles.map(\.id),account:account)
             let follows=try await CoffeeCloud.shared.follows(for:account)
             let friendships=try await CoffeeCloud.shared.friendshipRequests(for:account)
             let blocks=try await CoffeeCloud.shared.blocks(for:account)
             let reports=try await CoffeeCloud.shared.reports(for:account)
             let messages=try await CoffeeCloud.shared.messages(for:account)
             guard state.signedIn,state.cloudAccountID==account else {return}
-            cloudProfiles=profiles;cloudFollows=follows;cloudFriendships=friendships;cloudBlocks=blocks;cloudReports=reports;cloudMessages=messages;cloudMessagesUnavailable=false
+            cloudProfiles=profiles;cloudImageSummaries=Dictionary(uniqueKeysWithValues:imageSummaries.map{($0.owner_id,$0)});cloudFollows=follows;cloudFriendships=friendships;cloudBlocks=blocks;cloudReports=reports;cloudMessages=messages;cloudMessagesUnavailable=false
         } catch {
             guard state.cloudAccountID==account else {return}
             cloudProfiles=nil
+        }
+    }
+
+    func refreshCloudProfileImages(owner:UUID) async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudProfileMediaBusy else{return}
+        cloudProfileMediaBusy=true;defer{cloudProfileMediaBusy=false}
+        do {
+            let images=try await CoffeeCloud.shared.profileImages(owner:owner,account:account)
+            let summaries=try await CoffeeCloud.shared.profileImageSummaries([owner],account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            cloudProfileImages[owner]=images
+            cloudImageSummaries[owner]=summaries.first
+        } catch {guard state.cloudAccountID==account else{return};cloudProfileImages.removeValue(forKey:owner);cloudImageSummaries.removeValue(forKey:owner)}
+    }
+
+    func submitCloudProfileImage(reference:String,kind:String) async -> Bool {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudProfileMediaBusy,["avatar","cover","album"].contains(kind) else{return false}
+        let pending:PendingCloudProfileImage
+        if let saved=state.pendingCloudProfileImage {
+            guard saved.accountID==account,saved.reference==reference,saved.kind==kind else {inform("Photo needs attention", "Retry the saved photo first.");return false}
+            pending=saved
+        } else {
+            guard reference.hasPrefix("local/\(state.passport.id.uuidString)/"),let file=CoffeeMedia.url(reference),file.isFileURL,
+                  file.pathExtension.lowercased()=="jpg" else {inform("Photo unavailable", "Choose a photo saved on this device.");return false}
+            guard let size=try? file.resourceValues(forKeys:[.fileSizeKey]).fileSize,size<=52_428_800 else {
+                inform("Media too large", "Choose a photo smaller than 50 MB. Your original file has been kept.");return false
+            }
+            pending = .init(id:UUID(),accountID:account,reference:reference,kind:kind)
+            guard commit({$0.pendingCloudProfileImage=pending}) else{return false}
+        }
+        guard let file=CoffeeMedia.url(pending.reference),file.isFileURL else {inform("Photo unavailable", "The original file is still needed for this upload.");return false}
+        cloudProfileMediaBusy=true
+        do {
+            _ = try await CoffeeCloud.shared.uploadMedia(file:file,objectID:pending.id,contentType:"image/jpeg",account:account,profileImage:true)
+            try await CoffeeCloud.shared.submitProfileImage(id:pending.id,kind:pending.kind,account:account)
+            let item=try await CoffeeCloud.shared.profileImage(pending.id,account:account)
+            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudProfileImage?.id==pending.id else {cloudProfileMediaBusy=false;return false}
+            guard let item,item.owner_id==account,item.kind==pending.kind else {throw CoffeeCloud.ConnectionError.actionUnavailable}
+            guard commit({$0.pendingCloudProfileImage=nil}) else {cloudProfileMediaBusy=false;return false}
+            cloudProfileMediaBusy=false
+            await refreshCloudProfileImages(owner:account)
+            inform("Photo submitted", "Your photo is visible to others after review.")
+            return true
+        } catch {
+            cloudProfileMediaBusy=false
+            guard state.cloudAccountID==account else{return false}
+            inform("Photo needs attention", "The upload could not be confirmed. Retry the saved photo.")
+            return false
+        }
+    }
+
+    func removeCloudProfileImage(_ id:UUID) async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudProfileMediaBusy else{return}
+        if let pending=state.pendingCloudProfileImageRemoval {
+            guard pending.accountID==account,pending.id==id else {inform("Removal needs attention", "Finish removing the previous photo first.");return}
+        } else if !commit({$0.pendingCloudProfileImageRemoval = .init(id:id,accountID:account)}) {return}
+        cloudProfileMediaBusy=true
+        do {
+            try await CoffeeCloud.shared.deleteProfileImage(id:id,account:account)
+            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudProfileImageRemoval?.id==id else {cloudProfileMediaBusy=false;return}
+            guard commit({$0.pendingCloudProfileImageRemoval=nil}) else {cloudProfileMediaBusy=false;return}
+            cloudProfileMediaBusy=false
+            await refreshCloudProfileImages(owner:account)
+            inform("Photo removed", "The online photo has been removed. Your original file remains on this device.")
+        } catch {
+            cloudProfileMediaBusy=false
+            guard state.cloudAccountID==account else{return}
+            cloudProfileImages.removeValue(forKey:account);cloudImageSummaries.removeValue(forKey:account)
+            inform("Removal needs attention", "The online removal could not be confirmed. Retry the same photo.")
+        }
+    }
+
+    func refreshCloudFeed() async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudFeedBusy else{return}
+        cloudFeedBusy=true;defer{cloudFeedBusy=false}
+        do {
+            let feed=try await CoffeeCloud.shared.recentMoments(for:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            cloudFeed=feed;cloudFeedHasMore=feed.count==50
+        } catch {
+            guard state.cloudAccountID==account else{return}
+            cloudFeed=nil
+        }
+    }
+
+    func loadMoreCloudFeed() async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudFeedBusy,cloudFeedHasMore,let last=cloudFeed?.last else{return}
+        cloudFeedBusy=true;defer{cloudFeedBusy=false}
+        do {
+            let next=try await CoffeeCloud.shared.recentMoments(for:account,before:last)
+            guard state.signedIn,state.cloudAccountID==account,var current=cloudFeed else{return}
+            let existing=Set(current.map(\.id));current.append(contentsOf:next.filter{!existing.contains($0.id)})
+            cloudFeed=current;cloudFeedHasMore=next.count==50
+        } catch {guard state.cloudAccountID==account else{return};inform("Moments unavailable", "More moments could not be loaded. Please try again.")}
+    }
+
+    func refreshCloudFeedItem(_ id:UUID) async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudFeedBusy else{return}
+        cloudFeedBusy=true;defer{cloudFeedBusy=false}
+        do {
+            let result=try await CoffeeCloud.shared.recentMoments(for:account,target:id)
+            guard state.signedIn,state.cloudAccountID==account,var current=cloudFeed else{return}
+            if let index=current.firstIndex(where:{$0.id==id}) {
+                if let item=result.first {current[index]=item} else {current.remove(at:index)}
+                cloudFeed=current
+            }
+        } catch {guard state.cloudAccountID==account else{return};cloudFeed=nil;cloudFeedHasMore=false}
+    }
+
+    func changeCloudReaction(_ id:UUID,bookmarks:Bool,enabled:Bool) async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudFeedBusy else{return}
+        cloudFeedBusy=true
+        do {
+            try await CoffeeCloud.shared.setReaction(id,account:account,bookmarks:bookmarks,enabled:enabled)
+            let feed=try await CoffeeCloud.shared.recentMoments(for:account,target:id)
+            guard state.signedIn,state.cloudAccountID==account,var current=cloudFeed else {cloudFeedBusy=false;return}
+            if let index=current.firstIndex(where:{$0.id==id}) {if let item=feed.first {current[index]=item} else {current.remove(at:index)}}
+            cloudFeed=current;cloudFeedBusy=false
+        } catch {
+            guard state.cloudAccountID==account else {cloudFeedBusy=false;return}
+            cloudFeed=nil;cloudFeedBusy=false
+            inform("Update needs attention", "The change could not be confirmed. Refresh the feed and try again.")
+        }
+    }
+
+    func refreshCloudComments(_ moment:UUID) async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudCommentsBusy else{return}
+        cloudCommentsBusy=true;defer{cloudCommentsBusy=false}
+        do {
+            let comments=try await CoffeeCloud.shared.comments(for:moment,account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            cloudComments[moment]=comments
+        } catch {
+            guard state.cloudAccountID==account else{return}
+            cloudComments.removeValue(forKey:moment)
+        }
+    }
+
+    func submitCloudComment(moment:UUID,text:String) async -> Bool {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudCommentsBusy else{return false}
+        let body=text.trimmingCharacters(in:.whitespacesAndNewlines)
+        guard !body.isEmpty,body.count<=2000,validateCommunityText(body) else{return false}
+        let pending:PendingCloudComment
+        if let saved=state.pendingCloudComment {
+            guard saved.accountID==account,saved.momentID==moment,saved.body==body else {
+                inform("Comment needs attention", "Finish the saved comment before sending another.");return false
+            }
+            pending=saved
+        } else {
+            pending = .init(id:UUID(),accountID:account,momentID:moment,body:body)
+            guard commit({$0.pendingCloudComment=pending}) else{return false}
+        }
+        cloudCommentsBusy=true
+        do {
+            try await CoffeeCloud.shared.sendComment(pending.body,on:moment,account:account,commentID:pending.id)
+            let confirmed=try await CoffeeCloud.shared.comment(pending.id,account:account)
+            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudComment?.id==pending.id else {cloudCommentsBusy=false;return false}
+            guard let confirmed,confirmed.author_id==account,confirmed.post_id==moment,confirmed.body==pending.body else {throw CoffeeCloud.ConnectionError.actionUnavailable}
+            guard commit({$0.pendingCloudComment=nil}) else {cloudCommentsBusy=false;return false}
+            cloudCommentsBusy=false
+            await refreshCloudComments(moment)
+            await refreshCloudFeedItem(moment)
+            inform("Comment submitted", "Your comment is visible to others after review.")
+            return true
+        } catch {
+            cloudCommentsBusy=false
+            guard state.cloudAccountID==account else{return false}
+            inform("Comment needs attention", "The result could not be confirmed. Retry the saved comment.")
+            return false
+        }
+    }
+
+    func deleteCloudComment(_ id:UUID,moment:UUID) async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudCommentsBusy else{return}
+        cloudCommentsBusy=true
+        do {
+            try await CoffeeCloud.shared.deleteComment(id,account:account)
+            let comments=try await CoffeeCloud.shared.comments(for:moment,account:account)
+            guard state.signedIn,state.cloudAccountID==account else {cloudCommentsBusy=false;return}
+            cloudComments[moment]=comments;cloudCommentsBusy=false
+            await refreshCloudFeedItem(moment)
+        } catch {
+            cloudCommentsBusy=false
+            guard state.cloudAccountID==account else{return}
+            inform("Comment needs attention", "The removal could not be confirmed. Refresh and try again.")
         }
     }
 
@@ -209,6 +411,90 @@ struct CoffeeReceipt: Identifiable {
             guard state.signedIn,state.cloudAccountID==account else {return}
             cloudMessages=messages;cloudFollows=follows;cloudProfiles=profiles;cloudMessagesUnavailable=false
         } catch {if state.cloudAccountID==account {cloudMessagesUnavailable=true}}
+    }
+
+    func refreshCloudConversation(_ peer:UUID) async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudConversationBusy.contains(peer) else{return}
+        cloudConversationBusy.insert(peer);defer{cloudConversationBusy.remove(peer)}
+        do {
+            let recent=try await CoffeeCloud.shared.conversation(for:peer,account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            let older=cloudConversations[peer] ?? []
+            if recent.isEmpty {cloudConversations[peer]=[];cloudConversationHasMore[peer]=false}
+            else {
+                let known=Set(recent.map(\.id))
+                cloudConversations[peer]=recent+older.filter{!known.contains($0.id)}
+                if older.isEmpty || (older.count<100 && recent.count==100) {cloudConversationHasMore[peer]=recent.count==100}
+            }
+            cloudConversationUnavailable.remove(peer)
+        } catch {if state.cloudAccountID==account {cloudConversationUnavailable.insert(peer)}}
+    }
+
+    func loadEarlierCloudConversation(_ peer:UUID) async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudConversationBusy.contains(peer),cloudConversationHasMore[peer]==true,
+              let last=cloudConversations[peer]?.last else{return}
+        cloudConversationBusy.insert(peer);defer{cloudConversationBusy.remove(peer)}
+        do {
+            let older=try await CoffeeCloud.shared.conversation(for:peer,account:account,before:last)
+            guard state.signedIn,state.cloudAccountID==account,var current=cloudConversations[peer] else{return}
+            let known=Set(current.map(\.id));current.append(contentsOf:older.filter{!known.contains($0.id)})
+            cloudConversations[peer]=current;cloudConversationHasMore[peer]=older.count==100;cloudConversationUnavailable.remove(peer)
+        } catch {if state.cloudAccountID==account {cloudConversationUnavailable.insert(peer)}}
+    }
+
+    func refreshCloudCalls() async {
+        guard liveCallsEnabled,let account=state.cloudAccountID,state.signedIn,!cloudCallsBusy else{return}
+        cloudCallsBusy=true;defer{cloudCallsBusy=false}
+        do {let calls=try await CoffeeCloud.shared.callSessions(account:account);guard state.cloudAccountID==account,state.signedIn else{return};cloudCalls=calls}
+        catch {if state.cloudAccountID==account {cloudCalls=nil}}
+    }
+
+    func requestCloudCall(_ peer:UUID) async -> CoffeeCloud.CallSession? {
+        guard liveCallsEnabled,let account=state.cloudAccountID,state.signedIn,!cloudCallsBusy,peer != account else{return nil}
+        let pending:PendingCloudCall
+        if let saved=state.pendingCloudCall {
+            guard saved.accountID==account,saved.recipientID==peer else {inform("Call needs attention", "Retry the earlier request first.");return nil}
+            pending=saved
+        } else {
+            guard isMutual(peer.uuidString) else {inform("Follow each other first", "Both people must follow each other before starting a call.");return nil}
+            pending = .init(id:UUID(),accountID:account,recipientID:peer)
+            guard commit({$0.pendingCloudCall=pending}) else{return nil}
+        }
+        cloudCallsBusy=true;defer{cloudCallsBusy=false}
+        do {
+            let id=try await CoffeeCloud.shared.requestCall(id:pending.id,recipient:peer,account:account)
+            let calls=try await CoffeeCloud.shared.callSessions(account:account)
+            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudCall?.id==pending.id,
+                  let call=calls.first(where:{$0.id==id}) else {throw CoffeeCloud.ConnectionError.actionUnavailable}
+            guard commit({$0.pendingCloudCall=nil}) else{return nil}
+            cloudCalls=calls;return call
+        } catch {if state.cloudAccountID==account {inform("Call needs attention", "The request could not be confirmed. Retry the saved request.")};return nil}
+    }
+
+    func answerCloudCall(_ id:UUID,accept:Bool) async -> Bool {
+        guard liveCallsEnabled,let account=state.cloudAccountID,state.signedIn,!cloudCallsBusy else{return false}
+        cloudCallsBusy=true;defer{cloudCallsBusy=false}
+        do {
+            let accepted=try await CoffeeCloud.shared.answerCall(id:id,accept:accept,account:account)
+            let calls=try await CoffeeCloud.shared.callSessions(account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return false}
+            cloudCalls=calls
+            guard accepted,let session=calls.first(where:{$0.id==id}),session.status==(accept ? "accepted":"declined") else {inform("Call unavailable", "This call expired or is no longer available.");return false}
+            return true
+        } catch {if state.cloudAccountID==account {inform("Call needs attention", "The response could not be confirmed. Refresh and try again.")};return false}
+    }
+
+    func endCloudCall(_ id:UUID) async {
+        guard liveCallsEnabled,let account=state.cloudAccountID,state.signedIn,!cloudCallsBusy else{return}
+        if let pending=state.pendingCloudCallEnd {guard pending.id==id,pending.accountID==account else{return}}
+        else if !commit({$0.pendingCloudCallEnd = .init(id:id,accountID:account)}) {return}
+        cloudCallsBusy=true;defer{cloudCallsBusy=false}
+        do {
+            try await CoffeeCloud.shared.endCall(id:id,account:account)
+            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudCallEnd?.id==id else{return}
+            guard commit({$0.pendingCloudCallEnd=nil}) else{return}
+            cloudCalls=try? await CoffeeCloud.shared.callSessions(account:account)
+        } catch {if state.cloudAccountID==account {inform("Call needs attention", "The call ended on this device. Retry confirming its server status.")}}
     }
 
     func changeCloudFollow(_ member:UUID,enabled:Bool) async {
@@ -252,9 +538,8 @@ struct CoffeeReceipt: Identifiable {
         do {
             let profile=try await CoffeeCloud.shared.updateProfile(name:pending.name,biography:pending.biography,revision:pending.revision,account:account)
             guard state.signedIn,state.cloudAccountID==account,state.pendingCloudProfile?.revision==pending.revision else {return false}
-            guard commit({value in
-                value.passport.name=pending.name;value.passport.bio=pending.biography;value.pendingCloudProfile=nil
-            }) else {return false}
+            // Keep the pre-cloud passport intact until the full migration is complete.
+            guard commit({$0.pendingCloudProfile=nil}) else {return false}
             if var profiles=cloudProfiles,let index=profiles.firstIndex(where:{$0.id==account}) {profiles[index]=profile;cloudProfiles=profiles}
             return true
         } catch {
@@ -401,9 +686,6 @@ struct CoffeeReceipt: Identifiable {
         guard !clean.isEmpty else {return false}
         guard clean.unicodeScalars.count<=2000 else {inform("Note is too long", "Keep your note under 2,000 characters. Your text has been kept.");return false}
         guard validateCommunityText(clean) else {return false}
-        guard state.letterPhotos[id]==nil,state.letterVoiceNotes[id]==nil else {
-            inform("Attachment unavailable", "Your photo or voice draft is kept. Send text after removing the attachment.");return false
-        }
         let pending:PendingCloudMessage
         if let saved=state.pendingCloudMessage {
             guard saved.accountID==account,saved.recipientID==recipient,saved.body==clean else {
@@ -449,6 +731,60 @@ struct CoffeeReceipt: Identifiable {
         if await sendCloudMessage(to:pending.recipientID.uuidString,text:pending.body) {
             inform("Message sent", "Your message was sent.")
         }
+    }
+
+    func sendCloudAttachment(to id:String,reference:String,kind:String) async -> Bool {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudSocialBusy,let recipient=UUID(uuidString:id),recipient != account,
+              ["photo","voice"].contains(kind) else{return false}
+        let pending:PendingCloudAttachment
+        if let saved=state.pendingCloudAttachment {
+            guard saved.accountID==account,saved.recipientID==recipient,saved.reference==reference,saved.kind==kind else {
+                inform("Attachment needs attention", "Retry the saved attachment first.");return false
+            }
+            pending=saved
+        } else {
+            guard isMutual(id) else {inform("Follow each other first", "Both people must follow each other before sending messages. Your draft has been kept.");return false}
+            guard reference.hasPrefix("local/\(state.passport.id.uuidString)/"),let file=CoffeeMedia.url(reference),file.isFileURL,
+                  file.pathExtension.lowercased()==(kind=="photo" ? "jpg":"m4a"),
+                  let size=try? file.resourceValues(forKeys:[.fileSizeKey]).fileSize,size<=52_428_800 else {
+                inform("Attachment unavailable", "Choose a photo or voice note under 50 MB. Your draft has been kept.");return false
+            }
+            pending = .init(id:UUID(),accountID:account,recipientID:recipient,reference:reference,kind:kind)
+            guard commit({$0.pendingCloudAttachment=pending}) else{return false}
+        }
+        guard let file=CoffeeMedia.url(pending.reference),file.isFileURL else {inform("Attachment unavailable", "The original file is needed to retry.");return false}
+        cloudSocialBusy=true
+        do {
+            _ = try await CoffeeCloud.shared.uploadMedia(file:file,objectID:pending.id,contentType:kind=="photo" ? "image/jpeg":"audio/mp4",account:account,messageAttachment:true)
+            try await CoffeeCloud.shared.sendAttachment(kind,to:recipient,account:account,messageID:pending.id)
+            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudAttachment?.id==pending.id else {cloudSocialBusy=false;return false}
+            guard commit({value in
+                value.pendingCloudAttachment=nil
+                if kind=="photo",value.letterPhotos[id]==pending.reference {value.letterPhotos.removeValue(forKey:id)}
+                if kind=="voice",value.letterVoiceNotes[id]==pending.reference {value.letterVoiceNotes.removeValue(forKey:id)}
+            }) else {cloudSocialBusy=false;return false}
+            cloudSocialBusy=false
+            await refreshCloudMessages()
+            return true
+        } catch {
+            cloudSocialBusy=false
+            guard state.cloudAccountID==account else{return false}
+            inform("Attachment needs attention", "The result could not be confirmed. Retry the saved attachment.")
+            return false
+        }
+    }
+
+    func sendCloudConversation(to id:String) async {
+        guard let recipient=UUID(uuidString:id) else{return}
+        if let pending=state.pendingCloudAttachment {
+            guard pending.recipientID==recipient,await sendCloudAttachment(to:id,reference:pending.reference,kind:pending.kind) else{return}
+        }
+        let text=state.letterDrafts[id] ?? ""
+        if !text.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty {
+            guard await sendCloudMessage(to:id,text:text) else{return}
+        }
+        if let photo=state.letterPhotos[id] {guard await sendCloudAttachment(to:id,reference:photo,kind:"photo") else{return}}
+        if let voice=state.letterVoiceNotes[id] {_ = await sendCloudAttachment(to:id,reference:voice,kind:"voice")}
     }
 
     func syncCloudBrewBook() async {
@@ -578,28 +914,30 @@ struct CoffeeReceipt: Identifiable {
         }
     }
 
-    func deleteCloudSubmission(_ id:UUID) async {
-        guard let account=state.cloudAccountID,state.signedIn,!cloudSubmissionsBusy,!cloudWalletBusy else {return}
+    @discardableResult func deleteCloudSubmission(_ id:UUID) async -> Bool {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudSubmissionsBusy,!cloudWalletBusy else {return false}
         if let pending=state.pendingCloudPostDeletion {
             guard pending.accountID==account,pending.postID==id else {
-                inform("Removal needs attention", "Finish removing the previous post before starting another.");return
+                inform("Removal needs attention", "Finish removing the previous post before starting another.");return false
             }
         } else {
-            guard commit({$0.pendingCloudPostDeletion = .init(accountID:account,postID:id)}) else {return}
+            guard commit({$0.pendingCloudPostDeletion = .init(accountID:account,postID:id)}) else {return false}
         }
         cloudSubmissionsBusy=true
         defer {cloudSubmissionsBusy=false}
         do {
             try await CoffeeCloud.shared.deleteMoment(id,account:account)
             let items=try await CoffeeCloud.shared.ownMoments(for:account)
-            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudPostDeletion?.postID==id else {return}
-            guard commit({$0.pendingCloudPostDeletion=nil}) else {return}
+            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudPostDeletion?.postID==id else {return false}
+            guard commit({$0.pendingCloudPostDeletion=nil}) else {return false}
             cloudSubmissions=items
             inform("Post removed", "Your post and its online media have been removed.")
+            return true
         } catch {
-            guard state.cloudAccountID==account else {return}
+            guard state.cloudAccountID==account else {return false}
             cloudSubmissions=nil
             inform("Removal needs attention", "The removal could not be confirmed. Retry to finish removing the post and its online media.")
+            return false
         }
     }
 
@@ -752,12 +1090,12 @@ struct CoffeeReceipt: Identifiable {
         notice = .init(title:"A little more for your coffee reserve",message:"This needs \(cost) coins. Your balance is \(state.coinBalance). Your draft and selections are kept; recharge to continue.",kind:.insufficient)
     }
     func performAccountAction(_ action:AccountTransition) async {
-        guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,!cloudSubmissionsBusy,!cloudBrewBusy,!cloudBrewHistoryBusy,!cloudSocialBusy,storageAvailable else{return}
+        guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,!cloudSubmissionsBusy,!cloudBrewBusy,!cloudBrewHistoryBusy,!cloudSocialBusy,!cloudFeedBusy,!cloudCommentsBusy,!cloudProfileMediaBusy,!cloudCallsBusy,cloudConversationBusy.isEmpty,storageAvailable else{return}
         if action == .delete && (state.cloudAccountID != nil || state.cloudBootstrapPending == true) {
             inform("Account deletion needs attention", "Your online account has not been removed. Please try again when account deletion is available.")
             return
         }
-        guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudCollectible==nil,state.pendingCloudMoment==nil,state.pendingCloudPostDeletion==nil,state.pendingCloudReport==nil,state.pendingCloudMessage==nil,state.pendingCloudFriendship==nil,state.pendingCloudProfile==nil else {
+        guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudCollectible==nil,state.pendingCloudMoment==nil,state.pendingCloudPostDeletion==nil,state.pendingCloudReport==nil,state.pendingCloudMessage==nil,state.pendingCloudAttachment==nil,state.pendingCloudFriendship==nil,state.pendingCloudProfile==nil,state.pendingCloudComment==nil,state.pendingCloudProfileImage==nil,state.pendingCloudProfileImageRemoval==nil,state.pendingCloudCall==nil,state.pendingCloudCallEnd==nil else {
             inform("Purchase awaiting review","Resolve the purchase before changing accounts.");return
         }
         accountAction=action
@@ -777,7 +1115,7 @@ struct CoffeeReceipt: Identifiable {
             try await Task.detached(priority:.userInitiated) {try CoffeeVault.write(snapshot)}.value
             savedSnapshotExpected=true
             brewSyncDebounce?.cancel();brewSyncDebounce=nil
-            state=next;cloudWallet=nil;cloudWalletUnavailable=false;cloudSubmissions=nil;cloudBrewNeedsAttention=false;cloudBrewHistory=nil;cloudProfiles=nil;cloudFollows=[];cloudFriendships=[];cloudBlocks=[];cloudReports=[];cloudMessages=[];cloudMessagesUnavailable=false;activeRoomID=nil;roomMicRequested=false;selectedTab=0
+            state=next;cloudWallet=nil;cloudWalletUnavailable=false;cloudSubmissions=nil;cloudBrewNeedsAttention=false;cloudBrewHistory=nil;cloudProfiles=nil;cloudImageSummaries=[:];cloudProfileImages=[:];cloudFollows=[];cloudFriendships=[];cloudBlocks=[];cloudReports=[];cloudMessages=[];cloudMessagesUnavailable=false;cloudConversations=[:];cloudConversationHasMore=[:];cloudConversationUnavailable=[];cloudCalls=nil;cloudFeed=nil;cloudFeedHasMore=false;cloudComments=[:];activeRoomID=nil;roomMicRequested=false;selectedTab=0
             if action == .delete {
                 let owners=next.pendingMediaDeletion
                 try await Task.detached(priority:.userInitiated) {
@@ -902,7 +1240,7 @@ struct CoffeeReceipt: Identifiable {
         return text("Voice draft")
     }
     func clearChatDrafts() {
-        guard state.pendingCloudMessage==nil else {inform("Message needs attention", "Retry the saved message before clearing drafts.");return}
+        guard state.pendingCloudMessage==nil,state.pendingCloudAttachment==nil else {inform("Message needs attention", "Retry the saved message before clearing drafts.");return}
         _ = commit {$0.letterDrafts.removeAll();$0.letterPhotos.removeAll();$0.letterVoiceNotes.removeAll()}
     }
 }

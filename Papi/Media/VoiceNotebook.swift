@@ -106,11 +106,62 @@ struct VoiceDraftView:View {
             if !playing {stop();errorMessage="Audio could not start. Please try again."}
         } catch {stop();errorMessage="Audio could not start. Please try again."}
     }
+    func play(data:Data) {
+        errorMessage=nil
+        do {
+            try AudioFocus.acquire(audioID)
+            let p=try AVAudioPlayer(data:data);p.delegate=self;player=p;playing=p.play()
+            if !playing {stop();errorMessage="Audio could not start. Please try again."}
+        } catch {stop();errorMessage="Audio could not start. Please try again."}
+    }
     func stop(){player?.stop();playing=false;AudioFocus.release(audioID)}
     nonisolated func audioPlayerDidFinishPlaying(_ player:AVAudioPlayer,successfully flag:Bool) {Task{@MainActor in guard self.player === player else{return};self.stop()}}
     deinit {
         if let audioObserver {NotificationCenter.default.removeObserver(audioObserver)}
         if let interruptionObserver {NotificationCenter.default.removeObserver(interruptionObserver)}
+    }
+}
+struct CloudVoiceNotePlayer:View {
+    let messageID:String
+    let name:String
+    @EnvironmentObject private var store:CoffeeHouse
+    @Environment(\.scenePhase) private var phase
+    @StateObject private var playback=VoicePlayback()
+    @State private var loading=false
+    @State private var loadTask:Task<Void,Never>?
+    private static let session:URLSession = {
+        let config=URLSessionConfiguration.ephemeral
+        config.urlCache=nil;config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.httpCookieStorage=nil;config.httpShouldSetCookies=false
+        config.timeoutIntervalForRequest=20;config.timeoutIntervalForResource=40
+        return URLSession(configuration:config)
+    }()
+    var body:some View {
+        VStack(spacing:8) {
+            Button {
+                if playback.playing {playback.stop();return}
+                guard !loading else{return}
+                loading=true;loadTask=Task {await play()}
+            } label:{HStack {Image("speaker").resizable().scaledToFit().frame(width:32,height:32);PapiText(loading ? "Loading voice note…":(playback.playing ? "Stop voice note":"Play voice note"))}.padding(10).background(Color.butter,in:Capsule())}.buttonStyle(.plain).disabled(loading)
+            if let error=playback.errorMessage {PapiText(error).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
+        }.onDisappear{loadTask?.cancel();playback.stop()}.onChange(of:phase){_,p in if p != .active {loadTask?.cancel();playback.stop()}}
+    }
+    @MainActor private func play() async {
+        defer{loading=false}
+        guard phase == .active,store.state.signedIn,let account=store.state.cloudAccountID,
+              name.hasPrefix("cloud/"),let id=UUID(uuidString:messageID),
+              let message=(store.cloudConversations.values.flatMap{$0}+store.cloudMessages).first(where:{$0.id==id}),
+              store.isTargetVisible(.init(kind:.message,contentReference:messageID,authorID:message.sender_id.uuidString)) else{return}
+        do {
+            let url=try await CoffeeCloud.shared.mediaURL(path:String(name.dropFirst(6)),account:account)
+            guard url.scheme=="https",url.host=="cquoffowtjnxmgaxavym.supabase.co" else {throw CoffeeMedia.MediaError.invalid}
+            let (data,response)=try await Self.session.data(from:url)
+            guard let response=response as? HTTPURLResponse,response.statusCode==200,response.url?.host==url.host,
+                  response.url?.scheme=="https",response.mimeType?.hasPrefix("audio/")==true,data.count<=52_428_800,
+                  !Task.isCancelled,store.state.signedIn,store.state.cloudAccountID==account,phase == .active,
+                  store.isTargetVisible(.init(kind:.message,contentReference:messageID,authorID:message.sender_id.uuidString)) else{return}
+            playback.play(data:data)
+        } catch {if !Task.isCancelled {playback.errorMessage="This voice note is unavailable. Please try again."}}
     }
 }
 struct VoiceNotePlayer:View {

@@ -48,7 +48,7 @@ struct SafetyMenuView:View {
                                 }
                                 safetyChoice("Report",detail:"Choose a reason",tint:Color.white) {reporting=true}
                                 safetyChoice(target.kind == .user ? "Block user":"Hide content",detail:target.kind == .user ? "Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.":"This item will disappear from your lists.",tint:Color.butter.opacity(0.7)) {confirmBlock=true}
-                                if target.kind != .user,let author=target.authorID,author != store.state.passport.id.uuidString {
+                                if target.kind != .user,let author=target.authorID,author != store.state.passport.id.uuidString,author != store.state.cloudAccountID?.uuidString {
                                     safetyChoice("Block author",detail:"Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.",tint:Color.white) {authorToBlock=author}
                                 }
                             }.padding(20).frame(maxWidth:600).frame(maxWidth:.infinity)
@@ -132,6 +132,7 @@ struct ReportView:View {
 struct CoffeeReceiptView:View {
     let notice:CoffeeReceipt
     var close:()->Void
+    @EnvironmentObject private var store:CoffeeHouse
     var body:some View {
         CoffeeModal(maximumWidth:370,maximumHeight:570,shade:Color.coffee.opacity(0.62),artwork:nil) {
             VStack(alignment:.leading,spacing:18) {
@@ -145,7 +146,7 @@ struct CoffeeReceiptView:View {
                 PapiText(notice.message).font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).lineSpacing(4).fixedSize(horizontal:false,vertical:true)
                 if notice.kind == .review {
                     status("Saved privately",asset:"check")
-                    status("Awaiting moderation connection",asset:"coffeeUpdates")
+                    status(store.usesCloudWallet ? "Under review":"Awaiting moderation connection",asset:"coffeeUpdates")
                     PapiText("Visible only after approval").font(CoffeeType.face(.caption,weight:.bold)).padding(13).frame(maxWidth:.infinity,alignment:.leading).background(Color.butter,in:RoundedRectangle(cornerRadius:12))
                 } else if notice.kind == .safety {status("Saved",asset:"check")}
                 PapiTextButton("Got it",action:close).buttonStyle(PapiButtonStyle(wide:true,cornerRadius:12)).padding(.top,4)

@@ -108,7 +108,7 @@ struct PapiRootView:View {
             else {PapiScreen {VStack(spacing:0){PapiHeader("Coffee tables");ScrollView {PapiEmpty(title:"This content is unavailable")}}}}
         case .post(let id):CoffeeMomentView(momentID:id)
         case .person(let id):
-            if id==store.state.passport.id.uuidString {VStack(spacing:0){PapiHeader("Profile").background(Color.cream).papiContainerMargins();MyCoffeePassportView()}.background {PapiBackground()}}
+            if id==store.state.passport.id.uuidString || id==store.state.cloudAccountID?.uuidString {VStack(spacing:0){PapiHeader("Profile").background(Color.cream).papiContainerMargins();MyCoffeePassportView()}.background {PapiBackground()}}
             else {MemberPassportView(memberID:id)}
         case .chat(let id):CoffeeConversationView(memberID:id)
         case .beans:BeanVarietyShelf()

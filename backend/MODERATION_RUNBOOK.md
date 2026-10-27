@@ -11,6 +11,9 @@ from public.coffee_posts where moderation_status = 'pending' order by created_at
 select id, post_id, author_id, body, created_at
 from public.coffee_comments where moderation_status = 'pending' order by created_at;
 
+select id, owner_id, kind, media_path, created_at
+from public.coffee_profile_images where moderation_status = 'pending' order by created_at;
+
 select id, reporter_id, subject_kind, subject_id, reason, created_at
 from public.coffee_reports where review_status = 'pending' order by created_at;
 ```
@@ -33,5 +36,19 @@ commit;
 ```
 
 `kind` 为 `post` 或 `comment` 时，决定只能是 `approved` 或 `rejected`。对于举报，`kind` 为 `report`、决定为 `resolved`；只有在完成实际调查和相应处置后才标记处理完毕。审核记录位于 `papi_private.moderation_events`，不向普通 App 账号开放。审核人员应回读对象状态和事件记录；如果执行结果不明确，先确认原事件 UUID 的记录，不要改用新 UUID 重复执行。
+
+头像、背景和相册图片使用单独的审核入口。审核人员在私有 Storage 中检查图片后，在事务内以同样的审核身份声明调用：
+
+```sql
+begin;
+select set_config('request.jwt.claims', '{"role":"service_role"}', true);
+select public.review_coffee_profile_image(
+  'EVENT_UUID'::uuid, 'IMAGE_UUID'::uuid, 'approved',
+  'REVIEWER_IDENTIFIER', 'REVIEW_REASON'
+);
+commit;
+```
+
+决定可以是 `approved` 或 `rejected`。每次决定必须使用独立事件 UUID，重试同一决定则沿用原 UUID；同一用户可能多次提交头像或背景，应用显示最新提交且已通过审核的图片。已拒绝和待审核的图片只对所有者可见。
 
 当前仅准备了数据库工作流，并未验证 SQL Editor 的实际执行、审核时效或举报通知；不能把这份说明当成已经建立运营团队或完成端到端审核验收。

@@ -153,6 +153,31 @@ struct PendingCloudProfile: Codable {
     let biography: String
     let revision: Int
 }
+struct PendingCloudComment: Codable {
+    let id:UUID
+    let accountID:UUID
+    let momentID:UUID
+    let body:String
+}
+struct PendingCloudProfileImage:Codable {
+    let id:UUID
+    let accountID:UUID
+    let reference:String
+    let kind:String
+}
+struct PendingCloudProfileImageRemoval:Codable {
+    let id:UUID
+    let accountID:UUID
+}
+struct PendingCloudAttachment:Codable {
+    let id:UUID
+    let accountID:UUID
+    let recipientID:UUID
+    let reference:String
+    let kind:String
+}
+struct PendingCloudCall:Codable {let id:UUID;let accountID:UUID;let recipientID:UUID}
+struct PendingCloudCallEnd:Codable {let id:UUID;let accountID:UUID}
 enum CoffeeEconomy {
     static let welcomeCoins = 800
     static func postCost(isVideo: Bool) -> Int { isVideo ? 80 : 40 }
@@ -193,6 +218,12 @@ struct CoffeeArchive: Codable {
     var pendingCloudMessage: PendingCloudMessage? = nil
     var pendingCloudFriendship: PendingCloudFriendship? = nil
     var pendingCloudProfile: PendingCloudProfile? = nil
+    var pendingCloudComment: PendingCloudComment? = nil
+    var pendingCloudProfileImage: PendingCloudProfileImage? = nil
+    var pendingCloudProfileImageRemoval: PendingCloudProfileImageRemoval? = nil
+    var pendingCloudAttachment: PendingCloudAttachment? = nil
+    var pendingCloudCall: PendingCloudCall? = nil
+    var pendingCloudCallEnd: PendingCloudCallEnd? = nil
     var signedIn = false
     var sawOnboarding = false
     var acceptedPolicyVersion: String? = nil
@@ -257,6 +288,12 @@ struct CoffeeArchive: Codable {
         case pendingCloudMessage = "pendingCloudMessage"
         case pendingCloudFriendship = "pendingCloudFriendship"
         case pendingCloudProfile = "pendingCloudProfile"
+        case pendingCloudComment = "pendingCloudComment"
+        case pendingCloudProfileImage = "pendingCloudProfileImage"
+        case pendingCloudProfileImageRemoval = "pendingCloudProfileImageRemoval"
+        case pendingCloudAttachment = "pendingCloudAttachment"
+        case pendingCloudCall = "pendingCloudCall"
+        case pendingCloudCallEnd = "pendingCloudCallEnd"
         case signedIn = "signedIn"
         case sawOnboarding = "sawOnboarding"
         case acceptedPolicyVersion = "acceptedPolicyVersion"

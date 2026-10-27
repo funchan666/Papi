@@ -4,11 +4,18 @@ import Foundation
     var visiblePassport:CoffeePassport {
         var passport=state.passport
         if let account=state.cloudAccountID {
+            passport.avatar=profileImageReference(cloudImageSummaries[account]?.avatar_path,owner:account) ?? "emptyCup"
+            passport.cover=profileImageReference(cloudImageSummaries[account]?.cover_path,owner:account) ?? "corner-latte"
             if let profile=cloudProfiles?.first(where:{$0.id==account}) {
                 passport.name=profile.display_name;passport.bio=profile.biography
             } else {passport.name=text("Profile unavailable");passport.bio=""}
         }
         return passport
+    }
+    func profileImageReference(_ path:String?,owner:UUID)->String? {
+        guard let path,path.lowercased().hasPrefix(owner.uuidString.lowercased()+"/profile-"),
+              path.split(separator:"/").count==2,!path.contains(".."),path.lowercased().hasSuffix(".jpg") else{return nil}
+        return "cloud/"+path
     }
     var community:CorrespondenceLedger {state.community ?? CorrespondenceLedger()}
     var hiddenKeys:Set<String> {
@@ -35,7 +42,7 @@ import Foundation
         guard usesCloudWallet else {return CoffeeMember.previews}
         guard let account=state.cloudAccountID else {return []}
         return (cloudProfiles ?? []).filter{$0.id != account}.map {
-            CoffeeMember(id:$0.id.uuidString,name:$0.display_name,portrait:"emptyCup",bio:$0.biography)
+            CoffeeMember(id:$0.id.uuidString,name:$0.display_name,portrait:profileImageReference(cloudImageSummaries[$0.id]?.avatar_path,owner:$0.id) ?? "emptyCup",bio:$0.biography)
         }
     }
     func person(_ id:String)->CoffeeMember? {
@@ -43,7 +50,7 @@ import Foundation
         if let member=UUID(uuidString:id),usesCloudWallet {
             if member==state.cloudAccountID {let passport=visiblePassport;return .init(id:id,name:passport.name,portrait:passport.portraitReference,bio:passport.bio)}
             if let profile=cloudProfiles?.first(where:{$0.id==member}) {
-                return .init(id:profile.id.uuidString,name:profile.display_name,portrait:"emptyCup",bio:profile.biography)
+                return .init(id:profile.id.uuidString,name:profile.display_name,portrait:profileImageReference(cloudImageSummaries[profile.id]?.avatar_path,owner:profile.id) ?? "emptyCup",bio:profile.biography)
             }
             return nil
         }
@@ -66,15 +73,39 @@ import Foundation
         if !value.isOwnMoment,CollectionConversation.entry(value.id) != nil,isUserHidden(CoffeeMember.editorial.id) {return false}
         return approved && isTargetVisible(.post(value))
     }
-    var visiblePosts:[CoffeeMoment] {(state.ownMoments+CoffeeMoment.editorial).filter{isPostVisible($0)}}
+    var visiblePosts:[CoffeeMoment] {
+        guard let account=state.cloudAccountID else {return (state.ownMoments+CoffeeMoment.editorial).filter{isPostVisible($0)}}
+        return (cloudFeed ?? []).compactMap {item -> CoffeeMoment? in
+            guard item.moderation_status=="approved",["photo","video"].contains(item.media_kind),
+                  item.media_path.lowercased().hasPrefix(item.author_id.uuidString.lowercased()+"/"),
+                  item.media_path.split(separator:"/").count==2,!item.media_path.contains(".."),
+                  let date=cloudDate(item.created_at) else{return nil}
+            return CoffeeMoment(id:item.id.uuidString,authorID:item.author_id.uuidString,media:"cloud/"+item.media_path,
+                isVideo:item.media_kind=="video",caption:item.caption,category:"Coffee moment",createdAt:date,
+                isOwnMoment:item.author_id==account,moderation:.approved)
+        }.filter{isPostVisible($0)}
+    }
+    func cloudDate(_ value:String)->Date? {
+        let formatter=ISO8601DateFormatter();formatter.formatOptions=[.withInternetDateTime,.withFractionalSeconds]
+        return formatter.date(from:value) ?? ISO8601DateFormatter().date(from:value)
+    }
+    func cloudFeedItem(_ id:String)->CoffeeCloud.FeedMoment? {cloudFeed?.first{$0.id.uuidString==id}}
     func post(_ id:String)->CoffeeMoment? {visiblePosts.first{$0.id==id}}
     func appreciationCount(for post:CoffeeMoment)->Int {
+        if usesCloudWallet {return cloudFeedItem(post.id)?.like_count ?? 0}
         let sample=post.isOwnMoment ? 0:(CollectionConversation.entry(post.id)?.appreciationCount ?? 0)
         return sample+(state.appreciatedMoments.contains(post.id) ? 1:0)
     }
     var tastingNotes:[TastingReply] {TastingReply.collectionSamples+state.tastingReplies}
     func visibleComments(_ momentID:String)->[TastingReply] {
         guard post(momentID) != nil else{return []}
+        if usesCloudWallet,let id=UUID(uuidString:momentID) {
+            return (cloudComments[id] ?? []).compactMap {comment in
+                guard let stamp=comment.created_at,let date=cloudDate(stamp) else{return nil}
+                let reply=TastingReply(id:comment.id.uuidString,momentID:momentID,text:comment.body,createdAt:date,authorID:comment.author_id.uuidString)
+                return isTargetVisible(.comment(reply,owner:state.passport.id.uuidString)) ? reply:nil
+            }.sorted{$0.createdAt<$1.createdAt}
+        }
         return tastingNotes.filter{$0.momentID==momentID && isTargetVisible(.comment($0,owner:state.passport.id.uuidString))}.sorted{$0.createdAt<$1.createdAt}
     }
     func isRoomVisible(_ room:CoffeeTable)->Bool {isTargetVisible(.init(kind:.room,contentReference:room.id,authorID:room.hostMemberID))}
@@ -196,14 +227,25 @@ import Foundation
     func messages(with id:String)->[CoffeeLetter] {
         guard !isUserHidden(id) else{return []}
         if let account=state.cloudAccountID,let peer=UUID(uuidString:id) {
-            return cloudMessages.compactMap {message in
+            return (cloudConversations[peer] ?? cloudMessages).compactMap {message in
                 guard (message.sender_id==account && message.recipient_id==peer) || (message.sender_id==peer && message.recipient_id==account) else {return nil}
                 let formatter=ISO8601DateFormatter();formatter.formatOptions=[.withInternetDateTime,.withFractionalSeconds]
                 let date=formatter.date(from:message.created_at) ?? ISO8601DateFormatter().date(from:message.created_at)
                 guard let date,isTargetVisible(.init(kind:.message,contentReference:message.id.uuidString,authorID:message.sender_id.uuidString)) else {return nil}
+                let kind:CoffeeLetter.Kind
+                let value:String
+                switch message.kind {
+                case "text":kind = .text;value=message.body
+                case "photo","voice":
+                    let suffix=message.kind=="photo" ? ".jpg":".m4a"
+                    let expected=message.sender_id.uuidString.lowercased()+"/message-"+message.id.uuidString.lowercased()+suffix
+                    guard let path=message.media_path,path.lowercased()==expected else{return nil}
+                    kind=message.kind=="photo" ? .photo:.voice;value="cloud/"+path
+                default:return nil
+                }
                 return CoffeeLetter(id:message.id.uuidString,correspondentID:id,
                     authorID:message.sender_id==account ? state.passport.id.uuidString:message.sender_id.uuidString,
-                    kind:.text,value:message.body,createdAt:date,delivery:message.sender_id==account ? .sent:.received)
+                    kind:kind,value:value,createdAt:date,delivery:message.sender_id==account ? .sent:.received)
             }.sorted{$0.createdAt<$1.createdAt}
         }
         return community.messages.filter{message in

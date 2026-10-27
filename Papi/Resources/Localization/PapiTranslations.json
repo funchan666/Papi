@@ -6774,5 +6774,159 @@
     "ar": "يستخدم دفتر القهوة والرصيد هذا الحساب. لا تتوفر استعادة الحساب وبعض ميزات المجتمع بعد.",
     "vi": "Sổ cà phê và số dư dùng tài khoản này. Khôi phục tài khoản và một số tính năng cộng đồng chưa khả dụng.",
     "ko": "커피 노트와 잔액은 이 계정을 사용합니다. 계정 복구와 일부 커뮤니티 기능은 아직 사용할 수 없습니다."
+  },
+  "Recent moments": {
+    "es": "Momentos recientes",
+    "th": "ช่วงเวลาล่าสุด",
+    "ar": "أحدث اللحظات",
+    "vi": "Khoảnh khắc gần đây",
+    "ko": "최근 순간"
+  },
+  "Showing loaded moments": {
+    "es": "Mostrando momentos cargados",
+    "th": "แสดงช่วงเวลาที่โหลดแล้ว",
+    "ar": "عرض اللحظات التي تم تحميلها",
+    "vi": "Đang hiển thị khoảnh khắc đã tải",
+    "ko": "불러온 순간 표시"
+  },
+  "No loaded moments": {
+    "es": "No hay momentos cargados",
+    "th": "ไม่มีช่วงเวลาที่โหลดแล้ว",
+    "ar": "لا توجد لحظات محملة",
+    "vi": "Chưa có khoảnh khắc được tải",
+    "ko": "불러온 순간이 없습니다"
+  },
+  "Load more": {
+    "es": "Cargar más",
+    "th": "โหลดเพิ่มเติม",
+    "ar": "تحميل المزيد",
+    "vi": "Tải thêm",
+    "ko": "더 불러오기"
+  },
+  "Loading moments…": {
+    "es": "Cargando momentos…",
+    "th": "กำลังโหลดช่วงเวลา…",
+    "ar": "جارٍ تحميل اللحظات…",
+    "vi": "Đang tải khoảnh khắc…",
+    "ko": "순간을 불러오는 중…"
+  },
+  "Moments unavailable": {
+    "es": "Momentos no disponibles",
+    "th": "ไม่สามารถโหลดช่วงเวลาได้",
+    "ar": "اللحظات غير متاحة",
+    "vi": "Không thể tải khoảnh khắc",
+    "ko": "순간을 불러올 수 없습니다"
+  },
+  "No moments yet": {
+    "es": "Aún no hay momentos",
+    "th": "ยังไม่มีช่วงเวลา",
+    "ar": "لا توجد لحظات بعد",
+    "vi": "Chưa có khoảnh khắc nào",
+    "ko": "아직 순간이 없습니다"
+  },
+  "Loading comments…": {
+    "es": "Cargando comentarios…",
+    "th": "กำลังโหลดความคิดเห็น…",
+    "ar": "جارٍ تحميل التعليقات…",
+    "vi": "Đang tải bình luận…",
+    "ko": "댓글을 불러오는 중…"
+  },
+  "Comments unavailable": {
+    "es": "Comentarios no disponibles",
+    "th": "ไม่สามารถโหลดความคิดเห็นได้",
+    "ar": "التعليقات غير متاحة",
+    "vi": "Không thể tải bình luận",
+    "ko": "댓글을 불러올 수 없습니다"
+  },
+  "Finish pending comment": {
+    "es": "Completar comentario pendiente",
+    "th": "ดำเนินการส่งความคิดเห็นที่ค้างต่อ",
+    "ar": "إكمال التعليق المعلّق",
+    "vi": "Hoàn tất bình luận đang chờ",
+    "ko": "대기 중인 댓글 마무리"
+  },
+  "Discard pending comment": {
+    "es": "Descartar comentario pendiente",
+    "th": "ยกเลิกความคิดเห็นที่ค้างอยู่",
+    "ar": "تجاهل التعليق المعلّق",
+    "vi": "Bỏ bình luận đang chờ",
+    "ko": "대기 중인 댓글 삭제"
+  },
+  "Selected photos are submitted for review. Save profile text separately.": {
+    "es": "Las fotos seleccionadas se envían a revisión. Guarda el texto del perfil por separado.",
+    "th": "รูปที่เลือกจะถูกส่งตรวจสอบ โปรดบันทึกข้อความโปรไฟล์แยกต่างหาก",
+    "ar": "تُرسل الصور المختارة للمراجعة. احفظ نص الملف الشخصي بشكل منفصل.",
+    "vi": "Ảnh được chọn sẽ được gửi để xét duyệt. Hãy lưu phần chữ của hồ sơ riêng.",
+    "ko": "선택한 사진은 검토를 위해 제출됩니다. 프로필 글은 별도로 저장해 주세요."
+  },
+  "Retry photo upload": {
+    "es": "Reintentar subida de foto",
+    "th": "ลองอัปโหลดรูปอีกครั้ง",
+    "ar": "إعادة محاولة رفع الصورة",
+    "vi": "Thử tải ảnh lên lại",
+    "ko": "사진 업로드 다시 시도"
+  },
+  "Retry photo removal": {
+    "es": "Reintentar eliminación de foto",
+    "th": "ลองลบรูปอีกครั้ง",
+    "ar": "إعادة محاولة إزالة الصورة",
+    "vi": "Thử xóa ảnh lại",
+    "ko": "사진 삭제 다시 시도"
+  },
+  "Retry photos": {
+    "es": "Reintentar fotos",
+    "th": "ลองโหลดรูปอีกครั้ง",
+    "ar": "إعادة محاولة تحميل الصور",
+    "vi": "Thử tải ảnh lại",
+    "ko": "사진 다시 불러오기"
+  },
+  "Finish pending attachment": {
+    "es": "Completar archivo adjunto pendiente",
+    "th": "ดำเนินการส่งไฟล์แนบที่ค้างต่อ",
+    "ar": "إكمال المرفق المعلّق",
+    "vi": "Hoàn tất tệp đính kèm đang chờ",
+    "ko": "대기 중인 첨부 파일 마무리"
+  },
+  "Load earlier messages": {
+    "es": "Cargar mensajes anteriores",
+    "th": "โหลดข้อความก่อนหน้า",
+    "ar": "تحميل الرسائل السابقة",
+    "vi": "Tải tin nhắn trước đó",
+    "ko": "이전 메시지 불러오기"
+  },
+  "Retry messages": {
+    "es": "Reintentar mensajes",
+    "th": "ลองโหลดข้อความอีกครั้ง",
+    "ar": "إعادة محاولة تحميل الرسائل",
+    "vi": "Thử tải tin nhắn lại",
+    "ko": "메시지 다시 불러오기"
+  },
+  "Voice note": {
+    "es": "Nota de voz",
+    "th": "ข้อความเสียง",
+    "ar": "رسالة صوتية",
+    "vi": "Tin nhắn thoại",
+    "ko": "음성 메시지"
+  },
+  "Play voice note": {
+    "es": "Reproducir nota de voz",
+    "th": "เล่นข้อความเสียง",
+    "ar": "تشغيل الرسالة الصوتية",
+    "vi": "Phát tin nhắn thoại",
+    "ko": "음성 메시지 재생"
+  },
+  "Stop voice note": {
+    "es": "Detener nota de voz",
+    "th": "หยุดข้อความเสียง",
+    "ar": "إيقاف الرسالة الصوتية",
+    "vi": "Dừng tin nhắn thoại",
+    "ko": "음성 메시지 중지"
+  },
+  "Loading voice note…": {
+    "es": "Cargando nota de voz…",
+    "th": "กำลังโหลดข้อความเสียง…",
+    "ar": "جارٍ تحميل الرسالة الصوتية…",
+    "vi": "Đang tải tin nhắn thoại…",
+    "ko": "음성 메시지를 불러오는 중…"
   }
 }

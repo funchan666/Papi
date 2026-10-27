@@ -90,8 +90,12 @@ struct CoffeeJournalView:View {
                             Image("coffeeUpdates").resizable().scaledToFit().frame(width:22,height:26)
                             PapiText("Coffee Updates").font(CoffeeType.face(.headline))
                             Spacer()
-                            PapiText("Coffee collection").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.trailing).fixedSize(horizontal:false,vertical:true)
+                            PapiText(store.usesCloudWallet ? "Recent moments":"Coffee collection").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.trailing).fixedSize(horizontal:false,vertical:true)
                         }
+                        if store.usesCloudWallet && store.cloudFeed==nil {
+                            PapiText(store.cloudFeedBusy ? "Loading moments…":"Moments unavailable")
+                            PapiTextButton("Retry"){Task {await store.refreshCloudFeed()}}.disabled(store.cloudFeedBusy)
+                        } else if store.usesCloudWallet && store.visiblePosts.isEmpty {PapiEmpty(title:"No moments yet")}
                         let count=typeSize.isAccessibilitySize ? 1:max(1,Int((contentWidth+12)/182))
                         let tileWidth=max(0,(contentWidth-CGFloat(count-1)*12)/CGFloat(count))
                         HStack(alignment:.top,spacing:12) {
@@ -103,10 +107,11 @@ struct CoffeeJournalView:View {
                                 }.frame(width:tileWidth)
                             }
                         }
+                        if store.usesCloudWallet && store.cloudFeedHasMore {PapiTextButton("Load more"){Task {await store.loadMoreCloudFeed()}}.disabled(store.cloudFeedBusy)}
                     }.frame(width:contentWidth,alignment:.leading).padding(.horizontal,16).padding(.top,12).padding(.bottom,20).frame(width:viewportWidth).frame(maxWidth:.infinity)
                 }.scrollDismissesKeyboard(.interactively).frame(width:geo.size.width,height:geo.size.height).clipped()
             }
-        }
+        }.task(id:store.state.cloudAccountID) {if store.usesCloudWallet {await store.refreshCloudFeed()}}
     }
 }
 struct CoffeeMomentTile:View {
@@ -118,7 +123,8 @@ struct CoffeeMomentTile:View {
         VStack(spacing:0) {
             Button {router.go(.post(post.id))} label:{
                 ZStack(alignment:.topTrailing) {
-                    PapiImage(name:post.media).frame(height:height).frame(maxWidth:.infinity).clipped()
+                    if post.isVideo && post.media.hasPrefix("cloud/") {PapiImage(name:"emptyCup").frame(height:height).frame(maxWidth:.infinity).clipped()}
+                    else {PapiImage(name:post.media).frame(height:height).frame(maxWidth:.infinity).clipped()}
                     if post.isVideo {PapiText("Video").font(CoffeeType.face(.caption,weight:.bold)).padding(7).background(Color.coffee.opacity(0.85),in:Capsule()).foregroundStyle(.white).padding(8)}
                 }
             }.buttonStyle(.plain)
@@ -138,21 +144,21 @@ struct CoffeeMomentReactions:View {
     var openComments:()->Void
     var body:some View {
         HStack(spacing:12) {
-            Button {store.toggleLike(post.id)} label:{
+            Button {if store.usesCloudWallet {if let id=UUID(uuidString:post.id),let item=store.cloudFeedItem(post.id) {Task {await store.changeCloudReaction(id,bookmarks:false,enabled:!item.liked)}}} else {store.toggleLike(post.id)}} label:{
                 HStack(spacing:4) {
-                    Image("like").resizable().scaledToFit().frame(width:22,height:22).opacity(store.state.appreciatedMoments.contains(post.id) ? 1:0.48)
+                    Image("like").resizable().scaledToFit().frame(width:22,height:22).opacity((store.usesCloudWallet ? (store.cloudFeedItem(post.id)?.liked ?? false):store.state.appreciatedMoments.contains(post.id)) ? 1:0.48)
                     Text(store.appreciationCount(for:post),format:.number).monospacedDigit().fixedSize()
                 }.frame(minWidth:44,minHeight:44)
-            }.papiAccessibilityLabel(store.state.appreciatedMoments.contains(post.id) ? "Unlike":"Like")
+            }.disabled(store.usesCloudWallet && store.cloudFeedBusy).papiAccessibilityLabel((store.usesCloudWallet ? (store.cloudFeedItem(post.id)?.liked ?? false):store.state.appreciatedMoments.contains(post.id)) ? "Unlike":"Like")
                 .accessibilityValue(Text(store.appreciationCount(for:post),format:.number))
             Button(action:openComments) {
                 HStack(spacing:4) {
                     Image("comment").resizable().scaledToFit().frame(width:22,height:22)
-                    Text(store.visibleComments(post.id).count,format:.number).monospacedDigit().fixedSize()
+                    Text(store.usesCloudWallet ? (store.cloudFeedItem(post.id)?.comment_count ?? 0):store.visibleComments(post.id).count,format:.number).monospacedDigit().fixedSize()
                 }.frame(minWidth:44,minHeight:44)
-            }.papiAccessibilityLabel("Open comments").accessibilityValue(Text(store.visibleComments(post.id).count,format:.number))
+            }.papiAccessibilityLabel("Open comments").accessibilityValue(Text(store.usesCloudWallet ? (store.cloudFeedItem(post.id)?.comment_count ?? 0):store.visibleComments(post.id).count,format:.number))
             if showsBookmark {
-                PapiIconButton(asset:"star",label:"Save coffee moment",size:24){store.toggleBookmark(post.id)}.opacity(store.state.keptMoments.contains(post.id) ? 1:0.45)
+                PapiIconButton(asset:"star",label:"Save coffee moment",size:24){if store.usesCloudWallet {if let id=UUID(uuidString:post.id),let item=store.cloudFeedItem(post.id) {Task {await store.changeCloudReaction(id,bookmarks:true,enabled:!item.bookmarked)}}} else {store.toggleBookmark(post.id)}}.disabled(store.usesCloudWallet && store.cloudFeedBusy).opacity((store.usesCloudWallet ? (store.cloudFeedItem(post.id)?.bookmarked ?? false):store.state.keptMoments.contains(post.id)) ? 1:0.45)
             }
             Spacer(minLength:0)
         }.font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.coffee).buttonStyle(.plain)
@@ -188,7 +194,8 @@ struct CoffeeMomentView:View {
                                         Spacer(minLength:0)
                                     }
                                     let mediaHeight=min(360,max(220,(bounds.width > 0 ? bounds.width:320)*0.78))
-                                    if post.isVideo {CoffeePlayerView(media:post.media).frame(height:mediaHeight)}
+                                    if post.isVideo && post.media.hasPrefix("cloud/") {CloudMomentVideo(media:post.media).frame(height:mediaHeight)}
+                                    else if post.isVideo {CoffeePlayerView(media:post.media).frame(height:mediaHeight)}
                                     else {
                                         Button {router.go(.photo(post.media))} label:{
                                             PapiImage(name:post.media).frame(height:mediaHeight).clipShape(RoundedRectangle(cornerRadius:18))
@@ -209,17 +216,21 @@ struct CoffeeMomentView:View {
                                     }
                                     Spacer(minLength:0)
                                 }.id("cup-notes")
-                                if tastingReplies.isEmpty {PapiText("Keep a tasting note or thought about this moment.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)}
+                                if store.usesCloudWallet,let id=UUID(uuidString:momentID),store.cloudComments[id]==nil {
+                                    PapiText(store.cloudCommentsBusy ? "Loading comments…":"Comments unavailable")
+                                    PapiTextButton("Retry"){Task {await store.refreshCloudComments(id)}}.disabled(store.cloudCommentsBusy)
+                                } else if tastingReplies.isEmpty {PapiText("Keep a tasting note or thought about this moment.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)}
                                 ForEach(tastingReplies) { note in
                                     HStack(alignment:.top,spacing:10) {
                                         PapiUserLink(userID:note.authorID ?? store.state.passport.id.uuidString,size:38,showsName:false)
                                         VStack(alignment:.leading,spacing:6) {
                                             Button {router.go(.person(note.authorID ?? store.state.passport.id.uuidString))} label:{PapiText(verbatim:store.person(note.authorID ?? store.state.passport.id.uuidString)?.name ?? "My coffee corner").font(CoffeeType.face(.caption,weight:.bold))}.buttonStyle(.plain)
                                             PapiText(verbatim:note.text).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
+                                            if store.usesCloudWallet,let moment=UUID(uuidString:momentID),let noteID=UUID(uuidString:note.id),let value=store.cloudComments[moment]?.first(where:{$0.id==noteID}),value.moderation_status != "approved" {PapiText("Under review").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)}
                                             Text(note.createdAt,style:.date).font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
                                         }.frame(maxWidth:.infinity,alignment:.leading)
                                         PapiIconButton(asset:"more",label:"Comment options",size:19) {router.sheet = .safety(.comment(note,owner:store.state.passport.id.uuidString))}
-                                        if note.authorID==nil || note.authorID==store.state.passport.id.uuidString {PapiIconButton(asset:"trash",label:"Delete note",size:19) {_ = store.commit{$0.tastingReplies.removeAll{$0.id==note.id}}}}
+                                        if note.authorID==nil || note.authorID==store.state.passport.id.uuidString || note.authorID==store.state.cloudAccountID?.uuidString {PapiIconButton(asset:"trash",label:"Delete note",size:19) {if store.usesCloudWallet {if let id=UUID(uuidString:note.id),let moment=UUID(uuidString:momentID) {Task {await store.deleteCloudComment(id,moment:moment)}}} else {_ = store.commit{$0.tastingReplies.removeAll{$0.id==note.id}}}}.disabled(store.cloudCommentsBusy)}
                                     }.padding(14).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.88),in:RoundedRectangle(cornerRadius:18))
                                 }
                             }.padding(.horizontal,16).padding(.top,8).padding(.bottom,20).frame(maxWidth:760).frame(maxWidth:.infinity)
@@ -227,16 +238,21 @@ struct CoffeeMomentView:View {
                         .scrollDismissesKeyboard(.interactively)
                         .safeAreaInset(edge:.bottom,spacing:0) {
                             PapiInputBar(background:.cream) {
-                                PapiInput("Tell your opinion…",text:$comment,axis:.vertical).lineLimit(1...3).foregroundStyle(Color.coffee).tint(Color.coffee).padding(12).background(Color.white,in:RoundedRectangle(cornerRadius:18))
+                                PapiInput("Tell your opinion…",text:$comment,axis:.vertical).lineLimit(1...3).foregroundStyle(Color.coffee).tint(Color.coffee).padding(12).background(Color.white,in:RoundedRectangle(cornerRadius:18)).disabled(store.usesCloudWallet && store.state.pendingCloudComment != nil)
                             } actions: {
-                                PapiTextButton("SAVE") {if store.addComment(momentID:momentID,text:comment) {comment=""}}.font(CoffeeType.face(.caption,weight:.bold)).foregroundStyle(.white).padding(12).frame(minHeight:44).background(Color.coffee,in:Capsule()).disabled(comment.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty).opacity(comment.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty ? 0.45:1)
+                                PapiTextButton("SAVE") {if store.usesCloudWallet {if let id=UUID(uuidString:momentID) {let body=comment;Task {if await store.submitCloudComment(moment:id,text:body),comment==body {comment=""}}}} else if store.addComment(momentID:momentID,text:comment) {comment=""}}.font(CoffeeType.face(.caption,weight:.bold)).foregroundStyle(.white).padding(12).frame(minHeight:44).background(Color.coffee,in:Capsule()).disabled(comment.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty || store.cloudCommentsBusy || (store.state.pendingCloudComment != nil && store.state.pendingCloudComment?.momentID.uuidString != momentID)).opacity(comment.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty ? 0.45:1)
                             }
                         }
                     }
                 }.overlay {
-                    if confirmDelete {PapiDialog(title:"Remove this coffee moment?",message:"This moment will be removed from your coffee book. Coins already used are not refunded.",confirm:"Delete post",cancel:"Keep post",action:{store.deletePost(momentID);confirmDelete=false;dismiss()},dismiss:{confirmDelete=false})}
+                    if confirmDelete {PapiDialog(title:"Remove this coffee moment?",message:"This moment will be removed from your coffee book. Coins already used are not refunded.",confirm:"Delete post",cancel:"Keep post",action:{confirmDelete=false;if store.usesCloudWallet {if let id=UUID(uuidString:momentID) {Task {if await store.deleteCloudSubmission(id) {await store.refreshCloudFeedItem(id);dismiss()}}}} else {store.deletePost(momentID);dismiss()}},dismiss:{confirmDelete=false})}
                 }
             } else {VStack(spacing:0){PapiHeader("Coffee moment");ScrollView {PapiEmpty(title:"This content is unavailable")}}}
+        }.task(id:momentID) {
+            if store.usesCloudWallet,let id=UUID(uuidString:momentID) {
+                if let pending=store.state.pendingCloudComment,pending.momentID==id {comment=pending.body}
+                await store.refreshCloudComments(id)
+            }
         }
     }
 }
@@ -363,6 +379,10 @@ struct PhotoDetailView:View {
     @State private var selection=0
     @State private var started=false
     private var photos:[String] {
+        if name.hasPrefix("cloud/"),let account=store.state.cloudAccountID {
+            let cloud=(store.cloudProfileImages[account] ?? []).filter{$0.kind=="album" && $0.moderation_status=="approved"}.compactMap{store.profileImageReference($0.media_path,owner:account)}
+            if cloud.contains(name) {return cloud}
+        }
         let album=store.state.passport.photos
         return album.contains(name) ? album:[name]
     }

@@ -19,6 +19,19 @@ actor CoffeeCloud {
         let cover_path: String?
         let revision: Int?
     }
+    struct ProfileImage:Decodable,Identifiable {
+        let id:UUID
+        let owner_id:UUID
+        let kind:String
+        let media_path:String
+        let moderation_status:String
+        let created_at:String
+    }
+    struct ProfileImageSummary:Decodable {
+        let owner_id:UUID
+        let avatar_path:String?
+        let cover_path:String?
+    }
 
     struct Follow: Codable {
         let follower_id: UUID
@@ -29,6 +42,8 @@ actor CoffeeCloud {
         let sender_id: UUID
         let recipient_id: UUID
         let body: String
+        let kind: String
+        let media_path: String?
         let created_at: String
     }
     struct Moment: Codable, Identifiable {
@@ -39,6 +54,19 @@ actor CoffeeCloud {
         let media_kind: String
         let moderation_status: String
         let created_at: String
+    }
+    struct FeedMoment:Decodable,Identifiable {
+        let id:UUID
+        let author_id:UUID
+        let caption:String
+        let media_path:String
+        let media_kind:String
+        let moderation_status:String
+        let created_at:String
+        let like_count:Int
+        let comment_count:Int
+        let liked:Bool
+        let bookmarked:Bool
     }
     struct Comment: Codable, Identifiable {
         let id: UUID
@@ -128,6 +156,15 @@ actor CoffeeCloud {
         let status: String
         let created_at: String
     }
+    struct CallSession:Decodable,Identifiable {
+        let id:UUID
+        let caller_id:UUID
+        let recipient_id:UUID
+        let status:String
+        let created_at:String
+        let expires_at:String
+    }
+    struct CallToken:Decodable {let server_url:String;let participant_token:String}
     struct Report: Codable {
         let id: UUID
         let reporter_id: UUID
@@ -144,8 +181,18 @@ actor CoffeeCloud {
     private struct RemovedMedia: Encodable { let p_path: String }
     private struct BrewBookSave: Encodable { let p_request: UUID; let p_revision: Int; let p_contents: AnyJSON }
     private struct MessageSend: Encodable { let p_id: UUID; let p_recipient: UUID; let p_body: String }
+    private struct MessageAttachment: Encodable {let p_id:UUID;let p_recipient:UUID;let p_kind:String}
+    private struct ConversationCursor:Encodable {let p_peer:UUID;let p_before_time:String?;let p_before_id:UUID?}
     private struct PairAction: Encodable { let p_member: UUID; let p_enabled: Bool }
     private struct ProfilePatch: Encodable { let display_name: String; let biography: String }
+    private struct FeedCursor: Encodable { let p_before_time:String?;let p_before_id:UUID?;let p_target:UUID? }
+    private struct ProfileMembers:Encodable {let p_members:[UUID]}
+    private struct ProfileImageSubmit:Encodable {let p_id:UUID;let p_kind:String}
+    private struct ProfileImageID:Encodable {let p_id:UUID}
+    private struct CallRequest:Encodable {let p_id:UUID;let p_recipient:UUID}
+    private struct CallAnswer:Encodable {let p_id:UUID;let p_accept:Bool}
+    private struct CallID:Encodable {let p_id:UUID}
+    private struct CallTokenRequest:Encodable {let call_id:UUID}
     private struct Submission: Encodable {
         let moment_id: UUID
         let caption: String
@@ -222,6 +269,45 @@ actor CoffeeCloud {
         return try await client.from("coffee_profiles").select("id,display_name,biography,avatar_path,cover_path,revision").execute().value
     }
 
+    func profileImageSummaries(_ members:[UUID],account:UUID) async throws -> [ProfileImageSummary] {
+        _ = try await identity(account)
+        guard !members.isEmpty else{return []}
+        let result:[ProfileImageSummary] = try await client.rpc("coffee_profile_image_summary",params:ProfileMembers(p_members:members)).execute().value
+        _ = try await identity(account)
+        return result
+    }
+
+    func profileImages(owner:UUID,account:UUID) async throws -> [ProfileImage] {
+        _ = try await identity(account)
+        let result:[ProfileImage] = try await client.from("coffee_profile_images").select().eq("owner_id",value:owner.uuidString.lowercased()).order("created_at",ascending:false).limit(500).execute().value
+        _ = try await identity(account)
+        return result
+    }
+    func profileImage(_ id:UUID,account:UUID) async throws -> ProfileImage? {
+        _ = try await identity(account)
+        let rows:[ProfileImage] = try await client.from("coffee_profile_images").select().eq("id",value:id.uuidString.lowercased()).limit(1).execute().value
+        _ = try await identity(account)
+        return rows.first
+    }
+
+    func submitProfileImage(id:UUID,kind:String,account:UUID) async throws {
+        _ = try await identity(account)
+        let result:Bool = try await client.rpc("submit_coffee_profile_image",params:ProfileImageSubmit(p_id:id,p_kind:kind)).execute().value
+        guard result else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
+    }
+
+    func deleteProfileImage(id:UUID,account:UUID) async throws {
+        let user=try await identity(account)
+        let path:String = try await client.rpc("remove_coffee_profile_image",params:ProfileImageID(p_id:id)).execute().value
+        let expected=user.uuidString.lowercased()+"/profile-"+id.uuidString.lowercased()+".jpg"
+        guard path==expected else {throw ConnectionError.actionUnavailable}
+        _ = try await client.storage.from("coffee-media").remove(paths:[path])
+        let remains:Bool = try await client.rpc("removed_profile_media_exists",params:ProfileImageID(p_id:id)).execute().value
+        guard !remains else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
+    }
+
     func updateProfile(name:String,biography:String,revision:Int,account:UUID) async throws -> Profile {
         let user=try await identity(account)
         let patch=ProfilePatch(display_name:name,biography:biography)
@@ -259,6 +345,14 @@ actor CoffeeCloud {
         return try await client.from("coffee_posts").select().order("created_at", ascending: false).execute().value
     }
 
+    func recentMoments(for account:UUID,before:FeedMoment?=nil,target:UUID?=nil) async throws -> [FeedMoment] {
+        _ = try await identity(account)
+        let cursor=FeedCursor(p_before_time:before?.created_at,p_before_id:before?.id,p_target:target)
+        let moments:[FeedMoment] = try await client.rpc("recent_coffee_moments",params:cursor).execute().value
+        _ = try await identity(account)
+        return moments
+    }
+
     func ownMoments(for account: UUID) async throws -> [Moment] {
         let user=try await identity(account)
         let moments:[Moment] = try await client.from("coffee_posts").select()
@@ -281,7 +375,7 @@ actor CoffeeCloud {
     func comments(for moment: UUID, account: UUID) async throws -> [Comment] {
         _ = try await identity(account)
         return try await client.from("coffee_comments").select().eq("post_id", value: moment.uuidString.lowercased())
-            .order("created_at", ascending: true).execute().value
+            .order("created_at", ascending: false).limit(100).execute().value
     }
 
     func follows(for account: UUID) async throws -> [Follow] {
@@ -322,9 +416,62 @@ actor CoffeeCloud {
         _ = try await identity(account)
     }
 
+    func callSessions(account:UUID) async throws -> [CallSession] {
+        _ = try await identity(account)
+        let rows:[CallSession] = try await client.from("coffee_calls").select().order("created_at",ascending:false).limit(100).execute().value
+        _ = try await identity(account)
+        return rows
+    }
+
+    func requestCall(id:UUID,recipient:UUID,account:UUID) async throws -> UUID {
+        _ = try await identity(account)
+        let result:UUID = try await client.rpc("request_coffee_call",params:CallRequest(p_id:id,p_recipient:recipient)).execute().value
+        _ = try await identity(account)
+        return result
+    }
+
+    func answerCall(id:UUID,accept:Bool,account:UUID) async throws -> Bool {
+        _ = try await identity(account)
+        let result:Bool = try await client.rpc("answer_coffee_call",params:CallAnswer(p_id:id,p_accept:accept)).execute().value
+        _ = try await identity(account)
+        return result
+    }
+
+    func endCall(id:UUID,account:UUID) async throws {
+        _ = try await identity(account)
+        let result:Bool = try await client.rpc("end_coffee_call",params:CallID(p_id:id)).execute().value
+        guard result else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
+    }
+
+    func callToken(id:UUID,account:UUID) async throws -> CallToken {
+        _ = try await identity(account)
+        let result:CallToken = try await client.functions.invoke("livekit-call-token",options:FunctionInvokeOptions(body:CallTokenRequest(call_id:id)))
+        guard let url=URL(string:result.server_url),url.scheme=="wss",url.host != nil,!result.participant_token.isEmpty else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
+        return result
+    }
+
+    func canJoinCall(id:UUID,account:UUID) async throws -> Bool {
+        _ = try await identity(account)
+        let allowed:Bool = try await client.rpc("can_join_coffee_call",params:CallID(p_id:id)).execute().value
+        _ = try await identity(account)
+        return allowed
+    }
+
     func messages(for account: UUID) async throws -> [Message] {
         _ = try await identity(account)
-        return try await client.from("coffee_messages").select().order("created_at", ascending: true).execute().value
+        let result:[Message] = try await client.rpc("coffee_message_inbox").execute().value
+        _ = try await identity(account)
+        return result
+    }
+
+    func conversation(for peer:UUID,account:UUID,before:Message?=nil) async throws -> [Message] {
+        _ = try await identity(account)
+        let cursor=ConversationCursor(p_peer:peer,p_before_time:before?.created_at,p_before_id:before?.id)
+        let messages:[Message] = try await client.rpc("coffee_conversation_page",params:cursor).execute().value
+        _ = try await identity(account)
+        return messages
     }
 
     func sendMessage(_ body: String, to recipient: UUID, account: UUID, messageID: UUID) async throws {
@@ -333,11 +480,37 @@ actor CoffeeCloud {
         guard sent else {throw ConnectionError.actionUnavailable}
         _ = try await identity(account)
     }
+    func sendAttachment(_ kind:String,to recipient:UUID,account:UUID,messageID:UUID) async throws {
+        _ = try await identity(account)
+        let saved:Bool = try await client.rpc("send_coffee_attachment",params:MessageAttachment(p_id:messageID,p_recipient:recipient,p_kind:kind)).execute().value
+        guard saved else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
+    }
 
     func sendComment(_ body: String, on moment: UUID, account: UUID, commentID: UUID) async throws {
         let user = try await identity(account)
         struct Draft: Encodable { let id: UUID; let post_id: UUID; let author_id: UUID; let body: String }
-        try await client.from("coffee_comments").insert(Draft(id: commentID, post_id: moment, author_id: user, body: body)).execute()
+        do {try await client.from("coffee_comments").insert(Draft(id: commentID, post_id: moment, author_id: user, body: body)).execute()}
+        catch {
+            let rows:[Comment] = try await client.from("coffee_comments").select().eq("id",value:commentID.uuidString.lowercased()).execute().value
+            guard rows.count==1,let saved=rows.first,saved.author_id==user,saved.post_id==moment,saved.body==body else {throw error}
+        }
+        _ = try await identity(account)
+    }
+
+    func comment(_ id:UUID,account:UUID) async throws -> Comment? {
+        _ = try await identity(account)
+        let rows:[Comment] = try await client.from("coffee_comments").select().eq("id",value:id.uuidString.lowercased()).limit(1).execute().value
+        _ = try await identity(account)
+        return rows.first
+    }
+
+    func deleteComment(_ id:UUID,account:UUID) async throws {
+        let user=try await identity(account)
+        try await client.from("coffee_comments").delete().eq("id",value:id.uuidString.lowercased()).eq("author_id",value:user.uuidString.lowercased()).execute()
+        let remaining:[Comment] = try await client.from("coffee_comments").select().eq("id",value:id.uuidString.lowercased()).execute().value
+        guard remaining.isEmpty else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
     }
 
     func report(_ kind: String, subject: UUID, reason: String, account: UUID, reportID: UUID) async throws {
@@ -380,11 +553,20 @@ actor CoffeeCloud {
     func setReaction(_ moment: UUID, account: UUID, bookmarks: Bool, enabled: Bool) async throws {
         let user = try await identity(account)
         let table = bookmarks ? "coffee_bookmarks" : "coffee_likes"
-        if enabled { try await client.from(table).insert(Reaction(moment_id: moment, member_id: user)).execute() }
+        if enabled {
+            do {try await client.from(table).insert(Reaction(moment_id: moment, member_id: user)).execute()}
+            catch {
+                let rows:[Reaction] = try await client.from(table).select("moment_id,member_id").eq("member_id",value:user.uuidString.lowercased()).eq("moment_id",value:moment.uuidString.lowercased()).execute().value
+                guard rows.count==1 else {throw error}
+            }
+        }
         else {
             try await client.from(table).delete().eq("member_id", value: user.uuidString.lowercased())
                 .eq("moment_id", value: moment.uuidString.lowercased()).execute()
         }
+        let rows:[Reaction] = try await client.from(table).select("moment_id,member_id").eq("member_id",value:user.uuidString.lowercased()).eq("moment_id",value:moment.uuidString.lowercased()).execute().value
+        guard (rows.count==1)==enabled else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
     }
 
     func wallet(for account: UUID) async throws -> Wallet {
@@ -515,11 +697,14 @@ actor CoffeeCloud {
         return try await client.rpc("submit_coffee_moment", params: Submission(moment_id: id, caption: caption, media_path: path, media_kind: kind)).execute().value
     }
 
-    func uploadMedia(file: URL, objectID: UUID, contentType: String, account: UUID) async throws -> String {
+    func uploadMedia(file: URL, objectID: UUID, contentType: String, account: UUID, profileImage:Bool = false, messageAttachment:Bool = false) async throws -> String {
         let user = try await identity(account)
         let suffix = file.pathExtension.lowercased()
         let safeSuffix = suffix.unicodeScalars.allSatisfy { $0.isASCII && CharacterSet.alphanumerics.contains($0) } ? suffix : ""
-        let name = objectID.uuidString.lowercased() + (safeSuffix.isEmpty ? "" : "." + safeSuffix)
+        if profileImage && (safeSuffix != "jpg" || contentType != "image/jpeg") {throw ConnectionError.actionUnavailable}
+        if messageAttachment && !((safeSuffix=="jpg" && contentType=="image/jpeg") || (safeSuffix=="m4a" && contentType=="audio/mp4")) {throw ConnectionError.actionUnavailable}
+        guard !(profileImage && messageAttachment) else {throw ConnectionError.actionUnavailable}
+        let name = (profileImage ? "profile-":(messageAttachment ? "message-":"")) + objectID.uuidString.lowercased() + (safeSuffix.isEmpty ? "" : "." + safeSuffix)
         let path = user.uuidString.lowercased() + "/" + name
         do {
             try await client.storage.from("coffee-media").upload(path, fileURL: file, options: FileOptions(contentType: contentType))
@@ -534,9 +719,10 @@ actor CoffeeCloud {
         return path
     }
 
-    func mediaURL(path: String, account: UUID) async throws -> URL {
+    func mediaURL(path: String, account: UUID, expiresIn:Int = 60) async throws -> URL {
         _ = try await identity(account)
-        let url=try await client.storage.from("coffee-media").createSignedURL(path: path, expiresIn: 60)
+        guard (1...300).contains(expiresIn) else {throw ConnectionError.actionUnavailable}
+        let url=try await client.storage.from("coffee-media").createSignedURL(path: path, expiresIn: expiresIn)
         _ = try await identity(account)
         return url
     }

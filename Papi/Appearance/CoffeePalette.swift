@@ -16,6 +16,9 @@ struct PapiImage: View {
     @State private var posterName:String?
     @Environment(\.scenePhase) private var scenePhase
     var body: some View {
+        if name.hasPrefix("cloud/") {
+            PrivateSubmissionPhoto(path:String(name.dropFirst(6)),ownerOnly:false,fit:fit)
+        } else {
         GeometryReader {proxy in
             Group {
                 if let image = CoffeeMedia.image(name) ?? (posterName==name ? poster:nil) {
@@ -36,6 +39,7 @@ struct PapiImage: View {
             let result=await CoffeeMedia.preparePoster(source)
             guard !Task.isCancelled else{return}
             posterName=source;poster=result
+        }
         }
     }
 }

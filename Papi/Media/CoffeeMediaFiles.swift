@@ -164,6 +164,8 @@ enum CoffeeMedia {
 // Signed URLs and decoded images for private submissions stay in memory only.
 struct PrivateSubmissionPhoto:View {
     let path:String
+    var ownerOnly=true
+    var fit=false
     @EnvironmentObject private var store:CoffeeHouse
     @Environment(\.scenePhase) private var scenePhase
     @State private var image:UIImage?
@@ -179,12 +181,14 @@ struct PrivateSubmissionPhoto:View {
     var body:some View {
         Group {
             if store.state.signedIn,scenePhase == .active,imageOwner==store.state.cloudAccountID,imagePath==path,let image {
-                Image(uiImage:image).resizable().scaledToFill()
+                Image(uiImage:image).resizable().aspectRatio(contentMode:fit ? .fit:.fill)
             } else {Image("emptyCup").resizable().scaledToFit().padding(8).background(Color.cream)}
         }.clipped().task(id:"\(store.state.cloudAccountID?.uuidString ?? "none")|\(path)|\(scenePhase == .active)|\(store.state.signedIn)") {
             image=nil;imageOwner=nil;imagePath=nil
             guard scenePhase == .active,store.state.signedIn,let account=store.state.cloudAccountID,
-                  path.lowercased().hasPrefix(account.uuidString.lowercased()+"/") else{return}
+                  path.split(separator:"/").count==2,!path.contains(".."),
+                  let owner=UUID(uuidString:String(path.split(separator:"/")[0])),
+                  !ownerOnly || owner==account else{return}
             do {
                 let url=try await CoffeeCloud.shared.mediaURL(path:path,account:account)
                 guard url.scheme=="https",url.host=="cquoffowtjnxmgaxavym.supabase.co" else{return}

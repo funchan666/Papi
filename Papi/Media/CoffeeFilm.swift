@@ -23,7 +23,7 @@ import AVFoundation
             Task {@MainActor in self?.pause()}
         }
     }
-    func load(_ media:String,force:Bool=false) {
+    func load(_ media:String,remoteURL:URL?=nil,force:Bool=false) {
         guard loaded != media || force else{return}
         pause()
         statusObservation=nil;durationObservation=nil
@@ -31,7 +31,7 @@ import AVFoundation
         finishObserver=nil
         loaded=nil;position=0;duration=0
         player.replaceCurrentItem(with:nil)
-        guard let url=CoffeeMedia.url(media) else {failure="This video is unavailable.";return}
+        guard let url=remoteURL ?? CoffeeMedia.url(media) else {failure="This video is unavailable.";return}
         loaded=media;failure=nil
         let item=AVPlayerItem(url:url);player.replaceCurrentItem(with:item)
         durationObservation=item.observe(\.duration,options:[.initial,.new]) { [weak self] item,_ in
@@ -72,6 +72,8 @@ import AVFoundation
 }
 struct CoffeePlayerView:View {
     let media:String
+    var remoteURL:URL? = nil
+    var onRetry:(()->Void)? = nil
     @ScaledMetric(relativeTo:.body) private var seekWidth:CGFloat=120
     @StateObject private var playback=CoffeeFilmPlayback()
     @Environment(\.scenePhase) private var scenePhase
@@ -81,7 +83,7 @@ struct CoffeePlayerView:View {
                 Color.black
                 PlayerSurface(player:playback.player)
                 if let failure=playback.failure {
-                    ScrollView {VStack(spacing:14) {PapiText(failure);PapiTextButton("Retry"){playback.load(media,force:true)}.frame(minHeight:44)}
+                    ScrollView {VStack(spacing:14) {PapiText(failure);PapiTextButton("Retry"){if let onRetry {onRetry()} else {playback.load(media,remoteURL:remoteURL,force:true)}}.frame(minHeight:44)}
                         .foregroundStyle(.white).multilineTextAlignment(.center).padding(20)}
                 }
             }
@@ -92,11 +94,44 @@ struct CoffeePlayerView:View {
                     PapiText(time(playback.position)).font(CoffeeType.face(.caption)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
                 }
             }.padding(.horizontal,14).background(Color.coffee).foregroundStyle(.white)
-        }.clipShape(RoundedRectangle(cornerRadius:18)).onAppear{playback.load(media)}.onDisappear{playback.pause()}
-            .onChange(of:media){_,value in playback.load(value)}
+        }.clipShape(RoundedRectangle(cornerRadius:18)).onAppear{playback.load(media,remoteURL:remoteURL)}.onDisappear{playback.pause()}
+            .onChange(of:media){_,value in playback.load(value,remoteURL:remoteURL)}
+            .onChange(of:remoteURL){_,value in playback.load(media,remoteURL:value,force:true)}
             .onChange(of:scenePhase){_,phase in if phase != .active {playback.pause()}}
     }
     private func time(_ t:Double)->String {let value=Int(max(0,t));return String(format:"%d:%02d",value/60,value%60)}
+}
+struct CloudMomentVideo:View {
+    let media:String
+    @EnvironmentObject private var store:CoffeeHouse
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var signedURL:URL?
+    @State private var owner:UUID?
+    @State private var failed=false
+    @State private var reload=0
+    var body:some View {
+        Group {
+            if let signedURL,let owner,store.state.signedIn,store.state.cloudAccountID==owner,scenePhase == .active {
+                CoffeePlayerView(media:media,remoteURL:signedURL,onRetry:{reload+=1})
+            } else {
+                VStack(spacing:12) {
+                    PapiText(failed ? "This video is unavailable.":"Loading video…")
+                    if failed {PapiTextButton("Retry"){reload+=1}}
+                }.frame(maxWidth:.infinity,maxHeight:.infinity).background(Color.coffee).foregroundStyle(.white)
+            }
+        }.task(id:"\(store.state.cloudAccountID?.uuidString ?? "none")|\(media)|\(scenePhase == .active)|\(reload)") {
+            signedURL=nil;owner=nil;failed=false
+            guard scenePhase == .active,store.state.signedIn,let account=store.state.cloudAccountID,
+                  media.hasPrefix("cloud/"),store.visiblePosts.contains(where:{$0.media==media && $0.isVideo}) else{return}
+            do {
+                let url=try await CoffeeCloud.shared.mediaURL(path:String(media.dropFirst(6)),account:account,expiresIn:300)
+                guard !Task.isCancelled,store.state.signedIn,store.state.cloudAccountID==account,
+                      store.visiblePosts.contains(where:{$0.media==media && $0.isVideo}),
+                      url.scheme=="https",url.host=="cquoffowtjnxmgaxavym.supabase.co" else{return}
+                owner=account;signedURL=url
+            } catch {if !Task.isCancelled {failed=true}}
+        }
+    }
 }
 private struct PlayerSurface:UIViewRepresentable {
     let player:AVPlayer

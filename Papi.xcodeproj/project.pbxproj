@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A32000000000000000000001 /* CoffeeLiveCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32000000000000000000002 /* CoffeeLiveCall.swift */; };
+		A32000000000000000000003 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = A32000000000000000000004 /* LiveKit */; };
 		A31000000000000000000001 /* CoffeeCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31000000000000000000002 /* CoffeeCloud.swift */; };
 		A31000000000000000000003 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = A31000000000000000000004 /* Supabase */; };
 		099EEFA527F597BA007303BD /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 27A0CDF6DC8AD2039DB2FE42 /* Fonts */; };
@@ -48,6 +50,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A32000000000000000000002 /* CoffeeLiveCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeLiveCall.swift; sourceTree = "<group>"; };
 		A31000000000000000000002 /* CoffeeCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeCloud.swift; sourceTree = "<group>"; };
 		0CCC58D9339AE955DD821BFC /* CoffeeMediaFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeMediaFiles.swift; sourceTree = "<group>"; };
 		0E50E0C719AB1C74BBB4661B /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -97,7 +100,7 @@
 		A31000000000000000000005 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
-			files = (A31000000000000000000003 /* Supabase in Frameworks */,);
+			files = (A31000000000000000000003 /* Supabase in Frameworks */, A32000000000000000000003 /* LiveKit in Frameworks */,);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -303,6 +306,7 @@
 				CF1C0EE535BEC5711863F3B4 /* AudioFocus.swift */,
 				94C615E93043C9CD0E094546 /* CameraPreview.swift */,
 				5DF811FCAEF1ED735B95C3FF /* CoffeeFilm.swift */,
+				A32000000000000000000002 /* CoffeeLiveCall.swift */,
 				0CCC58D9339AE955DD821BFC /* CoffeeMediaFiles.swift */,
 				510457C0818A3273480C41B5 /* VoiceNotebook.swift */,
 			);
@@ -327,6 +331,7 @@
 			name = Papi;
 			packageProductDependencies = (
 				A31000000000000000000004 /* Supabase */,
+				A32000000000000000000004 /* LiveKit */,
 			);
 			productName = Papi;
 			productReference = 42A248A52B0FC1E4CA949A43 /* Papi.app */;
@@ -358,7 +363,7 @@
 			minimizedProjectReferenceProxies = 1;
 			projectDirPath = "";
 			projectRoot = "";
-			packageReferences = (A31000000000000000000006 /* supabase-swift */,);
+			packageReferences = (A31000000000000000000006 /* supabase-swift */, A32000000000000000000005 /* client-sdk-swift */,);
 			targets = (
 				E1D3306E9DEA98AA9F4E128C /* Papi */,
 			);
@@ -400,6 +405,7 @@
 				F7853DB69E6EA932322B837E /* CoffeeArtwork.swift in Sources */,
 				56E51BD446B372FDB67AC446 /* CoffeeCounter.swift in Sources */,
 				2520AE13974D6B5C3DB8A4EB /* CoffeeFilm.swift in Sources */,
+				A32000000000000000000001 /* CoffeeLiveCall.swift in Sources */,
 				DDCD640BC9A4D51333CBB890 /* CoffeeJournal.swift in Sources */,
 				892614CFE3EB7A24617FBC31 /* CoffeeLanguage.swift in Sources */,
 				E74562CFD6D871F941922D9D /* CoffeeLetters.swift in Sources */,
@@ -423,6 +429,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A32000000000000000000005 /* client-sdk-swift */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/livekit/client-sdk-swift.git";
+			requirement = {kind = exactVersion; version = 2.17.0;};
+		};
 		A31000000000000000000006 /* supabase-swift */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/supabase/supabase-swift.git";
@@ -431,6 +442,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A32000000000000000000004 /* LiveKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A32000000000000000000005 /* client-sdk-swift */;
+			productName = LiveKit;
+		};
 		A31000000000000000000004 /* Supabase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A31000000000000000000006 /* supabase-swift */;

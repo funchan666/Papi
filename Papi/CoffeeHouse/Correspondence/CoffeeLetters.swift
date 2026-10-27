@@ -86,7 +86,7 @@ struct CorrespondenceInbox:View {
     private func preview(_ id:String)->String {
         if store.hasChatDraft(id){return store.chatPreview(id)}
         guard let last=store.messages(with:id).last else{return ""}
-        return last.kind == .text ? last.value:store.text(last.kind == .photo ? "Photo":"Voice draft")
+        return last.kind == .text ? last.value:store.text(last.kind == .photo ? "Photo":"Voice note")
     }
 }
 struct CoffeeConversationView:View {
@@ -100,13 +100,13 @@ struct CoffeeConversationView:View {
     @State private var requestCallMicrophone=false
     @State private var importing=false
     private var pendingMessage:Bool {
-        guard let pending=store.state.pendingCloudMessage,let recipient=UUID(uuidString:memberID) else {return false}
-        return pending.recipientID==recipient
+        guard let recipient=UUID(uuidString:memberID) else {return false}
+        return store.state.pendingCloudMessage?.recipientID==recipient || store.state.pendingCloudAttachment?.recipientID==recipient
     }
     private var draft:Binding<String> {Binding(get:{store.state.letterDrafts[memberID] ?? ""},set:{new in if !pendingMessage {_ = store.commit{$0.letterDrafts[memberID]=String(new.prefix(2000))}}})}
     private var canSend:Bool {
         !importing && !store.cloudSocialBusy && store.storageAvailable && store.state.signedIn &&
-            (!draft.wrappedValue.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty || (!store.usesCloudWallet && (store.state.letterPhotos[memberID] != nil || store.state.letterVoiceNotes[memberID] != nil)))
+            (!draft.wrappedValue.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty || store.state.letterPhotos[memberID] != nil || store.state.letterVoiceNotes[memberID] != nil || pendingMessage)
     }
     var body:some View {
         PapiScreen {
@@ -126,27 +126,28 @@ struct CoffeeConversationView:View {
                                     PapiTextButton("Video call"){if store.requireMutual(memberID){requestCallMicrophone=true;showCamera=true}}.font(CoffeeType.face(.caption,weight:.bold)).padding(10).frame(minHeight:44).background(Color.butter,in:Capsule()).disabled(store.usesCloudWallet)
                                     PapiTextButton("Preview my camera"){requestCallMicrophone=false;showCamera=true}.font(CoffeeType.face(.caption,weight:.bold)).padding(10).frame(minHeight:44).background(Color.butter,in:Capsule())
                                 }
+                                if store.usesCloudWallet,let peer=UUID(uuidString:memberID),store.cloudConversationHasMore[peer]==true {PapiTextButton("Load earlier messages"){Task {await store.loadEarlierCloudConversation(peer)}}.disabled(store.cloudConversationBusy.contains(peer))}
                                 ForEach(store.messages(with:memberID)) {message in ChatMessageView(message:message).id(message.id)}
+                                if store.usesCloudWallet,let peer=UUID(uuidString:memberID),store.cloudConversationUnavailable.contains(peer) {PapiTextButton("Retry messages"){Task {await store.refreshCloudConversation(peer)}}.disabled(store.cloudConversationBusy.contains(peer))}
                                 if store.cloudMessagesUnavailable {PapiText("Messages could not be refreshed.").font(CoffeeType.face(.caption));PapiTextButton("Retry"){Task {await store.refreshCloudMessages()}}.disabled(store.cloudSocialBusy)}
                                 if pendingMessage {PapiText("Retry the saved message to confirm its result.").font(CoffeeType.face(.caption))}
-                                if store.usesCloudWallet {PapiText("Only text messages are available right now.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
                                 if let attachment=store.state.letterPhotos[memberID] {
-                                    VStack(spacing:8) {PapiText("Photo draft · Not sent").font(CoffeeType.face(.caption));PapiImage(name:attachment).frame(height:200).clipped().clipShape(RoundedRectangle(cornerRadius:16));PapiTextButton("Remove attachment"){_ = store.commit{$0.letterPhotos.removeValue(forKey:memberID)}}.font(CoffeeType.face(.caption))}
+                                    VStack(spacing:8) {PapiText("Photo draft · Not sent").font(CoffeeType.face(.caption));PapiImage(name:attachment).frame(height:200).clipped().clipShape(RoundedRectangle(cornerRadius:16));PapiTextButton("Remove attachment"){_ = store.commit{$0.letterPhotos.removeValue(forKey:memberID)}}.disabled(pendingMessage || store.cloudSocialBusy).font(CoffeeType.face(.caption))}
                                 }
-                                if let voice=store.state.letterVoiceNotes[memberID] {VoiceNotePlayer(name:voice);PapiTextButton("Remove voice draft"){_ = store.commit{$0.letterVoiceNotes.removeValue(forKey:memberID)}}.font(CoffeeType.face(.caption))}
+                                if let voice=store.state.letterVoiceNotes[memberID] {VoiceNotePlayer(name:voice);PapiTextButton("Remove voice draft"){_ = store.commit{$0.letterVoiceNotes.removeValue(forKey:memberID)}}.disabled(pendingMessage || store.cloudSocialBusy).font(CoffeeType.face(.caption))}
                                 if importing {PapiText("Importing photo…").font(CoffeeType.face(.caption))}
                             }.padding(22).frame(maxWidth:700).frame(maxWidth:.infinity)
                         }.scrollDismissesKeyboard(.interactively)
-                            .onChange(of:store.messages(with:memberID).count){_,_ in if let id=store.messages(with:memberID).last?.id{proxy.scrollTo(id,anchor:.bottom)}}
+                            .onChange(of:store.messages(with:memberID).last?.id){_,id in if let id {proxy.scrollTo(id,anchor:.bottom)}}
                     }
                     .safeAreaInset(edge:.bottom,spacing:0) {
                         PapiInputBar {
                             PapiInput("Say Hi…",text:draft,axis:.vertical).lineLimit(1...3).padding(12).foregroundStyle(Color.coffee).background(Color.cream,in:RoundedRectangle(cornerRadius:18)).disabled(pendingMessage)
                         } actions: {
                             HStack(spacing:5) {
-                                PapiIconButton(asset:"mic",label:"Record a voice note",size:34){showVoice=true}.disabled(store.usesCloudWallet)
-                                PhotosPicker(selection:$picker,matching:.images) {Image("chatPhoto").resizable().scaledToFit().frame(width:34,height:34).frame(width:44,height:44)}.disabled(importing || store.usesCloudWallet).papiAccessibilityLabel("Choose a photo for this draft")
-                                PapiIconButton(asset:"send",label:"Send message",size:24){if canSend {if store.usesCloudWallet {let text=draft.wrappedValue;Task {_ = await store.sendCloudMessage(to:memberID,text:text)}} else {_ = store.sendChat(to:memberID,text:draft.wrappedValue)}}}.background(Color.cream,in:RoundedRectangle(cornerRadius:12)).disabled(!canSend)
+                                PapiIconButton(asset:"mic",label:"Record a voice note",size:34){showVoice=true}.disabled(importing || pendingMessage || store.cloudSocialBusy)
+                                PhotosPicker(selection:$picker,matching:.images) {Image("chatPhoto").resizable().scaledToFit().frame(width:34,height:34).frame(width:44,height:44)}.disabled(importing || pendingMessage || store.cloudSocialBusy).papiAccessibilityLabel("Choose a photo for this draft")
+                                PapiIconButton(asset:"send",label:"Send message",size:24){if canSend {if store.usesCloudWallet {Task {await store.sendCloudConversation(to:memberID);if let peer=UUID(uuidString:memberID) {await store.refreshCloudConversation(peer)}}} else {_ = store.sendChat(to:memberID,text:draft.wrappedValue)}}}.background(Color.cream,in:RoundedRectangle(cornerRadius:12)).disabled(!canSend)
                             }
                         }
                     }
@@ -155,7 +156,7 @@ struct CoffeeConversationView:View {
         }.task(id:store.state.cloudAccountID) {
             guard store.usesCloudWallet else {return}
             while !Task.isCancelled {
-                if store.usesCloudWallet && scenePhase == .active {await store.refreshCloudMessages()}
+                if store.usesCloudWallet && scenePhase == .active {await store.refreshCloudMessages();if let peer=UUID(uuidString:memberID) {await store.refreshCloudConversation(peer)}}
                 do {try await Task.sleep(for:.seconds(10))} catch {break}
             }
         }.onChange(of:picker){_,item in
@@ -187,7 +188,7 @@ struct ChatMessageView:View {
             switch message.kind {
             case .text:PapiText(verbatim:message.value)
             case .photo:Button{router.go(.photo(message.value))}label:{PapiImage(name:message.value).frame(height:220).clipped()}.buttonStyle(.plain)
-            case .voice:VoiceNotePlayer(name:message.value)
+            case .voice:if message.value.hasPrefix("cloud/") {CloudVoiceNotePlayer(messageID:message.id,name:message.value)} else {VoiceNotePlayer(name:message.value)}
             }
             HStack {Text(message.createdAt,style:.time);Spacer();PapiText(message.delivery == .waitingForConnection ? "In your outbox · Not delivered":(message.delivery == .sent ? "Sent":"Received"))}.font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
         }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(message.authorID==store.state.passport.id.uuidString ? Color.butter:Color.white,in:RoundedRectangle(cornerRadius:18))

@@ -250,7 +250,7 @@ struct CoffeeTableView:View {
                         .padding(.horizontal,16).padding(.top,70).transition(reduceMotion ? .opacity:.move(edge:.leading).combined(with:.opacity)).allowsHitTesting(false).papiAvoidReserved()
                 } else if !leave,let note=noteAnnouncement {
                     HStack(alignment:.top,spacing:8) {
-                        Avatar(name:store.state.passport.portraitReference,size:32)
+                        Avatar(name:store.visiblePassport.portraitReference,size:32)
                         VStack(alignment:.leading,spacing:3) {
                             PapiText("Only you can see these notes").font(CoffeeType.face(.caption,weight:.bold))
                             PapiText(verbatim:note.text).font(CoffeeType.face(.subheadline)).lineLimit(2)
@@ -351,7 +351,7 @@ struct CoffeeTableView:View {
                 }
                 ForEach(store.state.tableNoteHistory?[room.id] ?? []) {note in
                     HStack(alignment:.top,spacing:8) {
-                        Avatar(name:store.state.passport.portraitReference,size:32)
+                        Avatar(name:store.visiblePassport.portraitReference,size:32)
                         VStack(alignment:.leading,spacing:3) {
                             PapiText(verbatim:store.visiblePassport.name).font(CoffeeType.face(.caption,weight:.bold))
                             PapiText(verbatim:note.text).font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
@@ -398,7 +398,20 @@ struct MemberPassportView:View {
                             VStack(alignment:.leading,spacing:24) {
                                 memberDetails(person,width:contentWidth)
                                 if store.usesCloudWallet && UUID(uuidString:person.id) != nil {
-                                    PapiEmpty(title:"Posts unavailable")
+                                    VStack(alignment:.leading,spacing:12) {
+                                        if let member=UUID(uuidString:person.id) {
+                                            let photos=(store.cloudProfileImages[member] ?? []).filter{$0.kind=="album" && $0.moderation_status=="approved"}.compactMap{store.profileImageReference($0.media_path,owner:member)}
+                                            if !photos.isEmpty {
+                                                PapiText("Photo album").font(CoffeeType.face(.headline))
+                                                LazyVGrid(columns:[GridItem(.adaptive(minimum:145),spacing:12)],spacing:12) {ForEach(photos,id:\.self) {photo in Button {router.go(.photo(photo))} label:{PapiImage(name:photo).frame(height:180).clipped().clipShape(RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)}}
+                                            } else if store.cloudProfileImages[member]==nil {PapiTextButton("Retry photos"){Task {await store.refreshCloudProfileImages(owner:member)}}.disabled(store.cloudProfileMediaBusy)}
+                                        }
+                                        PapiText("Showing loaded moments").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                                        if store.cloudFeed==nil {PapiTextButton("Retry"){Task {await store.refreshCloudFeed()}}.disabled(store.cloudFeedBusy)}
+                                        else if posts.isEmpty {PapiEmpty(title:"No loaded moments")}
+                                        LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:14) {ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}
+                                        if store.cloudFeedHasMore {PapiTextButton("Load more"){Task {await store.loadMoreCloudFeed()}}.disabled(store.cloudFeedBusy)}
+                                    }
                                 } else {collectionShelf(person,posts:posts,width:contentWidth)}
                             }
                             .padding(.horizontal,20).padding(.top,-28).padding(.bottom,28)
@@ -410,7 +423,7 @@ struct MemberPassportView:View {
                     .contentMargins(.top,0,for:.scrollContent)
                 }
             } else {VStack(spacing:0){PapiHeader("Profile");ScrollView {PapiEmpty(title:"Profile unavailable")}}}
-        }
+        }.task(id:memberID) {if store.usesCloudWallet {if store.cloudFeed==nil {await store.refreshCloudFeed()};if let member=UUID(uuidString:memberID) {await store.refreshCloudProfileImages(owner:member)}}}
     }
 
     private func portraitCover(_ person:CoffeeMember,width:CGFloat,height:CGFloat,topInset:CGFloat)->some View {
