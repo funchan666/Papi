@@ -1129,5 +1129,23 @@
     "delivery": "remote",
     "url": "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev/pp/858159161_18637015324034456_7860982535270189554_n.jpg",
     "owner": "collection-person-59"
+  },
+  {
+    "asset": "ratioStudioArtwork",
+    "source": "Papi/Resources/Assets.xcassets/ratioStudioArtwork.imageset/ratioStudioArtwork.jpg",
+    "bundled": true,
+    "origin": "Original built-in image generation; Image 2 Host-Native workflow"
+  },
+  {
+    "asset": "coffeeNoteArtwork",
+    "source": "Papi/Resources/Assets.xcassets/coffeeNoteArtwork.imageset/coffeeNoteArtwork.jpg",
+    "bundled": true,
+    "origin": "Original built-in image generation; Image 2 Host-Native workflow"
+  },
+  {
+    "asset": "brewRatioTab",
+    "source": "Papi/Resources/Assets.xcassets/brewRatioTab.imageset/brewRatioTab.png",
+    "bundled": true,
+    "origin": "Original built-in image generation; Image 2 Host-Native workflow, styled to Papi supplied navigation icons"
   }
 ]

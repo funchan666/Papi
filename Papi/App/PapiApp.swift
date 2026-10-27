@@ -4,6 +4,7 @@ import SwiftUI
     @StateObject private var store=CoffeeHouse()
     @StateObject private var commerce=AppleCoinCounter()
     @StateObject private var router=CoffeeNavigation()
+    @State private var showingLaunch=true
     @Environment(\.scenePhase) private var scenePhase
     var body:some Scene {
         WindowGroup {
@@ -12,11 +13,18 @@ import SwiftUI
                     if store.state.signedIn { PapiRootView() }
                     else { FirstCupWelcomeView() }
                 }.papiNotices()
+                    .disabled(showingLaunch).accessibilityHidden(showingLaunch)
+                    .overlay {if showingLaunch {PapiLaunchLoadingView()}}
             }
             .environmentObject(store).environmentObject(commerce).environmentObject(router)
             .environment(\.locale,Locale(identifier:store.state.language))
             .environment(\.layoutDirection,store.state.language == "ar" ? .rightToLeft:.leftToRight)
             .font(CoffeeType.face(.body)).tint(.coffee).preferredColorScheme(.light)
+            .task {
+                guard showingLaunch else{return}
+                do {try await Task.sleep(for:.milliseconds(700))} catch {return}
+                showingLaunch=false
+            }
             .task {commerce.start(store:store);store.presentWelcomeIfNeeded()}
             .onChange(of:scenePhase) { _,phase in if phase == .active {store.presentWelcomeIfNeeded();Task {await commerce.recover()}} }
             .onChange(of:store.state.signedIn) { _,signedIn in
@@ -142,6 +150,7 @@ struct PapiTabShell:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
     @Environment(\.layoutDirection) private var direction
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     var body:some View {
         #if PAPI_DUO_SDK
         if #available(iOS 27.1,*) {DuoTabShell()}
@@ -152,39 +161,61 @@ struct PapiTabShell:View {
     }
     func shell(side:HorizontalEdge?)->some View {
         PapiShellLayout(side:side) {
-            ZStack {
-                // Keep all tab roots mounted to preserve scroll positions and loaded state.
-                CoffeeJournalView().opacity(store.selectedTab==0 ? 1:0).allowsHitTesting(store.selectedTab==0).accessibilityHidden(store.selectedTab != 0)
-                CoffeeTablesView().opacity(store.selectedTab==1 ? 1:0).allowsHitTesting(store.selectedTab==1).accessibilityHidden(store.selectedTab != 1)
-                CorrespondenceInbox().opacity(store.selectedTab==2 ? 1:0).allowsHitTesting(store.selectedTab==2).accessibilityHidden(store.selectedTab != 2)
-                MyCoffeePassportView().opacity(store.selectedTab==3 ? 1:0).allowsHitTesting(store.selectedTab==3).accessibilityHidden(store.selectedTab != 3)
+            GeometryReader {viewport in
+                ZStack {
+                    // Keep all tab roots mounted to preserve scroll positions and loaded state.
+                    CoffeeJournalView().opacity(store.selectedTab==0 ? 1:0).allowsHitTesting(store.selectedTab==0).accessibilityHidden(store.selectedTab != 0)
+                    CoffeeTablesView().opacity(store.selectedTab==1 ? 1:0).allowsHitTesting(store.selectedTab==1).accessibilityHidden(store.selectedTab != 1)
+                    CorrespondenceInbox().opacity(store.selectedTab==2 ? 1:0).allowsHitTesting(store.selectedTab==2).accessibilityHidden(store.selectedTab != 2)
+                    MyCoffeePassportView().opacity(store.selectedTab==3 ? 1:0).allowsHitTesting(store.selectedTab==3).accessibilityHidden(store.selectedTab != 3)
+                    CoffeeRatioStudioView().opacity(store.selectedTab==4 ? 1:0).allowsHitTesting(store.selectedTab==4).accessibilityHidden(store.selectedTab != 4)
+                }.frame(width:viewport.size.width,height:viewport.size.height)
             }
             tabBar(vertical:side != nil)
-        }.background(Color.cream)
+        }.background {PapiBackground()}
     }
     private func tabBar(vertical:Bool)->some View {
         Group {
-            if vertical {ScrollView(.vertical,showsIndicators:false){tabItems(vertical:true)}}
-            else {tabItems(vertical:false)}
-        }.frame(maxHeight:vertical ? .infinity:nil)
-            .background {
-                UnevenRoundedRectangle(topLeadingRadius:24,topTrailingRadius:24).fill(Color.coffee)
-                    .ignoresSafeArea(.container,edges:vertical ? .all:.bottom)
-            }.disabled(router.hasBlockingModal).accessibilityHidden(router.hasBlockingModal)
+            if vertical {
+                glassSurface(ScrollView(.vertical,showsIndicators:false){tabItems(vertical:true)}).frame(maxHeight:.infinity)
+            } else {
+                glassSurface(tabItems(vertical:false))
+                    .padding(.horizontal,12).padding(.bottom,6)
+            }
+        }.disabled(router.hasBlockingModal).accessibilityHidden(router.hasBlockingModal)
+    }
+    @ViewBuilder private func glassSurface<Content:View>(_ content:Content)->some View {
+        if reduceTransparency {
+            content.background(Color.cream,in:Capsule())
+        } else {
+            #if compiler(>=6.2)
+            if #available(iOS 26.0,*) {
+                GlassEffectContainer {
+                    content.glassEffect(.regular,in:Capsule())
+                }
+            } else {
+                content.background(.regularMaterial,in:Capsule())
+            }
+            #else
+            content.background(.regularMaterial,in:Capsule())
+            #endif
+        }
     }
     private func tabItems(vertical:Bool)->some View {
         let layout=vertical ? AnyLayout(VStackLayout(spacing:20)):AnyLayout(HStackLayout(spacing:0))
         return layout {
-            ForEach(0..<4) { index in
-                let asset=["home","voice","messages","me"][index]
-                Button {store.selectedTab=index} label:{
-                    VStack(spacing:5) {
-                        Image(asset+(store.selectedTab==index ? "On":"Off")).resizable().scaledToFit().frame(width:30,height:30).opacity(store.selectedTab==index ? 1:0.65)
-                        PapiText(store.text(["Home","Voice","Messages","Me"][index])).font(CoffeeType.face(.caption2)).fixedSize(horizontal:false,vertical:true).multilineTextAlignment(.center).foregroundStyle(store.selectedTab==index ? Color.cream:Color.cream.opacity(0.68))
-                    }.frame(maxWidth:.infinity,minHeight:52).contentShape(Rectangle())
-                }.buttonStyle(.plain).accessibilityAddTraits(store.selectedTab==index ? .isSelected:[]).papiAvoidReserved()
+            ForEach(0..<5) { index in
+                let target=[0,1,4,2,3][index]
+                let asset=["homeOn","voiceOn","brewRatioTab","messagesOn","meOn"][index]
+                let selected=store.selectedTab==target
+                Button {store.selectedTab=target} label:{
+                    Image(asset).resizable().scaledToFit().frame(width:30,height:30).opacity(selected ? 1:0.68)
+                        .frame(width:48,height:48).background(selected ? Color.coffee.opacity(0.12):Color.clear,in:Capsule())
+                        .frame(maxWidth:.infinity,minHeight:48).contentShape(Rectangle())
+                }.buttonStyle(.plain).papiAccessibilityLabel(["Home","Voice","Brew calculator","Messages","Me"][index])
+                    .accessibilityAddTraits(selected ? .isSelected:[]).papiAvoidReserved()
             }
-        }.padding(.horizontal,10).padding(.vertical,12)
+        }.padding(.horizontal,10).padding(.vertical,vertical ? 12:8)
     }
 
 }

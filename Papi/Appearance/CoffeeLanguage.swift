@@ -5,9 +5,6 @@ extension CoffeeHouse {
 }
 enum PapiStrings {
     static let languages:[(id:String,name:String)]=[("en","English"),("es","Español"),("th","ภาษาไทย"),("ar","العربية"),("vi","Tiếng Việt"),("ko","한국어")]
-    static var preferredLanguage:String {
-        Locale.preferredLanguages.map{String($0.prefix(2))}.first{code in languages.contains{$0.id==code}} ?? "en"
-    }
     private static let entries:[String:[String:String]] = {
         guard let url=Bundle.main.url(forResource:"PapiTranslations",withExtension:"json",subdirectory:"Localization"),
               let data=try? Data(contentsOf:url),let values=try? JSONDecoder().decode([String:[String:String]].self,from:data) else{return [:]}

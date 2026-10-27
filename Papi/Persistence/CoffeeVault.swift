@@ -30,8 +30,13 @@ enum CoffeeVault {
             return nil
         }
         guard status == errSecSuccess, let data = result as? Data else { throw VaultError.access(status) }
-        let saved=try JSONDecoder().decode(CoffeeArchive.self,from:data)
+        var saved=try JSONDecoder().decode(CoffeeArchive.self,from:data)
         try rememberSnapshot()
+        if saved.languageDefaultRevision == nil {
+            saved.language = "en"
+            saved.languageDefaultRevision = 1
+            try write(saved)
+        }
         return saved
     }
     static func write(_ state: CoffeeArchive) throws {

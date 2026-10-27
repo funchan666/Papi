@@ -127,6 +127,10 @@ struct CuppingFlight:Identifiable,Codable {
     var firstImpression:CupImpression? = nil
     var secondImpression:CupImpression? = nil
 }
+struct CoffeeRatioPlan:Codable {
+    var coffeeGrams=18
+    var partsWater=16
+}
 struct BrewNotebook:Codable {
     var draft=BrewDraft()
     var activePour:PourSession? = nil
@@ -138,7 +142,8 @@ struct BrewNotebook:Codable {
     var secondComparisonCup:UUID? = nil
     var comparisonNote=""
     var comparisonPreference:CuppingFlight.Preference = .undecided
-    enum CodingKeys:String,CodingKey {case draft,activePour,unlockedRecipes,cups,flights,impressionDrafts,firstComparisonCup,secondComparisonCup,comparisonNote,comparisonPreference}
+    var ratioPlan:CoffeeRatioPlan? = nil
+    enum CodingKeys:String,CodingKey {case draft,activePour,unlockedRecipes,cups,flights,impressionDrafts,firstComparisonCup,secondComparisonCup,comparisonNote,comparisonPreference,ratioPlan}
     init() {}
     init(from decoder:Decoder) throws {
         let saved=try decoder.container(keyedBy:CodingKeys.self)
@@ -152,5 +157,6 @@ struct BrewNotebook:Codable {
         secondComparisonCup=try saved.decodeIfPresent(UUID.self,forKey:.secondComparisonCup)
         comparisonNote=try saved.decodeIfPresent(String.self,forKey:.comparisonNote) ?? ""
         comparisonPreference=try saved.decodeIfPresent(CuppingFlight.Preference.self,forKey:.comparisonPreference) ?? .undecided
+        ratioPlan=try saved.decodeIfPresent(CoffeeRatioPlan.self,forKey:.ratioPlan)
     }
 }

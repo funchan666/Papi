@@ -1,8 +1,8 @@
 {
   "sourceFiles": 30,
-  "imageSets": 74,
+  "imageSets": 77,
   "bundledVideos": 0,
-  "resourceBytes": 7328707,
+  "resourceBytes": 8320646,
   "resourcePhase": [
     "Assets.xcassets",
     "InfoPlist.strings",
@@ -11,7 +11,7 @@
     "Papi/Resources/Media",
     "PrivacyInfo.xcprivacy"
   ],
-  "translationEntries": 790,
+  "translationEntries": 804,
   "uiLanguages": [
     "en",
     "ar",

@@ -15,12 +15,16 @@ struct PapiImage: View {
     @State private var posterName:String?
     @Environment(\.scenePhase) private var scenePhase
     var body: some View {
-        Group {
-        if let image = CoffeeMedia.image(name) ?? (posterName==name ? poster:nil) {
-            Image(uiImage:image).resizable().aspectRatio(contentMode:fit ? .fit : .fill)
-        } else {
-            Image("emptyCup").resizable().scaledToFit().padding(8).background(Color.cream)
-        }
+        GeometryReader {proxy in
+            Group {
+                if let image = CoffeeMedia.image(name) ?? (posterName==name ? poster:nil) {
+                    Image(uiImage:image).resizable().aspectRatio(contentMode:fit ? .fit : .fill)
+                        .frame(width:proxy.size.width,height:proxy.size.height).clipped()
+                } else {
+                    Image("emptyCup").resizable().scaledToFit().padding(8)
+                        .frame(width:proxy.size.width,height:proxy.size.height).background(Color.cream)
+                }
+            }
         }.task(id:name+(scenePhase == .active ? "|active":"|inactive")) {
             guard scenePhase == .active else{return}
             let source=name
@@ -38,6 +42,15 @@ struct PapiArtworkFill:View {
             Image(asset).resizable().scaledToFill()
                 .frame(width:proxy.size.width,height:proxy.size.height).clipped()
         }.allowsHitTesting(false).accessibilityHidden(true)
+    }
+}
+struct PapiArtworkFit:View {
+    var asset:String
+    var body:some View {
+        GeometryReader {proxy in
+            Image(asset).resizable().scaledToFit()
+                .frame(width:proxy.size.width,height:proxy.size.height)
+        }.accessibilityHidden(true)
     }
 }
 struct PapiBackground: View {
@@ -88,15 +101,49 @@ struct PapiHeader<Trailing: View>: View {
     @ViewBuilder var trailing: () -> Trailing
     init(_ title: String, back: Bool = true, backAction:(()->Void)?=nil, titleAction:(()->Void)?=nil, @ViewBuilder trailing:@escaping ()->Trailing) { self.title=title;self.back=back;self.backAction=backAction;self.titleAction=titleAction;self.trailing=trailing }
     var body: some View {
-        HStack(spacing:8) {
-            if back { PapiIconButton(asset:"back",label:"Back") { if let backAction {backAction()} else {dismiss()} }.fixedSize().layoutPriority(1) }
-            else { Color.clear.frame(width:44,height:44).accessibilityHidden(true) }
+        PapiCenteredHeaderLayout {
+            ZStack(alignment:.leading) {
+                Color.clear.frame(width:44,height:44).accessibilityHidden(true)
+                if back {PapiIconButton(asset:"back",label:"Back") {if let backAction {backAction()} else {dismiss()}}}
+            }.fixedSize(horizontal:true,vertical:false)
             Group {
                 if let titleAction {PapiTextButton(title,action:titleAction)} else {PapiText(title)}
             }.font(CoffeeType.face(.headline)).lineLimit(bounds.height>0 && bounds.height<titleLineHeight*6 ? 1:2).fixedSize(horizontal:false,vertical:true)
                 .frame(maxWidth:.infinity).multilineTextAlignment(.center)
-            trailing().frame(minWidth:44,minHeight:44).fixedSize(horizontal:true,vertical:false).layoutPriority(1)
+            ZStack(alignment:.trailing) {
+                Color.clear.frame(width:44,height:44).accessibilityHidden(true)
+                trailing()
+            }.fixedSize(horizontal:true,vertical:false)
         }.foregroundStyle(Color.coffee).padding(.horizontal,8).padding(.vertical,4).papiAvoidReserved()
+    }
+}
+private struct PapiCenteredHeaderLayout:Layout {
+    private func measure(_ width:CGFloat,_ subviews:Subviews)->(CGSize,CGSize,CGSize,Bool) {
+        let leading=subviews[0].sizeThatFits(.unspecified)
+        let trailing=subviews[2].sizeThatFits(.unspecified)
+        let side=max(leading.width,trailing.width)
+        let stacked=width<side*2+60
+        let titleWidth=stacked ? width:max(0,width-side*2-16)
+        let title=subviews[1].sizeThatFits(ProposedViewSize(width:titleWidth,height:nil))
+        return (leading,title,trailing,stacked)
+    }
+    func sizeThatFits(proposal:ProposedViewSize,subviews:Subviews,cache:inout ())->CGSize {
+        guard subviews.count==3 else{return .zero}
+        let ideal=subviews.reduce(CGFloat(16)) {$0+$1.sizeThatFits(.unspecified).width}
+        let width=max(0,proposal.width.flatMap{$0.isFinite ? $0:nil} ?? ideal)
+        let (leading,title,trailing,stacked)=measure(width,subviews)
+        let actionsHeight=max(leading.height,trailing.height)
+        return CGSize(width:width,height:stacked ? actionsHeight+4+title.height:max(actionsHeight,title.height))
+    }
+    func placeSubviews(in bounds:CGRect,proposal:ProposedViewSize,subviews:Subviews,cache:inout ()) {
+        guard subviews.count==3 else{return}
+        let (leading,title,trailing,stacked)=measure(bounds.width,subviews)
+        let actionsHeight=max(leading.height,trailing.height)
+        let actionsY=stacked ? bounds.minY+actionsHeight/2:bounds.midY
+        subviews[0].place(at:CGPoint(x:bounds.minX,y:actionsY),anchor:.leading,proposal:ProposedViewSize(leading))
+        subviews[2].place(at:CGPoint(x:bounds.maxX,y:actionsY),anchor:.trailing,proposal:ProposedViewSize(trailing))
+        let titleY=stacked ? bounds.minY+actionsHeight+4+title.height/2:bounds.midY
+        subviews[1].place(at:CGPoint(x:bounds.midX,y:titleY),anchor:.center,proposal:ProposedViewSize(title))
     }
 }
 extension PapiHeader where Trailing == EmptyView {
@@ -182,6 +229,7 @@ struct CoffeeModal<Content:View>:View {
     var maximumWidth:CGFloat=360
     var maximumHeight:CGFloat=460
     var shade:Color=Color.black.opacity(0.48)
+    var artwork:String?="dialogBackground"
     @ViewBuilder var content:()->Content
     @Environment(\.papiRegions) private var regions
     @EnvironmentObject private var router:CoffeeNavigation
@@ -198,7 +246,9 @@ struct CoffeeModal<Content:View>:View {
                 ScrollView {
                     content().padding(width<280 ? 16:26).frame(maxWidth:.infinity)
                         .background {GeometryReader {geometry in Color.clear.preference(key:CoffeeModalHeightKey.self,value:geometry.size.height)}}
-                        .background {PapiArtworkFill(asset:"dialogBackground")}
+                        .background {
+                            if let artwork {PapiArtworkFill(asset:artwork)} else {Color.cream}
+                        }
                 }.frame(width:width,height:min(height,contentHeight>0 ? contentHeight:height))
                     .clipShape(RoundedRectangle(cornerRadius:22)).position(x:rect.midX,y:rect.midY)
             }.foregroundStyle(Color.coffee)

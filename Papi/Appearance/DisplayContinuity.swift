@@ -32,7 +32,7 @@ struct PapiDeviceContainer<Content:View>:View {
     @ViewBuilder var content:()->Content
     var body:some View {
         GeometryReader { proxy in
-            content().frame(maxWidth:.infinity,maxHeight:.infinity)
+            content().frame(width:proxy.size.width,height:proxy.size.height)
                 .environment(\.papiRegions,regions(proxy))
                 .environment(\.papiBounds,CGRect(origin:.zero,size:proxy.size))
         }.coordinateSpace(name:"PapiContainer")
@@ -102,7 +102,7 @@ struct PapiShellLayout:Layout {
             subviews[1].place(at:CGPoint(x:isLeft ? bounds.minX:bounds.maxX-width,y:bounds.minY),proposal:ProposedViewSize(width:width,height:bounds.height))
         } else {
             let height=subviews[1].sizeThatFits(ProposedViewSize(width:bounds.width,height:nil)).height
-            subviews[0].place(at:bounds.origin,proposal:ProposedViewSize(width:bounds.width,height:max(0,bounds.height-height)))
+            subviews[0].place(at:bounds.origin,proposal:ProposedViewSize(width:bounds.width,height:max(0,bounds.height-height-8)))
             subviews[1].place(at:CGPoint(x:bounds.minX,y:bounds.maxY-height),proposal:ProposedViewSize(width:bounds.width,height:height))
         }
     }

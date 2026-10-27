@@ -1,5 +1,76 @@
 import SwiftUI
 
+struct CoffeeRatioStudioView:View {
+    @EnvironmentObject private var store:CoffeeHouse
+    @EnvironmentObject private var router:CoffeeNavigation
+    private let doses=[10,15,18,20,25]
+    private let ratios=[14,15,16,17,18]
+    private var dose:Int {let value=store.brewBook.ratioPlan?.coffeeGrams ?? 18;return doses.contains(value) ? value:18}
+    private var ratio:Int {let value=store.brewBook.ratioPlan?.partsWater ?? 16;return ratios.contains(value) ? value:16}
+
+    var body:some View {
+        PapiScreen {
+            ScrollView {
+                VStack(alignment:.leading,spacing:20) {
+                    VStack(alignment:.leading,spacing:5) {
+                        PapiText("Brew calculator").font(CoffeeType.display(.title,weight:.bold))
+                        PapiText("Plan your pour").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
+                    }
+                    PapiArtworkFill(asset:"ratioStudioArtwork").frame(height:190).clipShape(RoundedRectangle(cornerRadius:22))
+                    PapiText("Choose your coffee and ratio. The water amount updates as you make changes.")
+                        .font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                    VStack(alignment:.leading,spacing:16) {
+                        PapiText("Coffee dose").font(CoffeeType.face(.headline))
+                        choices(doses,selected:dose,isRatio:false) {value in
+                            store.updateBrewBook {book in
+                                var plan=book.ratioPlan ?? CoffeeRatioPlan();plan.coffeeGrams=value;book.ratioPlan=plan
+                            }
+                        }
+                        PapiText("Water ratio").font(CoffeeType.face(.headline))
+                        choices(ratios,selected:ratio,isRatio:true) {value in
+                            store.updateBrewBook {book in
+                                var plan=book.ratioPlan ?? CoffeeRatioPlan();plan.partsWater=value;book.ratioPlan=plan
+                            }
+                        }
+                    }.padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.8),in:RoundedRectangle(cornerRadius:22))
+                    HStack(alignment:.center,spacing:12) {
+                        VStack(alignment:.leading,spacing:6) {
+                            PapiText("Water to pour").font(CoffeeType.face(.subheadline,weight:.semibold))
+                            PapiText("A starting point for filter coffee.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                        }
+                        Spacer(minLength:8)
+                        PapiText(verbatim:"\(dose*ratio) g").font(CoffeeType.face(.title2,weight:.bold)).monospacedDigit()
+                    }.padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.butter,in:RoundedRectangle(cornerRadius:20))
+                    PapiTextButton("Explore brew recipes"){router.go(.brewBench)}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16))
+                    PapiTextButton("Open my brew book"){router.go(.brewArchive)}.buttonStyle(PapiButtonStyle(light:true,wide:true,cornerRadius:16))
+                }.padding(20).frame(maxWidth:720).frame(maxWidth:.infinity)
+            }
+        }
+    }
+    private func choices(_ values:[Int],selected:Int,isRatio:Bool,select:@escaping (Int)->Void)->some View {
+        ViewThatFits(in:.horizontal) {
+            HStack(spacing:8) {
+                ForEach(values,id:\.self) {value in
+                    choice(isRatio ? "1 : \(value)":"\(value) g",selected:selected==value){select(value)}
+                        .fixedSize(horizontal:true,vertical:false)
+                }
+            }
+            LazyVGrid(columns:[GridItem(.adaptive(minimum:74),spacing:8)],spacing:8) {
+                ForEach(values,id:\.self) {value in
+                    choice(isRatio ? "1 : \(value)":"\(value) g",selected:selected==value){select(value)}
+                }
+            }
+        }
+    }
+    private func choice(_ label:String,selected:Bool,action:@escaping ()->Void)->some View {
+        Button(action:action) {
+            PapiText(verbatim:label).font(CoffeeType.face(.subheadline,weight:.semibold)).fixedSize(horizontal:false,vertical:true).padding(.horizontal,12).frame(maxWidth:.infinity,minHeight:44)
+                .foregroundStyle(selected ? Color.cream:Color.coffee)
+                .background(selected ? Color.coffee:Color.cream,in:RoundedRectangle(cornerRadius:14))
+        }.buttonStyle(.plain).accessibilityAddTraits(selected ? .isSelected:[])
+    }
+}
+
 struct BrewBenchView:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation

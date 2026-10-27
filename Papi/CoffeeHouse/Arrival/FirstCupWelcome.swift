@@ -61,18 +61,43 @@ struct FirstCupWelcomeView:View {
     private func finishIntro(){_ = store.commit{$0.sawOnboarding=true}}
 }
 
-struct FirstCupLoadingView:View {
+private struct PapiLoadingMark:View {
+    let size:CGFloat
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var breathing=false
     var body:some View {
+        VStack(spacing:10) {
+            Image("brandMark").resizable().scaledToFit().frame(width:size,height:size)
+                .scaleEffect(breathing && !reduceMotion ? 1.04:1)
+            Image("emptyCup").resizable().scaledToFit().frame(width:24,height:24)
+                .opacity(breathing && !reduceMotion ? 0.55:1)
+        }.accessibilityHidden(true).onAppear {
+            if !reduceMotion {withAnimation(.easeInOut(duration:0.7).repeatForever(autoreverses:true)){breathing=true}}
+        }
+    }
+}
+
+struct PapiLaunchLoadingView:View {
+    var body:some View {
+        ZStack {
+            Color.cream.ignoresSafeArea()
+            VStack(spacing:16) {
+                PapiLoadingMark(size:92)
+                PapiText("Papi").font(CoffeeType.display(size:25,weight:.bold))
+                PapiText("Opening your coffee book…").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                    .multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
+            }.padding(24).frame(maxWidth:320).foregroundStyle(Color.coffee).papiAvoidReserved()
+        }.accessibilityElement(children:.combine)
+    }
+}
+
+struct FirstCupLoadingView:View {
+    var body:some View {
         CoffeeModal(maximumWidth:280,maximumHeight:260,shade:Color.coffee.opacity(0.38)) {
             VStack(spacing:18) {
-                Image("brandMark").resizable().scaledToFit().frame(width:68,height:68)
-                    .scaleEffect(breathing && !reduceMotion ? 1.04:0.96).accessibilityHidden(true)
+                PapiLoadingMark(size:68)
                 PapiText("Opening your coffee book…").font(CoffeeType.face(.headline)).multilineTextAlignment(.center)
             }.padding(.vertical,8)
-        }.onAppear {
-            if !reduceMotion {withAnimation(.easeInOut(duration:0.7).repeatForever(autoreverses:true)){breathing=true}}
         }
     }
 }

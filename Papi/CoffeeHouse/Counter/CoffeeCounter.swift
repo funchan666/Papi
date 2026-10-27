@@ -21,7 +21,7 @@ struct CollectibleCounterView:View {
                             ForEach(CoffeeCollectible.all) {item in
                                 Button {selected=item.id} label:{
                                     VStack(spacing:8) {
-                                        Image(item.asset).resizable().scaledToFit().frame(height:100)
+                                        PapiArtworkFit(asset:item.asset).frame(height:100)
                                         PapiText(item.name).font(CoffeeType.face(.subheadline)).lineLimit(2).frame(minHeight:38)
                                         CoinLabel(value:item.cost).font(CoffeeType.face(.caption))
                                         if selected==item.id {PapiText("Selected").font(CoffeeType.face(.caption,weight:.bold))} else {PapiText(" ").font(CoffeeType.face(.caption))}
@@ -69,7 +69,7 @@ struct CoffeeCollectionView:View {
                         LazyVGrid(columns:[GridItem(.adaptive(minimum:giftColumnWidth),spacing:12)],spacing:12) {
                             ForEach(owned) {gift in
                                 VStack(spacing:9) {
-                                    Image(gift.asset).resizable().scaledToFit().frame(height:110)
+                                    PapiArtworkFit(asset:gift.asset).frame(height:110)
                                     PapiText(gift.name).font(CoffeeType.face(.headline))
                                     PapiText("×\(store.state.collectiblesOwned[gift.id] ?? 0)").font(CoffeeType.face(.caption))
                                     PapiTextButton(store.state.displayedGift==gift.id ? "Remove display":"Display on profile") {
@@ -93,7 +93,7 @@ struct CoffeeCollectionView:View {
     }
 }
 struct CoinReserveView:View {
-    @ScaledMetric(relativeTo:.body) private var packColumnWidth:CGFloat=145
+    @ScaledMetric(relativeTo:.body) private var packColumnWidth:CGFloat=98
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var commerce:AppleCoinCounter
     @Environment(\.purchase) private var purchase
@@ -110,49 +110,53 @@ struct CoinReserveView:View {
     private var pack:CoinPack {CoinPack.all.first{$0.id==selected} ?? CoinPack.all[0]}
     var body:some View {
         PapiScreen {
-            VStack(spacing:0) {
-                PapiHeader("Recharge")
-                ScrollView {
-                    VStack(alignment:.leading,spacing:22) {
-                        HStack(spacing:14) {
-                            Image("coin").resizable().scaledToFit().frame(width:40,height:40).accessibilityHidden(true)
-                            VStack(alignment:.leading,spacing:3) {
-                                PapiText("Coffee reserve").font(CoffeeType.face(.caption,weight:.semibold))
-                                Text(store.state.coinBalance,format:.number).font(CoffeeType.face(.largeTitle,weight:.heavy)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.5).contentTransition(.numericText())
+            GeometryReader {viewport in
+                let contentWidth=max(0,min(680,viewport.size.width)-40)
+                let columnCount=typeSize.isAccessibilitySize ? 1:(contentWidth >= packColumnWidth*3+20 ? 3:(contentWidth >= packColumnWidth*2+10 ? 2:1))
+                VStack(spacing:0) {
+                    PapiHeader("Recharge")
+                    ScrollView {
+                        VStack(alignment:.leading,spacing:18) {
+                            HStack(spacing:12) {
+                                Image("coin").resizable().scaledToFit().frame(width:34,height:34).accessibilityHidden(true)
+                                VStack(alignment:.leading,spacing:3) {
+                                    PapiText("Coffee reserve").font(CoffeeType.face(.caption,weight:.semibold))
+                                    Text(store.state.coinBalance,format:.number).font(CoffeeType.face(.title,weight:.heavy)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.5).contentTransition(.numericText())
+                                }
+                                Spacer(minLength:4)
+                                PapiText("Live balance").font(CoffeeType.face(.caption)).multilineTextAlignment(.trailing)
+                            }.foregroundStyle(Color.cream).padding(16).background(Color.coffee,in:RoundedRectangle(cornerRadius:20)).papiAvoidReserved()
+                            VStack(alignment:.leading,spacing:6) {
+                                PapiText("Choose your next pour").font(CoffeeType.display(.title2,weight:.bold)).italic()
+                                PapiText("Reference prices are in USD. Apple confirms your local price before payment.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                             }
-                            Spacer(minLength:4)
-                            PapiText("Live balance").font(CoffeeType.face(.caption)).multilineTextAlignment(.trailing)
-                        }.foregroundStyle(Color.cream).padding(18).background(Color.coffee,in:RoundedRectangle(cornerRadius:22)).papiAvoidReserved()
-                        VStack(alignment:.leading,spacing:6) {
-                            PapiText("Choose your next pour").font(CoffeeType.display(.title2,weight:.bold)).italic()
-                            PapiText("Reference prices are in USD. Apple confirms your local price before payment.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                        }
-                        LazyVGrid(columns:[GridItem(.adaptive(minimum:packColumnWidth),spacing:12)],spacing:12) {
-                            ForEach(CoinPack.all) {item in
-                                Button {selected=item.id} label:{packTile(item)}.buttonStyle(.plain).disabled(commerce.busy)
-                                    .accessibilityAddTraits(selected==item.id ? .isSelected:[])
+                            LazyVGrid(columns:Array(repeating:GridItem(.flexible(),spacing:10),count:columnCount),spacing:10) {
+                                ForEach(CoinPack.all) {item in
+                                    Button {selected=item.id} label:{packTile(item)}.buttonStyle(.plain).disabled(commerce.busy)
+                                        .accessibilityAddTraits(selected==item.id ? .isSelected:[])
+                                }
                             }
-                        }
-                        if inlinePurchase {purchasePanel}
-                        PapiText(commerce.status).font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).accessibilityAddTraits(.updatesFrequently)
-                        PapiTextButton("Recover purchases"){Task{await commerce.sync()}}.font(CoffeeType.face(.subheadline,weight:.bold)).frame(minHeight:44).disabled(commerce.busy || !store.storageAvailable)
-                        spendingGuide
-                        PapiText("Consumable coins belong to this local guest. They do not sync between devices. Deleting the guest removes its spendable balance; purchase ownership records are kept to prevent duplicate delivery.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                        VStack(alignment:.leading,spacing:12) {
-                            PapiText("Wallet activity").font(CoffeeType.face(.headline))
-                            if store.state.coinMovements.isEmpty {PapiEmpty(title:"No transactions yet",detail:"Daily check-in is a free way to start collecting coins.")}
-                            ForEach(store.state.coinMovements.prefix(40)) {entry in
-                                HStack(spacing:12) {
-                                    VStack(alignment:.leading,spacing:3) {PapiText(entry.reason).font(CoffeeType.face(.subheadline));Text(entry.createdAt,style:.date).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
-                                    Spacer(minLength:4)
-                                    Text(entry.delta,format:.number.sign(strategy:.always())).monospacedDigit().fontWeight(.semibold)
-                                }.padding(.vertical,12)
-                                Divider().overlay(Color.coffee.opacity(0.15))
+                            if inlinePurchase {purchasePanel}
+                            PapiText(commerce.status).font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).accessibilityAddTraits(.updatesFrequently)
+                            PapiTextButton("Recover purchases"){Task{await commerce.sync()}}.font(CoffeeType.face(.subheadline,weight:.bold)).frame(minHeight:44).disabled(commerce.busy || !store.storageAvailable)
+                            spendingGuide
+                            PapiText("Consumable coins belong to this local guest. They do not sync between devices. Deleting the guest removes its spendable balance; purchase ownership records are kept to prevent duplicate delivery.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                            VStack(alignment:.leading,spacing:12) {
+                                PapiText("Wallet activity").font(CoffeeType.face(.headline))
+                                if store.state.coinMovements.isEmpty {PapiEmpty(title:"No transactions yet",detail:"Daily check-in is a free way to start collecting coins.")}
+                                ForEach(store.state.coinMovements.prefix(40)) {entry in
+                                    HStack(spacing:12) {
+                                        VStack(alignment:.leading,spacing:3) {PapiText(entry.reason).font(CoffeeType.face(.subheadline));Text(entry.createdAt,style:.date).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
+                                        Spacer(minLength:4)
+                                        Text(entry.delta,format:.number.sign(strategy:.always())).monospacedDigit().fontWeight(.semibold)
+                                    }.padding(.vertical,12)
+                                    Divider().overlay(Color.coffee.opacity(0.15))
+                                }
                             }
-                        }
-                    }.padding(20).frame(maxWidth:680).frame(maxWidth:.infinity)
+                        }.padding(20).frame(maxWidth:680).frame(maxWidth:.infinity)
+                    }
+                    if !inlinePurchase {purchasePanel}
                 }
-                if !inlinePurchase {purchasePanel}
             }
         }.onAppear{purchaseVisitID=UUID();visible=true;activeScene=phase == .active}
             .onDisappear{visible=false;purchaseVisitID=UUID()}
@@ -169,23 +173,23 @@ struct CoinReserveView:View {
         }.padding(.horizontal,20).padding(.vertical,12).frame(maxWidth:680).frame(maxWidth:.infinity).background(Color.cream).papiAvoidReserved()
     }
     private func packTile(_ item:CoinPack)->some View {
-        VStack(alignment:.leading,spacing:10) {
+        VStack(alignment:.leading,spacing:6) {
             HStack {
-                Image("coin").resizable().scaledToFit().frame(width:28,height:28).accessibilityHidden(true)
+                Image("coin").resizable().scaledToFit().frame(width:23,height:23).accessibilityHidden(true)
                 Spacer(minLength:0)
-                if selected==item.id {Image("check").resizable().scaledToFit().frame(width:18,height:18).accessibilityHidden(true)}
+                if selected==item.id {Image("check").resizable().scaledToFit().frame(width:16,height:16).accessibilityHidden(true)}
             }
-            Text(item.coins,format:.number).font(CoffeeType.face(.title2,weight:.heavy)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
-            PapiText("coins").font(CoffeeType.face(.caption))
+            Text(item.coins,format:.number).font(CoffeeType.face(.title3,weight:.heavy)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
+            PapiText("coins").font(CoffeeType.face(.caption2))
             if let product=commerce.products.first(where:{$0.id==item.id}) {
-                Text(verbatim:product.displayPrice).font(CoffeeType.face(.headline))
-                PapiText("Price from Apple").font(CoffeeType.face(.caption2))
+                Text(verbatim:product.displayPrice).font(CoffeeType.face(.subheadline,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                PapiText("Price from Apple").font(CoffeeType.face(.caption2)).fixedSize(horizontal:false,vertical:true)
             } else {
-                PapiText("USD reference $\(item.referenceUSD)").font(CoffeeType.face(.subheadline,weight:.semibold))
+                Text(verbatim:"$"+item.referenceUSD).font(CoffeeType.face(.subheadline,weight:.bold))
+                PapiText("USD reference").font(CoffeeType.face(.caption2)).fixedSize(horizontal:false,vertical:true)
             }
-            PapiText(selected==item.id ? "Selected":"Select pack").font(CoffeeType.face(.caption,weight:.semibold))
-        }.foregroundStyle(Color.coffee).frame(maxWidth:.infinity,alignment:.leading).padding(16)
-            .background(selected==item.id ? Color.butter:Color.white.opacity(0.85),in:RoundedRectangle(cornerRadius:18)).papiAvoidReserved()
+        }.foregroundStyle(Color.coffee).frame(maxWidth:.infinity,alignment:.leading).padding(11).frame(maxWidth:.infinity,minHeight:132,alignment:.topLeading)
+            .background(selected==item.id ? Color.butter:Color.white.opacity(0.85),in:RoundedRectangle(cornerRadius:16)).papiAvoidReserved()
     }
     private var spendingGuide:some View {
         VStack(alignment:.leading,spacing:16) {

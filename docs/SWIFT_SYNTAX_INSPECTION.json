@@ -1,12 +1,12 @@
 {
-  "reviewDate": "2026-10-26",
+  "reviewDate": "2026-10-27",
   "method": "Independent tree-sitter Swift parsing and source inspection only; no Swift compiler invoked.",
   "parserVersions": {
     "tree-sitter": "0.26.0",
     "tree-sitter-swift": "0.7.4"
   },
   "fileCount": 30,
-  "lineCount": 4793,
+  "lineCount": 5150,
   "inMemoryGrammarNormalisations": [
     {
       "file": "Papi/Appearance/DisplayContinuity.swift",
@@ -16,7 +16,7 @@
     },
     {
       "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
-      "line": 307,
+      "line": 319,
       "original": "scale*$0",
       "reason": "Parser grammar ambiguity; equivalent spaces in memory only."
     }
@@ -25,7 +25,7 @@
   "files": [
     {
       "file": "Papi/App/PapiApp.swift",
-      "lines": 221,
+      "lines": 252,
       "syntaxTreeComplete": true
     },
     {
@@ -35,12 +35,12 @@
     },
     {
       "file": "Papi/Appearance/CoffeeLanguage.swift",
-      "lines": 83,
+      "lines": 80,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/Appearance/CoffeePalette.swift",
-      "lines": 247,
+      "lines": 297,
       "syntaxTreeComplete": true
     },
     {
@@ -55,12 +55,12 @@
     },
     {
       "file": "Papi/CoffeeDomain/BrewRecords.swift",
-      "lines": 156,
+      "lines": 162,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeDomain/CoffeeArchive.swift",
-      "lines": 363,
+      "lines": 366,
       "syntaxTreeComplete": true
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "file": "Papi/CoffeeHouse/Arrival/FirstCupWelcome.swift",
-      "lines": 78,
+      "lines": 103,
       "syntaxTreeComplete": true
     },
     {
@@ -80,12 +80,12 @@
     },
     {
       "file": "Papi/CoffeeHouse/Brewing/BrewBench.swift",
-      "lines": 344,
+      "lines": 415,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Cafes/CafeNotebook.swift",
-      "lines": 28,
+      "lines": 41,
       "syntaxTreeComplete": true
     },
     {
@@ -95,27 +95,27 @@
     },
     {
       "file": "Papi/CoffeeHouse/Correspondence/CoffeeLetters.swift",
-      "lines": 154,
+      "lines": 187,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Counter/CoffeeCounter.swift",
-      "lines": 304,
+      "lines": 308,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Journal/CoffeeJournal.swift",
-      "lines": 317,
+      "lines": 329,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Passports/CoffeePassports.swift",
-      "lines": 420,
+      "lines": 435,
       "syntaxTreeComplete": true
     },
     {
       "file": "Papi/CoffeeHouse/Tables/CoffeeTables.swift",
-      "lines": 158,
+      "lines": 250,
       "syntaxTreeComplete": true
     },
     {
@@ -160,7 +160,7 @@
     },
     {
       "file": "Papi/Persistence/CoffeeVault.swift",
-      "lines": 62,
+      "lines": 67,
       "syntaxTreeComplete": true
     },
     {

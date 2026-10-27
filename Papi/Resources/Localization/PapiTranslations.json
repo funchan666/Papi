@@ -5528,5 +5528,138 @@
     "ar": "نسخة محفوظة · الإنجليزية",
     "vi": "Bản đã lưu · Tiếng Anh",
     "ko": "저장된 사본 · 영어"
+  },
+  "Gift preview": {
+    "es": "Vista previa de regalos",
+    "th": "ดูตัวอย่างของขวัญ",
+    "ar": "معاينة الهدايا",
+    "vi": "Xem trước quà tặng",
+    "ko": "선물 미리 보기"
+  },
+  "Brew calculator": {
+    "es": "Calculadora de café",
+    "th": "เครื่องคำนวณกาแฟ",
+    "ar": "حاسبة القهوة",
+    "vi": "Máy tính pha cà phê",
+    "ko": "커피 비율 계산기"
+  },
+  "Plan your pour": {
+    "es": "Prepara tu vertido",
+    "th": "วางแผนการชง",
+    "ar": "خطّط لتحضير قهوتك",
+    "vi": "Lên kế hoạch cho lần pha",
+    "ko": "나만의 추출 계획"
+  },
+  "Choose your coffee and ratio. The water amount updates as you make changes.": {
+    "es": "Elige la cantidad de café y la proporción. El agua se calcula al instante.",
+    "th": "เลือกปริมาณกาแฟและอัตราส่วน ปริมาณน้ำจะปรับตามทันที",
+    "ar": "اختر كمية القهوة والنسبة، وستتغير كمية الماء فوراً.",
+    "vi": "Chọn lượng cà phê và tỷ lệ. Lượng nước sẽ cập nhật ngay.",
+    "ko": "원두량과 비율을 선택하면 물의 양이 바로 바뀝니다."
+  },
+  "Water ratio": {
+    "es": "Proporción de agua",
+    "th": "อัตราส่วนน้ำ",
+    "ar": "نسبة الماء",
+    "vi": "Tỷ lệ nước",
+    "ko": "물 비율"
+  },
+  "Water to pour": {
+    "es": "Agua para verter",
+    "th": "ปริมาณน้ำที่ใช้",
+    "ar": "كمية الماء للصب",
+    "vi": "Lượng nước cần rót",
+    "ko": "부을 물의 양"
+  },
+  "A starting point for filter coffee.": {
+    "es": "Un punto de partida para café filtrado.",
+    "th": "จุดเริ่มต้นสำหรับกาแฟดริป",
+    "ar": "نقطة بداية للقهوة المقطّرة.",
+    "vi": "Điểm khởi đầu cho cà phê lọc.",
+    "ko": "핸드드립을 위한 시작점입니다."
+  },
+  "Explore brew recipes": {
+    "es": "Explorar recetas de café",
+    "th": "ดูสูตรกาแฟ",
+    "ar": "استكشف وصفات التحضير",
+    "vi": "Khám phá công thức pha",
+    "ko": "추출 레시피 둘러보기"
+  },
+  "Your brews and saved reports": {
+    "es": "Tus preparaciones y reportes guardados",
+    "th": "กาแฟที่ชงและรายงานที่บันทึกไว้",
+    "ar": "قهوة حضرتها وبلاغات محفوظة",
+    "vi": "Các lần pha và báo cáo đã lưu",
+    "ko": "저장한 추출 기록과 신고"
+  },
+  "Your conversations": {
+    "es": "Tus conversaciones",
+    "th": "บทสนทนาของคุณ",
+    "ar": "محادثاتك",
+    "vi": "Cuộc trò chuyện của bạn",
+    "ko": "내 대화"
+  },
+  "Collection portraits are previews. Messaging is not connected yet.": {
+    "es": "Los perfiles de la colección son vistas previas. La mensajería aún no está conectada.",
+    "th": "โปรไฟล์ในคอลเลกชันเป็นตัวอย่าง ระบบส่งข้อความยังไม่ได้เชื่อมต่อ",
+    "ar": "الملفات في المجموعة للمعاينة. خدمة المراسلة غير متصلة بعد.",
+    "vi": "Hồ sơ trong bộ sưu tập chỉ để xem trước. Tính năng nhắn tin chưa được kết nối.",
+    "ko": "컬렉션 프로필은 미리보기입니다. 메시지 기능은 아직 연결되지 않았습니다."
+  },
+  "Explore coffee community": {
+    "es": "Explorar la comunidad cafetera",
+    "th": "สำรวจชุมชนกาแฟ",
+    "ar": "استكشف مجتمع القهوة",
+    "vi": "Khám phá cộng đồng cà phê",
+    "ko": "커피 커뮤니티 둘러보기"
+  },
+  "USD reference": {
+    "es": "Referencia en USD",
+    "th": "ราคาอ้างอิง USD",
+    "ar": "السعر المرجعي بالدولار",
+    "vi": "Giá tham khảo USD",
+    "ko": "USD 참고 가격"
+  },
+  "An inspiration scene, not a verified café. Address and opening hours are unavailable.": {
+    "es": "Una escena de inspiración, no una cafetería verificada. No hay dirección ni horario disponibles.",
+    "th": "ภาพบรรยากาศเพื่อเป็นแรงบันดาลใจ ไม่ใช่ร้านกาแฟที่ตรวจสอบแล้ว ไม่มีที่อยู่หรือเวลาเปิดให้บริการ",
+    "ar": "مشهد للإلهام وليس مقهى تم التحقق منه. العنوان وساعات العمل غير متاحة.",
+    "vi": "Đây là cảnh gợi cảm hứng, không phải quán cà phê đã xác minh. Không có địa chỉ hoặc giờ mở cửa.",
+    "ko": "영감을 위한 장면이며 확인된 카페가 아닙니다. 주소와 영업시간은 제공되지 않습니다."
+  },
+  "Explore coffee scenes": {
+    "es": "Explorar escenas de café",
+    "th": "สำรวจมุมกาแฟ",
+    "ar": "استكشف أجواء القهوة",
+    "vi": "Khám phá góc cà phê",
+    "ko": "커피 풍경 둘러보기"
+  },
+  "No saved scenes yet": {
+    "es": "Aún no hay escenas guardadas",
+    "th": "ยังไม่มีมุมกาแฟที่บันทึก",
+    "ar": "لا توجد مشاهد محفوظة بعد",
+    "vi": "Chưa có góc cà phê đã lưu",
+    "ko": "저장한 커피 풍경이 없습니다"
+  },
+  "Save a coffee scene to find it here.": {
+    "es": "Guarda una escena de café para encontrarla aquí.",
+    "th": "บันทึกมุมกาแฟเพื่อกลับมาดูได้ที่นี่",
+    "ar": "احفظ مشهداً للقهوة لتجده هنا.",
+    "vi": "Lưu một góc cà phê để tìm lại tại đây.",
+    "ko": "커피 풍경을 저장하면 여기에서 볼 수 있습니다."
+  },
+  "Remove from saved": {
+    "es": "Quitar de guardados",
+    "th": "นำออกจากรายการที่บันทึก",
+    "ar": "إزالة من المحفوظات",
+    "vi": "Bỏ khỏi mục đã lưu",
+    "ko": "저장 목록에서 삭제"
+  },
+  "Save scene": {
+    "es": "Guardar escena",
+    "th": "บันทึกมุมกาแฟ",
+    "ar": "حفظ المشهد",
+    "vi": "Lưu góc cà phê",
+    "ko": "풍경 저장"
   }
 }

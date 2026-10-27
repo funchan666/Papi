@@ -11,7 +11,7 @@ struct MyCoffeePassportView:View {
         PapiScreen {
             GeometryReader {container in
                 let topInset=container.safeAreaInsets.top
-                let coverHeight=min(360,max(260,container.size.width*0.62))
+                let coverHeight=min(320,max(220,container.size.width*0.56))
                 ScrollView {
                     VStack(spacing:0) {
                         ZStack(alignment:.top) {
@@ -24,27 +24,29 @@ struct MyCoffeePassportView:View {
                                 PapiIconButton(asset:"settings",label:store.text("Settings")){router.go(.settings)}.background(Color.cream.opacity(0.94),in:RoundedRectangle(cornerRadius:12))
                             }.padding(18).padding(.top,topInset).frame(maxWidth:820).papiAvoidReserved()
                         }.frame(height:coverHeight+topInset)
-                        VStack(spacing:15) {
-                            VStack(alignment:.leading,spacing:12) {
-                                HStack {
-                                    Button {router.go(.editProfile)} label:{Avatar(name:store.state.passport.portraitReference,size:76)}
+                        VStack(spacing:16) {
+                            VStack(alignment:.leading,spacing:14) {
+                                HStack(alignment:.center,spacing:12) {
+                                    Button {router.go(.editProfile)} label:{Avatar(name:store.state.passport.portraitReference,size:72)}
                                         .buttonStyle(.plain).papiAccessibilityLabel("Change avatar")
-                                    VStack(alignment:.leading,spacing:5) {PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.title3,weight:.bold));PapiText("Your coffee passport").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
-                                    Spacer()
-                                    if let id=store.state.displayedGift,let gift=CoffeeCollectible.all.first(where:{$0.id==id}) {Image(gift.asset).resizable().scaledToFit().frame(width:55,height:55).papiAccessibilityLabel(gift.name)}
+                                    VStack(alignment:.leading,spacing:5) {
+                                        PapiText(verbatim:store.state.passport.name).font(CoffeeType.face(.title3,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                                        PapiText("Your coffee passport").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                                    }.frame(maxWidth:.infinity,alignment:.leading)
+                                    if let id=store.state.displayedGift,let gift=CoffeeCollectible.all.first(where:{$0.id==id}) {Image(gift.asset).resizable().scaledToFit().frame(width:44,height:44).papiAccessibilityLabel(gift.name)}
                                 }
-                                PapiText(verbatim:store.state.passport.bio).font(CoffeeType.face(.subheadline))
+                                PapiText(verbatim:store.state.passport.bio).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
                                 PapiText("\(store.brewBook.cups.count) cups in your book").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                            }.padding(18).background(Color.cream.opacity(0.95),in:RoundedRectangle(cornerRadius:24)).padding(.horizontal,16).padding(.top,-32)
+                            }.padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.cream,in:RoundedRectangle(cornerRadius:24)).padding(.top,-28)
                             HStack(spacing:0) {
                                 countButton(store.state.followedMembers.filter{!store.isUserHidden($0)}.count,"Following")
                                 countButton(store.followers.count,"Follower")
                                 countButton(store.friends.count,"Friends")
-                            }.padding(.vertical,16).background(Color.coffee,in:RoundedRectangle(cornerRadius:12)).padding(.horizontal,18)
+                            }.padding(.vertical,14).background(Color.coffee,in:RoundedRectangle(cornerRadius:18))
                             HStack(spacing:12) {
-                                Button {router.go(.wallet)} label:{Image("walletBanner").resizable().scaledToFit()}.papiAccessibilityLabel("My wallet")
-                                Button {router.go(.level)} label:{Image("levelBanner").resizable().scaledToFit()}.papiAccessibilityLabel("My level")
-                            }.buttonStyle(.plain).padding(.horizontal,18)
+                                Button {router.go(.wallet)} label:{Image("walletBanner").resizable().scaledToFit().frame(maxWidth:.infinity)}.papiAccessibilityLabel("My wallet")
+                                Button {router.go(.level)} label:{Image("levelBanner").resizable().scaledToFit().frame(maxWidth:.infinity)}.papiAccessibilityLabel("My level")
+                            }.buttonStyle(.plain)
                             VStack(spacing:0) {
                                 PapiRow(asset:"brewDripper",title:"Brew bench"){router.go(.brewBench)}
                                 Divider().padding(.leading,52)
@@ -61,31 +63,44 @@ struct MyCoffeePassportView:View {
                                 PapiRow(asset:"globe",title:store.text("Language")){router.go(.language)}
                                 Divider().padding(.leading,52)
                                 PapiRow(asset:"coffeeUpdates",title:"My submissions"){router.go(.reviewQueue)}
-                            }.background(Color.white,in:RoundedRectangle(cornerRadius:18)).padding(.horizontal,18)
-                            HStack {
-                                ForEach(0..<3) {i in PapiTextButton(["Posts","Photo album","Saved"][i]){collection=i}.font(CoffeeType.face(.subheadline,weight:.semibold)).padding(.vertical,10).frame(maxWidth:.infinity).background(collection==i ? Color.butter:Color.clear,in:Capsule())}
-                            }.buttonStyle(.plain).padding(.horizontal,16)
+                            }.background(Color.white,in:RoundedRectangle(cornerRadius:18))
+                            let shelfLayout=typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing:4)):AnyLayout(HStackLayout(spacing:4))
+                            shelfLayout {
+                                ForEach(0..<3) {i in
+                                    Button {collection=i} label:{
+                                        PapiText(["Posts","Photo album","Saved"][i]).font(CoffeeType.face(.subheadline,weight:.semibold))
+                                            .multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
+                                            .padding(.vertical,10).frame(maxWidth:.infinity,minHeight:44)
+                                            .background(collection==i ? Color.butter:Color.clear,in:Capsule()).contentShape(Rectangle())
+                                    }.buttonStyle(.plain).accessibilityAddTraits(collection==i ? .isSelected:[])
+                                }
+                            }
                             if collection==1 {
                                 if store.state.passport.photos.isEmpty {PapiEmpty(title:"No album photos yet",detail:"Add a photo from Edit Profile.")}
                                 LazyVGrid(columns:[GridItem(.adaptive(minimum:145),spacing:12)],spacing:12) {
                                     ForEach(store.state.passport.photos,id:\.self) {name in Button{router.go(.photo(name))} label:{PapiImage(name:name).frame(height:180).clipped().clipShape(RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)}
-                                }.padding(.horizontal,18)
+                                }
                             } else {
                                 let posts=collection==0 ? store.visiblePosts.filter{$0.authorID==store.state.passport.id.uuidString}:store.visiblePosts.filter{store.state.keptMoments.contains($0.id)}
                                 if posts.isEmpty {PapiEmpty(title:collection==0 ? "Your coffee journal is waiting":"No saved moments",detail:collection==0 ? "Use the plus button on Home to keep your first coffee moment.":"Save a moment from its detail page to find it here.")}
-                                LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:12) {ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}.padding(.horizontal,18)
+                                LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:12) {ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}}
                             }
-                        }.padding(.bottom,24).frame(maxWidth:820).frame(maxWidth:.infinity)
+                        }.padding(.horizontal,18).padding(.bottom,24).frame(maxWidth:820).frame(maxWidth:.infinity)
                     }
                 }
                 // Extend the photo and scroll surface; measured top padding keeps controls below system cutouts.
                 .ignoresSafeArea(.container,edges:.top)
                 .contentMargins(.top,0,for:.scrollContent)
+                .frame(width:container.size.width,height:container.size.height+topInset)
+                .clipped().offset(y:-topInset)
             }
         }
     }
     private func countButton(_ count:Int,_ title:String)->some View {
-        Button {router.go(.relationships(["Following","Follower","Friends"].firstIndex(of:title) ?? 0))} label:{VStack(spacing:4){PapiText("\(count)").font(CoffeeType.face(.headline));PapiText(title).font(CoffeeType.face(.caption))}}.buttonStyle(.plain).frame(maxWidth:.infinity).foregroundStyle(Color.cream)
+        Button {router.go(.relationships(["Following","Follower","Friends"].firstIndex(of:title) ?? 0))} label:{
+            VStack(spacing:4){PapiText("\(count)").font(CoffeeType.face(.headline));PapiText(title).font(CoffeeType.face(.caption)).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)}
+                .frame(maxWidth:.infinity,minHeight:48).contentShape(Rectangle())
+        }.buttonStyle(.plain).frame(maxWidth:.infinity).foregroundStyle(Color.cream)
     }
 }
 struct EditCoffeePassportView:View {

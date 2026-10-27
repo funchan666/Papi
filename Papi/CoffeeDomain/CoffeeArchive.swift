@@ -126,12 +126,16 @@ struct CoffeeArchive: Codable {
     var signedIn = false
     var sawOnboarding = false
     var acceptedPolicyVersion: String? = nil
-    var language = PapiStrings.preferredLanguage
+    var language = "en"
+    // Missing in earlier snapshots, whose language could have been selected automatically.
+    var languageDefaultRevision: Int? = 1
     var notificationPreference = false
     var followedMembers: Set<String> = []
     var blockedMembers: Set<String> = []
     var appreciatedMoments: Set<String> = []
     var keptMoments: Set<String> = []
+    // Optional so older guest snapshots keep their existing data.
+    var savedCoffeeScenes: Set<String>? = nil
     var ownMoments: [CoffeeMoment] = []
     var tastingReplies: [TastingReply] = []
     var communityReports: [CommunityReport] = []
@@ -169,11 +173,13 @@ struct CoffeeArchive: Codable {
         case sawOnboarding = "sawOnboarding"
         case acceptedPolicyVersion = "acceptedPolicyVersion"
         case language = "language"
+        case languageDefaultRevision = "languageDefaultRevision"
         case notificationPreference = "notificationPreference"
         case followedMembers = "follows"
         case blockedMembers = "blocked"
         case appreciatedMoments = "likes"
         case keptMoments = "bookmarks"
+        case savedCoffeeScenes = "savedCoffeeScenes"
         case ownMoments = "localPosts"
         case tastingReplies = "comments"
         case communityReports = "reports"
@@ -311,46 +317,46 @@ struct CollectionConversation {
     var contributorID:String {CoffeeMember.portraits[contributorIndex].id}
     static func entry(_ momentID:String)->Self? {entries.first{$0.momentID==momentID}}
     static let entries:[CollectionConversation] = [
-        .init(momentID:"editorial-photo-0",contributorIndex:0,appreciationCount:9,cupNotes:["That little cookie beside the cup is a lovely detail.","I'd pick the window seat for this one."]),
-        .init(momentID:"editorial-photo-1",contributorIndex:4,appreciationCount:14,cupNotes:["Coffee first, then a slow breakfast. A good order of things."]),
-        .init(momentID:"editorial-photo-2",contributorIndex:2,appreciationCount:6,cupNotes:["I like how the light comes through the americano."]),
-        .init(momentID:"editorial-photo-3",contributorIndex:6,appreciationCount:17,cupNotes:["The canal reflection makes this feel so still.","Two cups and nowhere to rush."]),
-        .init(momentID:"editorial-photo-4",contributorIndex:1,appreciationCount:8,cupNotes:["That croissant looks like it needs a second napkin."]),
-        .init(momentID:"editorial-photo-5",contributorIndex:7,appreciationCount:12,cupNotes:["Round tables always seem to make a café feel friendlier."]),
-        .init(momentID:"editorial-photo-6",contributorIndex:3,appreciationCount:5,cupNotes:["The pastry layers caught my eye before the foam did.","A little contrast between crisp and creamy."]),
+        .init(momentID:"editorial-photo-0",contributorIndex:0,appreciationCount:9,cupNotes:["That little cookie beside the cup is a lovely detail.","I'd pick the window seat for this one.","The wooden table gives the cup a warm backdrop.","A small latte is enough for a long sit in a place like this."]),
+        .init(momentID:"editorial-photo-1",contributorIndex:4,appreciationCount:14,cupNotes:["Coffee first, then a slow breakfast. A good order of things.","I'd save the pastry for the last few sips.","There is room for both a sweet bite and something stronger on that tray."]),
+        .init(momentID:"editorial-photo-2",contributorIndex:2,appreciationCount:6,cupNotes:["I like how the light comes through the americano.","The little reflections around the rim are easy to miss."]),
+        .init(momentID:"editorial-photo-3",contributorIndex:6,appreciationCount:17,cupNotes:["The canal reflection makes this feel so still.","Two cups and nowhere to rush.","Watching the water would probably make me forget the time.","This looks like a table worth waiting for.","I would take the smaller cup and leave the view to do the rest.","The buildings across the canal add so much to the scene."]),
+        .init(momentID:"editorial-photo-4",contributorIndex:1,appreciationCount:8,cupNotes:["That croissant looks like it needs a second napkin.","Two cups make a simple breakfast feel like an occasion.","I'd let the coffee cool a little while pulling the croissant apart."]),
+        .init(momentID:"editorial-photo-5",contributorIndex:7,appreciationCount:12,cupNotes:["Round tables always seem to make a café feel friendlier.","That compact tray keeps everything together so neatly."]),
+        .init(momentID:"editorial-photo-6",contributorIndex:3,appreciationCount:5,cupNotes:["The pastry layers caught my eye before the foam did.","A little contrast between crisp and creamy.","The plates are just the right size for a shared coffee break.","A sip of coffee between bites makes pastry easier to appreciate.","I like a table where the cups don't have to compete with a laptop.","The overhead angle makes all those small textures stand out."]),
         .init(momentID:"editorial-photo-7",contributorIndex:5,appreciationCount:11,cupNotes:["A cold brew for the walk home sounds right."]),
-        .init(momentID:"editorial-photo-8",contributorIndex:0,appreciationCount:7,cupNotes:["I'd stay outside until that patch of sun moved."]),
-        .init(momentID:"editorial-photo-9",contributorIndex:1,appreciationCount:16,cupNotes:["Everything within reach of the grinder. A tidy little setup.","The cups make the counter feel lived in."]),
-        .init(momentID:"editorial-photo-10",contributorIndex:4,appreciationCount:4,cupNotes:["Just enough morning light for one quiet cup."]),
-        .init(momentID:"editorial-photo-11",contributorIndex:5,appreciationCount:10,cupNotes:["Those iced lattes won't stay cold for long in that sun."]),
-        .init(momentID:"editorial-photo-12",contributorIndex:7,appreciationCount:13,cupNotes:["I always pause before stirring the milk through.","The marble pattern changes with every pour."]),
-        .init(momentID:"editorial-photo-13",contributorIndex:2,appreciationCount:6,cupNotes:["Breakfast in a courtyard feels like a small holiday."]),
-        .init(momentID:"editorial-photo-14",contributorIndex:3,appreciationCount:15,cupNotes:["A cookie with a milk drink is a pairing I keep coming back to."]),
-        .init(momentID:"editorial-photo-15",contributorIndex:6,appreciationCount:8,cupNotes:["That glass roof would make a rainy coffee break interesting too.","So many soft reflections in this corner."]),
-        .init(momentID:"editorial-photo-16",contributorIndex:7,appreciationCount:12,cupNotes:["Dates bring their own sweetness to a small strong coffee."]),
+        .init(momentID:"editorial-photo-8",contributorIndex:0,appreciationCount:7,cupNotes:["I'd stay outside until that patch of sun moved.","The plants make this corner feel tucked away from the street.","An outdoor seat changes the whole pace of a cup."]),
+        .init(momentID:"editorial-photo-9",contributorIndex:1,appreciationCount:16,cupNotes:["Everything within reach of the grinder. A tidy little setup.","The cups make the counter feel lived in.","A counter that makes it easy to start brewing is a good counter.","I would keep a small notebook beside that setup.","It is nice when the everyday cups are on display instead of hidden away."]),
+        .init(momentID:"editorial-photo-10",contributorIndex:4,appreciationCount:4,cupNotes:["Just enough morning light for one quiet cup.","That is the kind of seat I'd look for on a cool morning."]),
+        .init(momentID:"editorial-photo-11",contributorIndex:5,appreciationCount:10,cupNotes:["Those iced lattes won't stay cold for long in that sun.","I like how the glass shows the coffee and milk separately.","One for each side of the table.","The wooden tray looks made for carrying both cups outside."]),
+        .init(momentID:"editorial-photo-12",contributorIndex:7,appreciationCount:13,cupNotes:["I always pause before stirring the milk through.","The marble pattern changes with every pour.","The ice makes the layers look different from every angle."]),
+        .init(momentID:"editorial-photo-13",contributorIndex:2,appreciationCount:6,cupNotes:["Breakfast in a courtyard feels like a small holiday.","A table at the edge of the courtyard would be my first choice.","The greenery softens the whole breakfast setting.","There is something lovely about taking the first cup outdoors."]),
+        .init(momentID:"editorial-photo-14",contributorIndex:3,appreciationCount:15,cupNotes:["A cookie with a milk drink is a pairing I keep coming back to.","The low light makes the little table feel especially quiet."]),
+        .init(momentID:"editorial-photo-15",contributorIndex:6,appreciationCount:8,cupNotes:["That glass roof would make a rainy coffee break interesting too.","So many soft reflections in this corner.","You get the feeling of sitting outside while still being under cover.","I'd bring something short to read and order a small coffee."]),
+        .init(momentID:"editorial-photo-16",contributorIndex:7,appreciationCount:12,cupNotes:["Dates bring their own sweetness to a small strong coffee.","A small serving gives you time to notice the aroma.","I'd try a date between sips rather than sweetening the cup."]),
         .init(momentID:"editorial-photo-17",contributorIndex:4,appreciationCount:5,cupNotes:["The rose chairs are a good reason to take the long way home."]),
-        .init(momentID:"editorial-photo-30",contributorIndex:2,appreciationCount:9,cupNotes:["A quick street-side espresso, then back to the day.","Small cup, good pause."]),
-        .init(momentID:"editorial-video-0",contributorIndex:0,appreciationCount:18,cupNotes:["The tiny ghost only appears at the very end.","That last pour takes a steady hand."]),
-        .init(momentID:"editorial-video-1",contributorIndex:1,appreciationCount:11,cupNotes:["The rosetta opens so neatly when the pitcher comes closer."]),
-        .init(momentID:"editorial-video-2",contributorIndex:4,appreciationCount:5,cupNotes:["A little pause before the next stop."]),
-        .init(momentID:"editorial-video-3",contributorIndex:2,appreciationCount:8,cupNotes:["The view from a window can be part of the coffee break too."]),
-        .init(momentID:"editorial-video-4",contributorIndex:5,appreciationCount:7,cupNotes:["I could watch espresso slipping between ice cubes for a while."]),
-        .init(momentID:"editorial-video-5",contributorIndex:3,appreciationCount:13,cupNotes:["The ice goes in first and everything else follows.","I like seeing the whole glass come together."]),
-        .init(momentID:"editorial-video-6",contributorIndex:6,appreciationCount:6,cupNotes:["That blue saucer makes the milk pour stand out."]),
-        .init(momentID:"editorial-video-7",contributorIndex:4,appreciationCount:15,cupNotes:["The caramel trails stay visible until the first stir."]),
-        .init(momentID:"editorial-video-8",contributorIndex:0,appreciationCount:19,cupNotes:["A small drop at the end gives the heart its point.","Getting the pitcher low seems to make all the difference."]),
-        .init(momentID:"editorial-video-9",contributorIndex:2,appreciationCount:8,cupNotes:["Orange peel with a moka pot is an aroma combination I'd remember."]),
+        .init(momentID:"editorial-photo-30",contributorIndex:2,appreciationCount:9,cupNotes:["A quick street-side espresso, then back to the day.","Small cup, good pause.","A tiny cup can still be the best part of a walk."]),
+        .init(momentID:"editorial-video-0",contributorIndex:0,appreciationCount:18,cupNotes:["The tiny ghost only appears at the very end.","That last pour takes a steady hand.","The contrast against the dark coffee makes the little face so clear.","I would watch the ending twice to see the final detail.","The pitcher stays close to the foam for those last touches.","A small seasonal idea that still lets the coffee be the main thing.","I'd like to try this in a wide, shallow cup.","The moment the pattern takes shape is the part I keep coming back to."]),
+        .init(momentID:"editorial-video-1",contributorIndex:1,appreciationCount:11,cupNotes:["The rosetta opens so neatly when the pitcher comes closer.","The movement stays gentle even as the pattern gets wider.","Keeping the cup tilted seems to help the first part of the pour.","I like seeing the pattern develop without any cuts.","That final line pulls the leaves together so neatly."]),
+        .init(momentID:"editorial-video-2",contributorIndex:4,appreciationCount:5,cupNotes:["A little pause before the next stop.","A portrait from the little moments between one café and the next."]),
+        .init(momentID:"editorial-video-3",contributorIndex:2,appreciationCount:8,cupNotes:["The view from a window can be part of the coffee break too.","The scenery moves while the coffee ritual stays calm.","That compact brewer looks easy to keep close on a journey.","A window view makes a simple drink feel a bit more memorable."]),
+        .init(momentID:"editorial-video-4",contributorIndex:5,appreciationCount:7,cupNotes:["I could watch espresso slipping between ice cubes for a while.","The first ribbon of coffee around the ice is my favourite bit.","A clear glass lets you see the whole drink coming together."]),
+        .init(momentID:"editorial-video-5",contributorIndex:3,appreciationCount:13,cupNotes:["The ice goes in first and everything else follows.","I like seeing the whole glass come together.","The steps are easy to follow when the camera stays on the glass.","I usually leave the stirring until the very end too.","A plain glass makes all the small changes visible."]),
+        .init(momentID:"editorial-video-6",contributorIndex:6,appreciationCount:6,cupNotes:["That blue saucer makes the milk pour stand out.","The cup tilt is easier to notice from this angle."]),
+        .init(momentID:"editorial-video-7",contributorIndex:4,appreciationCount:15,cupNotes:["The caramel trails stay visible until the first stir.","The syrup leaves a different pattern on every glass.","I would use a long spoon to get right down to the bottom.","The colours soften as soon as the milk starts moving."]),
+        .init(momentID:"editorial-video-8",contributorIndex:0,appreciationCount:19,cupNotes:["A small drop at the end gives the heart its point.","Getting the pitcher low seems to make all the difference.","It is satisfying when a familiar pattern comes out cleanly.","The shape changes so quickly in the final second.","I'd practise the cup angle before worrying about the design.","A simple heart leaves plenty of room to enjoy the foam."]),
+        .init(momentID:"editorial-video-9",contributorIndex:2,appreciationCount:8,cupNotes:["Orange peel with a moka pot is an aroma combination I'd remember.","The orange peel is a small detail I'd want to smell as well as see.","I like watching a familiar moka routine take a slightly different direction."]),
         .init(momentID:"editorial-video-10",contributorIndex:6,appreciationCount:4,cupNotes:["City evenings have their own pace."]),
-        .init(momentID:"editorial-video-11",contributorIndex:1,appreciationCount:14,cupNotes:["One little layer at a time, then the tulip comes through."]),
-        .init(momentID:"editorial-video-12",contributorIndex:3,appreciationCount:7,cupNotes:["I tend to notice the buildings on the way to a café."]),
-        .init(momentID:"editorial-video-13",contributorIndex:3,appreciationCount:5,cupNotes:["That first espresso of the morning deserves a clean cup.","A short extraction, a long pause afterward."]),
-        .init(momentID:"editorial-video-14",contributorIndex:4,appreciationCount:10,cupNotes:["The caramel disappears slowly around the spoon."]),
-        .init(momentID:"editorial-video-15",contributorIndex:5,appreciationCount:16,cupNotes:["Citrus over ice makes this feel like an afternoon cup."]),
-        .init(momentID:"editorial-video-16",contributorIndex:6,appreciationCount:12,cupNotes:["The rosetta fills almost the whole cappuccino.","The edges of the leaves stay so clear."]),
-        .init(momentID:"editorial-video-17",contributorIndex:7,appreciationCount:6,cupNotes:["The spiral dessert catches a little coffee in every fold."]),
-        .init(momentID:"editorial-video-18",contributorIndex:3,appreciationCount:17,cupNotes:["From grinder to cup is my favourite part of the routine."]),
-        .init(momentID:"editorial-video-19",contributorIndex:5,appreciationCount:9,cupNotes:["The layers don't last long, but they're worth a look.","I'd stir this just before the first sip."]),
-        .init(momentID:"editorial-video-20",contributorIndex:2,appreciationCount:7,cupNotes:["Pouring straight over ice makes the glass wake up."])
+        .init(momentID:"editorial-video-11",contributorIndex:1,appreciationCount:14,cupNotes:["One little layer at a time, then the tulip comes through.","Each little push adds another layer to the pattern.","The pause between pours makes the technique easier to follow.","I can see why a wider cup helps when practising this.","That last movement makes the whole design look connected."]),
+        .init(momentID:"editorial-video-12",contributorIndex:3,appreciationCount:7,cupNotes:["I tend to notice the buildings on the way to a café.","Sometimes the walk to the coffee shop is half the reason to go."]),
+        .init(momentID:"editorial-video-13",contributorIndex:3,appreciationCount:5,cupNotes:["That first espresso of the morning deserves a clean cup.","A short extraction, a long pause afterward.","A clean cup and a short pour make a good beginning."]),
+        .init(momentID:"editorial-video-14",contributorIndex:4,appreciationCount:10,cupNotes:["The caramel disappears slowly around the spoon.","The spoon leaves little swirls that disappear almost immediately.","I would taste a little before adding anything else.","There is something soothing about watching a drink slowly mix."]),
+        .init(momentID:"editorial-video-15",contributorIndex:5,appreciationCount:16,cupNotes:["Citrus over ice makes this feel like an afternoon cup.","The bright colours make this feel like a warm-weather coffee break.","I'd give the glass a gentle stir before the first taste.","The ice keeps moving as each layer is added.","A clear view of the glass makes the order of the steps easy to see.","This is the sort of drink I'd make for an afternoon outside."]),
+        .init(momentID:"editorial-video-16",contributorIndex:6,appreciationCount:12,cupNotes:["The rosetta fills almost the whole cappuccino.","The edges of the leaves stay so clear.","The pattern spreads right out toward the edge of the cup.","I like how a small change in the pour makes each leaf visible."]),
+        .init(momentID:"editorial-video-17",contributorIndex:7,appreciationCount:6,cupNotes:["The spiral dessert catches a little coffee in every fold.","I'd take a small bite first, then try it with the coffee.","The folds give the pour somewhere to settle."]),
+        .init(momentID:"editorial-video-18",contributorIndex:3,appreciationCount:17,cupNotes:["From grinder to cup is my favourite part of the routine.","The little pause between grinding and brewing feels familiar.","I'd keep the cup warm while preparing the next step.","The close view makes the texture of the grounds easy to notice.","A short film can still show the care that goes into a cup.","I'd write down the grind setting before changing anything.","This is a good reminder to give each step its own moment."]),
+        .init(momentID:"editorial-video-19",contributorIndex:5,appreciationCount:9,cupNotes:["The layers don't last long, but they're worth a look.","I'd stir this just before the first sip.","The milk takes a moment to find its way around the ice.","I'd leave a little room at the top for the final stir."]),
+        .init(momentID:"editorial-video-20",contributorIndex:2,appreciationCount:7,cupNotes:["Pouring straight over ice makes the glass wake up.","The glass shows exactly where the hot coffee first meets the ice."])
     ]
 }
 extension TastingReply {

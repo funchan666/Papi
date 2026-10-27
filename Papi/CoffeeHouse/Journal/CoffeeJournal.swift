@@ -10,6 +10,9 @@ struct CoffeeJournalView:View {
     var body:some View {
         PapiScreen {
             GeometryReader { geo in
+                let viewportWidth=max(0,min(1200,geo.size.width))
+                let contentWidth=max(0,viewportWidth-32)
+                let bannerWidth=max(0,(contentWidth-10)/2)
                 ScrollView {
                     VStack(alignment:.leading,spacing:18) {
                         HStack(alignment:.center) {
@@ -21,53 +24,62 @@ struct CoffeeJournalView:View {
                             PapiIconButton(asset:"plus",label:"Create a post") {router.sheet = .compose}
                         }
                         HStack(spacing:10) {
-                            Button {router.go(.cafes)} label:{Image("exploreBanner").resizable().scaledToFit()}
-                            Button {router.go(.beans)} label:{Image("beansBanner").resizable().scaledToFit()}
+                            Button {router.go(.cafes)} label:{Image("exploreBanner").resizable().scaledToFit().frame(width:bannerWidth)}
+                            Button {router.go(.beans)} label:{Image("beansBanner").resizable().scaledToFit().frame(width:bannerWidth)}
                         }.buttonStyle(.plain)
                         let portraits=CoffeeMember.previews.filter{!store.isUserHidden($0.id)}
                         if !portraits.isEmpty {
-                            HStack {
-                                PapiText("Around the coffee table").font(CoffeeType.face(.headline))
-                                Spacer()
-                                PapiText("Collection portraits").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
-                            }
-                            ScrollView(.horizontal) {
-                                LazyHStack(alignment:.top,spacing:14) {
-                                    ForEach(portraits) {person in
-                                        Button {router.go(.person(person.id))} label:{
-                                            VStack(spacing:8) {
-                                                Avatar(name:person.portrait,size:typeSize.isAccessibilitySize ? 88:70)
-                                                PapiText(verbatim:person.name).font(CoffeeType.face(.caption)).multilineTextAlignment(.center).lineLimit(2).fixedSize(horizontal:false,vertical:true)
-                                            }.frame(width:typeSize.isAccessibilitySize ? 150:96)
-                                        }.buttonStyle(.plain)
+                            VStack(alignment:.leading,spacing:8) {
+                                HStack(alignment:.firstTextBaseline,spacing:8) {
+                                    PapiText("Around the coffee table").font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true)
+                                    Spacer(minLength:4)
+                                    PapiText("Collection portraits").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.trailing).fixedSize(horizontal:false,vertical:true)
+                                }
+                                ScrollView(.horizontal) {
+                                    LazyHStack(alignment:.top,spacing:14) {
+                                        ForEach(portraits) {person in
+                                            Button {router.go(.person(person.id))} label:{
+                                                VStack(spacing:6) {
+                                                    Avatar(name:person.portrait,size:typeSize.isAccessibilitySize ? 88:70)
+                                                    PapiText(verbatim:person.name).font(CoffeeType.face(.caption)).multilineTextAlignment(.center)
+                                                        .lineLimit(typeSize.isAccessibilitySize ? 2:1).minimumScaleFactor(0.85)
+                                                }.frame(width:typeSize.isAccessibilitySize ? 150:96)
+                                            }.buttonStyle(.plain)
+                                        }
                                     }
-                                }.padding(.vertical,4)
-                            }.scrollIndicators(.hidden).frame(height:(typeSize.isAccessibilitySize ? 88:70)+16+portraitNameLineHeight*2)
+                                    .padding(.vertical,4)
+                                }.scrollIndicators(.hidden).frame(width:contentWidth,height:(typeSize.isAccessibilitySize ? 88:70)+14+portraitNameLineHeight*(typeSize.isAccessibilitySize ? 2:1)).clipped()
+                            }
                         }
                         Button {router.openWallet()} label:{
-                            HStack {PapiText("Coffee reserve").font(CoffeeType.face(.subheadline,weight:.semibold));Spacer();CoinLabel(value:store.state.coinBalance);PapiText("Recharge").font(CoffeeType.face(.caption,weight:.bold))}
-                                .padding(14).background(Color.butter,in:RoundedRectangle(cornerRadius:16))
+                            let walletLayout=typeSize.isAccessibilitySize || geo.size.width<330 ? AnyLayout(VStackLayout(alignment:.leading,spacing:8)):AnyLayout(HStackLayout(spacing:10))
+                            walletLayout {
+                                PapiText("Coffee reserve").font(CoffeeType.face(.subheadline,weight:.semibold)).fixedSize(horizontal:false,vertical:true).frame(maxWidth:.infinity,alignment:.leading)
+                                HStack(spacing:8) {
+                                    CoinLabel(value:store.state.coinBalance)
+                                    PapiText("Recharge").font(CoffeeType.face(.caption,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                                }
+                            }.padding(.horizontal,16).padding(.vertical,13).frame(minHeight:52).background(Color.butter,in:RoundedRectangle(cornerRadius:16))
                         }.buttonStyle(.plain)
                         HStack(spacing:7) {
                             Image("coffeeUpdates").resizable().scaledToFit().frame(width:22,height:26)
                             PapiText("Coffee Updates").font(CoffeeType.face(.headline))
                             Spacer()
-                            PapiText("Collection preview").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
+                            PapiText("Collection preview").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.trailing).fixedSize(horizontal:false,vertical:true)
                         }
-                        let width=min(1200,geo.size.width)
-                        let count=typeSize.isAccessibilitySize ? 1:max(1,Int((width-20)/180))
-                        let tileWidth=max(44,(width-32-CGFloat(count-1)*12)/CGFloat(count))
+                        let count=typeSize.isAccessibilitySize ? 1:max(1,Int((contentWidth+12)/182))
+                        let tileWidth=max(0,(contentWidth-CGFloat(count-1)*12)/CGFloat(count))
                         HStack(alignment:.top,spacing:12) {
                             ForEach(0..<count,id:\.self) { column in
                                 LazyVStack(spacing:14) {
                                     ForEach(Array(store.visiblePosts.enumerated()).filter{$0.offset%count==column},id:\.element.id) { index,post in
-                                        CoffeeMomentTile(post:post,height:tileWidth*(index%3==1 ? 1.42:1.18))
+                                        CoffeeMomentTile(post:post,height:tileWidth*(index%3==1 ? 1.42:1.18)).frame(width:tileWidth).clipped()
                                     }
-                                }.frame(maxWidth:.infinity)
+                                }.frame(width:tileWidth)
                             }
                         }
-                    }.padding(.horizontal,16).padding(.top,12).padding(.bottom,20).frame(maxWidth:1200).frame(maxWidth:.infinity)
-                }.scrollDismissesKeyboard(.interactively)
+                    }.frame(width:contentWidth,alignment:.leading).padding(.horizontal,16).padding(.top,12).padding(.bottom,20).frame(width:viewportWidth).frame(maxWidth:.infinity)
+                }.scrollDismissesKeyboard(.interactively).frame(width:geo.size.width,height:geo.size.height).clipped()
             }
         }
     }
