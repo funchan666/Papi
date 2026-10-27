@@ -433,21 +433,22 @@ struct MemberPassportView:View {
                 VStack(alignment:.leading,spacing:6) {
                     PapiText(verbatim:person.name).font(CoffeeType.face(.title2,weight:.bold))
                         .fixedSize(horizontal:false,vertical:true)
-                    PapiText(verbatim:"@"+person.handle).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                        .fixedSize(horizontal:false,vertical:true)
-                    PreviewLabel()
+                    if !store.usesCloudWallet || UUID(uuidString:person.id)==nil {
+                        PapiText(verbatim:"@"+person.handle).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                        PreviewLabel()
+                    }
                 }.frame(maxWidth:.infinity,alignment:.leading)
             }
             PapiText(person.bio).font(CoffeeType.face(.subheadline)).lineSpacing(3)
                 .fixedSize(horizontal:false,vertical:true)
             let actionLayout=typeSize.isAccessibilitySize || width<320 ? AnyLayout(VStackLayout(spacing:10)):AnyLayout(HStackLayout(spacing:12))
             actionLayout {
-                PapiTextButton(store.state.followedMembers.contains(person.id) ? "Following":"Follow"){store.follow(person.id)}
-                    .buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(store.state.blockedMembers.contains(person.id))
+                PapiTextButton(store.isFollowing(person.id) ? "Following":"Follow"){store.follow(person.id)}
+                    .buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(store.isUserHidden(person.id) || (store.usesCloudWallet && (store.cloudProfiles==nil || store.cloudSocialBusy || UUID(uuidString:person.id)==nil)))
                 PapiTextButton("Chatting"){router.go(.chat(person.id))}
                     .buttonStyle(PapiButtonStyle(light:true,wide:true,cornerRadius:16))
             }
-            if person.id != CoffeeMember.editorial.id {
+            if person.id != CoffeeMember.editorial.id && !store.usesCloudWallet {
                 PapiRow(asset:"plus",title:store.isFriend(person.id) ? "Friends":(store.community.friendshipRequests[person.id] == nil ? "Request friendship":"Cancel friend request")) {
                     if store.community.friendshipRequests[person.id] != nil {store.cancelFriendshipRequest(person.id)} else {store.requestFriendship(person.id)}
                 }.disabled(store.isFriend(person.id)).background(Color.white.opacity(0.8),in:RoundedRectangle(cornerRadius:16))

@@ -31,7 +31,7 @@ struct CorrespondenceInbox:View {
                             Image("chevron").resizable().scaledToFit().scaleEffect(x:direction == .rightToLeft ? -1:1,y:1).frame(width:12,height:12).accessibilityHidden(true)
                         }.padding(16).frame(maxWidth:.infinity,minHeight:76,alignment:.leading).background(Color.white.opacity(0.94),in:RoundedRectangle(cornerRadius:20)).contentShape(Rectangle())
                     }.buttonStyle(.plain)
-                    let followed=CoffeeMember.previews.filter{store.state.followedMembers.contains($0.id) && !store.isUserHidden($0.id)}
+                    let followed=store.communityPeople.filter{store.isFollowing($0.id) && !store.isUserHidden($0.id)}
                     if !followed.isEmpty {
                         PapiText("Following").font(CoffeeType.face(.headline)).padding(.top,2)
                         ScrollView(.horizontal,showsIndicators:false) {HStack(spacing:16) {

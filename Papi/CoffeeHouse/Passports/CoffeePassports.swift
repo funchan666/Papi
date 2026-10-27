@@ -39,7 +39,7 @@ struct MyCoffeePassportView:View {
                                 PapiText("\(store.brewBook.cups.count) cups in your book").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                             }.padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.cream,in:RoundedRectangle(cornerRadius:24)).padding(.top,-28)
                             HStack(spacing:0) {
-                                countButton(store.state.followedMembers.filter{!store.isUserHidden($0)}.count,"Following")
+                                countButton(store.followingIDs.filter{!store.isUserHidden($0)}.count,"Following")
                                 countButton(store.followers.count,"Follower")
                                 countButton(store.friends.count,"Friends")
                             }.padding(.vertical,14).background(Color.coffee,in:RoundedRectangle(cornerRadius:18))
@@ -187,7 +187,7 @@ struct RelationshipsView:View {
                                 .buttonStyle(.plain).accessibilityAddTraits(selected==i ? .isSelected:[])
                         }
                     }.padding(5).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:18))
-                    let following=store.state.followedMembers.sorted().compactMap{store.person($0)}.filter{!store.isUserHidden($0.id)}
+                    let following=store.followingIDs.sorted().compactMap{store.person($0)}.filter{!store.isUserHidden($0.id)}
                     let people=selected==0 ? following:(selected==1 ? store.followers:store.friends)
                     if people.isEmpty {PapiEmpty(title:selected==0 ? "No following yet":(selected==1 ? "No followers":"No mutual connections"))}
                     ForEach(people){person in
