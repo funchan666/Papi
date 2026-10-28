@@ -432,6 +432,84 @@ private struct VoiceLoungeAction:View {
         }.buttonStyle(.plain)
     }
 }
+private struct VoiceRoomGiftSheet:View {
+    let topic:String
+    let session:UUID
+    @EnvironmentObject private var store:CoffeeHouse
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var typeSize
+    @State private var selected=CoffeeCollectible.all[0].id
+    @State private var quantity=1
+    @State private var confirming=false
+    private var gift:CoffeeCollectible {CoffeeCollectible.all.first(where:{$0.id==selected}) ?? CoffeeCollectible.all[0]}
+    var body:some View {
+        PapiDeviceContainer {
+            PapiScreen {
+                VStack(spacing:0) {
+                    PapiHeader("Gifts")
+                    ScrollView {
+                        VStack(alignment:.leading,spacing:16) {
+                            HStack {
+                                VStack(alignment:.leading,spacing:5) {
+                                    PapiText("Send a room gift").font(CoffeeType.display(.title2,weight:.bold))
+                                    PapiText("Gifts appear in the room and cost the displayed coins. They are not credited to a participant.")
+                                        .font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                                }.frame(maxWidth:.infinity,alignment:.leading)
+                                CoffeeCurrentBalance().font(CoffeeType.face(.subheadline,weight:.bold))
+                            }
+                            LazyVGrid(columns:Array(repeating:GridItem(.flexible(),spacing:8),count:typeSize.isAccessibilitySize ? 1:2),spacing:8) {
+                                ForEach(CoffeeCollectible.all) {item in
+                                    Button {selected=item.id} label:{
+                                        HStack(spacing:8) {
+                                            PapiArtworkFit(asset:item.asset).frame(width:48,height:48)
+                                            VStack(alignment:.leading,spacing:4) {
+                                                PapiText(item.name).font(CoffeeType.face(.caption,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                                                CoinLabel(value:item.cost).font(CoffeeType.face(.caption2))
+                                            }.frame(maxWidth:.infinity,alignment:.leading)
+                                        }.padding(.horizontal,12).frame(minHeight:76)
+                                            .background {Image("voiceActionPlate").resizable().opacity(selected==item.id ? 1:0.65)}
+                                    }.buttonStyle(.plain).disabled(store.state.pendingCloudRoomGift != nil)
+                                        .accessibilityAddTraits(selected==item.id ? .isSelected:[])
+                                }
+                            }
+                            HStack(spacing:8) {
+                                PapiTextButton("Less") {quantity=max(1,quantity-1)}.frame(minWidth:44,minHeight:44).disabled(quantity==1 || store.state.pendingCloudRoomGift != nil)
+                                PapiText("Quantity \(quantity)").font(CoffeeType.face(.subheadline,weight:.semibold)).frame(maxWidth:.infinity)
+                                PapiTextButton("More") {quantity=min(99,quantity+1)}.frame(minWidth:44,minHeight:44).disabled(quantity==99 || store.state.pendingCloudRoomGift != nil)
+                            }
+                            HStack {PapiText("Total");Spacer();CoinLabel(value:gift.cost*quantity)}.font(CoffeeType.face(.headline))
+                            if let pending=store.state.pendingCloudRoomGift {
+                                PapiText("Your previous gift needs confirmation. Retry it or cancel the pending request.")
+                                    .font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                                VoiceLoungeAction(title:"Retry pending gift") {
+                                    Task {_ = await store.cloudRoomGift(gift:nil,quantity:pending.quantity,topic:pending.topic,session:pending.sessionID)}
+                                }.disabled(store.cloudWalletBusy)
+                                VoiceLoungeAction(title:"Cancel pending gift") {
+                                    Task {_ = await store.cloudRoomGift(gift:nil,quantity:pending.quantity,topic:pending.topic,session:pending.sessionID,cancel:true)}
+                                }.disabled(store.cloudWalletBusy)
+                            } else {
+                                VoiceLoungeAction(title:"Send gift") {confirming=true}.disabled(store.cloudWallet==nil || store.cloudWalletBusy)
+                            }
+                            if store.cloudWallet==nil && store.state.pendingCloudRoomGift==nil {
+                                PapiTextButton("Retry wallet") {Task {await store.refreshCloudWallet()}}.disabled(store.cloudWalletBusy)
+                            }
+                        }.padding(20).frame(maxWidth:680).frame(maxWidth:.infinity)
+                    }
+                }.overlay {
+                    if confirming {
+                        PapiDialog(title:"Send gift?",message:"Spend \(gift.cost*quantity) coins to share \(gift.name) × \(quantity) with this room?",confirm:"Send gift",cancel:"Cancel",action:{
+                            confirming=false
+                            let chosen=gift;let count=quantity
+                            Task {if await store.cloudRoomGift(gift:chosen,quantity:count,topic:topic,session:session) {dismiss()}}
+                        },dismiss:{confirming=false})
+                    }
+                }
+            }
+        }.onAppear {
+            if let pending=store.state.pendingCloudRoomGift {selected=pending.giftID;quantity=pending.quantity}
+        }
+    }
+}
 private struct LiveVoiceParticipants:View {
     @ObservedObject var room:Room
     let account:UUID

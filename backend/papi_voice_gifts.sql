@@ -43,6 +43,9 @@ begin
     end if;
     return query select previous.status,current_balance; return;
   end if;
+  if (select count(*) from papi_private.voice_gift_orders o where o.owner_id=actor and o.created_at>now()-interval '10 seconds')>=10 then
+    raise exception 'Please wait before sending another gift';
+  end if;
   if p_cancel then
     if not exists(select 1 from papi_private.voice_members m where m.owner_id=actor and m.topic_id=p_topic and m.session_id=p_session)
        and not exists(select 1 from papi_private.voice_revocations r where r.owner_id=actor and r.topic_id=p_topic and r.session_id=p_session) then
