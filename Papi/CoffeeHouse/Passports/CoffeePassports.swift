@@ -334,6 +334,7 @@ struct CoffeePreferencesView:View {
                         preferenceSection("Account") {
                             if store.usesCloudWallet && store.emailLinkEnabled {PapiRow(title:"Link email"){router.go(.linkEmail)}}
                             if !store.usesCloudWallet && store.emailLinkEnabled {PapiRow(title:"Recover account"){router.go(.recoverEmail)}}
+                            if store.state.deletedCloudAccountID != nil {PapiRow(title:"Create a new online account"){confirmation="newOnline"}}
                             PapiRow(title:"Log Out"){confirmation="logout"}
                             PapiRow(title:"Delete account"){confirmation="delete"}
                         }
@@ -344,12 +345,13 @@ struct CoffeePreferencesView:View {
                 }
             }.overlay {
                 if let confirmation {
-                    PapiDialog(title:confirmation=="discardComment" ? "Discard pending comment?":(confirmation=="delete" ? "Delete this coffee account?":"Log out?"),
-                               message:confirmation=="discardComment" ? "This clears the pending retry on this device. If the server already accepted the comment, it may still appear after review.":(confirmation=="delete" ? (store.usesCloudWallet ? "This removes your online profile, content and balance. Your existing device data stays on this device. Purchase ownership records are retained to prevent duplicate delivery. This cannot be undone.":"This removes your passport, brew book, recipes, moments, media, coins and keepsakes. Purchase ownership records are retained to prevent duplicate delivery. This cannot be undone."):"Your coffee book will be here when you return."),
-                               confirm:confirmation=="discardComment" ? "Discard":(confirmation=="delete" ? "Delete account":"Log out"),cancel:"Cancel",action:{
+                    PapiDialog(title:confirmation=="discardComment" ? "Discard pending comment?":(confirmation=="newOnline" ? "Create a new online account?":(confirmation=="delete" ? "Delete this coffee account?":"Log out?")),
+                               message:confirmation=="discardComment" ? "This clears the pending retry on this device. If the server already accepted the comment, it may still appear after review.":(confirmation=="newOnline" ? "Your saved device data stays here. The new online account has a separate balance and requires you to review the policies again.":(confirmation=="delete" ? (store.usesCloudWallet ? "This removes your online profile, content and balance. Your existing device data stays on this device. Purchase ownership records are retained to prevent duplicate delivery. This cannot be undone.":"This removes your passport, brew book, recipes, moments, media, coins and keepsakes. Purchase ownership records are retained to prevent duplicate delivery. This cannot be undone."):"Your coffee book will be here when you return.")),
+                               confirm:confirmation=="discardComment" ? "Discard":(confirmation=="newOnline" ? "Continue":(confirmation=="delete" ? "Delete account":"Log out")),cancel:"Cancel",action:{
                         self.confirmation=nil
                         if confirmation=="discardComment" {_ = store.commit{$0.pendingCloudComment=nil};return}
                         if commerce.busy || commerce.unresolved {store.inform("Purchase recovery active","Resolve the purchase before changing accounts.");return}
+                        if confirmation=="newOnline" {Task {await store.prepareNewCloudAccount()};return}
                         Task {await store.performAccountAction(confirmation=="delete" ? .delete:.logout)}
                     },dismiss:{self.confirmation=nil})
                 }
@@ -464,8 +466,8 @@ struct CoffeePolicyDocument:Decodable,Identifiable {
     let publishedURL:String
     var url:URL? {
         guard let url=URL(string:publishedURL),url.scheme=="https",url.host=="cquoffowtjnxmgaxavym.supabase.co",
-              (id=="terms" && url.path=="/storage/v1/object/public/papi-policies/terms.pdf") ||
-              (id=="privacy" && url.path=="/storage/v1/object/public/papi-policies/privacy.pdf"),
+              (id=="terms" && url.path=="/storage/v1/object/public/papi-policies/terms-online-v1.pdf") ||
+              (id=="privacy" && url.path=="/storage/v1/object/public/papi-policies/privacy-online-v1.pdf"),
               url.query==nil,url.fragment==nil,url.user==nil,url.password==nil,url.port==nil else{return nil}
         return url
     }

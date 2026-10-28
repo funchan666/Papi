@@ -1,0 +1,35 @@
+PAPI PRIVACY POLICY
+Effective: 28 October 2026
+
+This policy explains how Papi handles information when you use its local coffee book and, if you choose to connect, its online community services. Read it with the Papi User Agreement. Contact Papi at the email address below.
+
+1. Information you provide or create
+Depending on the features you use, this can include a display name and profile details; coffee recipes, tasting notes, journals, drafts, collections, activity and wallet records; follows, friendships, blocks, posts, comments, private messages and reports; and photos, videos or voice notes that you choose to provide. Please do not enter or share information you do not want stored or shared.
+
+2. Device and account information
+Papi keeps a local guest archive, settings and related information on your device, including an app state snapshot and authentication material protected using iOS Keychain and separately stored media. A generated identifier, session identifiers and purchase-integrity records may be used to maintain the account. Logging out retains local data. If you connect, Supabase issues an online guest identifier and session. Without a configured recovery method, losing the session or device can mean losing access to that online account.
+
+3. Online processing and providers
+If you connect, Supabase provides authentication, database operations, private media storage and server functions. Profile data, coffee-book contents you sync, wallet and community activity, reports, messages and media needed for features you choose may be stored or processed there. Papi's Supabase project is hosted in the United States. Publicly visible posts and profile media are subject to the app's review and access rules; private messages and media are limited to the relevant participants and service operations. Approved content and profile information can be visible to other eligible users.
+
+When you join a voice room or an accepted call, LiveKit provides real-time audio/video transport and receives information needed to connect the session, including room and participant identifiers, connection metadata and the audio or video you choose to transmit. Other participants receive media you choose to share. Papi uses Supabase to authorize sessions and help end or revoke them. Neither provider is a guarantee of uninterrupted service.
+
+Published policies and remote images or videos require network requests. The servers delivering these resources and infrastructure providers can receive IP address, request time, connection details and operational logs. Apple processes App Store and StoreKit purchases where available; Papi does not receive your full payment-card details. These providers also apply their own policies and contractual safeguards.
+
+4. Camera, microphone and photo library
+Papi requests system permission where a feature needs the camera, microphone or photo library. You can decline or change permissions in iOS Settings, stop capture, end a call or leave a room. Granting permission to one feature does not require granting an unrelated permission.
+
+5. How information is used and shared
+Information is used to provide and secure the features you select, retain and synchronize chosen records, deliver messages and media, run voice or video sessions, maintain balances and transaction integrity, respond to reports, and support account deletion. Content intended for other participants is shared with them as required by that feature. Operators or authorized reviewers may access content and reports for moderation, support, security and legal obligations. Service providers process information as needed to operate Papi.
+
+6. Retention and deletion
+Local data remains on your device until you remove it through available controls or otherwise remove the relevant device data, subject to operating-system behavior. An online account and its data are generally kept while the account is active and are removed through the in-app online deletion process when it completes. Deletion may be delayed while active sessions are closed, storage is removed or pending purchases are reconciled. A retry receipt is retained to let the deletion request finish safely. Sender-owned message attachments and transaction-integrity records may be retained separately where needed for other users, fraud prevention or legal obligations; retained attachments require a separate retention and cleanup process. Online deletion does not automatically remove the local device archive or information held independently by Apple or another provider. Provider logs and backups follow their respective retention arrangements.
+
+7. Your choices and security
+You can choose which information to enter or share, use available in-app controls, block or report, leave rooms, stop using features, request account deletion, and change device permissions. Withdrawing permission or stopping a feature does not itself delete data already retained. Contact the operator about privacy questions or requests. Papi uses platform storage protections and access controls where implemented, but no system can guarantee absolute security.
+
+8. Children and international processing
+Papi is not intended to collect information from children contrary to applicable law. A parent or guardian should supervise a minor's use where required. Data and service providers may be located in the United States or other regions, subject to their policies and applicable safeguards.
+
+9. Changes and contact
+We may update this policy as features and practices change. We may ask you to review and accept a material update before using the affected online service. Contact: Papi_service2026@outlook.com.

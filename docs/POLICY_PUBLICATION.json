@@ -4,18 +4,18 @@
   "documents": [
     {
       "policy": "terms",
-      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms.pdf",
+      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms-online-v1.pdf",
       "anonymousRead": true,
       "contentType": "application/pdf",
-      "sha256": "e5e0b3ca9d1645a08bb9bcd58c3c5a07b8031c0d9c9b9e8fb7723badbbfce63a",
+      "sha256": "eb2339d5feca757afab44099ab6a2ec3995ec3e64ffb9e7553e19711af627887",
       "contact": "Papi_service2026@outlook.com"
     },
     {
       "policy": "privacy",
-      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy.pdf",
+      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy-online-v1.pdf",
       "anonymousRead": true,
       "contentType": "application/pdf",
-      "sha256": "00bc30730c66a459a07fabae3f2a4c2ec3e95fcb94b78d619c2733ac3d33478b",
+      "sha256": "7a27a24da20808be8747b37a507cfad1619fc2f70eb21ef36f8d2361d6972432",
       "contact": "Papi_service2026@outlook.com"
     }
   ],

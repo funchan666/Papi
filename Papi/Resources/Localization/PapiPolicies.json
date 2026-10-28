@@ -1,12 +1,12 @@
 {
-  "version": "2026-10-28-policy-2",
+  "version": "2026-10-27-online-1",
   "documents": [
     {
       "id": "terms",
       "title": "Papi User Agreement",
       "subtitle": "A few ground rules for your coffee book",
       "updated": "28 October 2026",
-      "publishedURL": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms.pdf",
+      "publishedURL": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms-online-v1.pdf",
       "contactEmail": "Papi_service2026@outlook.com"
     },
     {
@@ -14,7 +14,7 @@
       "title": "Papi Privacy Policy",
       "subtitle": "How your coffee book handles information",
       "updated": "28 October 2026",
-      "publishedURL": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy.pdf",
+      "publishedURL": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy-online-v1.pdf",
       "contactEmail": "Papi_service2026@outlook.com"
     }
   ]

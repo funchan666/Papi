@@ -35,14 +35,14 @@ def decorate(canvas, doc):
     canvas.setStrokeColor(rule); canvas.setLineWidth(.5)
     canvas.line(30,h-29,w-30,h-29); canvas.line(30,29,w-30,29)
     canvas.setFillColor(muted); canvas.setFont('PapiBody',8.3)
-    canvas.drawString(30,17,'PAPI  /  '+('USER AGREEMENT' if doc.policy=='terms' else 'PRIVACY POLICY'))
+    canvas.drawString(30,17,'PAPI  /  '+('USER AGREEMENT' if doc.policy.startswith('terms') else 'PRIVACY POLICY'))
     canvas.drawRightString(w-30,17,str(doc.page))
     canvas.restoreState()
 
 def build(policy):
     raw=(folder / (policy+'.txt')).read_text(encoding='utf-8').strip().split('\n\n')
     header=raw.pop(0).splitlines()
-    title='User Agreement' if policy=='terms' else 'Privacy Policy'
+    title='User Agreement' if policy.startswith('terms') else 'Privacy Policy'
     doc=SimpleDocTemplate(str(folder/(policy+'.pdf')),pagesize=(390,720),leftMargin=30,rightMargin=30,topMargin=42,bottomMargin=46,title='Papi '+title,author='Papi')
     doc.policy=policy
     story=[Paragraph('PAPI  /  YOUR COFFEE BOOK',styles['brand']),Paragraph(title,styles['title']),Paragraph(escape(header[1]),styles['date'])]
@@ -55,5 +55,5 @@ def build(policy):
             story.append(Paragraph(content,styles['body']))
     doc.build(story,onFirstPage=decorate,onLaterPages=decorate)
 
-for policy in ('terms','privacy'):
+for policy in ('terms','privacy','terms-online-v1','privacy-online-v1'):
     build(policy)

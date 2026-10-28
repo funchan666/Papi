@@ -1,0 +1,33 @@
+PAPI USER AGREEMENT
+Effective: 28 October 2026
+
+This agreement applies to Papi, a coffee-themed app for exploring coffee, recording experiences and connecting with others. By selecting the agreement checkbox and continuing, you agree to these terms and acknowledge the Papi Privacy Policy. If you do not agree, do not continue. Existing local users can choose to continue offline instead of connecting to the online service.
+
+1. Eligibility and account
+You must be able to enter an agreement under the law that applies to you. If you are a minor, use Papi only with any permission required by your local law. You are responsible for your device, your account and your activity. A guest account is tied to the session on your device. Until account recovery is offered, losing that session or device may prevent you from accessing the same account on another device.
+
+2. Your local coffee book and online account
+Papi includes a coffee journal, recipes, tasting records, collections, profiles and community features. Connecting creates an online guest account. Existing device data remains on your device; your local wallet and online wallet are separate and local coins, purchases, collections and social history are not automatically merged or credited to the online account. A coffee book may be synchronized; when an existing online book conflicts with a local book, the app asks you to resolve the conflict. Keep your device and data until you have checked the online result. Some features require a network connection and may be unavailable or interrupted.
+
+3. Community and content
+Share only material you have the right to use and, where appropriate, permission to share. Do not share unlawful, abusive, hateful, threatening, sexually exploitative or otherwise harmful material; impersonate others; expose private information without permission; spam, defraud or harass. Respect others' choices and boundaries. You may report content and block users using the available controls. Submitted content and some profile images are reviewed before they become visible; a submission is not automatically approved. Reports should be reviewed and addressed by the operator, but the service does not promise an immediate response.
+
+You retain ownership of content you create. You allow Papi and its service providers to store, process, display and transmit content as needed to provide the features you choose, subject to the Privacy Policy. Do not upload content without the necessary rights and permissions.
+
+4. Voice rooms, calls and permissions
+When available, voice rooms and calls connect participants through an online media provider. A call requires the other participant's acceptance. Your microphone, camera or photo library is used only when the relevant feature requires it and you grant the relevant system permission. You can stop capture, leave or end a session and change permissions in your device settings. Network interruptions, blocking or leaving can end a session. Background calling and push notifications are not guaranteed.
+
+5. Purchases and virtual items
+Papi may include virtual coins or items, which have no cash value and are not transferable unless the app expressly says otherwise. Online purchasing, payment verification and account recovery may be unavailable until separately configured and verified. If in-app purchases are offered, Apple processes payment and displays the applicable price and terms before purchase; Apple's refund procedures apply. Your local balance is not automatically moved to an online wallet.
+
+6. Privacy, storage and account deletion
+Our Privacy Policy describes information handled by Papi, its service providers, retention and deletion. You may request account deletion using the available in-app option. A pending purchase or incomplete operation can delay deletion, and some transaction-integrity or other records may need to be retained. Local device data is kept separately and may remain on the device after an online account is deleted.
+
+7. Service limitations
+Papi is provided as available. We do not guarantee uninterrupted availability, compatibility, error-free operation or preservation of device data. Nothing in these terms excludes rights or remedies that cannot legally be excluded. Coffee information is for general interest and is not professional medical or other regulated advice.
+
+8. Changes and ending use
+We may update the app or these terms. A material policy update may require you to review and agree again before using the relevant service. You may stop using the app at any time.
+
+9. Contact
+Contact: Papi_service2026@outlook.com.

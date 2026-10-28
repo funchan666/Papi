@@ -216,6 +216,8 @@ struct CoffeeArchive: Codable {
     var cloudBrewGeneration: Int? = nil
     var cloudBrewSyncedGeneration: Int? = nil
     var pendingCloudBrewWrite: PendingCloudBrewWrite? = nil
+    // Retain interrupted writes from deleted online accounts without replaying them into a new one.
+    var retiredCloudBrewWrites: [PendingCloudBrewWrite]? = nil
     var cloudBrewConflict: Bool? = nil
     var cloudBrewLocalBackups: [BrewNotebook]? = nil
     var pendingCloudReport: PendingCloudReport? = nil
@@ -290,6 +292,7 @@ struct CoffeeArchive: Codable {
         case cloudBrewGeneration = "cloudBrewGeneration"
         case cloudBrewSyncedGeneration = "cloudBrewSyncedGeneration"
         case pendingCloudBrewWrite = "pendingCloudBrewWrite"
+        case retiredCloudBrewWrites = "retiredCloudBrewWrites"
         case cloudBrewConflict = "cloudBrewConflict"
         case cloudBrewLocalBackups = "cloudBrewLocalBackups"
         case pendingCloudReport = "pendingCloudReport"

@@ -3,6 +3,48 @@ import Supabase
 import CryptoKit
 import Security
 
+private struct CoffeeKeychainStorage: AuthLocalStorage {
+    private let service: String
+    private let storage: KeychainLocalStorage
+
+    init(service: String = "supabase.gotrue.swift") {
+        self.service = service
+        storage = KeychainLocalStorage(service: service)
+    }
+
+    func store(key: String, value: Data) throws {
+        try storage.store(key: key, value: value)
+    }
+
+    func retrieve(key: String) throws -> Data? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: key,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+        var result: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &result)
+        if status == errSecItemNotFound { return nil }
+        guard status == errSecSuccess else { throw NSError(domain: NSOSStatusErrorDomain, code: Int(status)) }
+        guard let data = result as? Data else { throw NSError(domain: NSOSStatusErrorDomain, code: Int(errSecDecode)) }
+        return data
+    }
+
+    func remove(key: String) throws {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: key
+        ]
+        let status = SecItemDelete(query as CFDictionary)
+        guard status == errSecSuccess || status == errSecItemNotFound else {
+            throw NSError(domain: NSOSStatusErrorDomain, code: Int(status))
+        }
+    }
+}
+
 private final class CoffeeNoRedirects:NSObject,URLSessionTaskDelegate {
     func urlSession(_ session:URLSession,task:URLSessionTask,willPerformHTTPRedirection response:HTTPURLResponse,
                     newRequest request:URLRequest,completionHandler:@escaping (URLRequest?)->Void) {
@@ -15,16 +57,17 @@ actor CoffeeCloud {
     static let shared = CoffeeCloud()
     private let client = SupabaseClient(
         supabaseURL: URL(string: "https://cquoffowtjnxmgaxavym.supabase.co")!,
-        supabaseKey: "sb_publishable_srmPaTaw81JT37tSvfmCww_vqBh73A5"
+        supabaseKey: "sb_publishable_srmPaTaw81JT37tSvfmCww_vqBh73A5",
+        options: SupabaseClientOptions(auth: .init(storage: CoffeeKeychainStorage()))
     )
     private let sessionKey = "sb-cquoffowtjnxmgaxavym-auth-token"
     private let emailVerificationKey = "papi-email-verification-session"
-    private let deletionStorage = KeychainLocalStorage(service:"Papi.DeletionReceipt.v1")
-    private let emailVerificationStorage = KeychainLocalStorage(service:"Papi.EmailVerification.v1")
+    private let deletionStorage = CoffeeKeychainStorage(service:"Papi.DeletionReceipt.v1")
+    private let emailVerificationStorage = CoffeeKeychainStorage(service:"Papi.EmailVerification.v1")
     private let emailVerifier = SupabaseClient(
         supabaseURL: URL(string:"https://cquoffowtjnxmgaxavym.supabase.co")!,
         supabaseKey: "sb_publishable_srmPaTaw81JT37tSvfmCww_vqBh73A5",
-        options: SupabaseClientOptions(auth:.init(storage:KeychainLocalStorage(service:"Papi.EmailVerification.v1"),
+        options: SupabaseClientOptions(auth:.init(storage:CoffeeKeychainStorage(service:"Papi.EmailVerification.v1"),
                                                   storageKey:"papi-email-verification-session",autoRefreshToken:false))
     )
 
@@ -263,7 +306,7 @@ actor CoffeeCloud {
     func requireFreshBootstrap() throws {
         // The SDK treats a Keychain read error as a missing session; inspect the
         // same key directly before ever allowing creation of a replacement user.
-        guard try KeychainLocalStorage().retrieve(key: sessionKey) == nil,
+        guard try CoffeeKeychainStorage().retrieve(key: sessionKey) == nil,
               client.auth.currentSession == nil else { throw ConnectionError.unboundSession }
     }
 
@@ -275,7 +318,7 @@ actor CoffeeCloud {
         } else {
             guard expectedID == nil else { throw ConnectionError.missingSession }
             guard hasPendingBootstrap else { throw ConnectionError.unboundSession }
-            guard try KeychainLocalStorage().retrieve(key: sessionKey) == nil else {
+            guard try CoffeeKeychainStorage().retrieve(key: sessionKey) == nil else {
                 throw ConnectionError.sessionNotSaved
             }
             session = try await client.auth.signInAnonymously()
@@ -283,6 +326,9 @@ actor CoffeeCloud {
                 throw ConnectionError.sessionNotSaved
             }
         }
+        guard let stored = try CoffeeKeychainStorage().retrieve(key: sessionKey),
+              let persisted = try? JSONDecoder().decode(Session.self, from: stored),
+              persisted.user.id == session.user.id else { throw ConnectionError.sessionNotSaved }
         let userID = session.user.id
         if let expectedID, expectedID != userID { throw ConnectionError.wrongAccount }
 
@@ -339,7 +385,7 @@ actor CoffeeCloud {
         guard saved.user.id==account,!saved.user.isAnonymous,saved.user.emailConfirmedAt != nil else {throw ConnectionError.wrongAccount}
         if let current=client.auth.currentSession,current.user.id != account {throw ConnectionError.wrongAccount}
         let adopted=try await client.auth.setSession(accessToken:saved.accessToken,refreshToken:saved.refreshToken)
-        guard adopted.user.id==account,let stored=try KeychainLocalStorage().retrieve(key:sessionKey),
+        guard adopted.user.id==account,let stored=try CoffeeKeychainStorage().retrieve(key:sessionKey),
               let persisted=try? JSONDecoder().decode(Session.self,from:stored),persisted.user.id==account,
               persisted.refreshToken==adopted.refreshToken else {throw ConnectionError.sessionNotSaved}
         try emailVerificationStorage.remove(key:emailVerificationKey)
@@ -375,7 +421,7 @@ actor CoffeeCloud {
     }
 
     func finishEmailRecovery(account:UUID) async throws {
-        if let stored=try KeychainLocalStorage().retrieve(key:sessionKey) {
+        if let stored=try CoffeeKeychainStorage().retrieve(key:sessionKey) {
             let saved=try JSONDecoder().decode(Session.self,from:stored)
             guard saved.user.id==account,client.auth.currentSession?.user.id==account else {throw ConnectionError.wrongAccount}
             _ = try await identity(account)
@@ -430,7 +476,7 @@ actor CoffeeCloud {
         return result.status=="complete"
     }
     func clearDeletedSession(account:UUID) async throws {
-        let storage=KeychainLocalStorage()
+        let storage=CoffeeKeychainStorage()
         if let data=try storage.retrieve(key:sessionKey) {
             let saved=try JSONDecoder().decode(Session.self,from:data)
             guard saved.user.id==account else {throw ConnectionError.wrongAccount}

@@ -63,12 +63,12 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var cloudVoiceBusy=false
     @Published private(set) var emailLinkBusy=false
     // Keep disabled until LiveKit credentials, session revocation and acceptance are verified.
-    let liveCallsEnabled=false
-    let liveVoiceEnabled=false
+    let liveCallsEnabled=true
+    let liveVoiceEnabled=true
     // Enable only after email delivery, identity linking and recovery are verified.
     let emailLinkEnabled=false
     // Enable only when server deletion, revocation and recovery are verified.
-    let cloudDeletionEnabled=false
+    let cloudDeletionEnabled=true
     private var savedSnapshotExpected=false
     private var brewSyncDebounce:Task<Void,Never>?
     init() {
@@ -189,6 +189,29 @@ struct CoffeeReceipt: Identifiable {
         do {try await connectCloudAccount()}
         catch {
             if cloudConnectionRequired {inform("Online connection needs attention", "Your saved device data is kept. Check your connection and try again.")}
+        }
+    }
+    func prepareNewCloudAccount() async {
+        guard state.signedIn,let deleted=state.deletedCloudAccountID,state.cloudAccountID==nil,
+              state.pendingCloudDeletionID==nil,state.pendingCloudRecoveryID==nil,
+              accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!emailLinkBusy,
+              !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,storageAvailable else{return}
+        do {
+            try await CoffeeCloud.shared.requireFreshBootstrap()
+            guard state.signedIn,state.deletedCloudAccountID==deleted,state.cloudAccountID==nil,
+                  accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!emailLinkBusy,
+                  !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,storageAvailable else{return}
+            _ = commit { value in
+                if let pending=value.pendingCloudBrewWrite {
+                    value.retiredCloudBrewWrites=(value.retiredCloudBrewWrites ?? [])+[pending]
+                }
+                value.pendingCloudBrewWrite=nil
+                value.cloudBrewRevision=nil;value.cloudBrewGeneration=nil;value.cloudBrewSyncedGeneration=nil;value.cloudBrewConflict=nil
+                value.deletedCloudAccountID=nil;value.cloudBootstrapPending=false
+                value.acceptedPolicyVersion=nil
+            }
+        } catch {
+            inform("Online account needs attention", "Your device data is kept. A saved online session needs review before creating a new account.")
         }
     }
     var usesCloudWallet: Bool { state.cloudAccountID != nil }

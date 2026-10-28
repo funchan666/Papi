@@ -38,6 +38,9 @@ import SwiftUI
             .onChange(of:store.state.cloudAccountID) {_,account in
                 if account != nil {Task {await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}}
             }
+            .onChange(of:store.state.deletedCloudAccountID) {old,new in
+                if old != nil && new == nil {deferredOnlinePolicy=false}
+            }
             .onChange(of:store.storageAvailable) {_,available in if available {Task {await commerce.recover()}}}
             .onChange(of:store.accountAction) {_,action in if action==nil {Task {await commerce.recover()}}}
         }

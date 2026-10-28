@@ -1,7 +1,8 @@
 # Papi live feature acceptance
 
-This checklist includes a scoped record of isolated checks below. Keep all
-three runtime switches disabled until their applicable checks are complete.
+This checklist includes a scoped record of isolated checks below. On 2026-10-28
+the production switches were enabled for the owner's device testing; entries
+below describing disabled gates record the earlier state.
 Never delete, overwrite or reuse the existing device archive or real accounts.
 
 ## Isolated checks on 2026-10-28
@@ -177,8 +178,27 @@ cutover is complete.
   Keychain and the new screens have not been visually or interactively checked.
 
 - A hosted, rollback-only moderation fixture verified pending initial states,
+  pending versus approved post visibility for a second authenticated user,
   post approval, comment rejection, profile-image approval, report resolution,
   identical-event retry, rejection of conflicting event reuse and the denial
   of ordinary authenticated review calls. Fixture posts and review events
   were absent after rollback. This is a database test, not proof of a staffed
   moderation process or end-to-end media inspection.
+
+- The idle-cleanup migration was exercised against a disposable PostgreSQL
+  fixture with fake pg_net, then deployed to the isolated and production
+  projects. Enabled-but-idle sessions do not invoke the Edge worker; expired
+  voice/call sessions and queued removals do. The production scheduler and
+  feature switches remain off pending the coordinated activation.
+
+- After the user confirmed that all earlier data was personal test data with
+  no real customers or purchases, the production voice, call, deletion and
+  cleanup gates were enabled for device testing, with the online policy
+  published and a new consent version configured. The cron task reported
+  successful idle runs. This does not establish real iOS behavior or readiness
+  for public release. Email recovery and cloud purchases remain disabled.
+- The iOS client now offers an explicit new-online-account action after a
+  confirmed online deletion. It keeps the device archive, stores any interrupted
+  brew write separately, clears the old account's sync revision, requires a
+  clean Keychain session and requests renewed policy consent. Simulator build
+  succeeded; deletion/re-registration and crash recovery need device testing.

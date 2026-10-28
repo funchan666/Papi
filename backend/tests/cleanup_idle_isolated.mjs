@@ -1,0 +1,44 @@
+// Checks the idle scheduler against a local PostgreSQL fixture and a fake pg_net.
+import {createRequire} from 'node:module';
+import {readFile,realpath} from 'node:fs/promises';
+import {resolve} from 'node:path';
+import assert from 'node:assert/strict';
+const root=process.env.PAPI_NATIVE_PG_ROOT,database=process.env.PAPI_NATIVE_TEST_DB;
+if(!root || !resolve(root).startsWith('/tmp/') || !/^papi_test_[a-z0-9]+$/.test(database || '')) throw new Error('Disposable database required');
+const {Client}=createRequire(resolve(root,'package.json'))('pg');
+const c=new Client({host:root,port:55472,user:'papi_test',database});await c.connect();
+try {
+  const info=(await c.query("select current_setting('data_directory') dir,inet_server_addr() addr,to_regclass('net.requests') fake")).rows[0];
+  if(info.addr!==null || !info.fake || await realpath(info.dir)!==await realpath(resolve(root,'data'))) throw new Error('Not an isolated fixture');
+  await c.query(await readFile(resolve('backend/papi_livekit_cleanup_idle.sql'),'utf8'));
+  await c.query('begin');
+  await c.query("select set_config('request.jwt.claims','{\"role\":\"service_role\"}',true)");
+  await c.query(`delete from papi_private.voice_members; delete from public.coffee_calls;
+    delete from papi_private.voice_revocations; delete from papi_private.call_revocations; delete from net.requests;
+    update papi_private.voice_runtime_config set enabled=true; update papi_private.call_runtime_config set enabled=true`);
+  const count=async()=>Number((await c.query('select count(*) n from net.requests')).rows[0].n);
+  const wake=()=>c.query('select papi_private.wake_coffee_cleanup()');
+  await wake();assert.equal(await count(),0,'enabled but idle must not invoke worker');
+  const a='00000000-0000-4000-8000-000000000071',b='00000000-0000-4000-8000-000000000072';
+  await c.query('insert into auth.users(id) values($1),($2)',[a,b]);
+  await c.query("insert into public.coffee_profiles(id,display_name) values($1,'Fixture'),($2,'Fixture')",[a,b]);
+  const session='90000000-0000-4000-8000-000000000071';
+  await c.query("insert into papi_private.voice_members(owner_id,topic_id,session_id,heartbeat_at) values($1,'room-chat',$2,now())",[a,session]);
+  await wake();assert.equal(await count(),0,'fresh voice must stay idle');
+  await c.query("update papi_private.voice_members set heartbeat_at=now()-interval '46 seconds' where owner_id=$1",[a]);
+  await wake();assert.equal(await count(),1,'stale voice must wake worker');
+  await c.query('delete from papi_private.voice_members; delete from papi_private.voice_revocations; delete from net.requests');
+  const call='10000000-0000-4000-8000-000000000071';
+  await c.query("insert into public.coffee_calls(id,caller_id,recipient_id,status,expires_at) values($1,$2,$3,'accepted',now()+interval '1 hour')",[call,a,b]);
+  await wake();assert.equal(await count(),0,'unexpired call must stay idle');
+  await c.query("update public.coffee_calls set expires_at=now()-interval '1 second' where id=$1",[call]);
+  await wake();assert.equal(await count(),1,'expired call must wake worker');
+  await c.query('delete from public.coffee_calls; delete from papi_private.call_revocations; delete from net.requests');
+  await c.query("insert into papi_private.voice_revocations(session_id,owner_id,topic_id) values($1,$2,'room-chat')",[session,a]);
+  await wake();assert.equal(await count(),1,'queued voice removal must wake worker');
+  await c.query('delete from papi_private.voice_revocations; delete from net.requests');
+  await c.query('insert into papi_private.call_revocations(call_id,caller_id,recipient_id) values($1,$2,$3)',[call,a,b]);
+  await wake();assert.equal(await count(),1,'queued call removal must wake worker');
+  await c.query('rollback');
+  console.log('PASS: idle cleanup avoids calls, wakes for expired voice/calls and queued removals');
+} finally {await c.end();}

@@ -180,7 +180,7 @@ struct CoffeeOnlinePolicyRenewalView:View {
         PapiScreen {
             ScrollView {
                 VStack(alignment:.leading,spacing:18) {
-                    CoffeeSectionIntro(artwork:"settingsCoffeeArt",title:"Review the online policies",detail:"Please review the updated policies before connecting your coffee account. Your device data stays available if you choose to continue offline.")
+                    CoffeeSectionIntro(artwork:"settingsCoffeeArt",title:"Review the online policies",detail:"Your device records and balance stay on this device. They are not automatically merged into the online account. Continue offline to keep using the local account.")
                     HStack(spacing:4) {
                         Button {accepted.toggle()} label: {
                             Image(accepted ? "check":"agreementUnchecked").resizable().scaledToFit().frame(width:accepted ? 24:44,height:accepted ? 24:44).frame(width:44,height:44)
@@ -209,7 +209,7 @@ struct CoffeeCloudConnectionPendingView:View {
         PapiScreen {
             ScrollView {
                 VStack(alignment:.leading,spacing:18) {
-                    CoffeeSectionIntro(artwork:"settingsCoffeeArt",title:"Connecting your coffee account",detail:"Your saved device data stays on this device while your online account is prepared.")
+                    CoffeeSectionIntro(artwork:"settingsCoffeeArt",title:"Connecting your coffee account",detail:"Your saved device data stays on this device. Your local balance is separate from the new online account.")
                     PapiTextButton(store.cloudConnectionInProgress ? "Connecting…":"Retry online connection") {Task {await store.resumeCloudConnection()}}
                         .buttonStyle(PapiButtonStyle(wide:true)).disabled(store.loginInProgress || store.cloudConnectionInProgress || !store.storageAvailable)
                     if !store.storageAvailable {PapiTextButton("Retry local storage"){store.reload()}.buttonStyle(PapiButtonStyle(light:true,wide:true))}
