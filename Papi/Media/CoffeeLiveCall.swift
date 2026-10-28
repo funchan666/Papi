@@ -222,6 +222,15 @@ struct CoffeeLiveVoiceRoomView:View {
     @State private var pendingMessageBody=""
     @State private var messageSending=false
     @State private var messageUnavailable=false
+    @State private var knownMessageIDs:Set<UUID>=[]
+    @State private var messagesLoaded=false
+    @State private var messageAnnouncement:CoffeeCloud.VoiceMessage?
+    @State private var roomGifts:[CoffeeCloud.VoiceGift]=[]
+    @State private var knownGiftIDs:Set<UUID>=[]
+    @State private var giftsLoaded=false
+    @State private var giftsUnavailable=false
+    @State private var giftAnnouncement:CoffeeCloud.VoiceGift?
+    @State private var showingGifts=false
     private var activeSession:UUID? {
         guard voice.connected,let pending=store.state.pendingCloudVoice,pending.accountID==account,
               pending.topic==topic.id,!pending.closing else {return nil}
@@ -264,9 +273,10 @@ struct CoffeeLiveVoiceRoomView:View {
                                 PapiText("Room messages").font(CoffeeType.display(.title3,weight:.bold)).foregroundStyle(Color.cream)
                                 if messageUnavailable {
                                     PapiText("Room messages unavailable. Try again.").font(CoffeeType.face(.caption)).foregroundStyle(Color.cream)
-                                } else if roomMessages.isEmpty {
+                                } else if roomMessages.isEmpty && roomGifts.isEmpty {
                                     PapiText("No room messages yet.").font(CoffeeType.face(.caption)).foregroundStyle(Color.cream.opacity(0.85))
                                 }
+                                if giftsUnavailable {PapiText("Room gifts unavailable. Try again.").font(CoffeeType.face(.caption)).foregroundStyle(Color.cream)}
                                 ForEach(roomMessages.filter{!store.isUserHidden($0.sender_id.uuidString)}) {message in
                                     HStack(alignment:.top,spacing:9) {
                                         Avatar(name:store.person(message.sender_id.uuidString)?.portrait ?? "emptyCup",size:32)
@@ -279,6 +289,17 @@ struct CoffeeLiveVoiceRoomView:View {
                                             PapiIconButton(asset:"moreLight",label:"Safety options",size:20) {router.sheet = .safety(.user(message.sender_id.uuidString))}
                                         }
                                     }.foregroundStyle(Color.coffee).padding(12).background(Color.cream,in:RoundedRectangle(cornerRadius:16))
+                                }
+                                ForEach(roomGifts.filter{!store.isUserHidden($0.sender_id.uuidString)}.suffix(5)) {event in
+                                    if let gift=CoffeeCollectible.all.first(where:{$0.id==event.gift_id}) {
+                                        HStack(spacing:9) {
+                                            PapiArtworkFit(asset:gift.asset).frame(width:42,height:42)
+                                            VStack(alignment:.leading,spacing:3) {
+                                                PapiText(verbatim:store.person(event.sender_id.uuidString)?.name ?? store.text("Coffee friend")).font(CoffeeType.face(.caption,weight:.bold))
+                                                PapiText("Sent \(gift.name) × \(event.quantity)").font(CoffeeType.face(.caption))
+                                            }.frame(maxWidth:.infinity,alignment:.leading)
+                                        }.foregroundStyle(Color.coffee).padding(10).background(Color.cream,in:RoundedRectangle(cornerRadius:16))
+                                    }
                                 }
                             }.frame(maxWidth:.infinity,alignment:.leading)
                         }
@@ -296,6 +317,7 @@ struct CoffeeLiveVoiceRoomView:View {
                                     .foregroundStyle(Color.coffee).tint(Color.coffee).padding(10)
                                     .background(Color.cream,in:RoundedRectangle(cornerRadius:16)).disabled(messageSending)
                             } actions: {
+                                PapiIconButton(asset:"roomGiftButton",label:"Gifts",size:32) {showingGifts=true}.disabled(activeSession==nil)
                                 PapiIconButton(asset:"send",label:"Send room message",size:28) {Task {await sendRoomMessage()}}
                                     .disabled(messageSending || messageDraft.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty || activeSession==nil)
                             }
@@ -310,14 +332,49 @@ struct CoffeeLiveVoiceRoomView:View {
                         .papiAvoidReserved()
                 }
             }
-        }.onDisappear {Task {await voice.disconnect(store:store)}}
+        }.sheet(isPresented:$showingGifts) {
+            if let session=activeSession {VoiceRoomGiftSheet(topic:topic.id,session:session)}
+        }
+        .overlay(alignment:.top) {
+            if let event=giftAnnouncement,let gift=CoffeeCollectible.all.first(where:{$0.id==event.gift_id}),!store.isUserHidden(event.sender_id.uuidString) {
+                HStack(spacing:10) {
+                    PapiArtworkFit(asset:gift.asset).frame(width:54,height:54)
+                    VStack(alignment:.leading,spacing:3) {
+                        PapiText(verbatim:store.person(event.sender_id.uuidString)?.name ?? store.text("Coffee friend")).font(CoffeeType.face(.caption,weight:.bold))
+                        PapiText("Sent \(gift.name) × \(event.quantity)").font(CoffeeType.face(.subheadline,weight:.semibold))
+                    }
+                }.foregroundStyle(Color.coffee).padding(12).background {Image("voiceTopicPlate").resizable()}
+                    .padding(.horizontal,20).padding(.top,58).allowsHitTesting(false).papiAvoidReserved()
+            } else if let message=messageAnnouncement,!store.isUserHidden(message.sender_id.uuidString) {
+                HStack(spacing:9) {
+                    Avatar(name:store.person(message.sender_id.uuidString)?.portrait ?? "emptyCup",size:32)
+                    VStack(alignment:.leading,spacing:3) {
+                        PapiText(verbatim:store.person(message.sender_id.uuidString)?.name ?? store.text("Coffee friend")).font(CoffeeType.face(.caption,weight:.bold))
+                        PapiText(verbatim:message.body).font(CoffeeType.face(.caption)).lineLimit(2)
+                    }
+                }.foregroundStyle(Color.coffee).padding(12).background {Image("voiceTopicPlate").resizable()}
+                    .padding(.horizontal,20).padding(.top,58).allowsHitTesting(false).papiAvoidReserved()
+            }
+        }
+        .onDisappear {Task {await voice.disconnect(store:store)}}
             .onChange(of:phase) {_,value in if value == .background {Task {await voice.disconnect(store:store)}}}
             .task(id:voice.connected) {
-                guard voice.connected else {roomMessages=[];return}
+                guard voice.connected else {roomMessages=[];roomGifts=[];knownMessageIDs=[];messagesLoaded=false;messageAnnouncement=nil;knownGiftIDs=[];giftsLoaded=false;giftAnnouncement=nil;return}
                 while !Task.isCancelled && voice.connected {
                     await refreshRoomMessages()
+                    await refreshRoomGifts()
                     do {try await Task.sleep(for:.seconds(4))} catch {return}
                 }
+            }
+            .task(id:giftAnnouncement?.id) {
+                guard let id=giftAnnouncement?.id else{return}
+                do {try await Task.sleep(for:.seconds(3))} catch {return}
+                if giftAnnouncement?.id==id {giftAnnouncement=nil}
+            }
+            .task(id:messageAnnouncement?.id) {
+                guard let id=messageAnnouncement?.id else{return}
+                do {try await Task.sleep(for:.seconds(3))} catch {return}
+                if messageAnnouncement?.id==id {messageAnnouncement=nil}
             }
     }
     private func refreshRoomMessages() async {
@@ -325,7 +382,8 @@ struct CoffeeLiveVoiceRoomView:View {
         do {
             let rows=try await CoffeeCloud.shared.voiceMessages(topic:topic.id,session:session,account:account)
             guard !Task.isCancelled,activeSession==session else{return}
-            roomMessages=Array(rows.reversed());messageUnavailable=false
+            if messagesLoaded,let newest=rows.first(where:{!knownMessageIDs.contains($0.id) && !store.isUserHidden($0.sender_id.uuidString)}) {messageAnnouncement=newest}
+            knownMessageIDs=Set(rows.map(\.id));messagesLoaded=true;roomMessages=Array(rows.reversed());messageUnavailable=false
             await store.ensureCloudProfiles(Set(rows.map(\.sender_id)))
         } catch {if !Task.isCancelled,activeSession==session {messageUnavailable=true}}
     }
@@ -342,6 +400,16 @@ struct CoffeeLiveVoiceRoomView:View {
             pendingMessageID=nil;pendingMessageBody=""
             await refreshRoomMessages()
         } catch {if activeSession==session {messageUnavailable=true}}
+    }
+    private func refreshRoomGifts() async {
+        guard let session=activeSession else{return}
+        do {
+            let rows=try await CoffeeCloud.shared.voiceGifts(topic:topic.id,session:session,account:account)
+            guard !Task.isCancelled,activeSession==session else{return}
+            if giftsLoaded,let newest=rows.first(where:{!knownGiftIDs.contains($0.id) && !store.isUserHidden($0.sender_id.uuidString)}) {giftAnnouncement=newest}
+            knownGiftIDs=Set(rows.map(\.id));giftsLoaded=true;roomGifts=Array(rows.reversed());giftsUnavailable=false
+            await store.ensureCloudProfiles(Set(rows.map(\.sender_id)))
+        } catch {if !Task.isCancelled,activeSession==session {giftsUnavailable=true}}
     }
 }
 private struct VoiceLoungeAction:View {

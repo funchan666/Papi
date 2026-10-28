@@ -112,6 +112,14 @@ struct PendingCloudCollectible: Codable {
     let item: String
     let quantity: Int
 }
+struct PendingCloudRoomGift: Codable {
+    let id:UUID
+    let accountID:UUID
+    let topic:String
+    let sessionID:UUID
+    let giftID:String
+    let quantity:Int
+}
 struct PendingCloudMoment: Codable {
     let id: UUID
     let accountID: UUID
@@ -210,6 +218,7 @@ struct CoffeeArchive: Codable {
     var pendingCloudDeletionID: UUID? = nil
     var deletedCloudAccountID: UUID? = nil
     var pendingCloudCollectible: PendingCloudCollectible? = nil
+    var pendingCloudRoomGift: PendingCloudRoomGift? = nil
     var pendingCloudMoment: PendingCloudMoment? = nil
     var pendingCloudPostDeletion: PendingCloudPostDeletion? = nil
     var cloudBrewRevision: Int? = nil
@@ -286,6 +295,7 @@ struct CoffeeArchive: Codable {
         case pendingCloudDeletionID = "pendingCloudDeletionID"
         case deletedCloudAccountID = "deletedCloudAccountID"
         case pendingCloudCollectible = "pendingCloudCollectible"
+        case pendingCloudRoomGift = "pendingCloudRoomGift"
         case pendingCloudMoment = "pendingCloudMoment"
         case pendingCloudPostDeletion = "pendingCloudPostDeletion"
         case cloudBrewRevision = "cloudBrewRevision"

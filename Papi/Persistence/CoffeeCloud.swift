@@ -109,6 +109,14 @@ actor CoffeeCloud {
         let body:String
         let created_at:String
     }
+    struct VoiceGift:Decodable,Identifiable {
+        let id:UUID
+        let sender_id:UUID
+        let gift_id:String
+        let quantity:Int
+        let created_at:String
+    }
+    struct VoiceGiftResult:Decodable {let status:String;let balance:Int}
 
     struct Follow: Codable {
         let follower_id: UUID
@@ -284,6 +292,7 @@ actor CoffeeCloud {
     private struct VoiceSession:Encodable {let p_topic:String;let p_session:UUID}
     private struct VoiceTokenRequest:Encodable {let topic_id:String;let session_id:UUID}
     private struct VoiceMessageRequest:Encodable {let p_topic:String;let p_session:UUID;let p_id:UUID;let p_body:String}
+    private struct VoiceGiftRequest:Encodable {let p_topic:String;let p_session:UUID;let p_order:UUID;let p_gift:String;let p_quantity:Int;let p_cancel:Bool}
     enum VoiceOperation {case enter,heartbeat,leave,canJoin}
     private struct Submission: Encodable {
         let moment_id: UUID
@@ -538,6 +547,20 @@ actor CoffeeCloud {
         let result:UUID = try await client.rpc("send_coffee_voice_message",params:VoiceMessageRequest(p_topic:topic,p_session:session,p_id:id,p_body:body)).execute().value
         guard result==id else {throw ConnectionError.actionUnavailable}
         _ = try await identity(account)
+    }
+    func voiceGifts(topic:String,session:UUID,account:UUID) async throws -> [VoiceGift] {
+        _ = try await identity(account)
+        let rows:[VoiceGift] = try await client.rpc("coffee_voice_gifts",params:VoiceSession(p_topic:topic,p_session:session)).execute().value
+        _ = try await identity(account)
+        return rows
+    }
+    func sendVoiceGift(_ pending:PendingCloudRoomGift,cancel:Bool,account:UUID) async throws -> VoiceGiftResult {
+        _ = try await identity(account)
+        let request=VoiceGiftRequest(p_topic:pending.topic,p_session:pending.sessionID,p_order:pending.id,p_gift:pending.giftID,p_quantity:pending.quantity,p_cancel:cancel)
+        let rows:[VoiceGiftResult] = try await client.rpc("send_coffee_voice_gift",params:request).execute().value
+        guard rows.count==1,["settled","cancelled","insufficient"].contains(rows[0].status) else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
+        return rows[0]
     }
     func voiceToken(topic:String,id:UUID,account:UUID) async throws -> CallToken {
         _ = try await identity(account)

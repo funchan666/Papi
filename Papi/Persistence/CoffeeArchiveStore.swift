@@ -263,7 +263,7 @@ struct CoffeeReceipt: Identifiable {
         emailLinkEnabled && state.signedIn && !checkoutActive && state.purchaseIntents.isEmpty && state.activePurchaseToken==nil &&
         state.cloudAccountID==nil && state.cloudBootstrapPending != true && state.pendingCloudDeletionID==nil && state.deletedCloudAccountID==nil &&
         state.cloudBrewRevision==nil && state.pendingCloudBrewWrite==nil && state.pendingCloudMoment==nil &&
-        state.pendingCloudPostDeletion==nil && state.pendingCloudCollectible==nil && state.pendingCloudMessage==nil &&
+        state.pendingCloudPostDeletion==nil && state.pendingCloudCollectible==nil && state.pendingCloudRoomGift==nil && state.pendingCloudMessage==nil &&
         state.pendingCloudAttachment==nil && state.pendingCloudFriendship==nil && state.pendingCloudReport==nil &&
         state.pendingCloudProfile==nil && state.pendingCloudComment==nil && state.pendingCloudProfileImage==nil &&
         state.pendingCloudProfileImageRemoval==nil && state.pendingCloudCall==nil && state.pendingCloudCallEnd==nil && state.pendingCloudVoice==nil &&
@@ -1310,6 +1310,40 @@ struct CoffeeReceipt: Identifiable {
         }
     }
 
+    @discardableResult func cloudRoomGift(gift:CoffeeCollectible?,quantity:Int,topic:String,session:UUID,cancel:Bool=false) async -> Bool {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudWalletBusy else{return false}
+        let pending:PendingCloudRoomGift
+        if let saved=state.pendingCloudRoomGift {
+            guard saved.accountID==account else{return false}
+            if !cancel,let gift, (saved.giftID != gift.id || saved.quantity != quantity || saved.topic != topic || saved.sessionID != session) {
+                inform("Gift needs attention","Finish your previous room gift before sending another.");return false
+            }
+            pending=saved
+        } else {
+            guard !cancel,let gift,(1...99).contains(quantity),cloudWallet != nil,
+                  state.pendingCloudVoice?.id==session,state.pendingCloudVoice?.topic==topic,state.pendingCloudVoice?.closing==false else{return false}
+            pending = .init(id:UUID(),accountID:account,topic:topic,sessionID:session,giftID:gift.id,quantity:quantity)
+            guard commit({$0.pendingCloudRoomGift=pending}) else{return false}
+        }
+        cloudWalletBusy=true;defer{cloudWalletBusy=false}
+        do {
+            let result=try await CoffeeCloud.shared.sendVoiceGift(pending,cancel:cancel,account:account)
+            let snapshot=try await CoffeeCloud.shared.walletSnapshot(for:account)
+            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudRoomGift?.id==pending.id else{return false}
+            guard commit({$0.pendingCloudRoomGift=nil}) else{return false}
+            cloudWallet=snapshot;cloudWalletUnavailable=false
+            if result.status=="settled" {inform("Gift sent","Your gift was shared with the room.");return true}
+            if result.status=="insufficient" {inform("Not enough coins","This gift was not sent and no coins were spent.")}
+            else {inform("Gift cancelled","This gift was not sent and no coins were spent.")}
+            return false
+        } catch {
+            guard state.cloudAccountID==account else{return false}
+            cloudWallet=nil;cloudWalletUnavailable=true
+            inform("Gift needs attention","The result could not be confirmed. Retry or cancel the saved gift; it will not be charged twice.")
+            return false
+        }
+    }
+
     func cloudUnlockRecipe(_ recipe:BrewRecipe) async {
         guard let account=state.cloudAccountID, state.signedIn, cloudWallet != nil, !cloudWalletBusy else { return }
         cloudWalletBusy=true
@@ -1408,7 +1442,7 @@ struct CoffeeReceipt: Identifiable {
     func performAccountAction(_ action:AccountTransition) async {
         guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,!cloudSubmissionsBusy,!cloudBrewBusy,!cloudBrewHistoryBusy,!cloudSocialBusy,!cloudFeedBusy,cloudShelfBusy.isEmpty,!cloudCommentsBusy,!cloudProfileMediaBusy,!cloudCallsBusy,!cloudVoiceTopicsBusy,!cloudVoiceBusy,!emailLinkBusy,cloudConversationBusy.isEmpty,storageAvailable else{return}
         if state.pendingCloudDeletionID != nil && action != .delete {inform("Account action needs attention","Finish the saved account deletion before changing accounts.");return}
-        guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudRecoveryID==nil,state.pendingCloudCollectible==nil,state.pendingCloudMoment==nil,state.pendingCloudPostDeletion==nil,state.pendingCloudReport==nil,state.pendingCloudMessage==nil,state.pendingCloudAttachment==nil,state.pendingCloudFriendship==nil,state.pendingCloudProfile==nil,state.pendingCloudComment==nil,state.pendingCloudProfileImage==nil,state.pendingCloudProfileImageRemoval==nil,state.pendingCloudCall==nil,state.pendingCloudCallEnd==nil,state.pendingCloudVoice==nil else {
+        guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudRecoveryID==nil,state.pendingCloudCollectible==nil,state.pendingCloudRoomGift==nil,state.pendingCloudMoment==nil,state.pendingCloudPostDeletion==nil,state.pendingCloudReport==nil,state.pendingCloudMessage==nil,state.pendingCloudAttachment==nil,state.pendingCloudFriendship==nil,state.pendingCloudProfile==nil,state.pendingCloudComment==nil,state.pendingCloudProfileImage==nil,state.pendingCloudProfileImageRemoval==nil,state.pendingCloudCall==nil,state.pendingCloudCallEnd==nil,state.pendingCloudVoice==nil else {
             inform("Account action needs attention","Finish pending account or purchase activity before changing accounts.");return
         }
         if action == .delete,let account=state.cloudAccountID {
