@@ -68,13 +68,15 @@ Deno.serve(async (request: Request) => {
   const matches = rows.filter((row) => row && typeof row === "object" && row.transaction_id === transaction_id);
   if (matches.length === 0 || matches.some((row) =>
       row.product_id !== order.product_id || row.quantity !== "1" ||
-      typeof row.app_account_token !== "string" || row.app_account_token.toLowerCase() !== order.id.toLowerCase() ||
+      (row.app_account_token != null && (typeof row.app_account_token !== "string" || row.app_account_token.toLowerCase() !== order.id.toLowerCase())) ||
       row.cancellation_date != null || row.cancellation_date_ms != null)) {
     return reply(422, { error: "Transaction cannot be matched to this order" });
   }
 
   const service = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
-  const { data: balance, error } = await service.rpc("settle_verified_apple_order", {
+  // The signed Apple notification supplies account binding even if a consumable receipt omits it.
+  // The RPC checks it and settles under one transaction lock; absent notification stays pending.
+  const { data: balance, error } = await service.rpc("settle_notified_apple_charge", {
     p_order: order.id, p_owner: identity.user.id, p_product: order.product_id,
     p_transaction: transaction_id, p_environment: environment,
   });

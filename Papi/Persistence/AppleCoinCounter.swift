@@ -36,6 +36,8 @@ struct CoinPack: Identifiable {
     private var productContinuation: CheckedContinuation<SKProduct?, Error>?
     private var requestedProductID: String?
     private var processing: Set<String> = []
+    private var retryTask:Task<Void,Never>?
+    private var retryCount=0
 
     func start(store:CoffeeHouse) {
         guard !started else {return}
@@ -146,7 +148,8 @@ struct CoinPack: Identifiable {
                 guard let receiptURL=Bundle.main.appStoreReceiptURL,
                       let data=try? Data(contentsOf:receiptURL,options:.mappedIfSafe),
                       !data.isEmpty,data.count<=2_000_000 else {
-                    unresolved=true;status="Purchase verification is pending. Use Recover purchases to try again.";return
+                    unresolved=true;status="Purchase verification is pending. Use Recover purchases to try again."
+                    scheduleRecovery();return
                 }
                 _ = try await CoffeeCloud.shared.verifyPurchase(orderID:token,transactionID:id,receiptData:data.base64EncodedString(),account:account)
                 guard store.state.signedIn,store.state.cloudAccountID==account else {unresolved=true;return}
@@ -156,9 +159,10 @@ struct CoinPack: Identifiable {
                 }) else {unresolved=true;return}
                 await store.refreshCloudWallet()
                 SKPaymentQueue.default().finishTransaction(transaction)
+                retryTask?.cancel();retryTask=nil;retryCount=0
                 unresolved=store.state.activePurchaseToken != nil || SKPaymentQueue.default().transactions.contains(where:{$0 !== transaction})
                 status="Your purchase was verified and added to your online wallet."
-            } catch {unresolved=true;status="Purchase verification is pending. Use Recover purchases to try again."}
+            } catch {unresolved=true;status="Purchase verification is pending. Use Recover purchases to try again.";scheduleRecovery()}
         @unknown default: unresolved=true
         }
     }
@@ -173,9 +177,21 @@ struct CoinPack: Identifiable {
     func sync() async {
         guard !busy,let store,store.beginCheckout() else{return}
         busy=true;defer {busy=false;store.endCheckout()}
+        retryTask?.cancel();retryTask=nil;retryCount=0
         await recover()
         if SKPaymentQueue.default().transactions.isEmpty && store.state.activePurchaseToken==nil {
             status="No unfinished purchases were found."
+        }
+    }
+    private func scheduleRecovery() {
+        guard retryTask==nil,retryCount<6 else{return}
+        retryCount+=1
+        let delay=retryCount<3 ? 5:15
+        retryTask=Task { [weak self] in
+            do {try await Task.sleep(for:.seconds(delay))} catch {return}
+            guard let self else{return}
+            self.retryTask=nil
+            await self.recover()
         }
     }
     private func fail(_ message:String) {status=message;if store?.notice==nil {store?.inform("Coffee reserve",message)}}
