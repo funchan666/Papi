@@ -1,10 +1,10 @@
 # Papi 协议交付
 
-2026-10-28：两份英文协议正文保存在项目 `docs/policies/`，并发布到 Papi 正式 Supabase 项目的独立公开 `papi-policies` 容器。原有私有媒体容器没有改为公开。
+2026-10-28：两份英文协议使用 Papi 的字体和咖啡色排版，存于 `docs/policies/` 并发布到正式 Supabase 项目的独立公开 `papi-policies` 容器。原有私有媒体容器没有改为公开。
 
-- [用户协议](https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms.txt)
-- [隐私政策](https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy.txt)
+- [用户协议](https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms.pdf)
+- [隐私政策](https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy.pdf)
 
-已通过匿名 HTTPS 读取并逐字节核对。App 的登录页和设置页继续共用 `PapiPolicies.json` 作为地址来源；正文以纯文本交付，以适配 Supabase 默认域名。
+登录页和设置页共用 `PapiPolicies.json`。两份协议均使用用户提供的联系邮箱 `Papi_service2026@outlook.com`；邮箱可收信与运营人员响应尚未验证。原有 `.txt` 地址也已更新，可能受到 CDN 缓存延迟影响。
 
-按用户要求使用 `papi@xxx.com` 占位，未核验其可收信；正式运营前须替换成真实有效的联系邮箱。此协议描述当前本地版，并明确尚未启用的在线功能；云端服务启用前须按实际数据流和保留规则更新协议、完成运营安排并取得必要的重新同意。此更新不启用线上协议版本或实时服务。旧设备数据保留。
+协议描述当前本地版和尚未启用的在线功能。云端功能启用前，仍须按实际数据流和保留规则更新协议、完成运营安排并取得必要的重新同意。此更新不会启用线上功能，旧设备数据保留。

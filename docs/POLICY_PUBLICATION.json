@@ -1,22 +1,22 @@
 {
   "date": "2026-10-28",
-  "method": "Supabase public Storage, anonymous HTTPS byte comparison",
+  "method": "Supabase public Storage, anonymous HTTPS byte comparison and rendered PDF inspection",
   "documents": [
     {
       "policy": "terms",
-      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms.txt",
+      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms.pdf",
       "anonymousRead": true,
-      "contentType": "text/plain",
-      "sha256": "d1c817495c7547c651a9f92329e42a68ee77b6634509fa73b729a055a975f304",
-      "contactIsPlaceholder": true
+      "contentType": "application/pdf",
+      "sha256": "e5e0b3ca9d1645a08bb9bcd58c3c5a07b8031c0d9c9b9e8fb7723badbbfce63a",
+      "contact": "Papi_service2026@outlook.com"
     },
     {
       "policy": "privacy",
-      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy.txt",
+      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy.pdf",
       "anonymousRead": true,
-      "contentType": "text/plain",
-      "sha256": "cac36039e7e72fcf20b6822b64124bc70cd1da322e2f5dbe573c62a5c6ba04d0",
-      "contactIsPlaceholder": true
+      "contentType": "application/pdf",
+      "sha256": "00bc30730c66a459a07fabae3f2a4c2ec3e95fcb94b78d619c2733ac3d33478b",
+      "contact": "Papi_service2026@outlook.com"
     }
   ],
   "appExecuted": false
