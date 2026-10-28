@@ -135,8 +135,11 @@ begin
   if exists(select 1 from papi_private.voice_members m where m.owner_id=actor) or
      exists(select 1 from papi_private.voice_revocations q where q.owner_id=actor and q.completed_at is null) or
      not exists(select 1 from public.coffee_voice_topics t where t.id=p_topic) then return false; end if;
-  -- A tombstone prevents a delayed enter request from resurrecting this session.
-  insert into papi_private.voice_revocations(session_id,owner_id,topic_id) values(p_session,actor,p_topic)
+  if not papi_private.consume_livekit_token_budget('voice_leave') then return false; end if;
+  -- An unknown session cannot have obtained a token while disabled, but its
+  -- tombstone is still needed if a delayed enter arrives after re-enabling.
+  insert into papi_private.voice_revocations(session_id,owner_id,topic_id,completed_at)
+    values(p_session,actor,p_topic,case when coalesce((select enabled from papi_private.voice_runtime_config where singleton),false) then null else now() end)
     on conflict(session_id) do nothing;
   return exists(select 1 from papi_private.voice_revocations q where q.session_id=p_session and q.owner_id=actor and q.topic_id=p_topic);
 end;

@@ -2,7 +2,7 @@
 -- This does not limit an already connected participant's LiveKit refreshes.
 create table papi_private.livekit_token_limits (
   owner_id uuid not null references auth.users(id) on delete cascade,
-  token_kind text not null check (token_kind in ('call','voice')),
+  token_kind text not null check (token_kind in ('call','voice','voice_leave')),
   window_started_at timestamptz not null,
   attempts integer not null check (attempts between 1 and 7),
   primary key(owner_id,token_kind)
@@ -14,7 +14,7 @@ create function papi_private.consume_livekit_token_budget(p_kind text) returns b
 language plpgsql volatile security definer set search_path = '' as $$
 declare actor uuid := (select auth.uid()); n integer; t timestamptz := clock_timestamp();
 begin
-  if actor is null or p_kind not in ('call','voice') then return false; end if;
+  if actor is null or p_kind not in ('call','voice','voice_leave') then return false; end if;
   insert into papi_private.livekit_token_limits as budget(owner_id,token_kind,window_started_at,attempts)
     values(actor,p_kind,t,1)
   on conflict(owner_id,token_kind) do update set

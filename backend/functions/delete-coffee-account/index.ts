@@ -72,6 +72,9 @@ Deno.serve(async (request:Request) => {
       if (removeError) throw removeError;
       if (batch===4) return reply(202,{status:"pending"});
     }
+    const {data:storageClear,error:storageError}=await service.rpc("coffee_deletion_storage_clear",{p_secret:secret});
+    if (storageError) throw storageError;
+    if (storageClear!==true) return reply(202,{status:"pending"});
     const {data:exists,error:existsError}=await service.rpc("coffee_deletion_user_exists",{p_secret:secret});
     if (existsError) throw existsError;
     if (exists===true) {
