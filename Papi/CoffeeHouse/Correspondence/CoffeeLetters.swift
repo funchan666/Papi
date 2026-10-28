@@ -80,7 +80,7 @@ struct CorrespondenceInbox:View {
         }.task(id:store.state.cloudAccountID) {
             guard store.usesCloudWallet else {return}
             while !Task.isCancelled {
-                if store.usesCloudWallet && scenePhase == .active {await store.refreshCloudMessages();await store.refreshCloudCalls()}
+                if store.usesCloudWallet && scenePhase == .active {await store.refreshCloudMessages()}
                 do {try await Task.sleep(for:.seconds(10))} catch {break}
             }
         }.overlay {
@@ -187,7 +187,7 @@ struct CoffeeConversationView:View {
         }.task(id:store.state.cloudAccountID) {
             guard store.usesCloudWallet else {return}
             while !Task.isCancelled {
-                if store.usesCloudWallet && scenePhase == .active {await store.refreshCloudMessages();await store.refreshCloudCalls();if let peer=UUID(uuidString:memberID) {await store.refreshCloudConversation(peer)}}
+                if store.usesCloudWallet && scenePhase == .active {await store.refreshCloudMessages();if let peer=UUID(uuidString:memberID) {await store.refreshCloudConversation(peer)}}
                 do {try await Task.sleep(for:.seconds(10))} catch {break}
             }
         }.onChange(of:picker){_,item in

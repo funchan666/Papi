@@ -6981,6 +6981,13 @@
     "vi": "Dừng tin nhắn thoại",
     "ko": "음성 메시지 중지"
   },
+  "Incoming video call": {
+    "es": "Videollamada entrante",
+    "th": "สายวิดีโอเข้า",
+    "ar": "مكالمة فيديو واردة",
+    "vi": "Cuộc gọi video đến",
+    "ko": "영상 통화 수신"
+  },
   "Loading voice note…": {
     "es": "Cargando nota de voz…",
     "th": "กำลังโหลดข้อความเสียง…",

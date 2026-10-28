@@ -90,15 +90,41 @@ enum CoffeePresentation:Identifiable {
 struct PapiRootView:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
+    @Environment(\.scenePhase) private var scenePhase
     var body:some View {
         NavigationStack(path:$router.path) {
             PapiTabShell().navigationDestination(for:CoffeeDestination.self) { route in destination(route) }
                 .toolbar(.hidden,for:.navigationBar)
         }
+        .safeAreaInset(edge:.top,spacing:0) {
+            if store.liveCallsEnabled,store.usesCloudWallet,!store.incomingCloudCalls.isEmpty,
+               !(store.selectedTab==2 && router.path.isEmpty),router.sheet==nil,!router.hasBlockingModal {
+                PapiPanel {
+                    Button {
+                        router.path=[];store.selectedTab=2
+                    } label: {
+                        HStack(spacing:12) {
+                            Image("messagesOn").resizable().scaledToFit().frame(width:28,height:28).accessibilityHidden(true)
+                            PapiText("Incoming video call").font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true)
+                            Spacer(minLength:0)
+                        }.frame(maxWidth:.infinity,minHeight:44,alignment:.leading).contentShape(Rectangle())
+                    }.buttonStyle(.plain)
+                }.frame(maxWidth:700).padding(.horizontal,16).padding(.bottom,6)
+            }
+        }
         .sheet(item:$router.sheet,onDismiss:{router.rootSheetDidDismiss()}) { sheet in
             PapiDeviceContainer {
                 NavigationStack { sheetContent(sheet).papiNotices() }
             }.onAppear{router.rootSheetDidAppear()}.presentationBackground {PapiBackground()}.presentationDragIndicator(.hidden).interactiveDismissDisabled(router.hasBlockingModal)
+        }
+        .task(id:scenePhase) {
+            guard store.liveCallsEnabled,scenePhase == .active else{return}
+            while !Task.isCancelled {
+                if store.usesCloudWallet,store.state.signedIn,store.state.pendingCloudDeletionID==nil {
+                    await store.refreshCloudCalls()
+                }
+                do {try await Task.sleep(for:.seconds(10))} catch {break}
+            }
         }
         .onChange(of:store.visibilityKeys){_,_ in router.removeHiddenDestinations(using:store)}
     }
