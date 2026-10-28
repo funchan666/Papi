@@ -105,6 +105,8 @@ struct CoinPurchaseTerms: Codable {
     var createdAt = Date()
     // Each new checkout token can settle only one Apple transaction.
     var transactionID: String? = nil
+    // A terminal StoreKit failure is retained for later server reconciliation.
+    var failedAt: Date? = nil
 }
 struct PendingCloudCollectible: Codable {
     let id: UUID

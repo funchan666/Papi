@@ -117,15 +117,24 @@ struct CoinPack: Identifiable {
         case .purchasing: status="Confirm your purchase with Apple."
         case .deferred: status="Awaiting Apple's approval. Coins arrive only after a verified transaction."
         case .failed:
-            // The remote order must be reconciled before clearing its durable identity.
+            // Persist the terminal result before removing Apple's queue entry.
+            guard store.storageAvailable,
+                  let text=transaction.payment.applicationUsername,let token=UUID(uuidString:text),
+                  let terms=store.state.coinPurchaseTerms?.first(where:{$0.token==token && $0.productID==transaction.payment.productIdentifier}),
+                  store.commit({state in
+                      if let index=state.coinPurchaseTerms?.firstIndex(where:{$0.token==token && $0.productID==terms.productID}) {
+                          state.coinPurchaseTerms?[index].failedAt=state.coinPurchaseTerms?[index].failedAt ?? Date()
+                      }
+                  }) else {
+                unresolved=true;status="This purchase needs online recovery. It has not been finished or credited again.";return
+            }
             SKPaymentQueue.default().finishTransaction(transaction)
-            if store.state.activePurchaseToken != nil {unresolved=true;fail("The saved order needs reconciliation before another purchase.")}
-            else {status="Purchase cancelled. No coins were added."}
+            unresolved=true;fail("The saved order needs reconciliation before another purchase.")
         case .purchased, .restored:
             guard let id=transaction.transactionIdentifier,!id.isEmpty else {unresolved=true;return}
             guard !processing.contains(id) else{return}
             processing.insert(id);defer {processing.remove(id)}
-            guard checkoutAvailable,store.storageAvailable,store.state.signedIn,
+            guard store.storageAvailable,store.state.signedIn,
                   let account=store.state.cloudAccountID,
                   let tokenString=transaction.payment.applicationUsername,let token=UUID(uuidString:tokenString),
                   let terms=store.state.coinPurchaseTerms?.first(where:{$0.token==token && $0.owner==account && $0.productID==transaction.payment.productIdentifier}),
@@ -141,7 +150,8 @@ struct CoinPack: Identifiable {
                 }) else {unresolved=true;return}
                 await store.refreshCloudWallet()
                 SKPaymentQueue.default().finishTransaction(transaction)
-                unresolved=false;status="Your purchase was verified and added to your online wallet."
+                unresolved=store.state.activePurchaseToken != nil || SKPaymentQueue.default().transactions.contains(where:{$0 !== transaction})
+                status="Your purchase was verified and added to your online wallet."
             } catch {unresolved=true;status="Purchase verification is pending. Use Recover purchases to try again."}
         @unknown default: unresolved=true
         }
