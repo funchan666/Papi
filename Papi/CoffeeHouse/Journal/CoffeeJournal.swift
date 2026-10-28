@@ -141,8 +141,27 @@ struct CoffeeCollectionTile:View {
             VStack(alignment:.leading,spacing:3) {
                 PapiText(post.category).font(CoffeeType.face(.caption2,weight:.medium)).foregroundStyle(Color.coffee)
                 PapiUserLink(userID:post.authorID,size:26)
+                CoffeeEditorialReactions(post:post,openComments:{router.go(.post(post.id))})
             }.frame(maxWidth:.infinity,alignment:.leading).padding(.horizontal,10).padding(.top,8).background(Color.peach.opacity(0.55))
         }.clipShape(RoundedRectangle(cornerRadius:18))
+    }
+}
+struct CoffeeEditorialReactions:View {
+    @EnvironmentObject private var store:CoffeeHouse
+    let post:CoffeeMoment
+    var openComments:()->Void
+    var body:some View {
+        if let summary=store.editorialSummaries[post.id] {
+            HStack(spacing:12) {
+                Button {Task {await store.changeEditorialLike(post.id)}} label:{
+                    HStack(spacing:4) {Image("like").resizable().scaledToFit().frame(width:22,height:22).opacity(summary.liked ? 1:0.48);Text(summary.like_count,format:.number)}.frame(minWidth:44,minHeight:44)
+                }.papiAccessibilityLabel(summary.liked ? "Unlike":"Like").disabled(store.editorialBusy)
+                Button(action:openComments) {
+                    HStack(spacing:4) {Image("comment").resizable().scaledToFit().frame(width:22,height:22);Text(summary.comment_count,format:.number)}.frame(minWidth:44,minHeight:44)
+                }.papiAccessibilityLabel("Open comments")
+                Spacer(minLength:0)
+            }.font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.coffee).buttonStyle(.plain)
+        }
     }
 }
 struct CoffeeMomentTile:View {
@@ -323,16 +342,8 @@ struct CoffeeCollectionDetail:View {
                         }
                         VStack(alignment:.leading,spacing:12) {
                             PapiText(verbatim:post.caption).font(CoffeeType.face(.body)).fixedSize(horizontal:false,vertical:true)
-                            if let summary=store.editorialSummaries[post.id] {
-                                HStack(spacing:18) {
-                                    Button {Task {await store.changeEditorialLike(post.id)}} label:{
-                                        HStack(spacing:6) {Image("like").resizable().scaledToFit().frame(width:23,height:23).opacity(summary.liked ? 1:0.48);Text(summary.like_count,format:.number)}.frame(minWidth:44,minHeight:44)
-                                    }.papiAccessibilityLabel(summary.liked ? "Unlike":"Like").disabled(store.editorialBusy)
-                                    Button {withAnimation {reader.scrollTo("editorial-notes",anchor:.top)}} label:{
-                                        HStack(spacing:6) {Image("comment").resizable().scaledToFit().frame(width:23,height:23);Text(summary.comment_count,format:.number)}.frame(minWidth:44,minHeight:44)
-                                    }.papiAccessibilityLabel("Open comments")
-                                    Spacer()
-                                }.font(CoffeeType.face(.caption,weight:.semibold)).buttonStyle(.plain)
+                            if store.editorialSummaries[post.id] != nil {
+                                CoffeeEditorialReactions(post:post,openComments:{withAnimation {reader.scrollTo("editorial-notes",anchor:.top)}})
                             } else {
                                 PapiTextButton(store.editorialBusy ? "Loading comments…":"Retry") {Task {await store.refreshEditorial(post.id)}}.disabled(store.editorialBusy)
                             }

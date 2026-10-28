@@ -478,8 +478,10 @@ struct CoffeeReceipt: Identifiable {
         do {
             let feed=try await CoffeeCloud.shared.recentMoments(for:account)
             let reported=try await CoffeeCloud.shared.editorialReportedPosts(account:account)
+            let summaries=try await CoffeeCloud.shared.editorialSummary(CoffeeMoment.editorial.map(\.id),account:account)
             guard state.signedIn,state.cloudAccountID==account else{return}
             cloudFeed=feed;cloudFeedHasMore=feed.count==50;editorialReportedPosts=Set(reported.map(\.content_id))
+            editorialSummaries=Dictionary(uniqueKeysWithValues:summaries.map{($0.content_id,$0)})
             await ensureCloudProfiles(Set(feed.map(\.author_id)))
         } catch {
             guard state.cloudAccountID==account else{return}
