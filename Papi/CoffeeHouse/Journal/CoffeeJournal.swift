@@ -96,9 +96,13 @@ struct CoffeeJournalView:View {
                             PapiText(store.cloudFeedBusy ? "Loading moments…":"Moments unavailable")
                             PapiTextButton("Retry"){Task {await store.refreshCloudFeed()}}.disabled(store.cloudFeedBusy)
                         }
+                        if store.usesCloudWallet && store.cloudFeed != nil && (!store.editorialReportsReady || store.editorialSummariesUnavailable) {
+                            PapiText(store.cloudFeedBusy ? "Loading moments…":"Some moments could not be loaded.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
+                            PapiTextButton("Retry"){Task {await store.refreshCloudFeed()}}.disabled(store.cloudFeedBusy)
+                        }
                         let collectionIDs=Set(store.visibleCollectionPosts.map(\.id))
                         let posts=store.usesCloudWallet ? store.visiblePosts+store.visibleCollectionPosts:store.visiblePosts
-                        if posts.isEmpty && (!store.usesCloudWallet || store.cloudFeed != nil) {
+                        if posts.isEmpty && (!store.usesCloudWallet || (store.cloudFeed != nil && store.editorialReportsReady)) {
                             PapiText("No moments yet").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
                         }
                         if store.usesCloudWallet && store.cloudFeedHasMore {PapiTextButton("Load more"){Task {await store.loadMoreCloudFeed()}}.disabled(store.cloudFeedBusy)}

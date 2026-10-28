@@ -51,6 +51,8 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var editorialSummaries:[String:CoffeeCloud.EditorialSummary] = [:]
     @Published private(set) var editorialComments:[String:[CoffeeCloud.EditorialComment]] = [:]
     @Published private(set) var editorialReportedPosts:Set<String> = []
+    @Published private(set) var editorialReportsReady=false
+    @Published private(set) var editorialSummariesUnavailable=false
     @Published private(set) var editorialBusy=false
     @Published private(set) var cloudImageSummaries:[UUID:CoffeeCloud.ProfileImageSummary] = [:]
     @Published private(set) var cloudProfileImages:[UUID:[CoffeeCloud.ProfileImage]] = [:]
@@ -477,15 +479,28 @@ struct CoffeeReceipt: Identifiable {
         cloudFeedBusy=true;defer{cloudFeedBusy=false}
         do {
             let feed=try await CoffeeCloud.shared.recentMoments(for:account)
-            let reported=try await CoffeeCloud.shared.editorialReportedPosts(account:account)
-            let summaries=try await CoffeeCloud.shared.editorialSummary(CoffeeMoment.editorial.map(\.id),account:account)
             guard state.signedIn,state.cloudAccountID==account else{return}
-            cloudFeed=feed;cloudFeedHasMore=feed.count==50;editorialReportedPosts=Set(reported.map(\.content_id))
-            editorialSummaries=Dictionary(uniqueKeysWithValues:summaries.map{($0.content_id,$0)})
+            cloudFeed=feed;cloudFeedHasMore=feed.count==50
             await ensureCloudProfiles(Set(feed.map(\.author_id)))
         } catch {
             guard state.cloudAccountID==account else{return}
-            cloudFeed=nil
+            cloudFeed=nil;cloudFeedHasMore=false
+        }
+        do {
+            let reported=try await CoffeeCloud.shared.editorialReportedPosts(account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            editorialReportedPosts=Set(reported.map(\.content_id));editorialReportsReady=true
+        } catch {
+            guard state.cloudAccountID==account else{return}
+            editorialReportsReady=false
+        }
+        do {
+            let summaries=try await CoffeeCloud.shared.editorialSummary(CoffeeMoment.editorial.map(\.id),account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            editorialSummaries=Dictionary(uniqueKeysWithValues:summaries.map{($0.content_id,$0)});editorialSummariesUnavailable=false
+        } catch {
+            guard state.cloudAccountID==account else{return}
+            editorialSummaries=[:];editorialSummariesUnavailable=true
         }
     }
 
@@ -1598,7 +1613,7 @@ struct CoffeeReceipt: Identifiable {
         cloudProfiles=nil;cloudImageSummaries=[:];cloudProfileImages=[:];cloudProfileImagesHasMore=[:]
         cloudFollows=[];cloudFriendships=[];cloudBlocks=[];cloudReports=[];cloudMessages=[];cloudMessagesUnavailable=false
         cloudConversations=[:];cloudConversationHasMore=[:];cloudConversationUnavailable=[];cloudCalls=nil;cloudVoiceTopics=nil
-        cloudFeed=nil;cloudFeedHasMore=false;cloudShelves=[:];cloudShelfHasMore=[:];cloudComments=[:];cloudCommentsHasMore=[:];editorialSummaries=[:];editorialComments=[:];editorialReportedPosts=[]
+        cloudFeed=nil;cloudFeedHasMore=false;cloudShelves=[:];cloudShelfHasMore=[:];cloudComments=[:];cloudCommentsHasMore=[:];editorialSummaries=[:];editorialComments=[:];editorialReportedPosts=[];editorialReportsReady=false;editorialSummariesUnavailable=false
         activeRoomID=nil;roomMicRequested=false;selectedTab=0
     }
     private func cleanupPendingMedia() {

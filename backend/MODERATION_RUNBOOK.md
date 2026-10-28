@@ -64,4 +64,21 @@ select id, content_id, comment_id, comment_excerpt, reason, created_at
 from papi_private.editorial_reports where review_status='pending' order by created_at;
 ```
 
-Use the authenticated service-role moderation integration to call `public.review_coffee_editorial_comment(p_id, p_outcome)` with `approved` or `rejected`, and `public.review_coffee_editorial_report(p_id)` after handling a report. These functions record a moderation event. Comments stay private to their author until approved; a report is not a substitute for timely human review. Report snapshots retain the relevant comment text if its author deletes the comment; account deletion clears that author's identity and text from other people's reports. Do not put the service key in the iOS app.
+Use the audited entry point below from the project administrator's SQL Editor. `kind` is `comment` or `report`; a comment decision is `approved` or `rejected`, and a report decision is `resolved`. Generate and retain an event UUID for each decision; if a response is interrupted, retry with that exact UUID and identical values. A different decision requires a new UUID. Fill the reviewer identifier and reason with the actual reviewer and their decision.
+
+```sql
+select gen_random_uuid() as review_event_id;
+
+begin;
+select set_config('request.jwt.claims', '{"role":"service_role"}', true);
+select public.review_coffee_editorial(
+  'EVENT_UUID'::uuid, 'comment', 'SUBJECT_UUID'::uuid,
+  'approved', 'REVIEWER_IDENTIFIER', 'REVIEW_REASON'
+);
+commit;
+
+select id,subject_kind,subject_id,decision,reviewer,note,created_at
+from papi_private.editorial_moderation_events where id='EVENT_UUID'::uuid;
+```
+
+Comments stay private to their author until approved; a report is not a substitute for timely human review. Report snapshots retain the relevant comment text if its author deletes the comment; account deletion clears that author's identity and text from other people's reports. The existing two-argument service functions remain available for compatibility; use the audited entry point above for human moderation. Do not put the service key in the iOS app.
