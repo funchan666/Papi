@@ -69,6 +69,7 @@ import Foundation
     }
     func isPostVisible(_ value:CoffeeMoment)->Bool {
         let approved = !value.isOwnMoment || value.moderation == .approved
+        if editorialReportedPosts.contains(value.id) {return false}
         // Keep previous coffee-desk blocks effective after collection portraits were assigned.
         if !value.isOwnMoment,CollectionConversation.entry(value.id) != nil,isUserHidden(CoffeeMember.editorial.id) {return false}
         return approved && isTargetVisible(.post(value))

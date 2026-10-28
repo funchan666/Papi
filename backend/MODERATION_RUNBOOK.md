@@ -52,3 +52,16 @@ commit;
 决定可以是 `approved` 或 `rejected`。每次决定必须使用独立事件 UUID，重试同一决定则沿用原 UUID；同一用户可能多次提交头像或背景，应用显示最新提交且已通过审核的图片。已拒绝和待审核的图片只对所有者可见。
 
 2026-10-28 已在独立 Supabase 测试项目中，以可回滚的合成数据验证待审默认状态、其他用户对待审与已审核帖子的可见性、帖子/评论/头像/举报的审核结果、同一事件重试、冲突事件拒绝和普通账号无审核权限；测试事务已回滚。脚本见 `backend/tests/moderation_hosted_rollback.sql`，其中测试账号限定为该测试项目的合成账号。测试没有验证真实审核人员、SQL Editor 实际操作、审核时效、举报通知或正式运营，不代表已经建立审核团队。
+
+## Collection comments and reports
+
+Collection interactions use separate private tables because collection media is not a cloud user post. In the Supabase SQL editor, a trusted operator can inspect pending items:
+
+```sql
+select id, content_id, author_id, body, created_at
+from papi_private.editorial_comments where moderation_status='pending' order by created_at;
+select id, content_id, comment_id, comment_excerpt, reason, created_at
+from papi_private.editorial_reports where review_status='pending' order by created_at;
+```
+
+Use the authenticated service-role moderation integration to call `public.review_coffee_editorial_comment(p_id, p_outcome)` with `approved` or `rejected`, and `public.review_coffee_editorial_report(p_id)` after handling a report. These functions record a moderation event. Comments stay private to their author until approved; a report is not a substitute for timely human review. Report snapshots retain the relevant comment text if its author deletes it. Do not put the service key in the iOS app.

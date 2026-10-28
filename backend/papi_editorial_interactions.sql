@@ -14,7 +14,7 @@ create index editorial_comments_content_idx on papi_private.editorial_comments(c
 create index editorial_comments_author_idx on papi_private.editorial_comments(author_id);
 create table papi_private.editorial_reports (
   id uuid primary key, reporter_id uuid not null references public.coffee_profiles(id) on delete cascade,
-  content_id text not null, comment_id uuid references papi_private.editorial_comments(id) on delete set null,
+  content_id text not null, comment_id uuid, comment_excerpt text,
   reason text not null check(char_length(btrim(reason)) between 1 and 500),
   review_status text not null default 'pending' check(review_status in ('pending','resolved')),
   created_at timestamptz not null default now()
@@ -102,7 +102,8 @@ begin
  select * into prior from papi_private.editorial_reports where id=p_id;
  if found then if prior.reporter_id<>actor or prior.content_id<>p_key or prior.comment_id is distinct from p_comment or prior.reason<>p_reason then raise exception 'Identifier already used'; end if; return p_id; end if;
  if p_comment is not null and not exists(select 1 from papi_private.editorial_comments c where c.id=p_comment and c.content_id=p_key and (c.author_id=actor or c.moderation_status='approved') and papi_private.clear_pair(actor,c.author_id)) then raise exception 'Unavailable'; end if;
- insert into papi_private.editorial_reports(id,reporter_id,content_id,comment_id,reason) values(p_id,actor,p_key,p_comment,p_reason); return p_id;
+ insert into papi_private.editorial_reports(id,reporter_id,content_id,comment_id,comment_excerpt,reason)
+ values(p_id,actor,p_key,p_comment,(select c.body from papi_private.editorial_comments c where c.id=p_comment),p_reason); return p_id;
 end; $$;
 create function public.report_coffee_editorial(p_id uuid,p_key text,p_comment uuid,p_reason text) returns uuid language sql security invoker set search_path='' as $$ select papi_private.editorial_report(p_id,p_key,p_comment,p_reason); $$;
 

@@ -38,6 +38,9 @@ do $$ declare cid uuid:=current_setting('papi.test.comment')::uuid; rid uuid:=cu
 end $$;
 reset role;
 do $$ begin if not exists(select 1 from papi_private.editorial_comments where id=current_setting('papi.test.comment')::uuid) then raise exception 'Non-owner deleted comment'; end if; end $$;
+do $$ begin
+ if not exists(select 1 from papi_private.editorial_reports where id=current_setting('papi.test.report')::uuid and comment_excerpt='An isolated comment') then raise exception 'Report lacks review context'; end if;
+end $$;
 insert into public.coffee_blocks(blocker_id,blocked_id) values(current_setting('papi.test.b')::uuid,current_setting('papi.test.a')::uuid) on conflict do nothing;
 set local role authenticated;
 select set_config('request.jwt.claims',json_build_object('role','authenticated','sub',current_setting('papi.test.b'),'session_id',current_setting('papi.test.sb'))::text,true);

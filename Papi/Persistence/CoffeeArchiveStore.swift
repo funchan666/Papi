@@ -50,6 +50,7 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var cloudCommentsBusy=false
     @Published private(set) var editorialSummaries:[String:CoffeeCloud.EditorialSummary] = [:]
     @Published private(set) var editorialComments:[String:[CoffeeCloud.EditorialComment]] = [:]
+    @Published private(set) var editorialReportedPosts:Set<String> = []
     @Published private(set) var editorialBusy=false
     @Published private(set) var cloudImageSummaries:[UUID:CoffeeCloud.ProfileImageSummary] = [:]
     @Published private(set) var cloudProfileImages:[UUID:[CoffeeCloud.ProfileImage]] = [:]
@@ -476,8 +477,9 @@ struct CoffeeReceipt: Identifiable {
         cloudFeedBusy=true;defer{cloudFeedBusy=false}
         do {
             let feed=try await CoffeeCloud.shared.recentMoments(for:account)
+            let reported=try await CoffeeCloud.shared.editorialReportedPosts(account:account)
             guard state.signedIn,state.cloudAccountID==account else{return}
-            cloudFeed=feed;cloudFeedHasMore=feed.count==50
+            cloudFeed=feed;cloudFeedHasMore=feed.count==50;editorialReportedPosts=Set(reported.map(\.content_id))
             await ensureCloudProfiles(Set(feed.map(\.author_id)))
         } catch {
             guard state.cloudAccountID==account else{return}
@@ -1052,6 +1054,7 @@ struct CoffeeReceipt: Identifiable {
                 }
             }) else {return false}
             cloudReports=reports
+            if let editorialKey,target.kind == .post {editorialReportedPosts.insert(editorialKey)}
             notice = .init(title:"Report submitted",message:"Your report was sent for review and the item is hidden from your lists.",kind:.safety)
             return true
         } catch {
@@ -1593,7 +1596,7 @@ struct CoffeeReceipt: Identifiable {
         cloudProfiles=nil;cloudImageSummaries=[:];cloudProfileImages=[:];cloudProfileImagesHasMore=[:]
         cloudFollows=[];cloudFriendships=[];cloudBlocks=[];cloudReports=[];cloudMessages=[];cloudMessagesUnavailable=false
         cloudConversations=[:];cloudConversationHasMore=[:];cloudConversationUnavailable=[];cloudCalls=nil;cloudVoiceTopics=nil
-        cloudFeed=nil;cloudFeedHasMore=false;cloudShelves=[:];cloudShelfHasMore=[:];cloudComments=[:];cloudCommentsHasMore=[:];editorialSummaries=[:];editorialComments=[:]
+        cloudFeed=nil;cloudFeedHasMore=false;cloudShelves=[:];cloudShelfHasMore=[:];cloudComments=[:];cloudCommentsHasMore=[:];editorialSummaries=[:];editorialComments=[:];editorialReportedPosts=[]
         activeRoomID=nil;roomMicRequested=false;selectedTab=0
     }
     private func cleanupPendingMedia() {

@@ -167,6 +167,7 @@ actor CoffeeCloud {
         let comment_count:Int
         let liked:Bool
     }
+    struct EditorialReportedPost:Decodable {let content_id:String}
     struct EditorialComment:Decodable,Identifiable {
         let id:UUID
         let content_id:String
@@ -723,6 +724,11 @@ actor CoffeeCloud {
     func editorialSummary(_ keys:[String],account:UUID) async throws -> [EditorialSummary] {
         _ = try await identity(account)
         let rows:[EditorialSummary] = try await client.rpc("coffee_editorial_summary",params:EditorialKeys(p_keys:keys)).execute().value
+        _ = try await identity(account);return rows
+    }
+    func editorialReportedPosts(account:UUID) async throws -> [EditorialReportedPost] {
+        _ = try await identity(account)
+        let rows:[EditorialReportedPost] = try await client.rpc("coffee_editorial_reported_posts").execute().value
         _ = try await identity(account);return rows
     }
     func setEditorialLike(_ key:String,enabled:Bool,account:UUID) async throws {
