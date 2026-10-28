@@ -94,7 +94,7 @@ struct CoffeeTablesView:View {
                             }.padding(5).background(Color.cream.opacity(0.96),in:RoundedRectangle(cornerRadius:22)).papiAvoidReserved()
                             HStack(spacing:8) {
                                 PapiArtworkFit(asset:"audioTableMark").frame(width:32,height:32)
-                                PapiText(store.usesCloudWallet ? "Coffee topics · Audio unavailable":"Sample rooms · Voices, messages and gifts").font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
+                                PapiText(store.usesCloudWallet ? (store.liveVoiceEnabled ? "Live voice rooms":"Coffee topics · Audio unavailable"):"Sample rooms · Voices, messages and gifts").font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
                             }.foregroundStyle(Color.mutedCoffee).frame(maxWidth:.infinity,alignment:.leading)
                             if !store.usesCloudWallet,let id=store.activeRoomID,let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {
                                 Button {router.go(.room(id))} label:{HStack {Image("voiceOn").resizable().scaledToFit().frame(width:26,height:26);PapiText("Return to \(room.title)");Spacer();PapiText("Open")}.padding(12).background(Color.butter,in:RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)

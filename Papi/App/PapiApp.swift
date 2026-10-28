@@ -10,7 +10,8 @@ import SwiftUI
         WindowGroup {
             PapiDeviceContainer {
                 Group {
-                    if store.state.signedIn { PapiRootView() }
+                    if store.state.pendingCloudDeletionID != nil {CoffeeCloudDeletionPendingView()}
+                    else if store.state.signedIn { PapiRootView() }
                     else { FirstCupWelcomeView() }
                 }.papiNotices()
                     .disabled(showingLaunch).accessibilityHidden(showingLaunch)
@@ -25,8 +26,8 @@ import SwiftUI
                 do {try await Task.sleep(for:.milliseconds(700))} catch {return}
                 showingLaunch=false
             }
-            .task {commerce.start(store:store);store.presentWelcomeIfNeeded();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}
-            .onChange(of:scenePhase) { _,phase in if phase == .active {store.presentWelcomeIfNeeded();Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}} }
+            .task {commerce.start(store:store);guard store.state.pendingCloudDeletionID==nil else{return};store.presentWelcomeIfNeeded();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}
+            .onChange(of:scenePhase) { _,phase in if phase == .active && store.state.pendingCloudDeletionID==nil {store.presentWelcomeIfNeeded();Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}} }
             .onChange(of:store.state.signedIn) { _,signedIn in
                 router.resetForAccountChange()
                 if signedIn {Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}}
@@ -104,7 +105,11 @@ struct PapiRootView:View {
     @ViewBuilder private func destination(_ route:CoffeeDestination)->some View {
         switch route {
         case .room(let id):
-            if store.usesCloudWallet {PapiScreen {VStack(spacing:0){PapiHeader("Coffee tables");ScrollView {PapiEmpty(title:"Voice rooms unavailable")}}}}
+            if store.usesCloudWallet,store.liveVoiceEnabled,let account=store.state.cloudAccountID,
+               let topic=store.cloudVoiceTopics?.first(where:{$0.id==id}),let original=CoffeeTable.previews.first(where:{$0.id==id}) {
+                CoffeeLiveVoiceRoomView(topic:topic,cover:original.coverReference,account:account)
+            }
+            else if store.usesCloudWallet {PapiScreen {VStack(spacing:0){PapiHeader("Coffee tables");ScrollView {PapiEmpty(title:"Voice rooms unavailable")}}}}
             else if let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {CoffeeTableView(room:room)}
             else {PapiScreen {VStack(spacing:0){PapiHeader("Coffee tables");ScrollView {PapiEmpty(title:"This content is unavailable")}}}}
         case .post(let id):CoffeeMomentView(momentID:id)

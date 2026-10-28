@@ -1,5 +1,5 @@
-// Draft only. Do not deploy or enable calls until session termination, LiveKit
-// participant removal, client lifecycle and block enforcement are verified.
+// Deployed with the call runtime disabled. Do not enable calls until session
+// termination, participant removal, client lifecycle and blocks are verified.
 import { createClient } from "npm:@supabase/supabase-js@2.118.0";
 import { AccessToken } from "npm:livekit-server-sdk@2.19.2";
 import { TrackSource } from "npm:@livekit/protocol@1.51.0";
@@ -23,8 +23,17 @@ Deno.serve(async (request:Request) => {
   if (Number(request.headers.get("content-length") || 0)>2048) return reply(413,{error:"Request too large"});
   let callID:unknown;
   try {
-    const bytes=await request.arrayBuffer();
-    if (bytes.byteLength>2048) return reply(413,{error:"Request too large"});
+    const reader=request.body?.getReader();
+    if (!reader) return reply(400,{error:"Invalid request"});
+    const chunks:Uint8Array[]=[];let size=0;
+    while (true) {
+      const {done,value}=await reader.read();if (done) break;
+      size+=value.byteLength;
+      if (size>2048) {await reader.cancel();return reply(413,{error:"Request too large"});}
+      chunks.push(value);
+    }
+    const bytes=new Uint8Array(size);let offset=0;
+    for (const chunk of chunks) {bytes.set(chunk,offset);offset+=chunk.byteLength;}
     const body:unknown=JSON.parse(new TextDecoder().decode(bytes));
     if (!body || typeof body!=="object" || Array.isArray(body)) return reply(400,{error:"Invalid request"});
     callID=(body as Record<string,unknown>).call_id;
@@ -43,6 +52,9 @@ Deno.serve(async (request:Request) => {
   };
   try {
     if (!await authorized()) return reply(403,{error:"Call unavailable"});
+    const {data:reserved,error:reserveError}=await client.rpc("reserve_coffee_call_token",{p_id:callID});
+    if (reserveError) throw reserveError;
+    if (reserved!==true) return reply(429,{error:"Call unavailable; retry later"});
     const token=new AccessToken(apiKey,apiSecret,{identity:identity.user.id,ttl:120});
     token.addGrant({roomJoin:true,room:`papi-call-${callID.toLowerCase()}`,canSubscribe:true,
       canPublishSources:[TrackSource.MICROPHONE,TrackSource.CAMERA],canPublishData:false,canUpdateOwnMetadata:false});

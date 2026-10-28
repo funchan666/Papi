@@ -170,6 +170,21 @@ struct AccountProgressView:View {
         }.onAppear{if !reduceMotion {withAnimation(.easeInOut(duration:0.6).repeatForever(autoreverses:true)){animate=true}}}
     }
 }
+struct CoffeeCloudDeletionPendingView:View {
+    @EnvironmentObject private var store:CoffeeHouse
+    var body:some View {
+        PapiScreen {
+            ScrollView {
+                VStack(alignment:.leading,spacing:18) {
+                    CoffeeSectionIntro(artwork:"settingsCoffeeArt",title:"Online deletion in progress",detail:"The online account removal needs confirmation. Your existing device data is kept.")
+                    PapiTextButton("Retry account deletion") {Task {await store.performAccountAction(.delete)}}
+                        .buttonStyle(PapiButtonStyle(wide:true)).disabled(store.accountAction != nil || !store.storageAvailable)
+                    if !store.storageAvailable {PapiTextButton("Retry local storage"){store.reload()}.buttonStyle(PapiButtonStyle(light:true,wide:true))}
+                }.padding(20).frame(maxWidth:600).frame(maxWidth:.infinity)
+            }
+        }.overlay {if let action=store.accountAction {AccountProgressView(action:action)}}
+    }
+}
 struct ReviewQueueView:View {
     @EnvironmentObject private var store:CoffeeHouse
     @State private var removing:String?

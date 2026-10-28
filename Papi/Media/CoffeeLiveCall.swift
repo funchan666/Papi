@@ -13,51 +13,70 @@ import AVFoundation
     @Published var message:String?
     private var generation=UUID()
     private var monitor:Task<Void,Never>?
+    private var joining=false
+    private var disconnecting=0
 
     func join(call:UUID,account:UUID) async {
-        guard !connecting,!connected else{return}
-        let attempt=UUID();generation=attempt;connecting=true;message=nil
+        guard !joining,disconnecting==0,!connected else{return}
+        let attempt=UUID();generation=attempt;joining=true;connecting=true;message=nil
+        defer {joining=false;connecting=disconnecting>0}
         do {
             guard try await CoffeeCloud.shared.canJoinCall(id:call,account:account) else {throw CoffeeCloud.ConnectionError.actionUnavailable}
+            guard generation==attempt,!Task.isCancelled else{return}
             let credentials=try await CoffeeCloud.shared.callToken(id:call,account:account)
-            guard generation==attempt,!Task.isCancelled else {connecting=false;return}
+            guard generation==attempt,!Task.isCancelled else {return}
             try await room.connect(url:credentials.server_url,token:credentials.participant_token,
                                    connectOptions:ConnectOptions(enableMicrophone:false))
-            guard generation==attempt,!Task.isCancelled,try await CoffeeCloud.shared.canJoinCall(id:call,account:account) else {
-                await room.disconnect();connecting=false;return
-            }
-            connected=true;connecting=false
+            guard generation==attempt,!Task.isCancelled else {await room.disconnect();return}
+            let allowed=try await CoffeeCloud.shared.canJoinCall(id:call,account:account)
+            guard generation==attempt,!Task.isCancelled,allowed else {await room.disconnect();return}
+            connected=true
             monitor=Task { [weak self] in
                 while !Task.isCancelled {
                     do {
                         try await Task.sleep(for:.seconds(5))
                         guard let self else{return}
+                        guard self.generation==attempt,self.room.connectionState != .disconnected else {
+                            if self.generation==attempt {self.monitor=nil;await self.disconnect()}
+                            return
+                        }
                         let allowed=try await CoffeeCloud.shared.canJoinCall(id:call,account:account)
-                        if !allowed {await self.disconnect();return}
-                    } catch {if !Task.isCancelled {await self?.disconnect()};return}
+                        guard !Task.isCancelled,self.generation==attempt else{return}
+                        if !allowed {self.monitor=nil;await self.disconnect();return}
+                    } catch {
+                        if !Task.isCancelled,let self,self.generation==attempt {self.monitor=nil;await self.disconnect()}
+                        return
+                    }
                 }
             }
         } catch {
-            await room.disconnect();connecting=false;connected=false
+            await room.disconnect();connected=false
             if generation==attempt {message="The call could not be connected."}
         }
     }
 
     func setMicrophone(_ enabled:Bool) async {
         guard connected else{return}
-        if enabled,!(await AVAudioApplication.requestRecordPermission()) {message="Microphone permission was not granted.";return}
-        do {_ = try await room.localParticipant.setMicrophone(enabled:enabled);microphoneEnabled=enabled}
-        catch {message="The microphone could not be changed."}
+        let attempt=generation
+        if enabled,!(await AVAudioApplication.requestRecordPermission()) {if generation==attempt {message="Microphone permission was not granted."};return}
+        guard connected,generation==attempt,!Task.isCancelled else{return}
+        do {_ = try await room.localParticipant.setMicrophone(enabled:enabled);if connected,generation==attempt {microphoneEnabled=enabled}}
+        catch {if generation==attempt {message="The microphone could not be changed."}}
     }
     func setCamera(_ enabled:Bool) async {
         guard connected else{return}
-        if enabled,!(await AVCaptureDevice.requestAccess(for:.video)) {message="Camera permission was not granted.";return}
-        do {_ = try await room.localParticipant.setCamera(enabled:enabled);cameraEnabled=enabled}
-        catch {message="The camera could not be changed."}
+        let attempt=generation
+        if enabled,!(await AVCaptureDevice.requestAccess(for:.video)) {if generation==attempt {message="Camera permission was not granted."};return}
+        guard connected,generation==attempt,!Task.isCancelled else{return}
+        do {_ = try await room.localParticipant.setCamera(enabled:enabled);if connected,generation==attempt {cameraEnabled=enabled}}
+        catch {if generation==attempt {message="The camera could not be changed."}}
     }
     func disconnect() async {
+        disconnecting+=1;connecting=true
+        defer {disconnecting-=1;connecting=joining || disconnecting>0}
         generation=UUID();monitor?.cancel();monitor=nil
-        await room.disconnect();connecting=false;connected=false;microphoneEnabled=false;cameraEnabled=false
+        connected=false;microphoneEnabled=false;cameraEnabled=false
+        await room.disconnect()
     }
 }
 
@@ -117,51 +136,72 @@ private struct LiveParticipantVideo:View {
     @Published var message:String?
     private var generation=UUID()
     private var monitor:Task<Void,Never>?
+    private var joining=false
+    private var disconnecting=0
+    private var joiningTopic:String?
+    private var joiningAccount:UUID?
+    private var sessionID:UUID?
 
     func join(topic:String,account:UUID,store:CoffeeHouse) async {
-        guard !connecting,!connected else{return}
-        let attempt=UUID();generation=attempt;connecting=true;message=nil
-        guard let session=await store.startCloudVoice(topic) else {connecting=false;return}
+        guard !joining,disconnecting==0,!connected else{return}
+        let attempt=UUID();generation=attempt;joining=true;joiningTopic=topic;joiningAccount=account;connecting=true;message=nil
+        defer {joining=false;joiningTopic=nil;joiningAccount=nil;connecting=disconnecting>0}
+        guard let session=await store.startCloudVoice(topic) else {return}
+        sessionID=session.id
+        defer {if !connected && sessionID==session.id {sessionID=nil}}
         do {
-            guard generation==attempt,!Task.isCancelled else {await store.finishCloudVoice();connecting=false;return}
+            guard generation==attempt,!Task.isCancelled else {await store.finishCloudVoice(expectedID:session.id);return}
             let token=try await CoffeeCloud.shared.voiceToken(topic:topic,id:session.id,account:account)
-            guard generation==attempt,!Task.isCancelled else {await store.finishCloudVoice();connecting=false;return}
+            guard generation==attempt,!Task.isCancelled else {await store.finishCloudVoice(expectedID:session.id);return}
             try await room.connect(url:token.server_url,token:token.participant_token,
                                    connectOptions:ConnectOptions(enableMicrophone:false))
-            guard generation==attempt,!Task.isCancelled,
-                  try await CoffeeCloud.shared.voiceSession(topic:topic,id:session.id,account:account,operation:.heartbeat) else {
-                await room.disconnect();await store.finishCloudVoice();connecting=false;return
-            }
-            connected=true;connecting=false
+            guard generation==attempt,!Task.isCancelled else {await room.disconnect();await store.finishCloudVoice(expectedID:session.id);return}
+            let allowed=try await CoffeeCloud.shared.voiceSession(topic:topic,id:session.id,account:account,operation:.heartbeat)
+            guard generation==attempt,!Task.isCancelled,allowed else {await room.disconnect();await store.finishCloudVoice(expectedID:session.id);return}
+            connected=true
             monitor=Task { [weak self,weak store] in
                 while !Task.isCancelled {
                     do {
                         try await Task.sleep(for:.seconds(10))
-                        guard let self,let store,store.state.signedIn,store.state.cloudAccountID==account,
-                              store.state.pendingCloudVoice?.id==session.id,store.state.pendingCloudVoice?.closing==false else {return}
+                        guard let self,let store else{return}
+                        guard store.state.signedIn,store.state.cloudAccountID==account,
+                              store.state.pendingCloudVoice?.id==session.id,store.state.pendingCloudVoice?.closing==false,
+                              self.generation==attempt,self.room.connectionState != .disconnected else {
+                            if self.generation==attempt {self.monitor=nil;await self.disconnect(store:store)}
+                            return
+                        }
                         let allowed=try await CoffeeCloud.shared.voiceSession(topic:topic,id:session.id,account:account,operation:.heartbeat)
-                        if !allowed {await self.disconnect(store:store);self.message="The voice session ended.";return}
+                        guard !Task.isCancelled,self.generation==attempt else{return}
+                        if !allowed {self.monitor=nil;await self.disconnect(store:store);self.message="The voice session ended.";return}
                     } catch {
-                        if !Task.isCancelled,let self,let store {await self.disconnect(store:store);self.message="The voice session ended."}
+                        if !Task.isCancelled,let self,let store,self.generation==attempt {self.monitor=nil;await self.disconnect(store:store);self.message="The voice session ended."}
                         return
                     }
                 }
             }
         } catch {
-            await room.disconnect();await store.finishCloudVoice();connecting=false;connected=false
+            await room.disconnect();await store.finishCloudVoice(expectedID:session.id);connected=false
             if generation==attempt {message="The voice room could not be connected."}
         }
     }
     func setMicrophone(_ enabled:Bool) async {
         guard connected else{return}
-        if enabled,!(await AVAudioApplication.requestRecordPermission()) {message="Microphone permission was not granted.";return}
-        do {_ = try await room.localParticipant.setMicrophone(enabled:enabled);microphoneEnabled=enabled}
-        catch {message="The microphone could not be changed."}
+        let attempt=generation
+        if enabled,!(await AVAudioApplication.requestRecordPermission()) {if generation==attempt {message="Microphone permission was not granted."};return}
+        guard connected,generation==attempt,!Task.isCancelled else{return}
+        do {_ = try await room.localParticipant.setMicrophone(enabled:enabled);if connected,generation==attempt {microphoneEnabled=enabled}}
+        catch {if generation==attempt {message="The microphone could not be changed."}}
     }
     func disconnect(store:CoffeeHouse) async {
+        disconnecting+=1;connecting=true
+        defer {disconnecting-=1;connecting=joining || disconnecting>0}
+        let pending=store.state.pendingCloudVoice
+        let ownedID=sessionID ?? (joining && pending?.topic==joiningTopic && pending?.accountID==joiningAccount ? pending?.id:nil)
+        sessionID=nil
         generation=UUID();monitor?.cancel();monitor=nil
-        await room.disconnect();connecting=false;connected=false;microphoneEnabled=false
-        await store.finishCloudVoice()
+        connected=false;microphoneEnabled=false
+        await room.disconnect()
+        if let ownedID {await store.finishCloudVoice(expectedID:ownedID)}
     }
 }
 
@@ -205,9 +245,14 @@ private struct LiveVoiceParticipants:View {
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
     var body:some View {
-        let participants=room.remoteParticipants.keys.map(\.stringValue).sorted()
+        let participants=Set(room.remoteParticipants.keys.compactMap { identity -> String? in
+            let parts=identity.stringValue.split(separator:":",omittingEmptySubsequences:false)
+            guard parts.count == 2, let user=UUID(uuidString:String(parts[0])),
+                  UUID(uuidString:String(parts[1])) != nil else {return nil}
+            return user.uuidString
+        }).sorted()
         VStack(alignment:.leading,spacing:10) {
-            PapiText("Participants").font(CoffeeType.face(.headline)).foregroundStyle(Color.cream)
+            PapiText("Participants").font(CoffeeType.face(.headline)).foregroundStyle(Color.coffee)
             PapiUserLink(userID:account.uuidString,size:42)
             ForEach(participants,id:\.self) {id in
                 if !store.isUserHidden(id) {

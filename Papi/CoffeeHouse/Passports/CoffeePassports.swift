@@ -345,7 +345,7 @@ struct CoffeePreferencesView:View {
             }.overlay {
                 if let confirmation {
                     PapiDialog(title:confirmation=="discardComment" ? "Discard pending comment?":(confirmation=="delete" ? "Delete this coffee account?":"Log out?"),
-                               message:confirmation=="discardComment" ? "This clears the pending retry on this device. If the server already accepted the comment, it may still appear after review.":(confirmation=="delete" ? "This removes your passport, brew book, recipes, moments, media, coins and keepsakes. Purchase ownership records are retained to prevent duplicate delivery. This cannot be undone.":"Your coffee book will be here when you return."),
+                               message:confirmation=="discardComment" ? "This clears the pending retry on this device. If the server already accepted the comment, it may still appear after review.":(confirmation=="delete" ? (store.usesCloudWallet ? "This removes your online profile, content and balance. Your existing device data stays on this device. Purchase ownership records are retained to prevent duplicate delivery. This cannot be undone.":"This removes your passport, brew book, recipes, moments, media, coins and keepsakes. Purchase ownership records are retained to prevent duplicate delivery. This cannot be undone."):"Your coffee book will be here when you return."),
                                confirm:confirmation=="discardComment" ? "Discard":(confirmation=="delete" ? "Delete account":"Log out"),cancel:"Cancel",action:{
                         self.confirmation=nil
                         if confirmation=="discardComment" {_ = store.commit{$0.pendingCloudComment=nil};return}

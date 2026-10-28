@@ -207,6 +207,8 @@ struct CoffeeArchive: Codable {
     var cloudAccountID: UUID? = nil
     var cloudBootstrapPending: Bool? = nil
     var pendingCloudRecoveryID: UUID? = nil
+    var pendingCloudDeletionID: UUID? = nil
+    var deletedCloudAccountID: UUID? = nil
     var pendingCloudCollectible: PendingCloudCollectible? = nil
     var pendingCloudMoment: PendingCloudMoment? = nil
     var pendingCloudPostDeletion: PendingCloudPostDeletion? = nil
@@ -279,6 +281,8 @@ struct CoffeeArchive: Codable {
         case cloudAccountID = "cloudAccountID"
         case cloudBootstrapPending = "cloudBootstrapPending"
         case pendingCloudRecoveryID = "pendingCloudRecoveryID"
+        case pendingCloudDeletionID = "pendingCloudDeletionID"
+        case deletedCloudAccountID = "deletedCloudAccountID"
         case pendingCloudCollectible = "pendingCloudCollectible"
         case pendingCloudMoment = "pendingCloudMoment"
         case pendingCloudPostDeletion = "pendingCloudPostDeletion"

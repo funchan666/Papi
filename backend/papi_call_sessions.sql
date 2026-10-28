@@ -23,6 +23,8 @@ language plpgsql security definer set search_path = '' as $$
 declare actor uuid := (select auth.uid()); previous public.coffee_calls%rowtype;
 begin
   if actor is null or p_id is null or p_recipient is null or p_recipient=actor then raise exception 'Invalid call'; end if;
+  perform papi_private.lock_call_runtime();
+  if not coalesce((select enabled from papi_private.call_runtime_config where singleton),false) then raise exception 'Call unavailable'; end if;
   perform papi_private.lock_social_pair(actor,p_recipient);
   select * into previous from public.coffee_calls c where c.id=p_id;
   if found then
@@ -52,6 +54,8 @@ declare actor uuid := (select auth.uid()); session_row public.coffee_calls%rowty
 begin
   select * into session_row from public.coffee_calls c where c.id=p_id and c.recipient_id=actor;
   if not found or actor is null or p_accept is null then raise exception 'Call unavailable'; end if;
+  perform papi_private.lock_call_runtime();
+  if not coalesce((select enabled from papi_private.call_runtime_config where singleton),false) then return false; end if;
   perform papi_private.lock_social_pair(session_row.caller_id,session_row.recipient_id);
   select * into session_row from public.coffee_calls c where c.id=p_id and c.recipient_id=actor for update;
   if not found then raise exception 'Call unavailable'; end if;
@@ -107,7 +111,7 @@ create trigger coffee_unfollow_ends_calls after delete on public.coffee_follows 
 
 create function papi_private.can_join_coffee_call(p_id uuid) returns boolean
 language sql stable security definer set search_path = '' as $$
-  select exists(select 1 from public.coffee_calls c where c.id=p_id and (select auth.uid()) in (c.caller_id,c.recipient_id)
+  select coalesce((select enabled from papi_private.call_runtime_config where singleton),false) and exists(select 1 from public.coffee_calls c where c.id=p_id and (select auth.uid()) in (c.caller_id,c.recipient_id)
     and c.status='accepted' and c.expires_at>now() and papi_private.mutual_follow(c.caller_id,c.recipient_id));
 $$;
 revoke all on function papi_private.can_join_coffee_call(uuid) from public,anon;

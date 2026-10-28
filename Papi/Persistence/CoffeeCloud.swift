@@ -1,6 +1,14 @@
 import Foundation
 import Supabase
 import CryptoKit
+import Security
+
+private final class CoffeeNoRedirects:NSObject,URLSessionTaskDelegate {
+    func urlSession(_ session:URLSession,task:URLSessionTask,willPerformHTTPRedirection response:HTTPURLResponse,
+                    newRequest request:URLRequest,completionHandler:@escaping (URLRequest?)->Void) {
+        completionHandler(nil)
+    }
+}
 
 /// Owns the network identity independently of the device's existing archive ID.
 actor CoffeeCloud {
@@ -11,6 +19,7 @@ actor CoffeeCloud {
     )
     private let sessionKey = "sb-cquoffowtjnxmgaxavym-auth-token"
     private let emailVerificationKey = "papi-email-verification-session"
+    private let deletionStorage = KeychainLocalStorage(service:"Papi.DeletionReceipt.v1")
     private let emailVerificationStorage = KeychainLocalStorage(service:"Papi.EmailVerification.v1")
     private let emailVerifier = SupabaseClient(
         supabaseURL: URL(string:"https://cquoffowtjnxmgaxavym.supabase.co")!,
@@ -184,6 +193,8 @@ actor CoffeeCloud {
         let expires_at:String
     }
     struct CallToken:Decodable {let server_url:String;let participant_token:String}
+    private struct DeletionBody:Encodable {let receipt:String}
+    private struct DeletionResult:Decodable {let status:String}
     struct Report: Codable {
         let id: UUID
         let reporter_id: UUID
@@ -371,6 +382,59 @@ actor CoffeeCloud {
         }
         guard client.auth.currentSession==nil,try await resumeEmailLink(account:account) else {throw ConnectionError.missingSession}
     }
+
+    private func deletionKey(_ account:UUID)->String {"receipt-"+account.uuidString.lowercased()}
+    func prepareDeletionReceipt(account:UUID) async throws {
+        let key=deletionKey(account)
+        if let existing=try deletionStorage.retrieve(key:key) {
+            guard let value=String(data:existing,encoding:.utf8),value.utf8.count==64,
+                  value.utf8.allSatisfy({(48...57).contains($0) || (97...102).contains($0)}) else {throw ConnectionError.sessionNotSaved}
+            return
+        }
+        _ = try await identity(account)
+        var bytes=[UInt8](repeating:0,count:32)
+        guard SecRandomCopyBytes(kSecRandomDefault,bytes.count,&bytes)==errSecSuccess else {throw ConnectionError.sessionNotSaved}
+        let receipt=bytes.map{String(format:"%02x",$0)}.joined()
+        let data=Data(receipt.utf8)
+        try deletionStorage.store(key:key,value:data)
+        guard try deletionStorage.retrieve(key:key)==data else {throw ConnectionError.sessionNotSaved}
+    }
+    func requestAccountDeletion(account:UUID) async throws -> Bool {
+        guard let data=try deletionStorage.retrieve(key:deletionKey(account)),let receipt=String(data:data,encoding:.utf8),receipt.count==64 else {throw ConnectionError.sessionNotSaved}
+        var request=URLRequest(url:URL(string:"https://cquoffowtjnxmgaxavym.supabase.co/functions/v1/delete-coffee-account")!)
+        request.httpMethod="POST"
+        request.setValue("application/json",forHTTPHeaderField:"Content-Type")
+        request.setValue("sb_publishable_srmPaTaw81JT37tSvfmCww_vqBh73A5",forHTTPHeaderField:"apikey")
+        if let current=client.auth.currentSession {
+            guard current.user.id==account else {throw ConnectionError.wrongAccount}
+            if let session=try? await client.auth.session {
+                guard session.user.id==account else {throw ConnectionError.wrongAccount}
+                request.setValue("Bearer "+session.accessToken,forHTTPHeaderField:"Authorization")
+            }
+        }
+        request.httpBody=try JSONEncoder().encode(DeletionBody(receipt:receipt))
+        let config=URLSessionConfiguration.ephemeral;config.urlCache=nil;config.httpCookieStorage=nil
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData;config.timeoutIntervalForRequest=30
+        let session=URLSession(configuration:config,delegate:CoffeeNoRedirects(),delegateQueue:nil)
+        defer{session.invalidateAndCancel()}
+        let (body,response)=try await session.data(for:request)
+        guard let response=response as? HTTPURLResponse,response.url?.scheme=="https",
+              response.url?.host=="cquoffowtjnxmgaxavym.supabase.co",body.count<=2048,[200,202].contains(response.statusCode),
+              let result=try? JSONDecoder().decode(DeletionResult.self,from:body),["complete","pending"].contains(result.status) else {throw ConnectionError.actionUnavailable}
+        return result.status=="complete"
+    }
+    func clearDeletedSession(account:UUID) async throws {
+        let storage=KeychainLocalStorage()
+        if let data=try storage.retrieve(key:sessionKey) {
+            let saved=try JSONDecoder().decode(Session.self,from:data)
+            guard saved.user.id==account else {throw ConnectionError.wrongAccount}
+            do {try await client.auth.signOut(scope:.local)} catch {
+                if try storage.retrieve(key:sessionKey) != nil {throw error}
+            }
+        }
+        guard try storage.retrieve(key:sessionKey)==nil else {throw ConnectionError.sessionNotSaved}
+    }
+    func forgetDeletionReceipt(account:UUID) throws {try deletionStorage.remove(key:deletionKey(account))}
 
     func profiles(for account: UUID) async throws -> [Profile] {
         _ = try await identity(account)

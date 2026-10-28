@@ -1,5 +1,5 @@
-// Draft only. Do not deploy or enable until blocking between room participants,
-// participant removal, moderation, abuse limits and client lifecycle are ready.
+// Deployed with the voice runtime disabled. Do not enable until blocking,
+// participant removal, moderation, abuse limits and client lifecycle are verified.
 import { createClient } from "npm:@supabase/supabase-js@2.118.0";
 import { AccessToken } from "npm:livekit-server-sdk@2.19.2";
 import { TrackSource } from "npm:@livekit/protocol@1.51.0";
@@ -48,7 +48,13 @@ Deno.serve(async (request:Request) => {
       return data===true;
     };
     if (!await allowed()) return reply(403,{error:"Voice room unavailable"});
-    const token=new AccessToken(apiKey,apiSecret,{identity:identity.user.id,ttl:120});
+    const {data:reserved,error:reserveError}=await client.rpc("reserve_coffee_voice_token",{p_topic:topicID,p_session:sessionID});
+    if (reserveError) throw reserveError;
+    if (reserved!==true) return reply(429,{error:"Voice room unavailable; retry later"});
+    // Scope the LiveKit identity to this membership, so a delayed cleanup of an
+    // old session cannot disconnect the same user after they rejoin.
+    const participantID=`${identity.user.id.toLowerCase()}:${sessionID.toLowerCase()}`;
+    const token=new AccessToken(apiKey,apiSecret,{identity:participantID,ttl:120});
     token.addGrant({roomJoin:true,room:`papi-${topicID}`,canSubscribe:true,
       canPublishSources:[TrackSource.MICROPHONE],canPublishData:false,canUpdateOwnMetadata:false});
     const signed=await token.toJwt();

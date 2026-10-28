@@ -1,5 +1,5 @@
--- Draft only. Enable with the revocation worker only after concurrent join,
--- block, expiry and LiveKit token revocation have been verified.
+-- Membership and revocation schema is deployed. Keep the feature disabled
+-- until concurrent join, block, expiry and LiveKit revocation are verified.
 create table papi_private.voice_members (
   owner_id uuid primary key references public.coffee_profiles(id) on delete cascade,
   topic_id text not null references public.coffee_voice_topics(id),
@@ -71,6 +71,7 @@ declare actor uuid := (select auth.uid()); existing papi_private.voice_members%r
 begin
   if actor is null or p_session is null or p_topic is null then raise exception 'Voice room unavailable'; end if;
   perform papi_private.lock_voice_membership();
+  if not coalesce((select enabled from papi_private.voice_runtime_config where singleton),false) then raise exception 'Voice room unavailable'; end if;
   update papi_private.voice_members set status='closing' where status='active' and heartbeat_at<now()-interval '45 seconds';
   if not exists(select 1 from public.coffee_voice_topics t where t.id=p_topic and t.enabled) then raise exception 'Voice room unavailable'; end if;
   if exists(select 1 from papi_private.voice_revocations q where q.session_id=p_session) then raise exception 'Voice session ended'; end if;
@@ -104,6 +105,10 @@ declare actor uuid := (select auth.uid());
 begin
   if actor is null or p_session is null or p_topic is null then return false; end if;
   perform papi_private.lock_voice_membership();
+  if not coalesce((select enabled from papi_private.voice_runtime_config where singleton),false) then
+    update papi_private.voice_members set status='closing' where owner_id=actor and topic_id=p_topic and session_id=p_session and status='active';
+    return false;
+  end if;
   update papi_private.voice_members set status='closing' where status='active' and heartbeat_at<now()-interval '45 seconds';
   update papi_private.voice_members set heartbeat_at=now()
     where owner_id=actor and topic_id=p_topic and session_id=p_session and status='active';
@@ -145,7 +150,7 @@ grant execute on function public.leave_coffee_voice(text,uuid) to authenticated;
 
 create function papi_private.can_join_coffee_voice(p_topic text,p_session uuid) returns boolean
 language sql stable security definer set search_path = '' as $$
-  select exists(select 1 from papi_private.voice_members m join public.coffee_voice_topics t on t.id=m.topic_id
+  select coalesce((select enabled from papi_private.voice_runtime_config where singleton),false) and exists(select 1 from papi_private.voice_members m join public.coffee_voice_topics t on t.id=m.topic_id
     where m.owner_id=(select auth.uid()) and m.topic_id=p_topic and m.session_id=p_session
       and m.status='active' and m.heartbeat_at>=now()-interval '45 seconds' and t.enabled);
 $$;

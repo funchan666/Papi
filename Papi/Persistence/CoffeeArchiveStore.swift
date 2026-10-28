@@ -66,6 +66,8 @@ struct CoffeeReceipt: Identifiable {
     let liveVoiceEnabled=false
     // Enable only after email delivery, identity linking and recovery are verified.
     let emailLinkEnabled=false
+    // Enable only when server deletion, revocation and recovery are verified.
+    let cloudDeletionEnabled=false
     private var savedSnapshotExpected=false
     private var brewSyncDebounce:Task<Void,Never>?
     init() {
@@ -76,6 +78,7 @@ struct CoffeeReceipt: Identifiable {
     }
     @discardableResult func commit(_ mutate: (inout CoffeeArchive) throws -> Void) -> Bool {
         guard accountAction==nil,!loginInProgress else {return false}
+        guard state.pendingCloudDeletionID==nil else {inform("Online deletion in progress", "Finish the saved deletion before changing this account.");return false}
         guard storageAvailable else { inform("Saved data unavailable", "Unlock the device and use Retry in Settings. Your saved data will not be overwritten."); return false }
         let priorBrewGeneration=state.cloudBrewGeneration
         var next = state
@@ -143,6 +146,7 @@ struct CoffeeReceipt: Identifiable {
         let requiredPolicy = "2026-10-27-online-1"
         guard state.signedIn, storageAvailable, accountAction == nil, !loginInProgress, !cloudConnectionInProgress,!emailLinkBusy,
               !checkoutActive, state.purchaseIntents.isEmpty, state.activePurchaseToken == nil,state.pendingCloudRecoveryID==nil,
+              state.pendingCloudDeletionID==nil,state.deletedCloudAccountID==nil,
               CoffeePolicyLibrary.version == requiredPolicy, state.acceptedPolicyVersion == requiredPolicy else {
             throw CoffeeCloud.ConnectionError.actionUnavailable
         }
@@ -213,7 +217,7 @@ struct CoffeeReceipt: Identifiable {
 
     private var emailRecoveryAllowed:Bool {
         emailLinkEnabled && state.signedIn && !checkoutActive && state.purchaseIntents.isEmpty && state.activePurchaseToken==nil &&
-        state.cloudAccountID==nil && state.cloudBootstrapPending != true &&
+        state.cloudAccountID==nil && state.cloudBootstrapPending != true && state.pendingCloudDeletionID==nil && state.deletedCloudAccountID==nil &&
         state.cloudBrewRevision==nil && state.pendingCloudBrewWrite==nil && state.pendingCloudMoment==nil &&
         state.pendingCloudPostDeletion==nil && state.pendingCloudCollectible==nil && state.pendingCloudMessage==nil &&
         state.pendingCloudAttachment==nil && state.pendingCloudFriendship==nil && state.pendingCloudReport==nil &&
@@ -474,19 +478,20 @@ struct CoffeeReceipt: Identifiable {
             let accepted=try await CoffeeCloud.shared.voiceSession(topic:topic,id:session.id,account:account,operation:.enter)
             cloudVoiceBusy=false
             guard state.signedIn,state.cloudAccountID==account,state.pendingCloudVoice?.id==session.id else{return nil}
-            if state.pendingCloudVoice?.closing==true {await finishCloudVoice();return nil}
+            if state.pendingCloudVoice?.closing==true {await finishCloudVoice(expectedID:session.id);return nil}
             guard accepted else {throw CoffeeCloud.ConnectionError.actionUnavailable}
             return session
         } catch {
             cloudVoiceBusy=false
-            guard state.cloudAccountID==account else{return nil}
-            if state.pendingCloudVoice?.closing==true {await finishCloudVoice()}
+            guard state.cloudAccountID==account,state.pendingCloudVoice?.id==session.id else{return nil}
+            if state.pendingCloudVoice?.closing==true {await finishCloudVoice(expectedID:session.id)}
             else {inform("Voice session needs attention", "The room could not be opened. Retry the saved session or finish it in Settings.")}
             return nil
         }
     }
-    func finishCloudVoice() async {
+    func finishCloudVoice(expectedID:UUID? = nil) async {
         guard let account=state.cloudAccountID,state.signedIn,let saved=state.pendingCloudVoice,saved.accountID==account else{return}
+        guard expectedID==nil || expectedID==saved.id else{return}
         if !saved.closing, !commit({$0.pendingCloudVoice?.closing=true}) {return}
         guard !cloudVoiceBusy else{return}
         cloudVoiceBusy=true;defer{cloudVoiceBusy=false}
@@ -1349,7 +1354,7 @@ struct CoffeeReceipt: Identifiable {
         if commit({$0.welcomeGrant?.acknowledged=true}) {notice=nil}
     }
     func beginCheckout() -> Bool {
-        guard !checkoutActive,accountAction==nil,!loginInProgress,!cloudWalletBusy,!emailLinkBusy,state.pendingCloudRecoveryID==nil,storageAvailable,state.signedIn else{return false}
+        guard !checkoutActive,accountAction==nil,!loginInProgress,!cloudWalletBusy,!emailLinkBusy,state.pendingCloudRecoveryID==nil,state.pendingCloudDeletionID==nil,storageAvailable,state.signedIn else{return false}
         checkoutActive=true;return true
     }
     func endCheckout() {checkoutActive=false}
@@ -1358,12 +1363,17 @@ struct CoffeeReceipt: Identifiable {
     }
     func performAccountAction(_ action:AccountTransition) async {
         guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,!cloudSubmissionsBusy,!cloudBrewBusy,!cloudBrewHistoryBusy,!cloudSocialBusy,!cloudFeedBusy,cloudShelfBusy.isEmpty,!cloudCommentsBusy,!cloudProfileMediaBusy,!cloudCallsBusy,!cloudVoiceTopicsBusy,!cloudVoiceBusy,!emailLinkBusy,cloudConversationBusy.isEmpty,storageAvailable else{return}
-        if action == .delete && (state.cloudAccountID != nil || state.cloudBootstrapPending == true) {
-            inform("Account deletion needs attention", "Your online account has not been removed. Please try again when account deletion is available.")
-            return
-        }
+        if state.pendingCloudDeletionID != nil && action != .delete {inform("Account action needs attention","Finish the saved account deletion before changing accounts.");return}
         guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudRecoveryID==nil,state.pendingCloudCollectible==nil,state.pendingCloudMoment==nil,state.pendingCloudPostDeletion==nil,state.pendingCloudReport==nil,state.pendingCloudMessage==nil,state.pendingCloudAttachment==nil,state.pendingCloudFriendship==nil,state.pendingCloudProfile==nil,state.pendingCloudComment==nil,state.pendingCloudProfileImage==nil,state.pendingCloudProfileImageRemoval==nil,state.pendingCloudCall==nil,state.pendingCloudCallEnd==nil,state.pendingCloudVoice==nil else {
             inform("Account action needs attention","Finish pending account or purchase activity before changing accounts.");return
+        }
+        if action == .delete,let account=state.cloudAccountID {
+            guard cloudDeletionEnabled else {inform("Account deletion needs attention", "Your online account has not been removed. Please try again when account deletion is available.");return}
+            await performCloudDeletion(account)
+            return
+        }
+        if action == .delete && state.cloudBootstrapPending == true {
+            inform("Account deletion needs attention", "Your online account has not been removed. Please try again when account deletion is available.");return
         }
         accountAction=action
         defer {accountAction=nil}
@@ -1382,7 +1392,7 @@ struct CoffeeReceipt: Identifiable {
             try await Task.detached(priority:.userInitiated) {try CoffeeVault.write(snapshot)}.value
             savedSnapshotExpected=true
             brewSyncDebounce?.cancel();brewSyncDebounce=nil
-            state=next;cloudWallet=nil;cloudWalletUnavailable=false;cloudSubmissions=nil;cloudBrewNeedsAttention=false;cloudBrewHistory=nil;cloudProfiles=nil;cloudImageSummaries=[:];cloudProfileImages=[:];cloudProfileImagesHasMore=[:];cloudFollows=[];cloudFriendships=[];cloudBlocks=[];cloudReports=[];cloudMessages=[];cloudMessagesUnavailable=false;cloudConversations=[:];cloudConversationHasMore=[:];cloudConversationUnavailable=[];cloudCalls=nil;cloudVoiceTopics=nil;cloudFeed=nil;cloudFeedHasMore=false;cloudShelves=[:];cloudShelfHasMore=[:];cloudComments=[:];cloudCommentsHasMore=[:];activeRoomID=nil;roomMicRequested=false;selectedTab=0
+            state=next;resetCloudState()
             if action == .delete {
                 let owners=next.pendingMediaDeletion
                 try await Task.detached(priority:.userInitiated) {
@@ -1400,6 +1410,47 @@ struct CoffeeReceipt: Identifiable {
             storageAvailable=false
             inform(action == .delete ? "Deletion needs attention":"Could not log out",error.localizedDescription)
         }
+    }
+    private func performCloudDeletion(_ account:UUID) async {
+        guard state.pendingCloudDeletionID==nil || state.pendingCloudDeletionID==account else{return}
+        accountAction = .delete
+        defer {accountAction=nil}
+        do {
+            try await CoffeeCloud.shared.prepareDeletionReceipt(account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            if state.pendingCloudDeletionID==nil {
+                var pending=state;pending.pendingCloudDeletionID=account
+                let pendingSnapshot=pending
+                do {try await Task.detached(priority:.userInitiated){try CoffeeVault.write(pendingSnapshot)}.value}
+                catch {storageAvailable=false;throw error}
+                savedSnapshotExpected=true;state=pending
+            }
+            let finished=try await CoffeeCloud.shared.requestAccountDeletion(account:account)
+            guard state.cloudAccountID==account,state.pendingCloudDeletionID==account else{return}
+            guard finished else {inform("Online deletion in progress", "Your online deletion is still processing. Your device data is kept; retry in Settings.");return}
+            try await CoffeeCloud.shared.clearDeletedSession(account:account)
+            guard state.cloudAccountID==account,state.pendingCloudDeletionID==account else{return}
+            var next=state
+            next.cloudAccountID=nil;next.cloudBootstrapPending=false;next.pendingCloudDeletionID=nil
+            next.deletedCloudAccountID=account;next.signedIn=false
+            let snapshot=next
+            do {try await Task.detached(priority:.userInitiated){try CoffeeVault.write(snapshot)}.value}
+            catch {storageAvailable=false;throw error}
+            savedSnapshotExpected=true;state=next;resetCloudState()
+            try? await CoffeeCloud.shared.forgetDeletionReceipt(account:account)
+            inform("Online account deleted", "The online account has been removed. Your existing device data remains saved on this device.")
+        } catch {
+            if state.cloudAccountID==account {inform("Account deletion needs attention", "The result could not be confirmed. Your device data and deletion retry are kept.")}
+        }
+    }
+    private func resetCloudState() {
+        brewSyncDebounce?.cancel();brewSyncDebounce=nil
+        cloudWallet=nil;cloudWalletUnavailable=false;cloudSubmissions=nil;cloudBrewNeedsAttention=false;cloudBrewHistory=nil
+        cloudProfiles=nil;cloudImageSummaries=[:];cloudProfileImages=[:];cloudProfileImagesHasMore=[:]
+        cloudFollows=[];cloudFriendships=[];cloudBlocks=[];cloudReports=[];cloudMessages=[];cloudMessagesUnavailable=false
+        cloudConversations=[:];cloudConversationHasMore=[:];cloudConversationUnavailable=[];cloudCalls=nil;cloudVoiceTopics=nil
+        cloudFeed=nil;cloudFeedHasMore=false;cloudShelves=[:];cloudShelfHasMore=[:];cloudComments=[:];cloudCommentsHasMore=[:]
+        activeRoomID=nil;roomMicRequested=false;selectedTab=0
     }
     private func cleanupPendingMedia() {
         for owner in state.pendingMediaDeletion {
