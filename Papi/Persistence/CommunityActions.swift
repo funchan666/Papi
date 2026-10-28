@@ -77,6 +77,7 @@ import Foundation
         guard state.cloudAccountID != nil else {return (state.ownMoments+CoffeeMoment.editorial).filter{isPostVisible($0)}}
         return visibleCloudMoments(cloudFeed ?? [])
     }
+    var visibleCollectionPosts:[CoffeeMoment] {CoffeeMoment.editorial.filter{isPostVisible($0)}}
     func visibleCloudMoments(_ items:[CoffeeCloud.FeedMoment])->[CoffeeMoment] {
         guard let account=state.cloudAccountID else{return []}
         return items.compactMap {item -> CoffeeMoment? in
@@ -111,6 +112,7 @@ import Foundation
     }
     func post(_ id:String)->CoffeeMoment? {
         if let found=visiblePosts.first(where:{$0.id==id}) {return found}
+        if usesCloudWallet,let found=visibleCollectionPosts.first(where:{$0.id==id}) {return found}
         guard let item=cloudFeedItem(id) else{return nil}
         return visibleCloudMoments([item]).first
     }

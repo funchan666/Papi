@@ -103,6 +103,12 @@ actor CoffeeCloud {
         let category:String
         let sort_order:Int
     }
+    struct VoiceMessage:Decodable,Identifiable {
+        let id:UUID
+        let sender_id:UUID
+        let body:String
+        let created_at:String
+    }
 
     struct Follow: Codable {
         let follower_id: UUID
@@ -277,6 +283,7 @@ actor CoffeeCloud {
     private struct CallTokenRequest:Encodable {let call_id:UUID}
     private struct VoiceSession:Encodable {let p_topic:String;let p_session:UUID}
     private struct VoiceTokenRequest:Encodable {let topic_id:String;let session_id:UUID}
+    private struct VoiceMessageRequest:Encodable {let p_topic:String;let p_session:UUID;let p_id:UUID;let p_body:String}
     enum VoiceOperation {case enter,heartbeat,leave,canJoin}
     private struct Submission: Encodable {
         let moment_id: UUID
@@ -519,6 +526,18 @@ actor CoffeeCloud {
         let result:Bool = try await client.rpc(rpc,params:VoiceSession(p_topic:topic,p_session:id)).execute().value
         _ = try await identity(account)
         return result
+    }
+    func voiceMessages(topic:String,session:UUID,account:UUID) async throws -> [VoiceMessage] {
+        _ = try await identity(account)
+        let rows:[VoiceMessage] = try await client.rpc("coffee_voice_messages",params:VoiceSession(p_topic:topic,p_session:session)).execute().value
+        _ = try await identity(account)
+        return rows
+    }
+    func sendVoiceMessage(topic:String,session:UUID,id:UUID,body:String,account:UUID) async throws {
+        _ = try await identity(account)
+        let result:UUID = try await client.rpc("send_coffee_voice_message",params:VoiceMessageRequest(p_topic:topic,p_session:session,p_id:id,p_body:body)).execute().value
+        guard result==id else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
     }
     func voiceToken(topic:String,id:UUID,account:UUID) async throws -> CallToken {
         _ = try await identity(account)

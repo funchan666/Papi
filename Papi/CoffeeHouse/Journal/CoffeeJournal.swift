@@ -90,28 +90,56 @@ struct CoffeeJournalView:View {
                             Image("coffeeUpdates").resizable().scaledToFit().frame(width:22,height:26)
                             PapiText("Coffee Updates").font(CoffeeType.face(.headline))
                             Spacer()
-                            PapiText(store.usesCloudWallet ? "Recent moments":"Coffee collection").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.trailing).fixedSize(horizontal:false,vertical:true)
+                            if !store.usesCloudWallet {PapiText("Coffee collection").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.trailing).fixedSize(horizontal:false,vertical:true)}
                         }
                         if store.usesCloudWallet && store.cloudFeed==nil {
                             PapiText(store.cloudFeedBusy ? "Loading moments…":"Moments unavailable")
                             PapiTextButton("Retry"){Task {await store.refreshCloudFeed()}}.disabled(store.cloudFeedBusy)
-                        } else if store.usesCloudWallet && store.visiblePosts.isEmpty {PapiEmpty(title:"No moments yet")}
+                        }
+                        let collectionIDs=Set(store.visibleCollectionPosts.map(\.id))
+                        let posts=store.usesCloudWallet ? store.visiblePosts+store.visibleCollectionPosts:store.visiblePosts
+                        if posts.isEmpty && (!store.usesCloudWallet || store.cloudFeed != nil) {
+                            PapiText("No moments yet").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
+                        }
+                        if store.usesCloudWallet && store.cloudFeedHasMore {PapiTextButton("Load more"){Task {await store.loadMoreCloudFeed()}}.disabled(store.cloudFeedBusy)}
                         let count=typeSize.isAccessibilitySize ? 1:max(1,Int((contentWidth+12)/182))
                         let tileWidth=max(0,(contentWidth-CGFloat(count-1)*12)/CGFloat(count))
                         HStack(alignment:.top,spacing:12) {
                             ForEach(0..<count,id:\.self) { column in
                                 LazyVStack(spacing:14) {
-                                    ForEach(Array(store.visiblePosts.enumerated()).filter{$0.offset%count==column},id:\.element.id) { index,post in
-                                        CoffeeMomentTile(post:post,height:tileWidth*(index%3==1 ? 1.42:1.18)).frame(width:tileWidth).clipped()
+                                    ForEach(Array(posts.enumerated()).filter{$0.offset%count==column},id:\.element.id) { index,post in
+                                        if store.usesCloudWallet && collectionIDs.contains(post.id) {
+                                            CoffeeCollectionTile(post:post,height:tileWidth*(index%3==1 ? 1.42:1.18)).frame(width:tileWidth).clipped()
+                                        } else {
+                                            CoffeeMomentTile(post:post,height:tileWidth*(index%3==1 ? 1.42:1.18)).frame(width:tileWidth).clipped()
+                                        }
                                     }
                                 }.frame(width:tileWidth)
                             }
                         }
-                        if store.usesCloudWallet && store.cloudFeedHasMore {PapiTextButton("Load more"){Task {await store.loadMoreCloudFeed()}}.disabled(store.cloudFeedBusy)}
                     }.frame(width:contentWidth,alignment:.leading).padding(.horizontal,16).padding(.top,12).padding(.bottom,20).frame(width:viewportWidth).frame(maxWidth:.infinity)
                 }.scrollDismissesKeyboard(.interactively).frame(width:geo.size.width,height:geo.size.height).clipped()
             }
         }.task(id:store.state.cloudAccountID) {if store.usesCloudWallet {await store.refreshCloudFeed()}}
+    }
+}
+struct CoffeeCollectionTile:View {
+    @EnvironmentObject private var router:CoffeeNavigation
+    let post:CoffeeMoment
+    let height:CGFloat
+    var body:some View {
+        Button {router.go(.post(post.id))} label:{
+            VStack(alignment:.leading,spacing:0) {
+                ZStack(alignment:.topTrailing) {
+                    PapiImage(name:post.media).frame(height:height).frame(maxWidth:.infinity).clipped()
+                    if post.isVideo {PapiText("Video").font(CoffeeType.face(.caption,weight:.bold)).padding(7).background(Color.coffee.opacity(0.85),in:Capsule()).foregroundStyle(.white).padding(8)}
+                }
+                VStack(alignment:.leading,spacing:3) {
+                    PapiText(post.category).font(CoffeeType.face(.caption2,weight:.medium)).foregroundStyle(Color.coffee)
+                    PapiText("Papi coffee journal").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
+                }.frame(maxWidth:.infinity,alignment:.leading).padding(10).background(Color.peach.opacity(0.55))
+            }.clipShape(RoundedRectangle(cornerRadius:18))
+        }.buttonStyle(.plain)
     }
 }
 struct CoffeeMomentTile:View {
@@ -174,7 +202,9 @@ struct CoffeeMomentView:View {
     @State private var confirmDelete=false
     var body:some View {
         PapiScreen {
-            if let post=store.post(momentID) {
+            if let post=store.post(momentID),store.usesCloudWallet,store.visibleCollectionPosts.contains(where:{$0.id==momentID}) {
+                CoffeeCollectionDetail(post:post)
+            } else if let post=store.post(momentID) {
                 VStack(spacing:0) {
                     PapiHeader("Coffee moment") {
                         PapiIconButton(asset:"more",label:"Post options") {
@@ -254,6 +284,30 @@ struct CoffeeMomentView:View {
                 if let pending=store.state.pendingCloudComment,pending.momentID==id {comment=pending.body}
                 await store.refreshCloudComments(id)
             }
+        }
+    }
+}
+struct CoffeeCollectionDetail:View {
+    @EnvironmentObject private var router:CoffeeNavigation
+    @Environment(\.papiBounds) private var bounds
+    let post:CoffeeMoment
+    var body:some View {
+        VStack(spacing:0) {
+            PapiHeader("Coffee collection")
+            ScrollView {
+                VStack(alignment:.leading,spacing:14) {
+                    PapiText("Papi coffee journal").font(CoffeeType.face(.headline))
+                    PapiText(post.category).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                    let mediaHeight=min(360,max(220,(bounds.width > 0 ? bounds.width:320)*0.78))
+                    if post.isVideo {CoffeePlayerView(media:post.media).frame(height:mediaHeight)}
+                    else {
+                        Button {router.go(.photo(post.media))} label:{
+                            PapiImage(name:post.media).frame(height:mediaHeight).clipShape(RoundedRectangle(cornerRadius:18))
+                        }.buttonStyle(.plain).papiAccessibilityLabel("Open photo")
+                    }
+                    PapiText(verbatim:post.caption).font(CoffeeType.face(.body)).fixedSize(horizontal:false,vertical:true)
+                }.padding(16).frame(maxWidth:760,alignment:.leading).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:24)).padding(16).frame(maxWidth:.infinity)
+            }.scrollDismissesKeyboard(.interactively)
         }
     }
 }

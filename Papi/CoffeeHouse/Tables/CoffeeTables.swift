@@ -7,7 +7,7 @@ private struct TableDemoEvent:Identifiable {
     let message:String
     let giftAsset:String?
 }
-private struct TableRoomStory {
+struct TableRoomStory {
     let description:String
     let prompt:String
     let messages:[String]
@@ -88,10 +88,12 @@ struct CoffeeTablesView:View {
                                 ForEach(0..<(store.usesCloudWallet ? 2:3),id:\.self) {i in
                                     Button {filter=i} label:{
                                         PapiText((store.usesCloudWallet ? ["All","Recent"]:["All","Following","Recent"])[i]).font(CoffeeType.face(.subheadline,weight:filter==i ? .bold:.medium)).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
-                                            .frame(maxWidth:.infinity,minHeight:44).background(filter==i ? Color.coffee:Color.clear,in:Capsule()).contentShape(Rectangle())
-                                    }.buttonStyle(.plain).foregroundStyle(filter==i ? Color.cream:Color.mutedCoffee).accessibilityAddTraits(filter==i ? .isSelected:[])
+                                            .frame(maxWidth:.infinity,minHeight:54)
+                                            .background {if filter==i {Image("voiceActionPlate").resizable()}}
+                                            .contentShape(Rectangle())
+                                    }.buttonStyle(.plain).foregroundStyle(filter==i ? Color.coffee:Color.mutedCoffee).accessibilityAddTraits(filter==i ? .isSelected:[])
                                 }
-                            }.padding(5).background(Color.cream.opacity(0.96),in:RoundedRectangle(cornerRadius:22)).papiAvoidReserved()
+                            }.padding(.horizontal,4).padding(.vertical,2).background(Color.coffee.opacity(0.07),in:RoundedRectangle(cornerRadius:20)).papiAvoidReserved()
                             HStack(spacing:8) {
                                 PapiArtworkFit(asset:"audioTableMark").frame(width:32,height:32)
                                 PapiText(store.usesCloudWallet ? (store.liveVoiceEnabled ? "Live voice rooms":"Coffee topics · Audio unavailable"):"Sample rooms · Voices, messages and gifts").font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
@@ -115,18 +117,19 @@ struct CoffeeTablesView:View {
     private func roomCard(_ room:CoffeeTable)->some View {
         VStack(alignment:.leading,spacing:0) {
             Button {if store.enter(room){router.go(.room(room.id))}} label:{
-                VStack(alignment:.leading,spacing:0) {
-                    ZStack(alignment:.topLeading) {
-                        PapiImage(name:room.coverReference,fallback:room.image).frame(height:150).clipped()
-                        HStack(spacing:4) {
-                            PapiArtworkFit(asset:"audioTableMark").frame(width:26,height:26)
-                            PapiText(room.category).font(CoffeeType.face(.caption2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
-                        }.padding(.horizontal,8).padding(.vertical,4).background(Color.cream.opacity(0.94),in:Capsule()).padding(9)
-                    }
-                    VStack(alignment:.leading,spacing:5) {
-                        PapiText(room.title).font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true)
-                        PapiText(TableRoomStory.forRoom(room.id).description).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
-                    }.padding(12).frame(maxWidth:.infinity,alignment:.leading)
+                ZStack(alignment:.bottomLeading) {
+                    PapiImage(name:room.coverReference,fallback:room.image).frame(height:typeSize.isAccessibilitySize ? 290:245).clipped()
+                        .overlay {LinearGradient(colors:[.clear,Color.coffee.opacity(0.3),Color.coffee.opacity(0.96)],startPoint:.center,endPoint:.bottom)}
+                        .overlay(alignment:.topLeading) {
+                            HStack(spacing:4) {
+                                PapiArtworkFit(asset:"audioTableMark").frame(width:22,height:22)
+                                PapiText(room.category).font(CoffeeType.face(.caption2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                            }.foregroundStyle(Color.coffee).padding(.horizontal,9).padding(.vertical,4).background(Color.cream.opacity(0.96),in:Capsule()).padding(10)
+                        }
+                    VStack(alignment:.leading,spacing:6) {
+                        PapiText(room.title).font(CoffeeType.display(.headline,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                        PapiText(TableRoomStory.forRoom(room.id).description).font(CoffeeType.face(.caption)).foregroundStyle(Color.cream.opacity(0.9)).fixedSize(horizontal:false,vertical:true)
+                    }.foregroundStyle(Color.cream).padding(13).frame(maxWidth:.infinity,alignment:.leading)
                 }.contentShape(Rectangle())
             }.buttonStyle(.plain).disabled(store.usesCloudWallet && !store.liveVoiceEnabled)
             if let portrait=store.person(room.hostMemberID),!store.isUserHidden(portrait.id) {
@@ -170,7 +173,7 @@ struct CoffeeTableView:View {
     }
     private var draft:Binding<String> {Binding(get:{store.state.tableNotes[room.id] ?? ""},set:{new in _ = store.commit{$0.tableNotes[room.id]=String(new.prefix(2000))}})}
     var body:some View {
-        PapiScreen(background:"roomBackground") {
+        PapiScreen(background:"voiceLoungeBackground") {
             VStack(spacing:0) {
                 HStack(spacing:8) {
                     Button {router.go(.person(room.hostMemberID))} label:{
