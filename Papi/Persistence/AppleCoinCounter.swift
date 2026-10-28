@@ -123,7 +123,8 @@ struct CoinPack: Identifiable {
                   let terms=store.state.coinPurchaseTerms?.first(where:{$0.token==token && $0.productID==transaction.payment.productIdentifier}),
                   store.commit({state in
                       if let index=state.coinPurchaseTerms?.firstIndex(where:{$0.token==token && $0.productID==terms.productID}) {
-                          state.coinPurchaseTerms?[index].failedAt=state.coinPurchaseTerms?[index].failedAt ?? Date()
+                          let recorded=state.coinPurchaseTerms?[index].failedAt
+                          state.coinPurchaseTerms?[index].failedAt=recorded ?? Date()
                       }
                   }) else {
                 unresolved=true;status="This purchase needs online recovery. It has not been finished or credited again.";return
@@ -142,7 +143,12 @@ struct CoinPack: Identifiable {
                 unresolved=true;status="This purchase needs online recovery. It has not been finished or credited again.";return
             }
             do {
-                _ = try await CoffeeCloud.shared.verifyPurchase(orderID:token,transactionID:id,account:account)
+                guard let receiptURL=Bundle.main.appStoreReceiptURL,
+                      let data=try? Data(contentsOf:receiptURL,options:.mappedIfSafe),
+                      !data.isEmpty,data.count<=2_000_000 else {
+                    unresolved=true;status="Purchase verification is pending. Use Recover purchases to try again.";return
+                }
+                _ = try await CoffeeCloud.shared.verifyPurchase(orderID:token,transactionID:id,receiptData:data.base64EncodedString(),account:account)
                 guard store.state.signedIn,store.state.cloudAccountID==account else {unresolved=true;return}
                 guard store.commit({state in
                     if let index=state.coinPurchaseTerms?.firstIndex(where:{$0.token==token}) {state.coinPurchaseTerms?[index].transactionID=id}
@@ -159,6 +165,10 @@ struct CoinPack: Identifiable {
     func recover() async {
         guard let store,store.storageAvailable,store.accountAction==nil,!store.loginInProgress else{return}
         for transaction in SKPaymentQueue.default().transactions {await receive(transaction)}
+        if store.state.activePurchaseToken != nil && SKPaymentQueue.default().transactions.isEmpty {
+            unresolved=true
+            status="The saved order needs reconciliation before another purchase."
+        }
     }
     func sync() async {
         guard !busy,let store,store.beginCheckout() else{return}
