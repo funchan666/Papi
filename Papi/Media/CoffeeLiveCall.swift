@@ -146,6 +146,9 @@ private struct LiveParticipantVideo:View {
         guard !joining,disconnecting==0,!connected else{return}
         let attempt=UUID();generation=attempt;joining=true;joiningTopic=topic;joiningAccount=account;connecting=true;message=nil
         defer {joining=false;joiningTopic=nil;joiningAccount=nil;connecting=disconnecting>0}
+        let microphoneAllowed=await AVAudioApplication.requestRecordPermission()
+        guard generation==attempt,!Task.isCancelled else{return}
+        if !microphoneAllowed {message="Microphone permission was not granted."}
         guard let session=await store.startCloudVoice(topic) else {return}
         sessionID=session.id
         defer {if !connected && sessionID==session.id {sessionID=nil}}
@@ -179,6 +182,7 @@ private struct LiveParticipantVideo:View {
                     }
                 }
             }
+            if microphoneAllowed {await setMicrophone(true)}
         } catch {
             await room.disconnect();await store.finishCloudVoice(expectedID:session.id);connected=false
             if generation==attempt {message="The voice room could not be connected."}
@@ -256,7 +260,7 @@ struct CoffeeLiveVoiceRoomView:View {
                                 PapiText(topic.title).font(CoffeeType.display(.title2,weight:.bold)).foregroundStyle(Color.coffee).fixedSize(horizontal:false,vertical:true)
                                 HStack(alignment:.center,spacing:6) {
                                     PapiArtworkFit(asset:"audioTableMark").frame(width:24,height:24)
-                                    PapiText(voice.connected ? (voice.microphoneEnabled ? "Microphone on":"Microphone off"):"Your microphone starts off.")
+                                    PapiText(voice.connected ? (voice.microphoneEnabled ? "Microphone on":"Microphone off"):"Microphone permission is requested when you join.")
                                         .font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                                 }
                             }.frame(maxWidth:.infinity,alignment:.leading)

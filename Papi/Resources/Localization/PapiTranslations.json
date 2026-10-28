@@ -2928,6 +2928,7 @@
   "No room messages yet.": {"es":"Todavía no hay mensajes en la sala.","th":"ยังไม่มีข้อความในห้อง","ar":"لا توجد رسائل في الغرفة بعد.","vi":"Chưa có tin nhắn trong phòng.","ko":"아직 방 메시지가 없습니다."},
   "Write a room message…": {"es":"Escribe un mensaje para la sala…","th":"เขียนข้อความถึงห้อง…","ar":"اكتب رسالة للغرفة…","vi":"Viết tin nhắn trong phòng…","ko":"방에 메시지를 입력하세요…"},
   "Your microphone starts off.": {"es":"El micrófono estará apagado al entrar.","th":"ไมโครโฟนจะปิดเมื่อคุณเข้าร่วม","ar":"سيكون الميكروفون مغلقاً عند الانضمام.","vi":"Micrô sẽ tắt khi bạn tham gia.","ko":"입장할 때 마이크는 꺼져 있습니다."},
+  "Microphone permission is requested when you join.": {"es":"Se solicitará acceso al micrófono al entrar.","th":"ระบบจะขอสิทธิ์ไมโครโฟนเมื่อคุณเข้าร่วม","ar":"سيُطلب إذن الميكروفون عند الانضمام.","vi":"Ứng dụng sẽ xin quyền micrô khi bạn tham gia.","ko":"입장할 때 마이크 권한을 요청합니다."},
   "Microphone on": {"es":"Micrófono activado","th":"เปิดไมโครโฟน","ar":"الميكروفون مفتوح","vi":"Micrô đang bật","ko":"마이크 켜짐"},
   "Microphone off": {"es":"Micrófono apagado","th":"ปิดไมโครโฟน","ar":"الميكروفون مغلق","vi":"Micrô đang tắt","ko":"마이크 꺼짐"},
   "You": {"es":"Tú","th":"คุณ","ar":"أنت","vi":"Bạn","ko":"나"},
