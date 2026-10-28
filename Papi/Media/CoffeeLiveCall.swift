@@ -234,6 +234,7 @@ struct CoffeeLiveVoiceRoomView:View {
     @State private var giftsLoaded=false
     @State private var giftsUnavailable=false
     @State private var giftAnnouncement:CoffeeCloud.VoiceGift?
+    @State private var sampleAnnouncement:LiveRoomSampleEvent?
     @State private var showingGifts=false
     private var activeSession:UUID? {
         guard voice.connected,let pending=store.state.pendingCloudVoice,pending.accountID==account,
@@ -247,7 +248,9 @@ struct CoffeeLiveVoiceRoomView:View {
                     PapiIconButton(asset:"back",label:"Back") {dismiss()}
                     PapiText("Coffee tables").font(CoffeeType.display(.title3,weight:.bold)).foregroundStyle(Color.cream)
                         .frame(maxWidth:.infinity,alignment:.leading)
-                    PapiArtworkFit(asset:"audioTableMark").frame(width:36,height:36)
+                    PapiIconButton(asset:"moreLight",label:"Safety options",size:20) {
+                        router.sheet = .safety(.init(kind:.room,contentReference:topic.id))
+                    }.background(Color.cream.opacity(0.94),in:Circle())
                 }.padding(.horizontal,16).padding(.vertical,8).papiAvoidReserved()
                 ScrollView {
                     VStack(alignment:.leading,spacing:20) {
@@ -272,7 +275,14 @@ struct CoffeeLiveVoiceRoomView:View {
                                 .foregroundStyle(Color.cream).fixedSize(horizontal:false,vertical:true)
                         }.padding(.horizontal,8).frame(maxWidth:.infinity,alignment:.leading)
                         if voice.connected {
-                            LiveVoiceParticipants(room:voice.room,account:account,microphoneEnabled:voice.microphoneEnabled)
+                            LiveVoiceParticipants(room:voice.room,account:account,microphoneEnabled:voice.microphoneEnabled) {
+                                Task {
+                                    guard voice.connected else{return}
+                                    await voice.disconnect(store:store)
+                                    voice.message="You left the room because a blocked or reported participant was present."
+                                }
+                            }
+                            LiveRoomSamples(topicID:topic.id) {event in sampleAnnouncement=event}
                             VStack(alignment:.leading,spacing:10) {
                                 PapiText("Room messages").font(CoffeeType.display(.title3,weight:.bold)).foregroundStyle(Color.cream)
                                 if messageUnavailable {
@@ -323,7 +333,9 @@ struct CoffeeLiveVoiceRoomView:View {
                             } actions: {
                                 PapiIconButton(asset:"roomGiftButton",label:"Gifts",size:32) {showingGifts=true}.disabled(activeSession==nil)
                                 PapiIconButton(asset:"send",label:"Send room message",size:28) {Task {await sendRoomMessage()}}
+                                    .background(Color.cream,in:RoundedRectangle(cornerRadius:12))
                                     .disabled(messageSending || messageDraft.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty || activeSession==nil)
+                                    .opacity(messageSending || messageDraft.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty || activeSession==nil ? 0.55:1)
                             }
                             VoiceLoungeAction(title:voice.microphoneEnabled ? "Mute microphone":"Enable microphone",icon:"mic") {Task {await voice.setMicrophone(!voice.microphoneEnabled)}}
                             VoiceLoungeAction(title:"Leave room") {Task {await voice.disconnect(store:store);dismiss()}}
@@ -358,12 +370,23 @@ struct CoffeeLiveVoiceRoomView:View {
                     }
                 }.foregroundStyle(Color.coffee).padding(12).background {Image("voiceTopicPlate").resizable()}
                     .padding(.horizontal,20).padding(.top,58).allowsHitTesting(false).papiAvoidReserved()
+            } else if voice.connected,let event=sampleAnnouncement,!store.isUserHidden(event.memberID),let member=store.person(event.memberID) {
+                HStack(spacing:9) {
+                    Avatar(name:member.portrait,size:32)
+                    VStack(alignment:.leading,spacing:3) {
+                        PapiText("Example activity").font(CoffeeType.face(.caption2,weight:.bold))
+                        PapiText(verbatim:member.name).font(CoffeeType.face(.caption,weight:.bold))
+                        PapiText(event.message).font(CoffeeType.face(.caption)).lineLimit(2)
+                    }
+                    if let asset=event.giftAsset {PapiArtworkFit(asset:asset).frame(width:42,height:42)}
+                }.foregroundStyle(Color.coffee).padding(12).background {Image("voiceTopicPlate").resizable()}
+                    .padding(.horizontal,20).padding(.top,58).allowsHitTesting(false).papiAvoidReserved()
             }
         }
         .onDisappear {Task {await voice.disconnect(store:store)}}
             .onChange(of:phase) {_,value in if value == .background {Task {await voice.disconnect(store:store)}}}
             .task(id:voice.connected) {
-                guard voice.connected else {roomMessages=[];roomGifts=[];knownMessageIDs=[];messagesLoaded=false;messageAnnouncement=nil;knownGiftIDs=[];giftsLoaded=false;giftAnnouncement=nil;return}
+                guard voice.connected else {roomMessages=[];roomGifts=[];knownMessageIDs=[];messagesLoaded=false;messageAnnouncement=nil;knownGiftIDs=[];giftsLoaded=false;giftAnnouncement=nil;sampleAnnouncement=nil;return}
                 while !Task.isCancelled && voice.connected {
                     await refreshRoomMessages()
                     await refreshRoomGifts()
@@ -379,6 +402,11 @@ struct CoffeeLiveVoiceRoomView:View {
                 guard let id=messageAnnouncement?.id else{return}
                 do {try await Task.sleep(for:.seconds(3))} catch {return}
                 if messageAnnouncement?.id==id {messageAnnouncement=nil}
+            }
+            .task(id:sampleAnnouncement?.id) {
+                guard let id=sampleAnnouncement?.id else{return}
+                do {try await Task.sleep(for:.seconds(3))} catch {return}
+                if sampleAnnouncement?.id==id {sampleAnnouncement=nil}
             }
     }
     private func refreshRoomMessages() async {
@@ -416,6 +444,78 @@ struct CoffeeLiveVoiceRoomView:View {
         } catch {if !Task.isCancelled,activeSession==session {giftsUnavailable=true}}
     }
 }
+private struct LiveRoomSampleEvent:Identifiable {
+    let id=UUID()
+    let memberID:String
+    let message:String
+    let giftAsset:String?
+}
+
+private struct LiveRoomSamples:View {
+    let topicID:String
+    let onEvent:(LiveRoomSampleEvent)->Void
+    @EnvironmentObject private var store:CoffeeHouse
+    @EnvironmentObject private var router:CoffeeNavigation
+    @Environment(\.scenePhase) private var phase
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var events:[LiveRoomSampleEvent]=[]
+    @State private var index=0
+    private var story:TableRoomStory {TableRoomStory.forRoom(topicID)}
+    private var members:[CoffeeMember] {story.guestIDs.compactMap {id in store.isUserHidden(id) ? nil:store.person(id)}}
+    var body:some View {
+        VStack(alignment:.leading,spacing:12) {
+            HStack {
+                PapiText("Sample participants").font(CoffeeType.face(.headline))
+                Spacer(minLength:0)
+                PapiText("Example activity").font(CoffeeType.face(.caption2,weight:.semibold))
+            }
+            ScrollView(.horizontal,showsIndicators:false) {
+                HStack(alignment:.top,spacing:12) {
+                    ForEach(members) {member in
+                        Button {router.go(.person(member.id))} label:{
+                            VStack(spacing:5) {
+                                Avatar(name:member.portrait,size:48)
+                                PapiText(verbatim:member.name).font(CoffeeType.face(.caption2,weight:.semibold)).lineLimit(2).multilineTextAlignment(.center)
+                            }.frame(width:84).frame(minHeight:78).contentShape(Rectangle())
+                        }.buttonStyle(.plain).papiAccessibilityLabel(member.name)
+                    }
+                }
+            }
+            ForEach(events.filter{!store.isUserHidden($0.memberID)}) {event in
+                if let member=store.person(event.memberID) {
+                    HStack(alignment:.center,spacing:9) {
+                        Avatar(name:member.portrait,size:32)
+                        VStack(alignment:.leading,spacing:3) {
+                            PapiText(verbatim:member.name).font(CoffeeType.face(.caption,weight:.bold))
+                            PapiText(event.message).font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
+                        }.frame(maxWidth:.infinity,alignment:.leading)
+                        if let asset=event.giftAsset {PapiArtworkFit(asset:asset).frame(width:38,height:38)}
+                    }.padding(10).frame(maxWidth:.infinity,alignment:.leading)
+                        .background(Color.cream.opacity(0.10),in:RoundedRectangle(cornerRadius:14))
+                        .transition(reduceMotion ? .opacity:.move(edge:.leading).combined(with:.opacity))
+                }
+            }
+        }.foregroundStyle(Color.cream).padding(16).frame(maxWidth:.infinity,alignment:.leading)
+            .background(Color.coffee.opacity(0.78),in:RoundedRectangle(cornerRadius:20))
+            .task(id:topicID) {
+                if events.isEmpty {for item in 0..<3 {appendEvent(announce:item==2)}}
+                while !Task.isCancelled {
+                    do {try await Task.sleep(for:.seconds(5))} catch {return}
+                    if phase == .active && router.sheet == nil && store.notice == nil {appendEvent(announce:true)}
+                }
+            }
+    }
+    private func appendEvent(announce:Bool) {
+        let available=members
+        guard !available.isEmpty else{return}
+        let messages=story.messages+["A little gift for the table · Sample"]
+        let event=LiveRoomSampleEvent(memberID:available[index % available.count].id,message:messages[index % messages.count],giftAsset:index % messages.count == messages.count-1 ? story.giftAsset:nil)
+        index+=1
+        withAnimation(reduceMotion ? nil:.easeInOut(duration:0.25)) {events.append(event);if events.count>3 {events.removeFirst(events.count-3)}}
+        if announce {onEvent(event)}
+    }
+}
+
 private struct VoiceLoungeAction:View {
     let title:String
     var icon:String? = nil
@@ -514,6 +614,7 @@ private struct LiveVoiceParticipants:View {
     @ObservedObject var room:Room
     let account:UUID
     let microphoneEnabled:Bool
+    var onHiddenParticipant:()->Void
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
     var body:some View {
@@ -538,17 +639,22 @@ private struct LiveVoiceParticipants:View {
                 }
             }
         }.foregroundStyle(Color.coffee).padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.cream,in:RoundedRectangle(cornerRadius:20))
-            .task(id:participants.joined(separator:"|")) {await store.ensureCloudProfiles(Set(participants.compactMap(UUID.init(uuidString:))))}
+            .task(id:participants.joined(separator:"|")+"/"+store.visibilityKeys.joined(separator:"|")) {
+                if participants.contains(where:store.isUserHidden) {onHiddenParticipant();return}
+                await store.ensureCloudProfiles(Set(participants.compactMap(UUID.init(uuidString:))))
+            }
     }
     @ViewBuilder private func participant(_ id:String,isSelf:Bool)->some View {
-        if let person=store.person(id),!store.isUserHidden(id) {
+        if !store.isUserHidden(id) {
+            let person=store.person(id)
+            let name=person?.name ?? store.text("Coffee friend")
             VStack(spacing:7) {
                 Button {router.goAfterClosingSheet(.person(id))} label:{
                     VStack(spacing:6) {
-                        Avatar(name:person.portrait,size:64)
-                        PapiText(verbatim:person.name).font(CoffeeType.face(.caption,weight:.semibold)).lineLimit(2).multilineTextAlignment(.center)
+                        Avatar(name:person?.portrait ?? "emptyCup",size:64)
+                        PapiText(verbatim:name).font(CoffeeType.face(.caption,weight:.semibold)).lineLimit(2).multilineTextAlignment(.center)
                     }.frame(width:88).frame(minHeight:92).contentShape(Rectangle())
-                }.buttonStyle(.plain).papiAccessibilityLabel(person.name)
+                }.buttonStyle(.plain).disabled(person == nil).papiAccessibilityLabel(name)
                 if isSelf {PapiText("You").font(CoffeeType.face(.caption2,weight:.bold)).foregroundStyle(Color.mutedCoffee)}
                 else {PapiIconButton(asset:"moreLight",label:"Safety options",size:20) {router.sheet = .safety(.user(id))}}
             }.frame(width:88)

@@ -4,9 +4,9 @@ import Foundation
     var visiblePassport:CoffeePassport {
         var passport=state.passport
         if let account=state.cloudAccountID {
-            passport.avatar=profileImageReference(cloudImageSummaries[account]?.avatar_path,owner:account) ?? "emptyCup"
+            passport.avatar=profileImageReference(cloudImageSummaries[account]?.avatar_path,owner:account) ?? CoffeePassport.defaultPortrait
             passport.cover=profileImageReference(cloudImageSummaries[account]?.cover_path,owner:account) ?? "corner-latte"
-            if let profile=cloudProfiles?.first(where:{$0.id==account}) {
+            if let profile=cloudProfiles?.first(where:{$0.id==account}) ?? cloudReferencedProfiles[account] {
                 passport.name=profile.display_name;passport.bio=profile.biography
             } else {passport.name=text("Profile unavailable");passport.bio=""}
         }
@@ -49,7 +49,7 @@ import Foundation
         if id==state.passport.id.uuidString {let passport=visiblePassport;return .init(id:id,name:passport.name,portrait:passport.portraitReference,bio:passport.bio)}
         if let member=UUID(uuidString:id),usesCloudWallet {
             if member==state.cloudAccountID {let passport=visiblePassport;return .init(id:id,name:passport.name,portrait:passport.portraitReference,bio:passport.bio)}
-            if let profile=cloudProfiles?.first(where:{$0.id==member}) {
+            if let profile=cloudProfiles?.first(where:{$0.id==member}) ?? cloudReferencedProfiles[member] {
                 return .init(id:profile.id.uuidString,name:profile.display_name,portrait:profileImageReference(cloudImageSummaries[profile.id]?.avatar_path,owner:profile.id) ?? "emptyCup",bio:profile.biography)
             }
             return nil
@@ -134,6 +134,9 @@ import Foundation
         return sample+(state.appreciatedMoments.contains(post.id) ? 1:0)
     }
     var tastingNotes:[TastingReply] {TastingReply.collectionSamples+state.tastingReplies}
+    func collectionSampleComments(_ momentID:String)->[TastingReply] {
+        TastingReply.collectionSamples.filter{$0.momentID==momentID && isTargetVisible(.comment($0,owner:state.passport.id.uuidString))}
+    }
     func visibleComments(_ momentID:String)->[TastingReply] {
         guard post(momentID) != nil else{return []}
         if usesCloudWallet,let id=UUID(uuidString:momentID) {

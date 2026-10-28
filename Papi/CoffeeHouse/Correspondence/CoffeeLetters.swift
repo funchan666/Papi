@@ -23,14 +23,15 @@ struct CorrespondenceInbox:View {
                         PapiArtworkFit(asset:"coffeePostArt").frame(width:128,height:112)
                     }.padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.butter.opacity(0.72),in:RoundedRectangle(cornerRadius:24))
                     Button {router.go(.notifications)} label:{
-                        HStack(spacing:14) {
-                            Avatar(name:"brandMark",size:54)
-                            VStack(alignment:.leading,spacing:5) {
-                                PapiText("Coffee desk").font(CoffeeType.face(.headline))
+                        HStack(spacing:13) {
+                            Avatar(name:"brandMark",size:48).accessibilityHidden(true)
+                            VStack(alignment:.leading,spacing:4) {
+                                PapiText("Coffee desk").font(CoffeeType.display(.headline,weight:.bold)).fixedSize(horizontal:false,vertical:true)
                                 PapiText("Your brews and saved reports").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                             }.frame(maxWidth:.infinity,alignment:.leading)
-                            Image("chevron").resizable().scaledToFit().scaleEffect(x:direction == .rightToLeft ? -1:1,y:1).frame(width:12,height:12).accessibilityHidden(true)
-                        }.padding(16).frame(maxWidth:.infinity,minHeight:76,alignment:.leading).background(Color.white.opacity(0.94),in:RoundedRectangle(cornerRadius:20)).contentShape(Rectangle())
+                            Image("chevron").resizable().scaledToFit().scaleEffect(x:direction == .rightToLeft ? -1:1,y:1).frame(width:13,height:13).accessibilityHidden(true)
+                        }.padding(.horizontal,18).padding(.vertical,18).frame(maxWidth:.infinity,minHeight:88,alignment:.leading)
+                            .background {Image("coffeeDeskPlate").resizable()}.contentShape(Rectangle())
                     }.buttonStyle(.plain)
                     let followed=store.communityPeople.filter{store.isFollowing($0.id) && !store.isUserHidden($0.id)}
                     if !followed.isEmpty {
@@ -44,7 +45,7 @@ struct CorrespondenceInbox:View {
                             }
                         }.padding(.vertical,4)}
                     }
-                    PapiText("Your conversations").font(CoffeeType.face(.title3,weight:.bold)).padding(.top,2)
+                    PapiText("Your conversations").font(CoffeeType.display(.title3,weight:.bold)).padding(.top,2)
                     if store.liveCallsEnabled {
                         ForEach(store.incomingCloudCalls) {incoming in
                             PapiPanel {VStack(alignment:.leading,spacing:10) {
@@ -58,7 +59,7 @@ struct CorrespondenceInbox:View {
                         }
                     }
                     if store.usesCloudWallet && store.cloudProfiles==nil {PapiTextButton("Retry members"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)}
-                    else if store.conversationPeople.isEmpty {emptyInbox}
+                    else if store.conversationPeople.isEmpty && !store.cloudMessagesUnavailable {emptyInbox}
                     if store.cloudMessagesUnavailable {PapiText("Messages could not be refreshed.").font(CoffeeType.face(.caption));PapiTextButton("Retry"){Task {await store.refreshCloudMessages()}}.disabled(store.cloudSocialBusy)}
                     ForEach(store.conversationPeople) {person in
                         HStack(alignment:.center,spacing:12) {
@@ -88,12 +89,25 @@ struct CorrespondenceInbox:View {
         }
     }
     private var emptyInbox:some View {
-        VStack(alignment:.leading,spacing:12) {
-            PapiText("No conversations yet").font(CoffeeType.face(.headline))
-            PapiText("Open a profile to start a draft. Sending messages requires both people to follow each other.")
-                .font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
-            PapiTextButton("Explore coffee community"){store.selectedTab=0}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).padding(.top,3)
-        }.padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.86),in:RoundedRectangle(cornerRadius:22))
+        let layout=typeSize.isAccessibilitySize || (bounds.width>0 && bounds.width<350) ? AnyLayout(VStackLayout(alignment:.leading,spacing:6)):AnyLayout(HStackLayout(alignment:.center,spacing:10))
+        return VStack(alignment:.leading,spacing:4) {
+            layout {
+                VStack(alignment:.leading,spacing:8) {
+                    PapiText("No conversations yet").font(CoffeeType.display(.title3,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                    PapiText(store.usesCloudWallet ? "Follow each other to start chatting.":"Messaging is not available yet.")
+                        .font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                }.frame(maxWidth:.infinity,alignment:.leading)
+                PapiArtworkFit(asset:"coffeeChatEmpty").frame(width:typeSize.isAccessibilitySize ? 140:130,height:typeSize.isAccessibilitySize ? 110:120)
+            }
+            Button {store.selectedTab=0} label:{
+                HStack(spacing:10) {
+                    PapiText("Explore coffee community").font(CoffeeType.face(.subheadline,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                    Image("chevron").resizable().scaledToFit().scaleEffect(x:direction == .rightToLeft ? -1:1,y:1).frame(width:12,height:12).accessibilityHidden(true)
+                }.foregroundStyle(Color.coffee).padding(.horizontal,20).frame(maxWidth:.infinity,minHeight:62)
+                    .background {Image("voiceActionPlate").resizable()}.contentShape(Rectangle())
+            }.buttonStyle(.plain)
+        }.padding(.horizontal,20).padding(.vertical,26).frame(maxWidth:.infinity,alignment:.leading)
+            .background {Image("voiceTopicPlate").resizable()}
     }
     private func preview(_ id:String)->String {
         if store.hasChatDraft(id){return store.chatPreview(id)}

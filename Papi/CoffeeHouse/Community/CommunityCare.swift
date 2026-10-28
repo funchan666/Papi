@@ -46,6 +46,10 @@ struct SafetyMenuView:View {
                                 if let author=target.authorID {
                                     PapiUserLink(userID:author,size:48).frame(maxWidth:.infinity,alignment:.leading)
                                 }
+                                if target.kind == .room && target.authorID == nil {
+                                    PapiText("To report or block a participant, use the more button beside their name in the room.")
+                                        .font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                                }
                                 safetyChoice("Report",detail:"Choose a reason",tint:Color.white) {reporting=true}
                                 safetyChoice(target.kind == .user ? "Block user":"Hide content",detail:target.kind == .user ? "Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.":"This item will disappear from your lists.",tint:Color.butter.opacity(0.7)) {confirmBlock=true}
                                 if target.kind != .user,let author=target.authorID,author != store.state.passport.id.uuidString,author != store.state.cloudAccountID?.uuidString {
@@ -104,6 +108,7 @@ struct ReportView:View {
     @Environment(\.dismiss) private var dismiss
     @State private var reason:String?
     private let reasons=["Inappropriate content","Harassment or hate","Discrimination","Spam or misleading content","Privacy or safety concern"]
+    private var localRoomReport:Bool {target.kind == .room && UUID(uuidString:target.contentReference)==nil}
     var body:some View {
         PapiScreen {
             VStack(spacing:0) {
@@ -113,7 +118,7 @@ struct ReportView:View {
                         HStack(spacing:14) {
                             VStack(alignment:.leading,spacing:6) {
                                 PapiText("Choose a reason").font(CoffeeType.display(.title2,weight:.bold))
-                                PapiText(store.usesCloudWallet ? "The report will be sent for review and the item will be hidden.":"The item will be hidden after saving. Reports are not sent for review.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                                PapiText(store.usesCloudWallet && !localRoomReport ? "The report will be sent for review and the item will be hidden.":"The item will be hidden after saving. Reports are not sent for review.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                             }.frame(maxWidth:.infinity,alignment:.leading)
                             PapiArtworkFit(asset:"coffeeSafetyArt").frame(width:80,height:80)
                         }.padding(18).background(Color.cream.opacity(0.95),in:RoundedRectangle(cornerRadius:22))
@@ -121,10 +126,10 @@ struct ReportView:View {
                             Button {reason=item} label:{
                                 HStack(spacing:12) {PapiText(item).font(CoffeeType.face(.subheadline,weight:.medium)).multilineTextAlignment(.leading).fixedSize(horizontal:false,vertical:true);Spacer(minLength:0);if reason==item {Image("check").resizable().scaledToFit().frame(width:20,height:20).accessibilityHidden(true)}}
                                     .padding(16).frame(maxWidth:.infinity,minHeight:52,alignment:.leading).background(reason==item ? Color.butter:Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:16))
-                            }.buttonStyle(.plain).disabled(store.state.pendingCloudReport != nil).accessibilityAddTraits(reason==item ? .isSelected:[])
+                            }.buttonStyle(.plain).disabled(!localRoomReport && store.state.pendingCloudReport != nil).accessibilityAddTraits(reason==item ? .isSelected:[])
                         }
-                        PapiTextButton("Report") {if let reason {if store.usesCloudWallet {Task {if await store.submitCloudReport(target,reason:reason){dismiss()}}} else if store.report(target,reason:reason){dismiss()}}}
-                            .buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(reason==nil || store.cloudSocialBusy || (store.usesCloudWallet && UUID(uuidString:target.contentReference)==nil && !(target.kind == .post && target.contentReference.hasPrefix("editorial-"))))
+                        PapiTextButton("Report") {if let reason {if store.usesCloudWallet && !localRoomReport {Task {if await store.submitCloudReport(target,reason:reason){dismiss()}}} else if store.report(target,reason:reason){dismiss()}}}
+                            .buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(reason==nil || store.cloudSocialBusy || (store.usesCloudWallet && !localRoomReport && UUID(uuidString:target.contentReference)==nil && !(target.kind == .post && target.contentReference.hasPrefix("editorial-"))))
                     }.padding(20).frame(maxWidth:600).frame(maxWidth:.infinity)
                 }
             }

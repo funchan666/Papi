@@ -122,6 +122,15 @@ enum CoffeeMedia {
             return image
         }
     }
+    @MainActor static func privateVideoPoster(from url:URL) async -> UIImage? {
+        await acquirePosterSlot()
+        defer {releasePosterSlot()}
+        guard !Task.isCancelled else{return nil}
+        let generator=AVAssetImageGenerator(asset:AVURLAsset(url:url))
+        generator.appliesPreferredTrackTransform=true
+        generator.maximumSize=CGSize(width:900,height:900)
+        return await posterImage(generator)
+    }
     private static func cache(_ image:UIImage,name:String) {
         imageCache.setObject(image,forKey:name as NSString,cost:(image.cgImage?.bytesPerRow ?? 0)*(image.cgImage?.height ?? 0))
     }

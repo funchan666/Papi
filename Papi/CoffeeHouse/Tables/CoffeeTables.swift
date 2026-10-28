@@ -124,7 +124,7 @@ struct CoffeeTablesView:View {
                             HStack(spacing:4) {
                                 PapiArtworkFit(asset:"audioTableMark").frame(width:22,height:22)
                                 PapiText(room.category).font(CoffeeType.face(.caption2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
-                            }.foregroundStyle(Color.coffee).padding(.horizontal,9).padding(.vertical,4).background(Color.cream.opacity(0.96),in:Capsule()).padding(10)
+                            }.foregroundStyle(Color.coffee).padding(.horizontal,9).padding(.vertical,4).background(Color.cream.opacity(0.96),in:Capsule()).padding(10).padding(.trailing,54)
                         }
                     VStack(alignment:.leading,spacing:6) {
                         PapiText(room.title).font(CoffeeType.display(.headline,weight:.bold)).fixedSize(horizontal:false,vertical:true)
@@ -132,6 +132,11 @@ struct CoffeeTablesView:View {
                     }.foregroundStyle(Color.cream).padding(13).frame(maxWidth:.infinity,alignment:.leading)
                 }.contentShape(Rectangle())
             }.buttonStyle(.plain).disabled(store.usesCloudWallet && !store.liveVoiceEnabled)
+                .overlay(alignment:.topTrailing) {
+                    PapiIconButton(asset:"more",label:"Safety options",size:20) {
+                        router.sheet = .safety(.init(kind:.room,contentReference:room.id,authorID:store.usesCloudWallet ? nil:room.hostMemberID))
+                    }.background(Color.cream.opacity(0.95),in:Circle()).padding(6)
+                }
             if let portrait=store.person(room.hostMemberID),!store.isUserHidden(portrait.id) {
                 Button {router.go(.person(portrait.id))} label:{
                     HStack(spacing:8) {

@@ -148,7 +148,6 @@ struct CoinReserveView:View {
     @ScaledMetric(relativeTo:.body) private var packColumnWidth:CGFloat=98
     @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var commerce:AppleCoinCounter
-    @Environment(\.purchase) private var purchase
     @Environment(\.scenePhase) private var phase
     @State private var visible=false
     @State private var activeScene=false
@@ -193,11 +192,10 @@ struct CoinReserveView:View {
                             }
                             if inlinePurchase {purchasePanel}
                             PapiText(commerce.status).font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).accessibilityAddTraits(.updatesFrequently)
-                            PapiTextButton("Recover purchases"){Task{await commerce.sync()}}.font(CoffeeType.face(.subheadline,weight:.bold)).frame(minHeight:44).disabled(commerce.busy || !store.storageAvailable || store.usesCloudWallet)
+                            PapiTextButton("Recover purchases"){Task{await commerce.sync()}}.font(CoffeeType.face(.subheadline,weight:.bold)).frame(minHeight:44).disabled(commerce.busy || !store.storageAvailable)
                             spendingGuide
                             if store.usesCloudWallet {
                                 if store.cloudWallet==nil {PapiTextButton("Retry wallet"){Task {await store.refreshCloudWallet()}}.disabled(store.cloudWalletBusy)}
-                                PapiText("Purchases are temporarily unavailable.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                             } else {
                                 PapiText("Coins do not sync between devices. Deleting your account removes its balance; purchase records are kept to prevent duplicate delivery.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                             }
@@ -242,8 +240,8 @@ struct CoinReserveView:View {
             PapiTextButton(commerce.busy ? "Connecting to Apple…":"Buy \(pack.coins) coins") {
                 let selectedPack=pack
                 let visit=purchaseVisitID
-                Task {await commerce.buy(selectedPack,canPresent:{visible && activeScene && purchaseVisitID==visit},purchase:{product,options in try await purchase(product,options:options)})}
-            }.buttonStyle(PapiButtonStyle(wide:true)).disabled(commerce.busy || commerce.unresolved || !store.storageAvailable || store.usesCloudWallet || !store.state.purchaseIntents.isEmpty || store.state.activePurchaseToken != nil)
+                Task {await commerce.buy(selectedPack,canPresent:{visible && activeScene && purchaseVisitID==visit})}
+            }.buttonStyle(PapiButtonStyle(wide:true)).disabled(!commerce.checkoutAvailable || commerce.busy || commerce.unresolved || !store.storageAvailable || !store.usesCloudWallet || !store.state.purchaseIntents.isEmpty || store.state.activePurchaseToken != nil)
             PapiText("Apple confirms the price · No coins before verified payment").font(CoffeeType.face(.caption2)).multilineTextAlignment(.center).foregroundStyle(Color.mutedCoffee)
         }.padding(.horizontal,20).padding(.vertical,12).frame(maxWidth:680).frame(maxWidth:.infinity).background(Color.cream).papiAvoidReserved()
     }
@@ -256,8 +254,8 @@ struct CoinReserveView:View {
             }
             Text(item.coins,format:.number).font(CoffeeType.face(.title3,weight:.heavy)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
             PapiText("coins").font(CoffeeType.face(.caption2))
-            if let product=commerce.products.first(where:{$0.id==item.id}) {
-                Text(verbatim:product.displayPrice).font(CoffeeType.face(.subheadline,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+            if let price=commerce.displayPrice(for:item.id) {
+                Text(verbatim:price).font(CoffeeType.face(.subheadline,weight:.bold)).fixedSize(horizontal:false,vertical:true)
                 PapiText("Price from Apple").font(CoffeeType.face(.caption2)).fixedSize(horizontal:false,vertical:true)
             } else {
                 Text(verbatim:"$"+item.referenceUSD).font(CoffeeType.face(.subheadline,weight:.bold))

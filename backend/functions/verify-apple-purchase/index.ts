@@ -48,9 +48,10 @@ Deno.serve(async (request: Request) => {
     return response(400, { error: "Invalid request" });
   }
   if (!input || typeof input !== "object" || Array.isArray(input)) return response(400, { error: "Invalid request" });
-  const { order_id, signed_transaction } = input as Record<string, unknown>;
-  if (typeof order_id !== "string" || !uuid.test(order_id) ||
-      typeof signed_transaction !== "string" || signed_transaction.length > 30000 || !signed_transaction) {
+  const { order_id, signed_transaction, transaction_id } = input as Record<string, unknown>;
+  const hasSignedTransaction = typeof signed_transaction === "string" && signed_transaction.length > 0 && signed_transaction.length <= 30000;
+  const hasTransactionID = typeof transaction_id === "string" && /^[0-9]{1,32}$/.test(transaction_id);
+  if (typeof order_id !== "string" || !uuid.test(order_id) || (!hasSignedTransaction && !hasTransactionID)) {
     return response(400, { error: "Invalid request" });
   }
 
@@ -66,14 +67,16 @@ Deno.serve(async (request: Request) => {
     const rootDER = Buffer.from(new X509Certificate(root).raw);
     const environment = configuredEnvironment === "Production" ? Environment.PRODUCTION : Environment.SANDBOX;
     const verifier = new SignedDataVerifier([rootDER], true, environment, bundleID, appID);
-    transaction = await verifier.verifyAndDecodeTransaction(signed_transaction);
-    if (!transaction.transactionId || !/^[0-9]{1,32}$/.test(transaction.transactionId)) {
+    if (hasSignedTransaction) transaction = await verifier.verifyAndDecodeTransaction(signed_transaction as string);
+    const requestedID = hasTransactionID ? transaction_id as string : transaction?.transactionId;
+    if (!requestedID || !/^[0-9]{1,32}$/.test(requestedID) ||
+        (transaction && transaction.transactionId !== requestedID)) {
       return response(422, { error: "Transaction does not match this order" });
     }
     // The device's signed payload can predate a refund. Ask Apple for the
     // current transaction and verify that response independently before credit.
     const api = new AppStoreServerAPIClient(signingKey, keyID, issuerID, bundleID, environment);
-    const latest = await api.getTransactionInfo(transaction.transactionId);
+    const latest = await api.getTransactionInfo(requestedID);
     if (!latest.signedTransactionInfo) throw new Error("Missing Apple transaction");
     currentTransaction = await verifier.verifyAndDecodeTransaction(latest.signedTransactionInfo);
   } catch {
@@ -81,10 +84,11 @@ Deno.serve(async (request: Request) => {
     return response(503, { error: "Apple verification unavailable or invalid" });
   }
 
-  if (currentTransaction.transactionId !== transaction.transactionId ||
+  if ((transaction && (currentTransaction.transactionId !== transaction.transactionId ||
       transaction.productId !== order.product_id || transaction.type !== Type.CONSUMABLE ||
       transaction.quantity !== 1 || transaction.revocationDate != null ||
-      transaction.appAccountToken?.toLowerCase() !== order.id.toLowerCase() ||
+      transaction.appAccountToken?.toLowerCase() !== order.id.toLowerCase())) ||
+      (hasTransactionID && currentTransaction.transactionId !== transaction_id) ||
       currentTransaction.productId !== order.product_id || currentTransaction.type !== Type.CONSUMABLE ||
       currentTransaction.quantity !== 1 || currentTransaction.revocationDate != null ||
       currentTransaction.appAccountToken?.toLowerCase() !== order.id.toLowerCase()) {
@@ -94,7 +98,7 @@ Deno.serve(async (request: Request) => {
   const service = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
   const { data: balance, error: settlementError } = await service.rpc("settle_verified_apple_order", {
     p_order: order.id, p_owner: identity.user.id, p_product: order.product_id,
-    p_transaction: transaction.transactionId, p_environment: configuredEnvironment,
+    p_transaction: currentTransaction.transactionId, p_environment: configuredEnvironment,
   });
   if (settlementError) return response(503, { error: "Settlement unavailable; retry later" });
   return response(200, { balance });

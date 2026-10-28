@@ -97,11 +97,11 @@ struct CoffeeJournalView:View {
                             PapiTextButton("Retry"){Task {await store.refreshCloudFeed()}}.disabled(store.cloudFeedBusy)
                         }
                         if store.usesCloudWallet && store.cloudFeed != nil && (!store.editorialReportsReady || store.editorialSummariesUnavailable) {
-                            PapiText(store.cloudFeedBusy ? "Loading moments…":"Some moments could not be loaded.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
+                            PapiText(store.cloudFeedBusy ? "Loading moments…":(!store.editorialReportsReady ? "Some moments could not be loaded.":"Some interactions could not be loaded.")).font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
                             PapiTextButton("Retry"){Task {await store.refreshCloudFeed()}}.disabled(store.cloudFeedBusy)
                         }
                         let collectionIDs=Set(store.visibleCollectionPosts.map(\.id))
-                        let posts=store.usesCloudWallet ? store.visiblePosts+store.visibleCollectionPosts:store.visiblePosts
+                        let posts=interleavedMoments(store.usesCloudWallet ? store.visiblePosts+store.visibleCollectionPosts:store.visiblePosts)
                         if posts.isEmpty && (!store.usesCloudWallet || (store.cloudFeed != nil && store.editorialReportsReady)) {
                             PapiText("No moments yet").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
                         }
@@ -126,6 +126,22 @@ struct CoffeeJournalView:View {
             }
         }.task(id:store.state.cloudAccountID) {if store.usesCloudWallet {await store.refreshCloudFeed()}}
     }
+    private func interleavedMoments(_ moments:[CoffeeMoment])->[CoffeeMoment] {
+        let videos=moments.filter(\.isVideo)
+        let photos=moments.filter{!$0.isVideo}
+        var result:[CoffeeMoment]=[]
+        result.reserveCapacity(moments.count)
+        for index in 0..<max(videos.count,photos.count) {
+            if index.isMultiple(of:2) {
+                if index<videos.count {result.append(videos[index])}
+                if index<photos.count {result.append(photos[index])}
+            } else {
+                if index<photos.count {result.append(photos[index])}
+                if index<videos.count {result.append(videos[index])}
+            }
+        }
+        return result
+    }
 }
 struct CoffeeCollectionTile:View {
     @EnvironmentObject private var store:CoffeeHouse
@@ -135,10 +151,13 @@ struct CoffeeCollectionTile:View {
     var body:some View {
         VStack(alignment:.leading,spacing:0) {
             ZStack(alignment:.topTrailing) {
-                Button {router.go(.post(post.id))} label:{
-                    PapiImage(name:post.media).frame(height:height).frame(maxWidth:.infinity).clipped()
+                Button {router.go(post.isVideo ? .playPost(post.id):.post(post.id))} label:{
+                    ZStack {
+                        PapiImage(name:post.media).frame(height:height).frame(maxWidth:.infinity).clipped()
+                        if post.isVideo {Image("coffeeVideoPlay").resizable().scaledToFit().frame(width:42,height:42).accessibilityHidden(true)}
+                    }.contentShape(Rectangle())
                 }.buttonStyle(.plain)
-                if post.isVideo {PapiText("Video").font(CoffeeType.face(.caption,weight:.bold)).padding(7).background(Color.coffee.opacity(0.85),in:Capsule()).foregroundStyle(.white).padding(.top,52).padding(.trailing,8)}
+                    .papiAccessibilityLabel(post.isVideo ? "Play video":"Open photo")
                 PapiIconButton(asset:"more",label:"Post options",size:20){router.sheet = .safety(.post(post))}
                     .background(Color.cream.opacity(0.95),in:Circle()).padding(5)
             }
@@ -155,16 +174,21 @@ struct CoffeeEditorialReactions:View {
     let post:CoffeeMoment
     var openComments:()->Void
     var body:some View {
-        if let summary=store.editorialSummaries[post.id] {
-            HStack(spacing:12) {
-                Button {Task {await store.changeEditorialLike(post.id)}} label:{
-                    HStack(spacing:4) {Image("like").resizable().scaledToFit().frame(width:22,height:22).opacity(summary.liked ? 1:0.48);Text(summary.like_count,format:.number)}.frame(minWidth:44,minHeight:44)
-                }.papiAccessibilityLabel(summary.liked ? "Unlike":"Like").disabled(store.editorialBusy || store.cloudFeedBusy)
-                Button(action:openComments) {
-                    HStack(spacing:4) {Image("comment").resizable().scaledToFit().frame(width:22,height:22);Text(summary.comment_count,format:.number)}.frame(minWidth:44,minHeight:44)
-                }.papiAccessibilityLabel("Open comments")
-                Spacer(minLength:0)
-            }.font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.coffee).buttonStyle(.plain)
+        let summary=store.editorialSummaries[post.id]
+        if summary != nil || CollectionConversation.entry(post.id) != nil {
+            let sample=CollectionConversation.entry(post.id)
+            VStack(alignment:.leading,spacing:0) {
+                HStack(spacing:12) {
+                    Button {Task {await store.changeEditorialLike(post.id)}} label:{
+                        HStack(spacing:4) {Image("like").resizable().scaledToFit().frame(width:22,height:22).opacity(summary?.liked == true ? 1:0.48);Text((summary?.like_count ?? 0)+(sample?.appreciationCount ?? 0),format:.number)}.frame(minWidth:44,minHeight:44)
+                    }.papiAccessibilityLabel(summary?.liked == true ? "Unlike":"Like").disabled(summary == nil || store.editorialBusy || store.cloudFeedBusy)
+                    Button(action:openComments) {
+                        HStack(spacing:4) {Image("comment").resizable().scaledToFit().frame(width:22,height:22);Text((summary?.comment_count ?? 0)+store.collectionSampleComments(post.id).count,format:.number)}.frame(minWidth:44,minHeight:44)
+                    }.papiAccessibilityLabel("Open comments")
+                    Spacer(minLength:0)
+                }.font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.coffee).buttonStyle(.plain)
+                if sample != nil {PapiText(summary == nil ? "Example activity":"Includes example activity").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).padding(.bottom,8)}
+            }
         }
     }
 }
@@ -175,13 +199,13 @@ struct CoffeeMomentTile:View {
     var height:CGFloat=220
     var body:some View {
         VStack(spacing:0) {
-            Button {router.go(.post(post.id))} label:{
-                ZStack(alignment:.topTrailing) {
-                    if post.isVideo && post.media.hasPrefix("cloud/") {PapiImage(name:"emptyCup").frame(height:height).frame(maxWidth:.infinity).clipped()}
+            Button {router.go(post.isVideo ? .playPost(post.id):.post(post.id))} label:{
+                ZStack {
+                    if post.isVideo && post.media.hasPrefix("cloud/") {CloudMomentPoster(media:post.media).frame(height:height).frame(maxWidth:.infinity).clipped()}
                     else {PapiImage(name:post.media).frame(height:height).frame(maxWidth:.infinity).clipped()}
-                    if post.isVideo {PapiText("Video").font(CoffeeType.face(.caption,weight:.bold)).padding(7).background(Color.coffee.opacity(0.85),in:Capsule()).foregroundStyle(.white).padding(8)}
-                }
-            }.buttonStyle(.plain)
+                    if post.isVideo {Image("coffeeVideoPlay").resizable().scaledToFit().frame(width:42,height:42).accessibilityHidden(true)}
+                }.contentShape(Rectangle())
+            }.buttonStyle(.plain).papiAccessibilityLabel(post.isVideo ? "Play video":"Open photo")
             HStack(spacing:4) {PapiUserLink(userID:post.authorID,size:32);Spacer(minLength:0);PapiIconButton(asset:"more",label:"Safety options",size:20){router.sheet = .safety(.post(post))}}
                 .padding(.horizontal,9).padding(.vertical,5).background(Color.cream)
             VStack(alignment:.leading,spacing:0) {
@@ -224,12 +248,13 @@ struct CoffeeMomentView:View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.papiBounds) private var bounds
     let momentID:String
+    var autoplay=false
     @State private var comment=""
     @State private var confirmDelete=false
     var body:some View {
         PapiScreen {
             if let post=store.post(momentID),store.usesCloudWallet,store.visibleCollectionPosts.contains(where:{$0.id==momentID}) {
-                CoffeeCollectionDetail(post:post)
+                CoffeeCollectionDetail(post:post,autoplay:autoplay)
             } else if let post=store.post(momentID) {
                 VStack(spacing:0) {
                     PapiHeader("Coffee moment") {
@@ -250,8 +275,8 @@ struct CoffeeMomentView:View {
                                         Spacer(minLength:0)
                                     }
                                     let mediaHeight=post.isVideo ? min(470,max(300,(bounds.width > 0 ? bounds.width:320)*1.02)):min(470,max(260,(bounds.width > 0 ? bounds.width:320)*0.95))
-                                    if post.isVideo && post.media.hasPrefix("cloud/") {CloudMomentVideo(media:post.media).frame(height:mediaHeight)}
-                                    else if post.isVideo {CoffeePlayerView(media:post.media).frame(height:mediaHeight)}
+                                    if post.isVideo && post.media.hasPrefix("cloud/") {CloudMomentVideo(media:post.media,autoplay:autoplay).frame(height:mediaHeight)}
+                                    else if post.isVideo {CoffeePlayerView(media:post.media,autoplay:autoplay).frame(height:mediaHeight)}
                                     else {
                                         Button {router.go(.photo(post.media))} label:{
                                             PapiImage(name:post.media).frame(height:mediaHeight).clipShape(RoundedRectangle(cornerRadius:18))
@@ -319,6 +344,7 @@ struct CoffeeCollectionDetail:View {
     @Environment(\.papiBounds) private var bounds
     @State private var comment=""
     let post:CoffeeMoment
+    var autoplay=false
     var body:some View {
         VStack(spacing:0) {
             PapiHeader("Coffee moment") {PapiIconButton(asset:"more",label:"Post options") {router.sheet = .safety(.post(post))}}
@@ -336,19 +362,17 @@ struct CoffeeCollectionDetail:View {
                                 }.frame(minHeight:46).contentShape(Rectangle())
                             }.buttonStyle(.plain)
                             Spacer(minLength:0)
-                            if post.isVideo {PapiText("Video").font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.mutedCoffee)}
                         }.padding(.horizontal,4)
                         let mediaHeight=post.isVideo ? min(470,max(300,(bounds.width > 0 ? bounds.width:320)*1.02)):min(470,max(260,(bounds.width > 0 ? bounds.width:320)*0.95))
-                        if post.isVideo {CoffeePlayerView(media:post.media).frame(height:mediaHeight)}
+                        if post.isVideo {CoffeePlayerView(media:post.media,autoplay:autoplay).frame(height:mediaHeight)}
                         else {
                             Button {router.go(.photo(post.media))} label:{PapiImage(name:post.media).frame(height:mediaHeight).clipShape(RoundedRectangle(cornerRadius:20))}
                                 .buttonStyle(.plain).papiAccessibilityLabel("Open photo")
                         }
                         VStack(alignment:.leading,spacing:12) {
                             PapiText(verbatim:post.caption).font(CoffeeType.face(.body)).fixedSize(horizontal:false,vertical:true)
-                            if store.editorialSummaries[post.id] != nil {
-                                CoffeeEditorialReactions(post:post,openComments:{withAnimation {reader.scrollTo("editorial-notes",anchor:.top)}})
-                            } else {
+                            CoffeeEditorialReactions(post:post,openComments:{withAnimation {reader.scrollTo("editorial-notes",anchor:.top)}})
+                            if store.editorialSummaries[post.id] == nil {
                                 PapiTextButton(store.editorialBusy ? "Loading comments…":"Retry") {Task {await store.refreshEditorial(post.id)}}.disabled(store.editorialBusy)
                             }
                         }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:20))
@@ -360,6 +384,21 @@ struct CoffeeCollectionDetail:View {
                             }
                             Spacer()
                         }.id("editorial-notes")
+                        let sampleNotes=store.collectionSampleComments(post.id)
+                        if !sampleNotes.isEmpty {
+                            PapiText("Example comments").font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.mutedCoffee)
+                            ForEach(sampleNotes) {note in
+                                HStack(alignment:.top,spacing:10) {
+                                    PapiUserLink(userID:note.authorID ?? "",size:38,showsName:false)
+                                    VStack(alignment:.leading,spacing:5) {
+                                        PapiText(verbatim:note.authorID.flatMap{store.person($0)?.name} ?? "Coffee lover").font(CoffeeType.face(.caption,weight:.bold))
+                                        PapiText(verbatim:note.text).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
+                                    }.frame(maxWidth:.infinity,alignment:.leading)
+                                    PapiIconButton(asset:"more",label:"Comment options",size:19) {router.sheet = .safety(.comment(note,owner:store.state.passport.id.uuidString))}
+                                }.padding(14).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:18))
+                            }
+                        }
+                        PapiText("Community comments").font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.mutedCoffee)
                         if let notes=store.editorialComments[post.id] {
                             let visible=notes.filter {note in store.isTargetVisible(.init(kind:.editorialComment,contentReference:note.id.uuidString,authorID:note.author_id.uuidString,parentReference:post.id))}
                             if visible.isEmpty {PapiText("Keep a tasting note or thought about this moment.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)}

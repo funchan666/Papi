@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import UIKit
 
 @MainActor final class CoffeeFilmPlayback:ObservableObject {
     let player=AVPlayer()
@@ -74,8 +75,11 @@ struct CoffeePlayerView:View {
     let media:String
     var remoteURL:URL? = nil
     var onRetry:(()->Void)? = nil
+    var autoplay=false
+    var onAutoplay:(()->Void)? = nil
     @ScaledMetric(relativeTo:.body) private var seekWidth:CGFloat=120
     @StateObject private var playback=CoffeeFilmPlayback()
+    @State private var didAutoplay=false
     @Environment(\.scenePhase) private var scenePhase
     var body:some View {
         VStack(spacing:0) {
@@ -97,25 +101,63 @@ struct CoffeePlayerView:View {
                     PapiText(time(playback.position)).font(CoffeeType.face(.caption)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.7)
                 }
             }.padding(.horizontal,14).background(Color.coffee).foregroundStyle(.white)
-        }.clipShape(RoundedRectangle(cornerRadius:18)).onAppear{playback.load(media,remoteURL:remoteURL)}.onDisappear{playback.pause()}
+        }.clipShape(RoundedRectangle(cornerRadius:18)).onAppear{playback.load(media,remoteURL:remoteURL);startAutoplayIfNeeded()}.onDisappear{playback.pause()}
             .onChange(of:media){_,value in playback.load(value,remoteURL:remoteURL)}
             .onChange(of:remoteURL){_,value in playback.load(media,remoteURL:value,force:true)}
-            .onChange(of:scenePhase){_,phase in if phase != .active {playback.pause()}}
+            .onChange(of:scenePhase){_,phase in if phase != .active {playback.pause()} else {startAutoplayIfNeeded()}}
+    }
+    private func startAutoplayIfNeeded() {
+        guard autoplay,!didAutoplay,scenePhase == .active else{return}
+        didAutoplay=true;onAutoplay?();playback.toggle()
     }
     private func time(_ t:Double)->String {let value=Int(max(0,t));return String(format:"%d:%02d",value/60,value%60)}
 }
+struct CloudMomentPoster:View {
+    let media:String
+    @EnvironmentObject private var store:CoffeeHouse
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var image:UIImage?
+    @State private var imageOwner:UUID?
+    @State private var imageMedia:String?
+    private var isVisible:Bool {store.isVisibleCloudVideo(media)}
+    var body:some View {
+        Group {
+            if scenePhase == .active,store.state.signedIn,imageOwner==store.state.cloudAccountID,imageMedia==media,isVisible,let image {
+                Image(uiImage:image).resizable().scaledToFill()
+            } else {PapiImage(name:"emptyCup")}
+        }.clipped()
+        .task(id:"\(store.state.cloudAccountID?.uuidString ?? "none")|\(media)|\(scenePhase == .active)|\(store.state.signedIn)|\(isVisible)") {
+            image=nil;imageOwner=nil;imageMedia=nil
+            guard scenePhase == .active,store.state.signedIn,let account=store.state.cloudAccountID,
+                  media.hasPrefix("cloud/"),isVisible else{return}
+            let path=String(media.dropFirst(6))
+            guard path.split(separator:"/").count==2,!path.contains("..") else{return}
+            do {
+                let url=try await CoffeeCloud.shared.mediaURL(path:path,account:account,expiresIn:120)
+                guard !Task.isCancelled,url.scheme=="https",url.host=="cquoffowtjnxmgaxavym.supabase.co",
+                      store.state.signedIn,store.state.cloudAccountID==account,isVisible else{return}
+                let poster=await CoffeeMedia.privateVideoPoster(from:url)
+                guard !Task.isCancelled,scenePhase == .active,store.state.signedIn,store.state.cloudAccountID==account,isVisible,let poster else{return}
+                image=poster;imageOwner=account;imageMedia=media
+            } catch {return}
+        }
+        .onDisappear {image=nil;imageOwner=nil;imageMedia=nil}
+    }
+}
 struct CloudMomentVideo:View {
     let media:String
+    var autoplay=false
     @EnvironmentObject private var store:CoffeeHouse
     @Environment(\.scenePhase) private var scenePhase
     @State private var signedURL:URL?
     @State private var owner:UUID?
     @State private var failed=false
     @State private var reload=0
+    @State private var didAutoplay=false
     var body:some View {
         Group {
             if let signedURL,let owner,store.state.signedIn,store.state.cloudAccountID==owner,scenePhase == .active {
-                CoffeePlayerView(media:media,remoteURL:signedURL,onRetry:{reload+=1})
+                CoffeePlayerView(media:media,remoteURL:signedURL,onRetry:{reload+=1},autoplay:autoplay && !didAutoplay,onAutoplay:{didAutoplay=true})
             } else {
                 VStack(spacing:12) {
                     PapiText(failed ? "This video is unavailable.":"Loading video…")

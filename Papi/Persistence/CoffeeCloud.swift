@@ -253,7 +253,7 @@ actor CoffeeCloud {
     }
     private struct PurchaseVerification: Encodable {
         let order_id: UUID
-        let signed_transaction: String
+        let transaction_id: String
     }
     private struct PurchaseSettlement: Decodable { let balance: Int }
     struct Block: Codable {
@@ -1058,10 +1058,10 @@ actor CoffeeCloud {
 
     /// Finish the StoreKit transaction only after this returns and the caller
     /// has safely persisted the resulting server balance and order state.
-    func verifyPurchase(orderID: UUID, signedTransaction: String, account: UUID) async throws -> Int {
+    func verifyPurchase(orderID: UUID, transactionID: String, account: UUID) async throws -> Int {
         _ = try await identity(account)
         let result: PurchaseSettlement = try await client.functions.invoke("verify-apple-purchase",
-            options: FunctionInvokeOptions(body: PurchaseVerification(order_id: orderID, signed_transaction: signedTransaction)))
+            options: FunctionInvokeOptions(body: PurchaseVerification(order_id: orderID, transaction_id: transactionID)))
         _ = try await identity(account)
         return result.balance
     }

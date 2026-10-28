@@ -32,6 +32,7 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var cloudBrewHistory: [CoffeeCloud.BrewBookHistory]?
     @Published private(set) var cloudBrewHistoryBusy=false
     @Published private(set) var cloudProfiles: [CoffeeCloud.Profile]?
+    @Published private(set) var cloudReferencedProfiles:[UUID:CoffeeCloud.Profile] = [:]
     @Published private(set) var cloudFollows: [CoffeeCloud.Follow] = []
     @Published private(set) var cloudFriendships: [CoffeeCloud.Friendship] = []
     @Published private(set) var cloudBlocks: [CoffeeCloud.Block] = []
@@ -505,16 +506,26 @@ struct CoffeeReceipt: Identifiable {
     }
 
     func ensureCloudProfiles(_ ids:Set<UUID>) async {
-        guard let account=state.cloudAccountID,state.signedIn,let current=cloudProfiles else{return}
-        let missing=Array(ids.subtracting(Set(current.map(\.id))))
-        guard !missing.isEmpty else{return}
+        guard let account=state.cloudAccountID,state.signedIn else{return}
+        let known=Set((cloudProfiles ?? []).map(\.id)).union(cloudReferencedProfiles.keys)
+        let missing=Array(ids.subtracting(known))
         do {
             for start in stride(from:0,to:missing.count,by:80) {
                 let batch=Array(missing[start..<min(start+80,missing.count)])
                 let profiles=try await CoffeeCloud.shared.profiles(ids:batch,account:account)
-                let summaries=try await CoffeeCloud.shared.profileImageSummaries(profiles.map(\.id),account:account)
-                guard state.signedIn,state.cloudAccountID==account,var now=cloudProfiles else{return}
-                let known=Set(now.map(\.id));now.append(contentsOf:profiles.filter{!known.contains($0.id)});cloudProfiles=now
+                guard state.signedIn,state.cloudAccountID==account else{return}
+                for profile in profiles {cloudReferencedProfiles[profile.id]=profile}
+                if var now=cloudProfiles {
+                    let existing=Set(now.map(\.id));now.append(contentsOf:profiles.filter{!existing.contains($0.id)});cloudProfiles=now
+                }
+            }
+        } catch {if state.cloudAccountID != account {return}}
+        let missingImages=Array(ids.subtracting(cloudImageSummaries.keys))
+        do {
+            for start in stride(from:0,to:missingImages.count,by:80) {
+                let batch=Array(missingImages[start..<min(start+80,missingImages.count)])
+                let summaries=try await CoffeeCloud.shared.profileImageSummaries(batch,account:account)
+                guard state.signedIn,state.cloudAccountID==account else{return}
                 for item in summaries {cloudImageSummaries[item.owner_id]=item}
             }
         } catch {return}
@@ -922,12 +933,14 @@ struct CoffeeReceipt: Identifiable {
             guard state.signedIn,state.cloudAccountID==account,state.pendingCloudProfile?.revision==pending.revision else {return false}
             // Keep the pre-cloud passport intact until the full migration is complete.
             guard commit({$0.pendingCloudProfile=nil}) else {return false}
+            cloudReferencedProfiles[account]=profile
             if var profiles=cloudProfiles,let index=profiles.firstIndex(where:{$0.id==account}) {profiles[index]=profile;cloudProfiles=profiles}
             return true
         } catch {
             guard state.cloudAccountID==account else {return false}
             if let connectionError=error as? CoffeeCloud.ConnectionError,case .profileConflict=connectionError {
                 guard commit({$0.pendingCloudProfile=nil}) else {return false}
+                cloudReferencedProfiles.removeValue(forKey:account)
                 cloudProfiles=try? await CoffeeCloud.shared.profiles(for:account)
                 inform("Profile changed", "Your profile changed elsewhere. Your edits remain on this page; review them and save again.")
                 return false
@@ -1610,7 +1623,7 @@ struct CoffeeReceipt: Identifiable {
     private func resetCloudState() {
         brewSyncDebounce?.cancel();brewSyncDebounce=nil
         cloudWallet=nil;cloudWalletUnavailable=false;cloudSubmissions=nil;cloudBrewNeedsAttention=false;cloudBrewHistory=nil
-        cloudProfiles=nil;cloudImageSummaries=[:];cloudProfileImages=[:];cloudProfileImagesHasMore=[:]
+        cloudProfiles=nil;cloudReferencedProfiles=[:];cloudImageSummaries=[:];cloudProfileImages=[:];cloudProfileImagesHasMore=[:]
         cloudFollows=[];cloudFriendships=[];cloudBlocks=[];cloudReports=[];cloudMessages=[];cloudMessagesUnavailable=false
         cloudConversations=[:];cloudConversationHasMore=[:];cloudConversationUnavailable=[];cloudCalls=nil;cloudVoiceTopics=nil
         cloudFeed=nil;cloudFeedHasMore=false;cloudShelves=[:];cloudShelfHasMore=[:];cloudComments=[:];cloudCommentsHasMore=[:];editorialSummaries=[:];editorialComments=[:];editorialReportedPosts=[];editorialReportsReady=false;editorialSummariesUnavailable=false

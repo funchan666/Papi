@@ -249,7 +249,7 @@ struct PapiInputBar<Field:View,Actions:View>:View {
         let compact=bounds.height>0 && bounds.height<lineHeight*10
         PapiComposerLayout(minimumInputWidth:compact ? 60:inputWidth) {
             field().frame(maxWidth:.infinity)
-            actions()
+            HStack(spacing:4) {actions()}
         }.environment(\.papiComposerLines,compact ? 1:3)
             .padding(10).background {background.ignoresSafeArea(.container,edges:.bottom)}.papiAvoidReserved()
     }

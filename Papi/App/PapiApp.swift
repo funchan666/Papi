@@ -36,7 +36,7 @@ import SwiftUI
                 if signedIn {Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}}
             }
             .onChange(of:store.state.cloudAccountID) {_,account in
-                if account != nil {Task {await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}}
+                if account != nil {Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}}
             }
             .onChange(of:store.state.deletedCloudAccountID) {old,new in
                 if old != nil && new == nil {deferredOnlinePolicy=false}
@@ -47,7 +47,7 @@ import SwiftUI
     }
 }
 enum CoffeeDestination:Hashable {
-    case room(String),post(String),person(String),chat(String),liveCall(UUID),beans,cafes,settings,editProfile,linkEmail,recoverEmail,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,photo(String),gifts(String),reviewQueue,tables,brewBench,brewRecipe(String),brewArchive,brewCup(UUID),cuppingFlight,cupChoice(Int)
+    case room(String),post(String),playPost(String),person(String),chat(String),liveCall(UUID),beans,cafes,settings,editProfile,linkEmail,recoverEmail,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,photo(String),gifts(String),reviewQueue,tables,brewBench,brewRecipe(String),brewArchive,brewCup(UUID),cuppingFlight,cupChoice(Int)
 }
 enum CoffeePresentation:Identifiable {
     case compose,checkin,report(SafetyTarget),safety(SafetyTarget),more(String),gifts(String)
@@ -88,7 +88,7 @@ enum CoffeePresentation:Identifiable {
     func removeHiddenDestinations(using store:CoffeeHouse) {
         if let index=path.firstIndex(where:{route in
             switch route {
-            case .post(let id):return store.post(id)==nil
+            case .post(let id),.playPost(let id):return store.post(id)==nil
             case .person(let id),.chat(let id):return store.isUserHidden(id)
             case .room(let id):return CoffeeTable.previews.first(where:{$0.id==id}).map{!store.isRoomVisible($0)} ?? true
             default:return false
@@ -148,6 +148,7 @@ struct PapiRootView:View {
             else if let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {CoffeeTableView(room:room)}
             else {PapiScreen {VStack(spacing:0){PapiHeader("Coffee tables");ScrollView {PapiEmpty(title:"This content is unavailable")}}}}
         case .post(let id):CoffeeMomentView(momentID:id)
+        case .playPost(let id):CoffeeMomentView(momentID:id,autoplay:true)
         case .person(let id):
             if id==store.state.passport.id.uuidString || id==store.state.cloudAccountID?.uuidString {VStack(spacing:0){PapiHeader("Profile").background(Color.cream).papiContainerMargins();MyCoffeePassportView()}.background {PapiBackground()}}
             else {MemberPassportView(memberID:id)}

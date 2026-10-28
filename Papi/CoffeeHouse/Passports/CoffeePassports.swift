@@ -118,7 +118,7 @@ struct MyCoffeePassportView:View {
                 .frame(width:container.size.width,height:container.size.height+topInset)
                 .clipped().offset(y:-topInset)
             }
-        }.task(id:store.state.cloudAccountID) {if store.usesCloudWallet {if store.cloudFeed==nil {await store.refreshCloudFeed()};if let account=store.state.cloudAccountID {await store.refreshCloudProfileImages(owner:account)}}}
+        }.task(id:store.state.cloudAccountID) {if store.usesCloudWallet {if let account=store.state.cloudAccountID {await store.refreshCloudProfileImages(owner:account)};if store.cloudFeed==nil {await store.refreshCloudFeed()}}}
             .task(id:"\(store.state.cloudAccountID?.uuidString ?? "none")|\(collection)") {
                 guard let account=store.state.cloudAccountID,collection != 1 else{return}
                 let saved=collection==2
