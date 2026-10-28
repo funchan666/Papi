@@ -1,10 +1,11 @@
 import Foundation
 
-enum SafetyKind:String,Codable {case user,post,comment,message,room}
+enum SafetyKind:String,Codable {case user,post,comment,message,room,editorialComment}
 struct SafetyTarget:Hashable,Identifiable,Codable {
     var kind:SafetyKind
     var contentReference:String
     var authorID:String?
+    var parentReference:String? = nil
     var id:String {kind.rawValue+":"+contentReference}
     static func user(_ id:String)->Self {.init(kind:.user,contentReference:id,authorID:id)}
     static func post(_ value:CoffeeMoment)->Self {.init(kind:.post,contentReference:value.id,authorID:value.authorID)}
@@ -18,6 +19,7 @@ struct SafetyTarget:Hashable,Identifiable,Codable {
         case kind = "kind"
         case contentReference = "subjectID"
         case authorID = "authorID"
+        case parentReference = "parentReference"
     }
 }
 enum ModerationStatus:String,Codable {case awaitingSubmission,pendingReview,approved,rejected}

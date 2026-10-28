@@ -49,7 +49,7 @@ struct SafetyMenuView:View {
                                 safetyChoice("Report",detail:"Choose a reason",tint:Color.white) {reporting=true}
                                 safetyChoice(target.kind == .user ? "Block user":"Hide content",detail:target.kind == .user ? "Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.":"This item will disappear from your lists.",tint:Color.butter.opacity(0.7)) {confirmBlock=true}
                                 if target.kind != .user,let author=target.authorID,author != store.state.passport.id.uuidString,author != store.state.cloudAccountID?.uuidString {
-                                    safetyChoice("Block author",detail:"Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.",tint:Color.white) {authorToBlock=author}
+                                    safetyChoice("Block author",detail:UUID(uuidString:author)==nil ? "Their content will be hidden on this device. You can unblock them in Settings.":"Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.",tint:Color.white) {authorToBlock=author}
                                 }
                             }.padding(20).frame(maxWidth:600).frame(maxWidth:.infinity)
                         }
@@ -59,7 +59,7 @@ struct SafetyMenuView:View {
                             safetyConfirmation(title:target.kind == .user ? "Block this user?":"Hide this content?",message:target.kind == .user ? "Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.":"This item will disappear from your lists.",confirm:target.kind == .user ? "Block user":"Hide content",action:{confirmBlock=false;if target.kind == .user {blockUser(target.contentReference)} else if store.hide(target){dismiss()}},cancel:{confirmBlock=false})
                         }
                         if let authorToBlock {
-                            safetyConfirmation(title:"Block this user?",message:"Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.",confirm:"Block user",action:{self.authorToBlock=nil;blockUser(authorToBlock)},cancel:{self.authorToBlock=nil})
+                            safetyConfirmation(title:"Block this user?",message:UUID(uuidString:authorToBlock)==nil ? "Their content will be hidden on this device. You can unblock them in Settings.":"Their posts, comments, rooms and chats will be hidden. You can unblock them in Settings.",confirm:"Block user",action:{self.authorToBlock=nil;blockUser(authorToBlock)},cancel:{self.authorToBlock=nil})
                         }
                     }
                 }
@@ -67,7 +67,9 @@ struct SafetyMenuView:View {
         }
     }
     private func blockUser(_ id:String) {
-        if store.usesCloudWallet {
+        if UUID(uuidString:id)==nil {
+            if store.commit({_ = $0.blockedMembers.insert(id)}) {dismiss()}
+        } else if store.usesCloudWallet {
             guard let member=UUID(uuidString:id) else {return}
             Task {if await store.changeCloudBlock(member,enabled:true){dismiss()}}
         } else if store.block(id) {dismiss()}
@@ -122,7 +124,7 @@ struct ReportView:View {
                             }.buttonStyle(.plain).disabled(store.state.pendingCloudReport != nil).accessibilityAddTraits(reason==item ? .isSelected:[])
                         }
                         PapiTextButton("Report") {if let reason {if store.usesCloudWallet {Task {if await store.submitCloudReport(target,reason:reason){dismiss()}}} else if store.report(target,reason:reason){dismiss()}}}
-                            .buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(reason==nil || store.cloudSocialBusy || (store.usesCloudWallet && UUID(uuidString:target.contentReference)==nil))
+                            .buttonStyle(PapiButtonStyle(wide:true,cornerRadius:16)).disabled(reason==nil || store.cloudSocialBusy || (store.usesCloudWallet && UUID(uuidString:target.contentReference)==nil && !(target.kind == .post && target.contentReference.hasPrefix("editorial-"))))
                     }.padding(20).frame(maxWidth:600).frame(maxWidth:.infinity)
                 }
             }

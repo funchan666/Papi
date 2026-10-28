@@ -31,7 +31,7 @@ import Foundation
     }
     var blockedIDs:Set<String> {
         guard let account=state.cloudAccountID else {return state.blockedMembers}
-        return Set(cloudBlocks.filter{$0.blocker_id==account}.map{$0.blocked_id.uuidString})
+        return Set(cloudBlocks.filter{$0.blocker_id==account}.map{$0.blocked_id.uuidString}).union(state.blockedMembers.filter{UUID(uuidString:$0)==nil})
     }
     func isFollowing(_ id:String)->Bool {
         guard usesCloudWallet else {return state.followedMembers.contains(id)}

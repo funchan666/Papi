@@ -408,7 +408,7 @@ struct MemberPassportView:View {
                     let contentWidth=max(0,min(720,container.size.width)-40)
                     let posts: [CoffeeMoment] = {
                         if store.usesCloudWallet,let member=UUID(uuidString:person.id) {return store.cloudShelfPosts(author:member,saved:false)}
-                        return store.visiblePosts.filter{$0.authorID==person.id}
+                        return (store.usesCloudWallet ? store.visibleCollectionPosts:store.visiblePosts).filter{$0.authorID==person.id}
                     }()
                     ScrollView {
                         VStack(spacing:0) {
@@ -520,7 +520,10 @@ struct MemberPassportView:View {
                 PapiEmpty(title:"No published posts",detail:"Explore coffee moments in the Papi collection.")
             } else {
                 LazyVGrid(columns:typeSize.isAccessibilitySize ? [GridItem(.flexible())]:[GridItem(.adaptive(minimum:170),spacing:12)],spacing:14) {
-                    ForEach(posts){post in CoffeeMomentTile(post:post,height:210)}
+                    ForEach(posts){post in
+                        if store.usesCloudWallet,post.id.hasPrefix("editorial-") {CoffeeCollectionTile(post:post,height:210)}
+                        else {CoffeeMomentTile(post:post,height:210)}
+                    }
                 }
             }
         }

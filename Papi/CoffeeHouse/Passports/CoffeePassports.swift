@@ -324,6 +324,9 @@ struct CoffeePreferencesView:View {
                                 PapiRow(title:"Finish pending comment"){Task {_ = await store.submitCloudComment(moment:pending.momentID,text:pending.body)}}.disabled(store.cloudCommentsBusy)
                                 PapiRow(title:"Discard pending comment"){confirmation="discardComment"}.disabled(store.cloudCommentsBusy)
                             }
+                            if let pending=store.state.pendingCloudEditorialComment {
+                                PapiRow(title:"Finish pending comment"){Task {_ = await store.sendEditorialComment(pending.momentID,text:pending.body)}}.disabled(store.editorialBusy)
+                            }
                             row("Blacklist",.blacklist)
                             row("Community Guidelines",.legal("community"))
                             row("Privacy Policy",.legal("privacy"))

@@ -167,6 +167,12 @@ struct PendingCloudComment: Codable {
     let momentID:UUID
     let body:String
 }
+struct PendingCloudEditorialComment:Codable {
+    let id:UUID
+    let accountID:UUID
+    let momentID:String
+    let body:String
+}
 struct PendingCloudProfileImage:Codable {
     let id:UUID
     let accountID:UUID
@@ -234,6 +240,7 @@ struct CoffeeArchive: Codable {
     var pendingCloudFriendship: PendingCloudFriendship? = nil
     var pendingCloudProfile: PendingCloudProfile? = nil
     var pendingCloudComment: PendingCloudComment? = nil
+    var pendingCloudEditorialComment:PendingCloudEditorialComment? = nil
     var pendingCloudProfileImage: PendingCloudProfileImage? = nil
     var pendingCloudProfileImageRemoval: PendingCloudProfileImageRemoval? = nil
     var pendingCloudAttachment: PendingCloudAttachment? = nil
@@ -310,6 +317,7 @@ struct CoffeeArchive: Codable {
         case pendingCloudFriendship = "pendingCloudFriendship"
         case pendingCloudProfile = "pendingCloudProfile"
         case pendingCloudComment = "pendingCloudComment"
+        case pendingCloudEditorialComment = "pendingCloudEditorialComment"
         case pendingCloudProfileImage = "pendingCloudProfileImage"
         case pendingCloudProfileImageRemoval = "pendingCloudProfileImageRemoval"
         case pendingCloudAttachment = "pendingCloudAttachment"
@@ -428,7 +436,7 @@ extension CoffeeMoment {
         ]
         let photographs=(Array(0..<18)+[30]).map {index in
             let id="editorial-photo-\(index)"
-            return CoffeeMoment(id:id,authorID:CollectionConversation.entry(id)?.contributorID ?? CoffeeMember.editorial.id,media:CoffeeArtwork.photoNames[index] ?? "emptyCup",caption:captions[index] ?? "A coffee moment from the Papi journal.",category:"Café journal",createdAt:Date(timeIntervalSince1970:1_790_000_000+Double(index)*3600))
+            return CoffeeMoment(id:id,authorID:CollectionConversation.entry(id)?.contributorID ?? CoffeeMember.previews[index % CoffeeMember.previews.count].id,media:CoffeeArtwork.photoNames[index] ?? "emptyCup",caption:captions[index] ?? "A coffee moment.",category:"Café journal",createdAt:Date(timeIntervalSince1970:1_790_000_000+Double(index)*3600))
         }
         let filmNotes:[Int:String] = [
             0:"A little ghost appears in the milk foam, one careful pour at a time.",
@@ -456,7 +464,7 @@ extension CoffeeMoment {
         let films=CoffeeArtwork.filmNames.keys.sorted().compactMap {index -> CoffeeMoment? in
             guard let reference=CoffeeArtwork.filmNames[index],let caption=filmNotes[index] else{return nil}
             let id="editorial-video-\(index)"
-            return CoffeeMoment(id:id,authorID:CollectionConversation.entry(id)?.contributorID ?? CoffeeMember.editorial.id,media:reference,isVideo:true,caption:caption,category:[2,3,10,12].contains(index) ? "Between cafés":"Coffee films",createdAt:Date(timeIntervalSince1970:1_790_000_000+Double(index)*3600))
+            return CoffeeMoment(id:id,authorID:CollectionConversation.entry(id)?.contributorID ?? CoffeeMember.previews[index % CoffeeMember.previews.count].id,media:reference,isVideo:true,caption:caption,category:[2,3,10,12].contains(index) ? "Between cafés":"Coffee films",createdAt:Date(timeIntervalSince1970:1_790_000_000+Double(index)*3600))
         }
         return Array(photographs.prefix(4))+films+Array(photographs.dropFirst(4))
     }()

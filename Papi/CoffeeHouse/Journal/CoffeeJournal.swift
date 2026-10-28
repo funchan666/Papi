@@ -124,22 +124,25 @@ struct CoffeeJournalView:View {
     }
 }
 struct CoffeeCollectionTile:View {
+    @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
     let post:CoffeeMoment
     let height:CGFloat
     var body:some View {
-        Button {router.go(.post(post.id))} label:{
-            VStack(alignment:.leading,spacing:0) {
-                ZStack(alignment:.topTrailing) {
+        VStack(alignment:.leading,spacing:0) {
+            ZStack(alignment:.topTrailing) {
+                Button {router.go(.post(post.id))} label:{
                     PapiImage(name:post.media).frame(height:height).frame(maxWidth:.infinity).clipped()
-                    if post.isVideo {PapiText("Video").font(CoffeeType.face(.caption,weight:.bold)).padding(7).background(Color.coffee.opacity(0.85),in:Capsule()).foregroundStyle(.white).padding(8)}
-                }
-                VStack(alignment:.leading,spacing:3) {
-                    PapiText(post.category).font(CoffeeType.face(.caption2,weight:.medium)).foregroundStyle(Color.coffee)
-                    PapiText("Papi coffee journal").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)
-                }.frame(maxWidth:.infinity,alignment:.leading).padding(10).background(Color.peach.opacity(0.55))
-            }.clipShape(RoundedRectangle(cornerRadius:18))
-        }.buttonStyle(.plain)
+                }.buttonStyle(.plain)
+                if post.isVideo {PapiText("Video").font(CoffeeType.face(.caption,weight:.bold)).padding(7).background(Color.coffee.opacity(0.85),in:Capsule()).foregroundStyle(.white).padding(.top,52).padding(.trailing,8)}
+                PapiIconButton(asset:"more",label:"Post options",size:20){router.sheet = .safety(.post(post))}
+                    .background(Color.cream.opacity(0.95),in:Circle()).padding(5)
+            }
+            VStack(alignment:.leading,spacing:3) {
+                PapiText(post.category).font(CoffeeType.face(.caption2,weight:.medium)).foregroundStyle(Color.coffee)
+                PapiUserLink(userID:post.authorID,size:26)
+            }.frame(maxWidth:.infinity,alignment:.leading).padding(.horizontal,10).padding(.top,8).background(Color.peach.opacity(0.55))
+        }.clipShape(RoundedRectangle(cornerRadius:18))
     }
 }
 struct CoffeeMomentTile:View {
@@ -223,7 +226,7 @@ struct CoffeeMomentView:View {
                                         }
                                         Spacer(minLength:0)
                                     }
-                                    let mediaHeight=min(360,max(220,(bounds.width > 0 ? bounds.width:320)*0.78))
+                                    let mediaHeight=post.isVideo ? min(570,max(310,(bounds.width > 0 ? bounds.width:320)*1.20)):min(470,max(260,(bounds.width > 0 ? bounds.width:320)*0.95))
                                     if post.isVideo && post.media.hasPrefix("cloud/") {CloudMomentVideo(media:post.media).frame(height:mediaHeight)}
                                     else if post.isVideo {CoffeePlayerView(media:post.media).frame(height:mediaHeight)}
                                     else {
@@ -288,26 +291,94 @@ struct CoffeeMomentView:View {
     }
 }
 struct CoffeeCollectionDetail:View {
+    @EnvironmentObject private var store:CoffeeHouse
     @EnvironmentObject private var router:CoffeeNavigation
     @Environment(\.papiBounds) private var bounds
+    @State private var comment=""
     let post:CoffeeMoment
     var body:some View {
         VStack(spacing:0) {
-            PapiHeader("Coffee collection")
-            ScrollView {
-                VStack(alignment:.leading,spacing:14) {
-                    PapiText("Papi coffee journal").font(CoffeeType.face(.headline))
-                    PapiText(post.category).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
-                    let mediaHeight=min(360,max(220,(bounds.width > 0 ? bounds.width:320)*0.78))
-                    if post.isVideo {CoffeePlayerView(media:post.media).frame(height:mediaHeight)}
-                    else {
-                        Button {router.go(.photo(post.media))} label:{
-                            PapiImage(name:post.media).frame(height:mediaHeight).clipShape(RoundedRectangle(cornerRadius:18))
-                        }.buttonStyle(.plain).papiAccessibilityLabel("Open photo")
+            PapiHeader("Coffee moment") {PapiIconButton(asset:"more",label:"Post options") {router.sheet = .safety(.post(post))}}
+            ScrollViewReader {reader in
+                ScrollView {
+                    VStack(alignment:.leading,spacing:18) {
+                        HStack(spacing:11) {
+                            Button {router.go(.person(post.authorID))} label:{
+                                HStack(spacing:11) {
+                                    Avatar(name:store.person(post.authorID)?.portrait ?? "emptyCup",size:46)
+                                    VStack(alignment:.leading,spacing:3) {
+                                        PapiText(verbatim:store.person(post.authorID)?.name ?? "Coffee lover").font(CoffeeType.face(.headline))
+                                        PapiText(post.category).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                                    }
+                                }.frame(minHeight:46).contentShape(Rectangle())
+                            }.buttonStyle(.plain)
+                            Spacer(minLength:0)
+                            if post.isVideo {PapiText("Video").font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.mutedCoffee)}
+                        }.padding(.horizontal,4)
+                        let mediaHeight=post.isVideo ? min(570,max(310,(bounds.width > 0 ? bounds.width:320)*1.20)):min(470,max(260,(bounds.width > 0 ? bounds.width:320)*0.95))
+                        if post.isVideo {CoffeePlayerView(media:post.media).frame(height:mediaHeight)}
+                        else {
+                            Button {router.go(.photo(post.media))} label:{PapiImage(name:post.media).frame(height:mediaHeight).clipShape(RoundedRectangle(cornerRadius:20))}
+                                .buttonStyle(.plain).papiAccessibilityLabel("Open photo")
+                        }
+                        VStack(alignment:.leading,spacing:12) {
+                            PapiText(verbatim:post.caption).font(CoffeeType.face(.body)).fixedSize(horizontal:false,vertical:true)
+                            if let summary=store.editorialSummaries[post.id] {
+                                HStack(spacing:18) {
+                                    Button {Task {await store.changeEditorialLike(post.id)}} label:{
+                                        HStack(spacing:6) {Image("like").resizable().scaledToFit().frame(width:23,height:23).opacity(summary.liked ? 1:0.48);Text(summary.like_count,format:.number)}.frame(minWidth:44,minHeight:44)
+                                    }.papiAccessibilityLabel(summary.liked ? "Unlike":"Like").disabled(store.editorialBusy)
+                                    Button {withAnimation {reader.scrollTo("editorial-notes",anchor:.top)}} label:{
+                                        HStack(spacing:6) {Image("comment").resizable().scaledToFit().frame(width:23,height:23);Text(summary.comment_count,format:.number)}.frame(minWidth:44,minHeight:44)
+                                    }.papiAccessibilityLabel("Open comments")
+                                    Spacer()
+                                }.font(CoffeeType.face(.caption,weight:.semibold)).buttonStyle(.plain)
+                            } else {
+                                PapiTextButton(store.editorialBusy ? "Loading comments…":"Retry") {Task {await store.refreshEditorial(post.id)}}.disabled(store.editorialBusy)
+                            }
+                        }.padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:20))
+                        HStack(spacing:12) {
+                            PapiArtworkFit(asset:"momentNoteArt").frame(width:50,height:50)
+                            VStack(alignment:.leading,spacing:3) {
+                                PapiText("Cup notes").font(CoffeeType.display(.title3,weight:.bold))
+                                PapiText("Comments").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                            }
+                            Spacer()
+                        }.id("editorial-notes")
+                        if let notes=store.editorialComments[post.id] {
+                            let visible=notes.filter {note in store.isTargetVisible(.init(kind:.editorialComment,contentReference:note.id.uuidString,authorID:note.author_id.uuidString,parentReference:post.id))}
+                            if visible.isEmpty {PapiText("Keep a tasting note or thought about this moment.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)}
+                            ForEach(visible) {note in
+                                HStack(alignment:.top,spacing:10) {
+                                    PapiUserLink(userID:note.author_id.uuidString,size:38,showsName:false)
+                                    VStack(alignment:.leading,spacing:5) {
+                                        PapiText(verbatim:store.person(note.author_id.uuidString)?.name ?? "Coffee lover").font(CoffeeType.face(.caption,weight:.bold))
+                                        PapiText(verbatim:note.body).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
+                                        if note.moderation_status != "approved" {PapiText(note.moderation_status == "rejected" ? "Not approved":"Under review").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee)}
+                                    }.frame(maxWidth:.infinity,alignment:.leading)
+                                    if note.author_id==store.state.cloudAccountID {
+                                        PapiIconButton(asset:"trash",label:"Delete note",size:19) {Task {await store.removeEditorialComment(note.id,key:post.id)}}.disabled(store.editorialBusy)
+                                    } else {
+                                        PapiIconButton(asset:"more",label:"Comment options",size:19) {router.sheet = .safety(.init(kind:.editorialComment,contentReference:note.id.uuidString,authorID:note.author_id.uuidString,parentReference:post.id))}
+                                    }
+                                }.padding(14).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:18))
+                            }
+                        }
+                    }.padding(.horizontal,16).padding(.top,8).padding(.bottom,20).frame(maxWidth:760).frame(maxWidth:.infinity)
+                }.scrollDismissesKeyboard(.interactively)
+                .safeAreaInset(edge:.bottom,spacing:0) {
+                    PapiInputBar(background:.cream) {
+                        PapiInput("Tell your opinion…",text:$comment,axis:.vertical).lineLimit(1...3).foregroundStyle(Color.coffee).tint(Color.coffee).padding(12).background(Color.white,in:RoundedRectangle(cornerRadius:18)).disabled(store.state.pendingCloudEditorialComment != nil)
+                    } actions: {
+                        PapiTextButton("SAVE") {let body=comment;Task {if await store.sendEditorialComment(post.id,text:body),comment==body {comment=""}}}
+                            .font(CoffeeType.face(.caption,weight:.bold)).foregroundStyle(.white).padding(12).frame(minHeight:44).background(Color.coffee,in:Capsule())
+                            .disabled(comment.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty || store.editorialBusy || (store.state.pendingCloudEditorialComment != nil && store.state.pendingCloudEditorialComment?.momentID != post.id))
                     }
-                    PapiText(verbatim:post.caption).font(CoffeeType.face(.body)).fixedSize(horizontal:false,vertical:true)
-                }.padding(16).frame(maxWidth:760,alignment:.leading).background(Color.white.opacity(0.9),in:RoundedRectangle(cornerRadius:24)).padding(16).frame(maxWidth:.infinity)
-            }.scrollDismissesKeyboard(.interactively)
+                }
+            }
+        }.task(id:post.id) {
+            if let pending=store.state.pendingCloudEditorialComment,pending.momentID==post.id {comment=pending.body}
+            await store.refreshEditorial(post.id)
         }
     }
 }

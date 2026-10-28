@@ -161,6 +161,35 @@ actor CoffeeCloud {
         let moderation_status: String
         let created_at: String?
     }
+    struct EditorialSummary:Decodable {
+        let content_id:String
+        let like_count:Int
+        let comment_count:Int
+        let liked:Bool
+    }
+    struct EditorialComment:Decodable,Identifiable {
+        let id:UUID
+        let content_id:String
+        let author_id:UUID
+        let body:String
+        let moderation_status:String
+        let created_at:String
+    }
+    private struct EditorialKeys:Encodable {let p_keys:[String]}
+    private struct EditorialKey:Encodable {let p_key:String}
+    private struct EditorialLike:Encodable {let p_key:String;let p_enabled:Bool}
+    private struct EditorialCommentSend:Encodable {let p_key:String;let p_id:UUID;let p_body:String}
+    private struct EditorialCommentID:Encodable {let p_id:UUID}
+    private struct EditorialReport:Encodable {
+        let p_id:UUID;let p_key:String;let p_comment:UUID?;let p_reason:String
+        enum CodingKeys:String,CodingKey {case p_id,p_key,p_comment,p_reason}
+        func encode(to encoder:Encoder) throws {
+            var container=encoder.container(keyedBy:CodingKeys.self)
+            try container.encode(p_id,forKey:.p_id);try container.encode(p_key,forKey:.p_key)
+            if let p_comment {try container.encode(p_comment,forKey:.p_comment)} else {try container.encodeNil(forKey:.p_comment)}
+            try container.encode(p_reason,forKey:.p_reason)
+        }
+    }
     struct Wallet: Decodable {
         let balance: Int
     }
@@ -689,6 +718,37 @@ actor CoffeeCloud {
         let result:[Comment] = try await client.rpc("coffee_comment_page",params:cursor).execute().value
         _ = try await identity(account)
         return result
+    }
+
+    func editorialSummary(_ keys:[String],account:UUID) async throws -> [EditorialSummary] {
+        _ = try await identity(account)
+        let rows:[EditorialSummary] = try await client.rpc("coffee_editorial_summary",params:EditorialKeys(p_keys:keys)).execute().value
+        _ = try await identity(account);return rows
+    }
+    func setEditorialLike(_ key:String,enabled:Bool,account:UUID) async throws {
+        _ = try await identity(account)
+        let saved:Bool = try await client.rpc("set_coffee_editorial_like",params:EditorialLike(p_key:key,p_enabled:enabled)).execute().value
+        guard saved else {throw ConnectionError.actionUnavailable};_ = try await identity(account)
+    }
+    func editorialComments(_ key:String,account:UUID) async throws -> [EditorialComment] {
+        _ = try await identity(account)
+        let rows:[EditorialComment] = try await client.rpc("coffee_editorial_comments",params:EditorialKey(p_key:key)).execute().value
+        _ = try await identity(account);return rows
+    }
+    func sendEditorialComment(_ key:String,id:UUID,body:String,account:UUID) async throws {
+        _ = try await identity(account)
+        let saved:UUID = try await client.rpc("send_coffee_editorial_comment",params:EditorialCommentSend(p_key:key,p_id:id,p_body:body)).execute().value
+        guard saved==id else {throw ConnectionError.actionUnavailable};_ = try await identity(account)
+    }
+    func deleteEditorialComment(_ id:UUID,account:UUID) async throws {
+        _ = try await identity(account)
+        let saved:Bool = try await client.rpc("delete_coffee_editorial_comment",params:EditorialCommentID(p_id:id)).execute().value
+        guard saved else {throw ConnectionError.actionUnavailable};_ = try await identity(account)
+    }
+    func reportEditorial(_ key:String,comment:UUID?,reason:String,id:UUID,account:UUID) async throws {
+        _ = try await identity(account)
+        let saved:UUID = try await client.rpc("report_coffee_editorial",params:EditorialReport(p_id:id,p_key:key,p_comment:comment,p_reason:reason)).execute().value
+        guard saved==id else {throw ConnectionError.actionUnavailable};_ = try await identity(account)
     }
 
     func follows(for account: UUID) async throws -> [Follow] {

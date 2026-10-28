@@ -48,6 +48,9 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var cloudComments:[UUID:[CoffeeCloud.Comment]] = [:]
     @Published private(set) var cloudCommentsHasMore:[UUID:Bool] = [:]
     @Published private(set) var cloudCommentsBusy=false
+    @Published private(set) var editorialSummaries:[String:CoffeeCloud.EditorialSummary] = [:]
+    @Published private(set) var editorialComments:[String:[CoffeeCloud.EditorialComment]] = [:]
+    @Published private(set) var editorialBusy=false
     @Published private(set) var cloudImageSummaries:[UUID:CoffeeCloud.ProfileImageSummary] = [:]
     @Published private(set) var cloudProfileImages:[UUID:[CoffeeCloud.ProfileImage]] = [:]
     @Published private(set) var cloudProfileImagesHasMore:[UUID:Bool] = [:]
@@ -265,7 +268,7 @@ struct CoffeeReceipt: Identifiable {
         state.cloudBrewRevision==nil && state.pendingCloudBrewWrite==nil && state.pendingCloudMoment==nil &&
         state.pendingCloudPostDeletion==nil && state.pendingCloudCollectible==nil && state.pendingCloudRoomGift==nil && state.pendingCloudMessage==nil &&
         state.pendingCloudAttachment==nil && state.pendingCloudFriendship==nil && state.pendingCloudReport==nil &&
-        state.pendingCloudProfile==nil && state.pendingCloudComment==nil && state.pendingCloudProfileImage==nil &&
+        state.pendingCloudProfile==nil && state.pendingCloudComment==nil && state.pendingCloudEditorialComment==nil && state.pendingCloudProfileImage==nil &&
         state.pendingCloudProfileImageRemoval==nil && state.pendingCloudCall==nil && state.pendingCloudCallEnd==nil && state.pendingCloudVoice==nil &&
         CoffeePolicyLibrary.version=="2026-10-27-online-1" && state.acceptedPolicyVersion=="2026-10-27-online-1"
     }
@@ -625,6 +628,56 @@ struct CoffeeReceipt: Identifiable {
         }
     }
 
+    func refreshEditorial(_ key:String) async {
+        guard let account=state.cloudAccountID,state.signedIn,!editorialBusy else{return}
+        editorialBusy=true;defer{editorialBusy=false}
+        do {
+            async let summary=CoffeeCloud.shared.editorialSummary([key],account:account)
+            async let comments=CoffeeCloud.shared.editorialComments(key,account:account)
+            let (summaries,notes)=try await (summary,comments)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            editorialSummaries[key]=summaries.first;editorialComments[key]=notes
+            await ensureCloudProfiles(Set(notes.map(\.author_id)))
+        } catch {if state.cloudAccountID==account {editorialSummaries.removeValue(forKey:key);editorialComments.removeValue(forKey:key)}}
+    }
+    func changeEditorialLike(_ key:String) async {
+        guard let account=state.cloudAccountID,state.signedIn,!editorialBusy,let item=editorialSummaries[key] else{return}
+        editorialBusy=true
+        do {
+            try await CoffeeCloud.shared.setEditorialLike(key,enabled:!item.liked,account:account)
+            let result=try await CoffeeCloud.shared.editorialSummary([key],account:account)
+            guard state.signedIn,state.cloudAccountID==account else {editorialBusy=false;return}
+            editorialSummaries[key]=result.first;editorialBusy=false
+        } catch {editorialBusy=false;if state.cloudAccountID==account {inform("Update needs attention","The change could not be confirmed. Refresh and try again.")}}
+    }
+    @discardableResult func sendEditorialComment(_ key:String,text:String) async -> Bool {
+        guard let account=state.cloudAccountID,state.signedIn,!editorialBusy else{return false}
+        let body=text.trimmingCharacters(in:.whitespacesAndNewlines)
+        guard !body.isEmpty,body.count<=2000,validateCommunityText(body) else{return false}
+        let pending:PendingCloudEditorialComment
+        if let saved=state.pendingCloudEditorialComment {
+            guard saved.accountID==account,saved.momentID==key,saved.body==body else {inform("Comment needs attention","Finish the saved comment before sending another.");return false}
+            pending=saved
+        } else {
+            pending = .init(id:UUID(),accountID:account,momentID:key,body:body)
+            guard commit({$0.pendingCloudEditorialComment=pending}) else{return false}
+        }
+        editorialBusy=true
+        do {
+            try await CoffeeCloud.shared.sendEditorialComment(key,id:pending.id,body:pending.body,account:account)
+            guard state.signedIn,state.cloudAccountID==account,state.pendingCloudEditorialComment?.id==pending.id else {editorialBusy=false;return false}
+            guard commit({$0.pendingCloudEditorialComment=nil}) else {editorialBusy=false;return false}
+            editorialBusy=false;await refreshEditorial(key)
+            inform("Comment submitted","Your comment is visible to others after review.");return true
+        } catch {editorialBusy=false;if state.cloudAccountID==account {inform("Comment needs attention","The result could not be confirmed. Retry the saved comment.")};return false}
+    }
+    func removeEditorialComment(_ id:UUID,key:String) async {
+        guard let account=state.cloudAccountID,state.signedIn,!editorialBusy else{return}
+        editorialBusy=true
+        do {try await CoffeeCloud.shared.deleteEditorialComment(id,account:account);editorialBusy=false;await refreshEditorial(key)}
+        catch {editorialBusy=false;if state.cloudAccountID==account {inform("Comment needs attention","The removal could not be confirmed. Refresh and try again.")}}
+    }
+
     func refreshCloudComments(_ moment:UUID) async {
         guard let account=state.cloudAccountID,state.signedIn,!cloudCommentsBusy else{return}
         cloudCommentsBusy=true;defer{cloudCommentsBusy=false}
@@ -964,10 +1017,13 @@ struct CoffeeReceipt: Identifiable {
     }
 
     func submitCloudReport(_ target:SafetyTarget,reason:String) async -> Bool {
-        guard let account=state.cloudAccountID,state.signedIn,!cloudSocialBusy,
-              let subject=UUID(uuidString:target.contentReference),!reason.isEmpty else {return false}
+        guard let account=state.cloudAccountID,state.signedIn,!cloudSocialBusy,!reason.isEmpty else {return false}
+        let editorialKey=target.kind == .editorialComment ? target.parentReference:(target.kind == .post && target.contentReference.hasPrefix("editorial-") ? target.contentReference:nil)
+        let subject=UUID(uuidString:target.contentReference)
+        guard editorialKey != nil || subject != nil else{return false}
+        if target.kind == .editorialComment && subject==nil {return false}
         let kind:String
-        switch target.kind {case .user:kind="profile";case .post:kind="post";case .comment:kind="comment";case .message:kind="message";case .room:return false}
+        switch target.kind {case .user:kind="profile";case .post:kind="post";case .comment:kind="comment";case .message:kind="message";case .editorialComment:kind="comment";case .room:return false}
         let pending:PendingCloudReport
         if let saved=state.pendingCloudReport {
             guard saved.accountID==account,saved.target.id==target.id,saved.reason==reason else {
@@ -981,10 +1037,20 @@ struct CoffeeReceipt: Identifiable {
         cloudSocialBusy=true
         defer {cloudSocialBusy=false}
         do {
-            try await CoffeeCloud.shared.report(kind,subject:subject,reason:reason,account:account,reportID:pending.id)
-            let reports=try await CoffeeCloud.shared.reports(for:account)
+            var reports=cloudReports
+            if let editorialKey {
+                try await CoffeeCloud.shared.reportEditorial(editorialKey,comment:target.kind == .editorialComment ? subject:nil,reason:reason,id:pending.id,account:account)
+            } else if let subject {
+                try await CoffeeCloud.shared.report(kind,subject:subject,reason:reason,account:account,reportID:pending.id)
+                reports=try await CoffeeCloud.shared.reports(for:account)
+            }
             guard state.signedIn,state.cloudAccountID==account,state.pendingCloudReport?.id==pending.id else {return false}
-            guard commit({$0.pendingCloudReport=nil}) else {return false}
+            guard commit({value in
+                value.pendingCloudReport=nil
+                if editorialKey != nil {
+                    var ledger=value.community ?? CorrespondenceLedger();ledger.hiddenTargets.insert(target.id);value.community=ledger
+                }
+            }) else {return false}
             cloudReports=reports
             notice = .init(title:"Report submitted",message:"Your report was sent for review and the item is hidden from your lists.",kind:.safety)
             return true
@@ -1442,7 +1508,7 @@ struct CoffeeReceipt: Identifiable {
     func performAccountAction(_ action:AccountTransition) async {
         guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,!cloudSubmissionsBusy,!cloudBrewBusy,!cloudBrewHistoryBusy,!cloudSocialBusy,!cloudFeedBusy,cloudShelfBusy.isEmpty,!cloudCommentsBusy,!cloudProfileMediaBusy,!cloudCallsBusy,!cloudVoiceTopicsBusy,!cloudVoiceBusy,!emailLinkBusy,cloudConversationBusy.isEmpty,storageAvailable else{return}
         if state.pendingCloudDeletionID != nil && action != .delete {inform("Account action needs attention","Finish the saved account deletion before changing accounts.");return}
-        guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudRecoveryID==nil,state.pendingCloudCollectible==nil,state.pendingCloudRoomGift==nil,state.pendingCloudMoment==nil,state.pendingCloudPostDeletion==nil,state.pendingCloudReport==nil,state.pendingCloudMessage==nil,state.pendingCloudAttachment==nil,state.pendingCloudFriendship==nil,state.pendingCloudProfile==nil,state.pendingCloudComment==nil,state.pendingCloudProfileImage==nil,state.pendingCloudProfileImageRemoval==nil,state.pendingCloudCall==nil,state.pendingCloudCallEnd==nil,state.pendingCloudVoice==nil else {
+        guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudRecoveryID==nil,state.pendingCloudCollectible==nil,state.pendingCloudRoomGift==nil,state.pendingCloudMoment==nil,state.pendingCloudPostDeletion==nil,state.pendingCloudReport==nil,state.pendingCloudMessage==nil,state.pendingCloudAttachment==nil,state.pendingCloudFriendship==nil,state.pendingCloudProfile==nil,state.pendingCloudComment==nil,state.pendingCloudEditorialComment==nil,state.pendingCloudProfileImage==nil,state.pendingCloudProfileImageRemoval==nil,state.pendingCloudCall==nil,state.pendingCloudCallEnd==nil,state.pendingCloudVoice==nil else {
             inform("Account action needs attention","Finish pending account or purchase activity before changing accounts.");return
         }
         if action == .delete,let account=state.cloudAccountID {
@@ -1527,7 +1593,7 @@ struct CoffeeReceipt: Identifiable {
         cloudProfiles=nil;cloudImageSummaries=[:];cloudProfileImages=[:];cloudProfileImagesHasMore=[:]
         cloudFollows=[];cloudFriendships=[];cloudBlocks=[];cloudReports=[];cloudMessages=[];cloudMessagesUnavailable=false
         cloudConversations=[:];cloudConversationHasMore=[:];cloudConversationUnavailable=[];cloudCalls=nil;cloudVoiceTopics=nil
-        cloudFeed=nil;cloudFeedHasMore=false;cloudShelves=[:];cloudShelfHasMore=[:];cloudComments=[:];cloudCommentsHasMore=[:]
+        cloudFeed=nil;cloudFeedHasMore=false;cloudShelves=[:];cloudShelfHasMore=[:];cloudComments=[:];cloudCommentsHasMore=[:];editorialSummaries=[:];editorialComments=[:]
         activeRoomID=nil;roomMicRequested=false;selectedTab=0
     }
     private func cleanupPendingMedia() {
