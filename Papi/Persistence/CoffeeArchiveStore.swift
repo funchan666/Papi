@@ -473,7 +473,7 @@ struct CoffeeReceipt: Identifiable {
     }
 
     func refreshCloudFeed() async {
-        guard let account=state.cloudAccountID,state.signedIn,!cloudFeedBusy else{return}
+        guard let account=state.cloudAccountID,state.signedIn,!cloudFeedBusy,!editorialBusy else{return}
         cloudFeedBusy=true;defer{cloudFeedBusy=false}
         do {
             let feed=try await CoffeeCloud.shared.recentMoments(for:account)
@@ -645,7 +645,7 @@ struct CoffeeReceipt: Identifiable {
         } catch {if state.cloudAccountID==account {editorialSummaries.removeValue(forKey:key);editorialComments.removeValue(forKey:key)}}
     }
     func changeEditorialLike(_ key:String) async {
-        guard let account=state.cloudAccountID,state.signedIn,!editorialBusy,let item=editorialSummaries[key] else{return}
+        guard let account=state.cloudAccountID,state.signedIn,!editorialBusy,!cloudFeedBusy,let item=editorialSummaries[key] else{return}
         editorialBusy=true
         do {
             try await CoffeeCloud.shared.setEditorialLike(key,enabled:!item.liked,account:account)
@@ -1511,7 +1511,7 @@ struct CoffeeReceipt: Identifiable {
         notice = .init(title:"A little more for your coffee reserve",message:"This needs \(cost) coins. Your balance is \(state.coinBalance). Your draft and selections are kept; recharge to continue.",kind:.insufficient)
     }
     func performAccountAction(_ action:AccountTransition) async {
-        guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,!cloudSubmissionsBusy,!cloudBrewBusy,!cloudBrewHistoryBusy,!cloudSocialBusy,!cloudFeedBusy,cloudShelfBusy.isEmpty,!cloudCommentsBusy,!cloudProfileMediaBusy,!cloudCallsBusy,!cloudVoiceTopicsBusy,!cloudVoiceBusy,!emailLinkBusy,cloudConversationBusy.isEmpty,storageAvailable else{return}
+        guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,!cloudSubmissionsBusy,!cloudBrewBusy,!cloudBrewHistoryBusy,!cloudSocialBusy,!cloudFeedBusy,!editorialBusy,cloudShelfBusy.isEmpty,!cloudCommentsBusy,!cloudProfileMediaBusy,!cloudCallsBusy,!cloudVoiceTopicsBusy,!cloudVoiceBusy,!emailLinkBusy,cloudConversationBusy.isEmpty,storageAvailable else{return}
         if state.pendingCloudDeletionID != nil && action != .delete {inform("Account action needs attention","Finish the saved account deletion before changing accounts.");return}
         guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudRecoveryID==nil,state.pendingCloudCollectible==nil,state.pendingCloudRoomGift==nil,state.pendingCloudMoment==nil,state.pendingCloudPostDeletion==nil,state.pendingCloudReport==nil,state.pendingCloudMessage==nil,state.pendingCloudAttachment==nil,state.pendingCloudFriendship==nil,state.pendingCloudProfile==nil,state.pendingCloudComment==nil,state.pendingCloudEditorialComment==nil,state.pendingCloudProfileImage==nil,state.pendingCloudProfileImageRemoval==nil,state.pendingCloudCall==nil,state.pendingCloudCallEnd==nil,state.pendingCloudVoice==nil else {
             inform("Account action needs attention","Finish pending account or purchase activity before changing accounts.");return

@@ -155,7 +155,7 @@ struct CoffeeEditorialReactions:View {
             HStack(spacing:12) {
                 Button {Task {await store.changeEditorialLike(post.id)}} label:{
                     HStack(spacing:4) {Image("like").resizable().scaledToFit().frame(width:22,height:22).opacity(summary.liked ? 1:0.48);Text(summary.like_count,format:.number)}.frame(minWidth:44,minHeight:44)
-                }.papiAccessibilityLabel(summary.liked ? "Unlike":"Like").disabled(store.editorialBusy)
+                }.papiAccessibilityLabel(summary.liked ? "Unlike":"Like").disabled(store.editorialBusy || store.cloudFeedBusy)
                 Button(action:openComments) {
                     HStack(spacing:4) {Image("comment").resizable().scaledToFit().frame(width:22,height:22);Text(summary.comment_count,format:.number)}.frame(minWidth:44,minHeight:44)
                 }.papiAccessibilityLabel("Open comments")
