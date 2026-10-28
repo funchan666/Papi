@@ -85,7 +85,7 @@ struct CoffeeTablesView:View {
                         VStack(alignment:.leading,spacing:16) {
                             let filterLayout=typeSize.isAccessibilitySize || contentWidth<300 ? AnyLayout(VStackLayout(spacing:4)):AnyLayout(HStackLayout(spacing:4))
                             filterLayout {
-                                ForEach(0..<(store.usesCloudWallet ? 2:3)) {i in
+                                ForEach(0..<(store.usesCloudWallet ? 2:3),id:\.self) {i in
                                     Button {filter=i} label:{
                                         PapiText((store.usesCloudWallet ? ["All","Recent"]:["All","Following","Recent"])[i]).font(CoffeeType.face(.subheadline,weight:filter==i ? .bold:.medium)).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
                                             .frame(maxWidth:.infinity,minHeight:44).background(filter==i ? Color.coffee:Color.clear,in:Capsule()).contentShape(Rectangle())

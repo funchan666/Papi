@@ -193,6 +193,12 @@ actor CoffeeCloud {
         let expires_at:String
     }
     struct CallToken:Decodable {let server_url:String;let participant_token:String}
+    private func validLiveKitEndpoint(_ value:String)->Bool {
+        guard let url=URLComponents(string:value) else{return false}
+        return url.scheme=="wss" && url.host=="papi-umze01cq.livekit.cloud" &&
+            url.user==nil && url.password==nil && url.port==nil &&
+            (url.path.isEmpty || url.path=="/") && url.query==nil && url.fragment==nil
+    }
     private struct DeletionBody:Encodable {let receipt:String}
     private struct DeletionResult:Decodable {let status:String}
     struct Report: Codable {
@@ -471,7 +477,7 @@ actor CoffeeCloud {
     func voiceToken(topic:String,id:UUID,account:UUID) async throws -> CallToken {
         _ = try await identity(account)
         let result:CallToken = try await client.functions.invoke("livekit-voice-token",options:FunctionInvokeOptions(body:VoiceTokenRequest(topic_id:topic,session_id:id)))
-        guard let url=URL(string:result.server_url),url.scheme=="wss",url.host=="papi-umze01cq.livekit.cloud",!result.participant_token.isEmpty else {throw ConnectionError.actionUnavailable}
+        guard validLiveKitEndpoint(result.server_url),!result.participant_token.isEmpty else {throw ConnectionError.actionUnavailable}
         _ = try await identity(account)
         return result
     }
@@ -666,7 +672,7 @@ actor CoffeeCloud {
     func callToken(id:UUID,account:UUID) async throws -> CallToken {
         _ = try await identity(account)
         let result:CallToken = try await client.functions.invoke("livekit-call-token",options:FunctionInvokeOptions(body:CallTokenRequest(call_id:id)))
-        guard let url=URL(string:result.server_url),url.scheme=="wss",url.host != nil,!result.participant_token.isEmpty else {throw ConnectionError.actionUnavailable}
+        guard validLiveKitEndpoint(result.server_url),!result.participant_token.isEmpty else {throw ConnectionError.actionUnavailable}
         _ = try await identity(account)
         return result
     }

@@ -1,8 +1,52 @@
 # Papi live feature acceptance
 
-This is a preparation checklist, not a record of tests performed. Keep all
+This checklist includes a scoped record of isolated checks below. Keep all
 three runtime switches disabled until their applicable checks are complete.
 Never delete, overwrite or reuse the existing device archive or real accounts.
+
+## Isolated checks on 2026-10-28
+
+- The iOS Simulator build succeeded for both simulator architectures. A newly
+  created iPhone Duo simulator launched the app and displayed its onboarding.
+  An earlier unsigned launch encountered Keychain error -34018; a later Xcode
+  ad-hoc build reached onboarding, but this does not establish that Keychain,
+  login or other flows work. No physical-device or real-signing validation was
+  performed.
+- Disposable PostgreSQL 17.10 fixtures exercised the actual deletion, voice,
+  call and guard SQL alongside mocked Auth and Storage schemas. They covered
+  ownership, consent, cancellation, pending purchases, retry receipts,
+  attachment retention and both transaction orders for deletion against
+  messages, call requests, reactions/comments, voice joins, uploads and order
+  creation. Several unrelated tables are stubs; this is not full Supabase RLS,
+  service API, payment settlement or cross-device acceptance.
+- A loopback-only LiveKit 1.13.11 server carried synthetic audio and video
+  between two isolated participants and removed participants successfully.
+  This used Node clients rather than the Swift app, and did not exercise real
+  microphones or cameras. Self-hosted LiveKit cannot validate the Cloud-only
+  token-revocation behavior; test that separately before activation.
+- In a disposable PostgreSQL fixture, the actual Apple-order settlement SQL
+  blocked deletion while a pending settlement was uncommitted and did not
+  double-credit a repeated settled transaction after deletion began. These
+  were synthetic orders, not Apple sandbox or refund validation.
+- The actual deletion and cleanup Edge handlers were exercised with fake
+  clients and no network access. Deletion covered concurrent receipt recovery,
+  owner mismatch, invalid receipts, failed Storage deletion and resuming after
+  a failed final database acknowledgement. Cleanup covered ticket rejection,
+  both call participant removals, voice removal, partial failures and invalid
+  jobs. Deletion handler version 4 and cleanup handler version 2 were deployed
+  and read back; the production activation gates remain disabled. These mocks
+  do not establish real Auth, Storage, scheduler or LiveKit Cloud behavior.
+- The token handlers were run locally with the pinned LiveKit SDK and fake
+  Auth/RPC clients: room identities and grants, 120-second token lifetime,
+  authorization rechecks and rate limits passed. The Swift client now accepts
+  only the configured LiveKit host for both voice and calls; a simulator build
+  succeeded after this change. No token was sent to a real LiveKit server.
+- The scheduler SQL was exercised with a fake pg_net sink in a disposable
+  PostgreSQL database: idle behavior, wake on pending work, ticket expiry and
+  concurrent single use, concurrent call batches and voice queue rotation
+  passed. This does not verify hosted pg_cron/pg_net timing or actual delivery.
+- Supabase rejected creation of a disposable branch on the current plan; no
+  upgrade was purchased. The production gates and cleanup schedule remain off.
 
 ## Preparation
 

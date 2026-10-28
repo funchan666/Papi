@@ -67,3 +67,29 @@ The account-deletion client retains a private Keychain receipt, persists a retry
 The private account-pair locking helper is deployed but unused. `papi_account_deletion_pair_lock_draft.sql` proposes serializing relationship and message operations against deletion of either participant, closing a race where a message could be sent after the recipient starts deletion. This replacement remains unapplied: lock ordering with calls, blocks, follows, direct likes/comments and Storage writes must be audited and exercised before enabling deletion.
 
 Email-link and email-recovery screens and identity APIs now exist behind `emailLinkEnabled = false`. Email-change verification is held in a separate Keychain namespace, checked against the existing guest UUID and persisted before adoption into the main session; adoption checks the main Keychain readback and supports retrying an interrupted verification. Recovery requests do not create new accounts and are restricted to a device with no existing cloud identity or uncompleted cloud work. A recovery marker is saved before the session is adopted; the existing device archive and files remain in place, are not automatically merged, and brew-book conflicts stop for user choice. No operator contact email has been inserted. SMTP and OTP templates, manual linking configuration, behavior when local and cloud data conflict, email conflicts, crash and network behavior, and user consent still need completion and validation. These paths have not been run on a device or against Auth; do not expose them until the requirements are complete.
+
+On 2026-10-28 the user authorized compilation and isolated integration checks.
+The simulator build, disposable local PostgreSQL checks and loopback LiveKit
+media checks passed within the limitations recorded in
+`backend/LIVE_FEATURE_ACCEPTANCE.md`. The post-interaction lock migration is
+still a draft, as are the other public deletion guards. The Supabase branch
+feature requires a paid plan, so no disposable cloud branch was created; no
+plan upgrade was made. LiveKit Cloud token revocation, real Supabase Auth and
+Storage behavior, purchase settlement, device permissions and end-to-end app
+flows remain unverified. Do not enable the feature gates on this evidence.
+
+Further isolated checks exercised the real Apple settlement SQL using synthetic
+orders and the deletion and LiveKit cleanup Edge handlers using fake clients.
+The deletion function now recovers the same receipt when concurrent starts
+race, after checking the requesting account for an in-progress operation.
+Call cleanup now attempts both participant removals even if one fails and
+acknowledges only after both succeed. The respective Edge versions 4 and 2 were
+deployed and read back; production gates and cleanup scheduling remain off.
+See `backend/LIVE_FEATURE_ACCEPTANCE.md` for the scope and outstanding checks.
+
+The iOS client now validates both call and voice endpoints against the same
+configured LiveKit host before sending a token. A simulator build succeeded.
+Isolated token-handler tests used the pinned LiveKit SDK with fake Auth/RPC;
+scheduler tests used native PostgreSQL and fake pg_net to check ticket
+single-use, concurrent call batches and voice queue rotation. These checks do
+not replace the hosted scheduler, Cloud revocation or physical-device checks.

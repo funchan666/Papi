@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A32000000000000000000001 /* CoffeeLiveCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32000000000000000000002 /* CoffeeLiveCall.swift */; };
-		A32000000000000000000003 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = A32000000000000000000004 /* LiveKit */; };
-		A31000000000000000000001 /* CoffeeCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31000000000000000000002 /* CoffeeCloud.swift */; };
-		A31000000000000000000003 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = A31000000000000000000004 /* Supabase */; };
 		099EEFA527F597BA007303BD /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 27A0CDF6DC8AD2039DB2FE42 /* Fonts */; };
 		0B435EA45CDD20FC21B39031 /* CoffeeTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D322BE2569BF299BC539 /* CoffeeTypography.swift */; };
 		16F44EFDB03632CEABE29F9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D3B1EEE617173D2D3D68807 /* Assets.xcassets */; };
@@ -28,6 +24,10 @@
 		9236B90785DD6EDC3E80C91D /* FirstCupWelcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA99794A9B1AD0291B03BA15 /* FirstCupWelcome.swift */; };
 		9F0F2A7FDD40515B874A89EB /* BeanVarieties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4619181F2F97FACFEBE251F4 /* BeanVarieties.swift */; };
 		9F54B17C724C5D5408A20FDE /* CommunityContentPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96201DB40B08691770833E6F /* CommunityContentPolicy.swift */; };
+		A31000000000000000000001 /* CoffeeCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31000000000000000000002 /* CoffeeCloud.swift */; };
+		A31000000000000000000003 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = A31000000000000000000004 /* Supabase */; };
+		A32000000000000000000001 /* CoffeeLiveCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32000000000000000000002 /* CoffeeLiveCall.swift */; };
+		A32000000000000000000003 /* LiveKit in Frameworks */ = {isa = PBXBuildFile; productRef = A32000000000000000000004 /* LiveKit */; };
 		A599AEC09F1AF6DD75C3D38E /* BrewNotebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37AC883A000A1270BD4EE71 /* BrewNotebook.swift */; };
 		A690230FB3A543DAA3F94CD3 /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C615E93043C9CD0E094546 /* CameraPreview.swift */; };
 		A9F922DEAF929DFB8475820A /* PapiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE6287BB31A289666B11F62 /* PapiApp.swift */; };
@@ -50,8 +50,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A32000000000000000000002 /* CoffeeLiveCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeLiveCall.swift; sourceTree = "<group>"; };
-		A31000000000000000000002 /* CoffeeCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeCloud.swift; sourceTree = "<group>"; };
 		0CCC58D9339AE955DD821BFC /* CoffeeMediaFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeMediaFiles.swift; sourceTree = "<group>"; };
 		0E50E0C719AB1C74BBB4661B /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		13FA9F6AFFFCAC005A949200 /* CoffeeLetters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeLetters.swift; sourceTree = "<group>"; };
@@ -85,6 +83,8 @@
 		9E1F97BC92B7B11E080723B6 /* AppleCoinCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleCoinCounter.swift; sourceTree = "<group>"; };
 		A1446FB63CAE79B500D60548 /* Localization */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Localization; path = Papi/Resources/Localization; sourceTree = SOURCE_ROOT; };
 		A164A8CCFABAA0C95C60146A /* CoffeeVault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeVault.swift; sourceTree = "<group>"; };
+		A31000000000000000000002 /* CoffeeCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeCloud.swift; sourceTree = "<group>"; };
+		A32000000000000000000002 /* CoffeeLiveCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeLiveCall.swift; sourceTree = "<group>"; };
 		BA99794A9B1AD0291B03BA15 /* FirstCupWelcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstCupWelcome.swift; sourceTree = "<group>"; };
 		C9069568E3AA3630D443D2E4 /* CoffeeLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeLanguage.swift; sourceTree = "<group>"; };
 		CF1C0EE535BEC5711863F3B4 /* AudioFocus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFocus.swift; sourceTree = "<group>"; };
@@ -100,7 +100,10 @@
 		A31000000000000000000005 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
-			files = (A31000000000000000000003 /* Supabase in Frameworks */, A32000000000000000000003 /* LiveKit in Frameworks */,);
+			files = (
+				A31000000000000000000003 /* Supabase in Frameworks */,
+				A32000000000000000000003 /* LiveKit in Frameworks */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -361,9 +364,12 @@
 			);
 			mainGroup = 4CD2AF2FCA28F25DD32B7E28;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A31000000000000000000006 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				A32000000000000000000005 /* XCRemoteSwiftPackageReference "client-sdk-swift" */,
+			);
 			projectDirPath = "";
 			projectRoot = "";
-			packageReferences = (A31000000000000000000006 /* supabase-swift */, A32000000000000000000005 /* client-sdk-swift */,);
 			targets = (
 				E1D3306E9DEA98AA9F4E128C /* Papi */,
 			);
@@ -427,32 +433,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		A32000000000000000000005 /* client-sdk-swift */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/livekit/client-sdk-swift.git";
-			requirement = {kind = exactVersion; version = 2.17.0;};
-		};
-		A31000000000000000000006 /* supabase-swift */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/supabase/supabase-swift.git";
-			requirement = {kind = exactVersion; version = 2.55.4;};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		A32000000000000000000004 /* LiveKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A32000000000000000000005 /* client-sdk-swift */;
-			productName = LiveKit;
-		};
-		A31000000000000000000004 /* Supabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A31000000000000000000006 /* supabase-swift */;
-			productName = Supabase;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin PBXVariantGroup section */
 		564FB2D01F692E89A598CC1E /* InfoPlist.strings */ = {
@@ -677,6 +657,38 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A31000000000000000000006 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.55.4;
+			};
+		};
+		A32000000000000000000005 /* XCRemoteSwiftPackageReference "client-sdk-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/livekit/client-sdk-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.17.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A31000000000000000000004 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A31000000000000000000006 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		A32000000000000000000004 /* LiveKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A32000000000000000000005 /* XCRemoteSwiftPackageReference "client-sdk-swift" */;
+			productName = LiveKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F6AF43BBE9779615A11542FA /* Project object */;
 }

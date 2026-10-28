@@ -50,9 +50,14 @@ Deno.serve(async (request:Request) => {
       const {data:identity,error:authError}=await user.auth.getUser(bearer);
       if (authError || !identity.user) return reply(401,{error:"Authentication required"});
       const {data:started,error:startError}=await user.rpc("begin_coffee_deletion",{p_secret:secret});
-      if (startError || started!==true) return reply(409,{error:"Deletion could not start; purchase reconciliation may be required"});
+      // A concurrent request may have registered the same receipt after our
+      // first lookup. Resume it only when it belongs to this verified account.
       work=await lookup();
       if (work?.state==="complete") return reply(200,{status:"complete"});
+      if (startError || started!==true) {
+        if (!work || work.state!=="requested" || work.owner_id!==identity.user.id)
+          return reply(409,{error:"Deletion could not start; purchase reconciliation may be required"});
+      }
       if (!work || work.owner_id!==identity.user.id) return reply(503,{error:"Deletion needs attention"});
     }
     if (work.state==="complete") return reply(200,{status:"complete"});

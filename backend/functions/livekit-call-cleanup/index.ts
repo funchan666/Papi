@@ -38,8 +38,13 @@ Deno.serve(async (request:Request) => {
         const room=`papi-call-${job.call_id.toLowerCase()}`;
         // A one-second future cutoff includes tokens minted in the current second.
         const cutoff=BigInt(Math.floor(Date.now()/1000)+1);
-        await rooms.removeParticipant(room,job.caller_id,{revokeTokenTs:cutoff});
-        await rooms.removeParticipant(room,job.recipient_id,{revokeTokenTs:cutoff});
+        // Attempt both even if one removal fails, and acknowledge only when
+        // both succeed so the worker can retry a partial failure.
+        const results=await Promise.allSettled([
+          rooms.removeParticipant(room,job.caller_id,{revokeTokenTs:cutoff}),
+          rooms.removeParticipant(room,job.recipient_id,{revokeTokenTs:cutoff}),
+        ]);
+        if (results.some(result=>result.status==="rejected")) throw new Error("Participant cleanup failed");
         const {data:done,error:finishError}=await service.rpc("complete_call_revocation",{p_call:job.call_id});
         if (finishError || done!==true) throw finishError ?? new Error("Queue update failed");
         completed++;
