@@ -441,7 +441,7 @@ extension CoffeeMoment {
         let filmNotes:[Int:String] = [
             0:"A little ghost appears in the milk foam, one careful pour at a time.",
             1:"A steady milk stream opens into a rosetta in a dark cup.",
-            2:"A portrait pause between café visits, from the Papi collection.",
+            2:"A portrait pause between café visits.",
             3:"A window-side journey, watching the afternoon pass outside.",
             4:"Espresso meets ice and milk in a clear glass.",
             5:"A bar-counter iced coffee, assembled from the first ice cube to the final stir.",

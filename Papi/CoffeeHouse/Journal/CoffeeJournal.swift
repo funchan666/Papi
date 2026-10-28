@@ -226,7 +226,7 @@ struct CoffeeMomentView:View {
                                         }
                                         Spacer(minLength:0)
                                     }
-                                    let mediaHeight=post.isVideo ? min(570,max(310,(bounds.width > 0 ? bounds.width:320)*1.20)):min(470,max(260,(bounds.width > 0 ? bounds.width:320)*0.95))
+                                    let mediaHeight=post.isVideo ? min(470,max(300,(bounds.width > 0 ? bounds.width:320)*1.02)):min(470,max(260,(bounds.width > 0 ? bounds.width:320)*0.95))
                                     if post.isVideo && post.media.hasPrefix("cloud/") {CloudMomentVideo(media:post.media).frame(height:mediaHeight)}
                                     else if post.isVideo {CoffeePlayerView(media:post.media).frame(height:mediaHeight)}
                                     else {
@@ -315,7 +315,7 @@ struct CoffeeCollectionDetail:View {
                             Spacer(minLength:0)
                             if post.isVideo {PapiText("Video").font(CoffeeType.face(.caption,weight:.semibold)).foregroundStyle(Color.mutedCoffee)}
                         }.padding(.horizontal,4)
-                        let mediaHeight=post.isVideo ? min(570,max(310,(bounds.width > 0 ? bounds.width:320)*1.20)):min(470,max(260,(bounds.width > 0 ? bounds.width:320)*0.95))
+                        let mediaHeight=post.isVideo ? min(470,max(300,(bounds.width > 0 ? bounds.width:320)*1.02)):min(470,max(260,(bounds.width > 0 ? bounds.width:320)*0.95))
                         if post.isVideo {CoffeePlayerView(media:post.media).frame(height:mediaHeight)}
                         else {
                             Button {router.go(.photo(post.media))} label:{PapiImage(name:post.media).frame(height:mediaHeight).clipShape(RoundedRectangle(cornerRadius:20))}

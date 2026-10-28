@@ -80,7 +80,10 @@ struct CoffeePlayerView:View {
     var body:some View {
         VStack(spacing:0) {
             ZStack {
-                Color.black
+                Color.coffee
+                if !media.hasPrefix("cloud/") {
+                    PapiImage(name:media,fallback:"emptyCup").blur(radius:22).overlay(Color.coffee.opacity(0.55)).clipped().accessibilityHidden(true)
+                }
                 PlayerSurface(player:playback.player)
                 if let failure=playback.failure {
                     ScrollView {VStack(spacing:14) {PapiText(failure);PapiTextButton("Retry"){if let onRetry {onRetry()} else {playback.load(media,remoteURL:remoteURL,force:true)}}.frame(minHeight:44)}
@@ -135,7 +138,7 @@ struct CloudMomentVideo:View {
 }
 private struct PlayerSurface:UIViewRepresentable {
     let player:AVPlayer
-    func makeUIView(context:Context)->PlayerView {let view=PlayerView();view.playerLayer.player=player;view.playerLayer.videoGravity = .resizeAspect;return view}
+    func makeUIView(context:Context)->PlayerView {let view=PlayerView();view.isOpaque=false;view.backgroundColor = .clear;view.playerLayer.backgroundColor = UIColor.clear.cgColor;view.playerLayer.player=player;view.playerLayer.videoGravity = .resizeAspect;return view}
     func updateUIView(_ view:PlayerView,context:Context) {view.playerLayer.player=player}
     static func dismantleUIView(_ view:PlayerView,coordinator:()) {view.playerLayer.player=nil}
     final class PlayerView:UIView {

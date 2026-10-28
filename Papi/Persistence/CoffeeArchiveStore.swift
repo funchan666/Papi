@@ -1390,7 +1390,7 @@ struct CoffeeReceipt: Identifiable {
             pending=saved
         } else {
             guard !cancel,let gift,(1...99).contains(quantity),cloudWallet != nil,
-                  state.pendingCloudVoice?.id==session,state.pendingCloudVoice?.topic==topic,state.pendingCloudVoice?.closing==false else{return false}
+                  state.pendingCloudVoice?.accountID==account,state.pendingCloudVoice?.id==session,state.pendingCloudVoice?.topic==topic,state.pendingCloudVoice?.closing==false else{return false}
             pending = .init(id:UUID(),accountID:account,topic:topic,sessionID:session,giftID:gift.id,quantity:quantity)
             guard commit({$0.pendingCloudRoomGift=pending}) else{return false}
         }
