@@ -1,5 +1,4 @@
--- DRAFT ONLY: apply atomically with the deletion guards, after auditing lock
--- order across calls, blocks, follow changes and account deletion.
+-- Deployed atomically with the deletion guards; account deletion remains off.
 -- The account locks make a new pair operation serialize against deletion of
 -- either participant; the existing pair lock still serializes the relationship.
 create or replace function papi_private.lock_social_pair(a uuid,b uuid) returns void

@@ -11,6 +11,7 @@ struct CoffeeReceipt: Identifiable {
     enum Kind:Equatable {case information,safety,review,session,welcome,insufficient,purchase}
 }
 @MainActor final class CoffeeHouse: ObservableObject {
+    private static let onlinePolicyVersion="2026-10-27-online-1"
     @Published private(set) var state: CoffeeArchive
     @Published var notice: CoffeeReceipt?
     @Published private(set) var storageAvailable = true
@@ -109,8 +110,8 @@ struct CoffeeReceipt: Identifiable {
         } catch {storageAvailable=false;inform("Saved data unavailable",error.localizedDescription)}
     }
     func inform(_ title: String, _ message: String) { notice = .init(title:title,message:message) }
-    func login() async {
-        guard !loginInProgress,!state.signedIn,accountAction==nil,storageAvailable else{return}
+    func login(acceptedPolicies:Bool) async {
+        guard acceptedPolicies,!loginInProgress,!state.signedIn,accountAction==nil,storageAvailable else{return}
         loginInProgress=true;defer{loginInProgress=false}
         let clock=ContinuousClock()
         let transitionEnd=clock.now.advanced(by:.milliseconds(450))
@@ -143,7 +144,7 @@ struct CoffeeReceipt: Identifiable {
     /// Called only after the online policy is published and explicitly accepted.
     /// The existing device ID, wallet, drafts and transaction records are kept.
     func connectCloudAccount() async throws {
-        let requiredPolicy = "2026-10-27-online-1"
+        let requiredPolicy = Self.onlinePolicyVersion
         guard state.signedIn, storageAvailable, accountAction == nil, !loginInProgress, !cloudConnectionInProgress,!emailLinkBusy,
               !checkoutActive, state.purchaseIntents.isEmpty, state.activePurchaseToken == nil,state.pendingCloudRecoveryID==nil,
               state.pendingCloudDeletionID==nil,state.deletedCloudAccountID==nil,
@@ -169,6 +170,26 @@ struct CoffeeReceipt: Identifiable {
         await refreshCloudWallet()
         await syncCloudBrewBook()
         await refreshCloudSocial()
+    }
+    var onlinePolicyRenewalRequired:Bool {
+        state.signedIn && state.cloudAccountID == nil && state.pendingCloudRecoveryID == nil && state.pendingCloudDeletionID == nil && state.deletedCloudAccountID == nil &&
+        CoffeePolicyLibrary.version == Self.onlinePolicyVersion && state.acceptedPolicyVersion != Self.onlinePolicyVersion
+    }
+    func acceptOnlinePolicy() {
+        guard onlinePolicyRenewalRequired else{return}
+        _ = commit {$0.acceptedPolicyVersion=Self.onlinePolicyVersion}
+    }
+    var cloudConnectionRequired:Bool {
+        state.signedIn && state.cloudAccountID==nil && state.pendingCloudDeletionID==nil &&
+        state.pendingCloudRecoveryID==nil && state.deletedCloudAccountID==nil &&
+        CoffeePolicyLibrary.version==Self.onlinePolicyVersion && state.acceptedPolicyVersion==Self.onlinePolicyVersion
+    }
+    func resumeCloudConnection() async {
+        guard cloudConnectionRequired,!loginInProgress,!cloudConnectionInProgress,storageAvailable else{return}
+        do {try await connectCloudAccount()}
+        catch {
+            if cloudConnectionRequired {inform("Online connection needs attention", "Your saved device data is kept. Check your connection and try again.")}
+        }
     }
     var usesCloudWallet: Bool { state.cloudAccountID != nil }
 

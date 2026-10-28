@@ -62,13 +62,12 @@ Never delete, overwrite or reuse the existing device archive or real accounts.
   accounts and revoked sessions. A separate fixture exercised eight actual
   read RPCs with the draft RLS rules: each returned expected fixture data
   before revocation and hid it after session revocation or deletion start.
-  These draft policies are not deployed and the tests do not substitute for
-  real Supabase Auth/Storage or full business-operation acceptance.
+  The protection policies were subsequently deployed with the deletion gate
+  disabled. These fixture checks alone do not establish full app acceptance.
 - Read-only catalog comparison found the 27 draft wrappers match the existing
   production RPCs' argument and return types, volatility and invoker status;
   production grants currently allow authenticated and deny anon. This is a
-  signature/privilege comparison, not proof of complete behavior or approval
-  to enable the draft migrations.
+  signature/privilege comparison, not proof of complete application behavior.
 - Supabase rejected creation of a disposable branch on the current plan; no
   upgrade was purchased. The production gates and cleanup schedule remain off.
 
@@ -81,8 +80,8 @@ Never delete, overwrite or reuse the existing device archive or real accounts.
 - Use separate LiveKit test credentials and uniquely named test rooms; never
   include credentials, JWTs, deletion receipts or personal data in logs.
 - Apply the necessary schema and functions in migration order. The account
-  deletion policy and RPC drafts require an explicit lock-order review before
-  applying them, including direct likes, comments and Storage operations.
+  deletion policy and RPC protections require lock-order review, including
+  direct likes, comments and Storage operations, before activation.
 - Verify test-environment settings and secret names without printing values.
   Confirm no production runtime switch or cleanup schedule has changed.
 
@@ -134,8 +133,52 @@ Never delete, overwrite or reuse the existing device archive or real accounts.
 
 Review retention and refund handling, publish the online policies with the
 operator's contact details, collect the necessary consent, and complete any
-Apple-specific configuration. Review the separate user-facing deletion RPC,
-RLS and lock migrations together. Enable the cleanup worker and each runtime
+Apple-specific configuration. Review the deployed user-facing deletion RPC,
+RLS and lock protections together. Enable the cleanup worker and each runtime
 switch only after its own isolated and device acceptance; record the verified
 versions and rollback procedure. Keep the existing local data until the entire
 cutover is complete.
+
+
+## Hosted isolation and production protection update on 2026-10-28
+
+- The separate free Supabase project `Papi-Isolated-Validation` and separate
+  LiveKit Cloud project `Papi Isolated Validation` used synthetic accounts,
+  media, rooms and transactions. Their credentials were saved as test-project
+  secrets. No existing device archive or production account was used.
+- Hosted Auth, database/RLS, private Storage, deployed Edge handlers and the
+  scheduled cleanup worker were exercised together. Both LiveKit clients
+  exchanged synthetic audio and video; blocking removed voice and call
+  participants, and the old voice and call tokens were rejected. Repeating
+  cleanup for an old voice session preserved a newly joined session.
+- Starting deletion while connected closed voice and calls before removing
+  the synthetic Auth user and that user's own Storage object. The other
+  person's object was preserved and receipt retry succeeded. Separately, the
+  retained-attachment manifest, stale-session restrictions, wallet/check-in,
+  recipes, collectibles, brew-book idempotency, private uploads and social
+  positive paths were checked against the isolated hosted project.
+- Production received `coffee_deletion_protective_guards` after the isolated
+  checks and a preflight confirmed zero production Auth users, profiles,
+  orders, Storage objects and deletion requests. This describes cloud records
+  only, not the contents of any device archive. The authenticated start RPC,
+  write guards and deletion RLS are deployed; the deletion runtime remains
+  disabled. Voice and call runtime flags and production cleanup schedule are
+  also disabled. The test switches, scheduler and temporary anonymous signup
+  were disabled after testing.
+- The hosted tests used Node SDK clients with generated media. They do not
+  validate physical microphones/cameras, real devices, signed iOS builds,
+  Apple transactions, refund processing, background calls, moderation or
+  full end-to-end iOS behavior. Those checks and the published online policy
+  and operator contact remain prerequisites for production activation.
+- After adding the consent and cloud-bootstrap entry points, the iOS Simulator
+  build succeeded and the app launch command returned a process ID in the
+  isolated simulator. That simulator reported a data-migration failure during
+  boot and its UI was unavailable to the automation; login, policy renewal,
+  Keychain and the new screens have not been visually or interactively checked.
+
+- A hosted, rollback-only moderation fixture verified pending initial states,
+  post approval, comment rejection, profile-image approval, report resolution,
+  identical-event retry, rejection of conflicting event reuse and the denial
+  of ordinary authenticated review calls. Fixture posts and review events
+  were absent after rollback. This is a database test, not proof of a staffed
+  moderation process or end-to-end media inspection.

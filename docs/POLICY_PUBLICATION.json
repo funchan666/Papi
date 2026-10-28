@@ -1,24 +1,22 @@
 {
-  "date": "2026-10-27",
-  "method": "Google Docs native readback and unauthenticated HTTPS published-page paragraph comparison.",
+  "date": "2026-10-28",
+  "method": "Supabase public Storage, anonymous HTTPS byte comparison",
   "documents": [
     {
       "policy": "terms",
-      "url": "https://docs.google.com/document/d/e/2PACX-1vQoWJi7C-CO9-OWqtetngX3xDZerh2viDCfC82GdLjbdsmmRO1XIx59c51M5FGf-rJ7YONmJ7Ph1mG7/pub",
+      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms.txt",
       "anonymousRead": true,
-      "exactParagraphs": true,
-      "paragraphs": 48,
-      "emailBlank": true,
-      "canonicalSHA256": "ec86addcf683465b82540603b96acdcadded9f51163d339b83207582c6275251"
+      "contentType": "text/plain",
+      "sha256": "d1c817495c7547c651a9f92329e42a68ee77b6634509fa73b729a055a975f304",
+      "contactIsPlaceholder": true
     },
     {
       "policy": "privacy",
-      "url": "https://docs.google.com/document/d/e/2PACX-1vTE64ZsiJbXRE47OlspklgrzvUkIqo0CuswoHkkzsm4pe3nbcOFPmrQszIk0Z2-rbNYDVR-LU5tJJ3f/pub",
+      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy.txt",
       "anonymousRead": true,
-      "exactParagraphs": true,
-      "paragraphs": 42,
-      "emailBlank": true,
-      "canonicalSHA256": "16cd2cff07e018464113d5f91e83d136b03e0902882817c8068b5580883ad51c"
+      "contentType": "text/plain",
+      "sha256": "cac36039e7e72fcf20b6822b64124bc70cd1da322e2f5dbe573c62a5c6ba04d0",
+      "contactIsPlaceholder": true
     }
   ],
   "appExecuted": false

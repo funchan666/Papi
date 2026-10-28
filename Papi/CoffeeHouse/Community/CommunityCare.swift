@@ -170,6 +170,56 @@ struct AccountProgressView:View {
         }.onAppear{if !reduceMotion {withAnimation(.easeInOut(duration:0.6).repeatForever(autoreverses:true)){animate=true}}}
     }
 }
+struct CoffeeOnlinePolicyRenewalView:View {
+    @EnvironmentObject private var store:CoffeeHouse
+    @EnvironmentObject private var router:CoffeeNavigation
+    @State private var accepted=false
+    @State private var legal:String?
+    let continueOffline:()->Void
+    var body:some View {
+        PapiScreen {
+            ScrollView {
+                VStack(alignment:.leading,spacing:18) {
+                    CoffeeSectionIntro(artwork:"settingsCoffeeArt",title:"Review the online policies",detail:"Please review the updated policies before connecting your coffee account. Your device data stays available if you choose to continue offline.")
+                    HStack(spacing:4) {
+                        Button {accepted.toggle()} label: {
+                            Image(accepted ? "check":"agreementUnchecked").resizable().scaledToFit().frame(width:accepted ? 24:44,height:accepted ? 24:44).frame(width:44,height:44)
+                        }.accessibilityLabel(store.text("I agree to the User Agreement and Privacy Policy"))
+                            .accessibilityValue(store.text(accepted ? "Selected":"Not selected"))
+                        PapiText(store.text("I agree to the following policies")).font(CoffeeType.face(.caption))
+                    }
+                    PapiActionGroup {
+                        PapiTextButton("User Agreement"){legal="terms"}.frame(minHeight:44)
+                        PapiTextButton("Privacy Policy"){legal="privacy"}.frame(minHeight:44)
+                    }
+                    PapiTextButton("Continue online") {store.acceptOnlinePolicy()}.buttonStyle(PapiButtonStyle(wide:true)).disabled(!accepted || !store.storageAvailable)
+                    PapiTextButton("Continue offline") {continueOffline()}.buttonStyle(PapiButtonStyle(light:true,wide:true))
+                    if !store.storageAvailable {PapiTextButton("Retry local storage"){store.reload()}.buttonStyle(PapiButtonStyle(light:true,wide:true))}
+                }.padding(20).frame(maxWidth:600).frame(maxWidth:.infinity)
+            }
+        }.sheet(isPresented:Binding(get:{legal != nil},set:{if !$0 {legal=nil}})) {
+            PapiDeviceContainer {NavigationStack {LegalView(type:legal ?? "privacy")}}
+                .presentationBackground {PapiBackground()}.presentationDragIndicator(.hidden).interactiveDismissDisabled(router.hasBlockingModal)
+        }
+    }
+}
+struct CoffeeCloudConnectionPendingView:View {
+    @EnvironmentObject private var store:CoffeeHouse
+    var body:some View {
+        PapiScreen {
+            ScrollView {
+                VStack(alignment:.leading,spacing:18) {
+                    CoffeeSectionIntro(artwork:"settingsCoffeeArt",title:"Connecting your coffee account",detail:"Your saved device data stays on this device while your online account is prepared.")
+                    PapiTextButton(store.cloudConnectionInProgress ? "Connecting…":"Retry online connection") {Task {await store.resumeCloudConnection()}}
+                        .buttonStyle(PapiButtonStyle(wide:true)).disabled(store.loginInProgress || store.cloudConnectionInProgress || !store.storageAvailable)
+                    if !store.storageAvailable {PapiTextButton("Retry local storage"){store.reload()}.buttonStyle(PapiButtonStyle(light:true,wide:true))}
+                }.padding(20).frame(maxWidth:600).frame(maxWidth:.infinity)
+            }
+        }.task(id:store.loginInProgress) {
+            if !store.loginInProgress {await store.resumeCloudConnection()}
+        }
+    }
+}
 struct CoffeeCloudDeletionPendingView:View {
     @EnvironmentObject private var store:CoffeeHouse
     var body:some View {

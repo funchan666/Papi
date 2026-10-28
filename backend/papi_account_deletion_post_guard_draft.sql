@@ -1,5 +1,5 @@
--- DRAFT ONLY. Pair-lock reactions and comments with the post author before
--- the generic actor-write trigger; apply atomically with deletion guards.
+-- Deployed with the deletion guards while account deletion remains disabled.
+-- Pair-lock reactions and comments before the generic actor-write trigger.
 create function papi_private.guard_coffee_post_target() returns trigger
 language plpgsql volatile security definer set search_path = '' as $$
 declare actor uuid := (select auth.uid()); target uuid; post_id uuid;

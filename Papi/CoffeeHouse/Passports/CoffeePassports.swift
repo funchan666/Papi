@@ -463,8 +463,10 @@ struct CoffeePolicyDocument:Decodable,Identifiable {
     let updated:String
     let publishedURL:String
     var url:URL? {
-        guard let url=URL(string:publishedURL),url.scheme=="https",url.host=="docs.google.com",
-              url.path.hasPrefix("/document/d/e/"),url.path.hasSuffix("/pub") else{return nil}
+        guard let url=URL(string:publishedURL),url.scheme=="https",url.host=="cquoffowtjnxmgaxavym.supabase.co",
+              (id=="terms" && url.path=="/storage/v1/object/public/papi-policies/terms.pdf") ||
+              (id=="privacy" && url.path=="/storage/v1/object/public/papi-policies/privacy.pdf"),
+              url.query==nil,url.fragment==nil,url.user==nil,url.password==nil,url.port==nil else{return nil}
         return url
     }
 }
@@ -565,7 +567,11 @@ private struct CoffeePolicyWebPage:UIViewRepresentable {
             owner.loading=false;owner.unavailable=true
         }
         func webView(_ webView:WKWebView,decidePolicyFor action:WKNavigationAction,decisionHandler:@escaping(WKNavigationActionPolicy)->Void) {
-            guard let url=action.request.url,url.scheme=="https" else {decisionHandler(.cancel);return}
+            guard let url=action.request.url else {decisionHandler(.cancel);return}
+            if url.absoluteString.lowercased()=="mailto:papi_service2026@outlook.com",action.navigationType == .linkActivated {
+                decisionHandler(.cancel);owner.openExternal(url);return
+            }
+            guard url.scheme=="https" else {decisionHandler(.cancel);return}
             if action.targetFrame?.isMainFrame==false {decisionHandler(.allow);return}
             if url.host==owner.url.host,url.path==owner.url.path {decisionHandler(.allow);return}
             decisionHandler(.cancel)

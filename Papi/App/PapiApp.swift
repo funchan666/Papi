@@ -5,12 +5,15 @@ import SwiftUI
     @StateObject private var commerce=AppleCoinCounter()
     @StateObject private var router=CoffeeNavigation()
     @State private var showingLaunch=true
+    @State private var deferredOnlinePolicy=false
     @Environment(\.scenePhase) private var scenePhase
     var body:some Scene {
         WindowGroup {
             PapiDeviceContainer {
                 Group {
                     if store.state.pendingCloudDeletionID != nil {CoffeeCloudDeletionPendingView()}
+                    else if store.onlinePolicyRenewalRequired && !deferredOnlinePolicy {CoffeeOnlinePolicyRenewalView {deferredOnlinePolicy=true}}
+                    else if store.cloudConnectionRequired {CoffeeCloudConnectionPendingView()}
                     else if store.state.signedIn { PapiRootView() }
                     else { FirstCupWelcomeView() }
                 }.papiNotices()
@@ -31,6 +34,9 @@ import SwiftUI
             .onChange(of:store.state.signedIn) { _,signedIn in
                 router.resetForAccountChange()
                 if signedIn {Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}}
+            }
+            .onChange(of:store.state.cloudAccountID) {_,account in
+                if account != nil {Task {await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}}
             }
             .onChange(of:store.storageAvailable) {_,available in if available {Task {await commerce.recover()}}}
             .onChange(of:store.accountAction) {_,action in if action==nil {Task {await commerce.recover()}}}

@@ -6994,5 +6994,18 @@
     "ar": "جارٍ تحميل الرسالة الصوتية…",
     "vi": "Đang tải tin nhắn thoại…",
     "ko": "음성 메시지를 불러오는 중…"
-  }
+  },
+  "Connecting your coffee account": {"es":"Conectando tu cuenta de café","th":"กำลังเชื่อมต่อบัญชีกาแฟของคุณ","ar":"جارٍ ربط حساب القهوة الخاص بك","vi":"Đang kết nối tài khoản cà phê","ko":"커피 계정을 연결하고 있어요"},
+  "Your saved device data stays on this device while your online account is prepared.": {"es":"Los datos guardados permanecen en este dispositivo mientras se prepara tu cuenta en línea.","th":"ข้อมูลที่บันทึกไว้ยังคงอยู่ในอุปกรณ์นี้ระหว่างเตรียมบัญชีออนไลน์","ar":"تبقى بياناتك المحفوظة على هذا الجهاز أثناء إعداد حسابك عبر الإنترنت.","vi":"Dữ liệu đã lưu vẫn ở trên thiết bị này trong khi tài khoản trực tuyến được chuẩn bị.","ko":"온라인 계정을 준비하는 동안 저장된 데이터는 이 기기에 남아 있어요."},
+  "Retry online connection": {"es":"Reintentar conexión en línea","th":"ลองเชื่อมต่อออนไลน์อีกครั้ง","ar":"إعادة محاولة الاتصال عبر الإنترنت","vi":"Thử kết nối trực tuyến lại","ko":"온라인 연결 다시 시도"},
+  "Connecting…": {"es":"Conectando…","th":"กำลังเชื่อมต่อ…","ar":"جارٍ الاتصال…","vi":"Đang kết nối…","ko":"연결 중…"},
+  "Online connection needs attention": {"es":"La conexión en línea requiere atención","th":"การเชื่อมต่อออนไลน์ต้องได้รับการตรวจสอบ","ar":"الاتصال عبر الإنترنت يحتاج إلى مراجعة","vi":"Kết nối trực tuyến cần được kiểm tra","ko":"온라인 연결을 확인해 주세요"},
+  "Your saved device data is kept. Check your connection and try again.": {"es":"Los datos guardados se conservan. Comprueba tu conexión e inténtalo de nuevo.","th":"ข้อมูลที่บันทึกไว้ยังคงอยู่ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง","ar":"بياناتك المحفوظة باقية. تحقّق من الاتصال وحاول مجدداً.","vi":"Dữ liệu đã lưu được giữ lại. Kiểm tra kết nối và thử lại.","ko":"저장된 데이터는 보관돼요. 연결을 확인하고 다시 시도해 주세요."},
+  "I agree to the User Agreement and Privacy Policy": {"es":"Acepto el Acuerdo de usuario y la Política de privacidad","th":"ฉันยอมรับข้อตกลงผู้ใช้และนโยบายความเป็นส่วนตัว","ar":"أوافق على اتفاقية المستخدم وسياسة الخصوصية","vi":"Tôi đồng ý với Thỏa thuận người dùng và Chính sách quyền riêng tư","ko":"이용약관과 개인정보 처리방침에 동의합니다"},
+  "I agree to the following policies": {"es":"Acepto las siguientes políticas","th":"ฉันยอมรับนโยบายต่อไปนี้","ar":"أوافق على السياسات التالية","vi":"Tôi đồng ý với các chính sách sau","ko":"다음 정책에 동의합니다"},
+  "Not selected": {"es":"No seleccionado","th":"ยังไม่ได้เลือก","ar":"غير محدد","vi":"Chưa chọn","ko":"선택되지 않음"},
+  "Review the online policies": {"es":"Revisa las políticas en línea","th":"ตรวจสอบนโยบายออนไลน์","ar":"راجع السياسات الإلكترونية","vi":"Xem lại chính sách trực tuyến","ko":"온라인 정책 확인"},
+  "Please review the updated policies before connecting your coffee account. Your device data stays available if you choose to continue offline.": {"es":"Revisa las políticas actualizadas antes de conectar tu cuenta. Tus datos seguirán disponibles en este dispositivo si continúas sin conexión.","th":"โปรดตรวจสอบนโยบายที่อัปเดตก่อนเชื่อมต่อบัญชี ข้อมูลในอุปกรณ์จะยังพร้อมใช้งานหากคุณเลือกใช้งานออฟไลน์","ar":"يرجى مراجعة السياسات المحدّثة قبل ربط حسابك. ستظل بيانات جهازك متاحة إذا اخترت المتابعة دون اتصال.","vi":"Vui lòng xem chính sách cập nhật trước khi kết nối tài khoản. Dữ liệu trên thiết bị vẫn có sẵn nếu bạn tiếp tục ngoại tuyến.","ko":"계정을 연결하기 전에 업데이트된 정책을 확인하세요. 오프라인으로 계속해도 기기의 데이터를 사용할 수 있습니다."},
+  "Continue online": {"es":"Continuar en línea","th":"ดำเนินการออนไลน์","ar":"المتابعة عبر الإنترنت","vi":"Tiếp tục trực tuyến","ko":"온라인으로 계속"},
+  "Continue offline": {"es":"Continuar sin conexión","th":"ดำเนินการออฟไลน์","ar":"المتابعة دون اتصال","vi":"Tiếp tục ngoại tuyến","ko":"오프라인으로 계속"}
 }

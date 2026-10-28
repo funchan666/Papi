@@ -1,6 +1,6 @@
--- Draft only: do not deploy until purchase settlement, receipt recovery,
--- Storage concurrency, session revocation and operational retries are verified.
--- Requires the disabled foundation in papi_account_deletion_runtime.sql.
+-- Protective policies and the public begin RPC are deployed with the
+-- account-deletion runtime disabled. Full production acceptance is still
+-- required before enabling it. Requires papi_account_deletion_runtime.sql.
 
 -- Lock uploads and deletion on the same owner key. A stale JWT cannot add a
 -- new object after deletion begins, even if it remains valid for a short time.

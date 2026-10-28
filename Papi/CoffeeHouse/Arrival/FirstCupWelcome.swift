@@ -5,6 +5,7 @@ struct FirstCupWelcomeView:View {
     @EnvironmentObject private var router:CoffeeNavigation
     @State private var page=0
     @State private var legal:String?
+    @State private var acceptedPolicies=false
     var body:some View {
         ZStack {
             if !store.state.sawOnboarding {
@@ -35,13 +36,19 @@ struct FirstCupWelcomeView:View {
                                 PapiText("Papi").font(CoffeeType.display(size:23,weight:.bold))
                             }.foregroundStyle(Color.coffee).padding(.horizontal,16).frame(minHeight:52).papiAvoidReserved()
                             Color.clear.frame(height:max(120,proxy.size.height*0.72-52))
-                            PapiTextButton(store.text("Log in")) {Task{await store.login()}}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:12)).frame(maxWidth:.infinity)
-                                .disabled(!store.storageAvailable || store.loginInProgress).padding(.horizontal,16)
+                            PapiTextButton(store.text("Log in")) {Task{await store.login(acceptedPolicies:acceptedPolicies)}}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:12)).frame(maxWidth:.infinity)
+                                .disabled(!acceptedPolicies || !store.storageAvailable || store.loginInProgress).padding(.horizontal,16)
                             PapiText("Your recipes, coffee moments and tasting notes, kept together.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).padding(.top,10).padding(.horizontal,20).multilineTextAlignment(.center)
                             if !store.storageAvailable {PapiTextButton("Retry"){store.reload()}.buttonStyle(PapiButtonStyle(light:true))}
                             Spacer(minLength:30)
                             VStack(spacing:4) {
-                                PapiText(store.text("By continuing, you agree to our")).font(CoffeeType.face(.caption))
+                                HStack(spacing:4) {
+                                    Button {acceptedPolicies.toggle()} label: {
+                                        Image(acceptedPolicies ? "check":"agreementUnchecked").resizable().scaledToFit().frame(width:acceptedPolicies ? 24:44,height:acceptedPolicies ? 24:44).frame(width:44,height:44)
+                                    }.accessibilityLabel(store.text("I agree to the User Agreement and Privacy Policy"))
+                                        .accessibilityValue(store.text(acceptedPolicies ? "Selected":"Not selected"))
+                                    PapiText(store.text("I agree to the following policies")).font(CoffeeType.face(.caption))
+                                }
                                 PapiActionGroup {
                                     PapiTextButton(store.text("User Agreement")){legal="terms"}.frame(minHeight:44)
                                     PapiTextButton(store.text("Privacy Policy")){legal="privacy"}.frame(minHeight:44)

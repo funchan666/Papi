@@ -1,5 +1,5 @@
--- Draft only. Apply with account deletion only after validating every policy,
--- function, Storage path and concurrent operation against a disposable project.
+-- Protective policies and triggers are deployed with deletion disabled.
+-- Full production acceptance remains required before enabling deletion.
 -- Requires the deployed private helpers in papi_account_deletion_private_guards.sql.
 -- Requires the deployed private begin function in papi_account_deletion_private_begin.sql.
 -- Restrictive policies apply alongside each table's existing ownership rules.

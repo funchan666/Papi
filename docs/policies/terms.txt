@@ -1,0 +1,33 @@
+PAPI USER AGREEMENT
+Effective: 28 October 2026
+
+This User Agreement applies to Papi, a coffee-themed app for recording and exploring coffee experiences. By selecting the agreement checkbox and continuing, you agree to these terms and acknowledge the Papi Privacy Policy. If you do not agree, do not continue. The app may offer an offline option when updated online policies are presented.
+
+1. Eligibility and your device
+You must be able to enter an agreement under the law that applies to you. If you are a minor, use Papi only with any permission required by your local law. You are responsible for your use of your device and for maintaining access to its local data. Do not use the app for unlawful purposes.
+
+2. What Papi offers
+Papi includes a coffee journal, recipes, tasting records, collections, profile and other coffee-related content. Some social screens contain sample or device-local material. A sample room or conversation is not evidence of a live participant or an online service. Availability, features and content may change, and some items need an internet connection.
+
+3. Accounts and local data
+The current local guest experience keeps its coffee book on your device. Logging out does not by itself remove that saved information. The app's local account deletion option attempts to remove that guest's local profile and media, while retaining limited identifiers needed for transaction integrity and other app bookkeeping. Keep a backup as appropriate. Cloud accounts and recovery, if offered later, require additional setup and may have their own availability and verification requirements. Do not assume device data has been transferred to or backed up in the cloud.
+
+4. Community and content
+Only share material you have the right to use and, when appropriate, have permission to share. Do not post or send unlawful, abusive, hateful, threatening, sexually exploitative or otherwise harmful material, impersonate others, publish private information without permission, spam, defraud or harass. Respect others' choices and boundaries. When online community services are enabled, additional moderation, reporting and blocking measures may apply. In the current local experience, local reports and blocks are not a promise of a live moderator response or remote enforcement.
+
+You retain ownership of content you create. You allow Papi and its service providers to store, process, display and transmit content as needed to provide the features you choose, subject to the Privacy Policy. Do not upload content if you do not have the necessary rights and permissions.
+
+5. Audio, video and permissions
+Some device features may request access to your microphone, camera or photo library. You control access through your device settings and can stop using the related feature. Real-time voice rooms and online calls are not currently enabled; previews or sample experiences should not be treated as live calls. Their use, if introduced, will depend on the feature being made available and the permissions you grant.
+
+6. Purchases and virtual items
+Some features may offer virtual coins or items and, where available, in-app purchases through Apple. Prices and purchase terms are displayed before purchase. Apple processes payment and its terms and refund procedures apply. Virtual items have no cash value, cannot be exchanged for money, and are not transferable unless the app expressly says otherwise. Purchase, recovery and online verification features may be unavailable until configured and validated. Do not uninstall or reset your device expecting a local-only balance to be recoverable from the cloud.
+
+7. Service limitations
+Papi is provided as available. We do not guarantee uninterrupted availability, compatibility, error-free operation or preservation of device data. Nothing in these terms excludes rights or remedies that cannot legally be excluded. Coffee information is for general interest and is not professional medical or other regulated advice.
+
+8. Changes and ending use
+We may update the app or these terms. A material policy update may require you to review and agree again before using the relevant online service. You may stop using the app at any time. Features that are not available do not create a commitment that they are already operational.
+
+9. Contact
+Contact: Papi_service2026@outlook.com.

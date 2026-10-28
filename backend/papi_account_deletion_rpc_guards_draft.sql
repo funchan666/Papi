@@ -1,4 +1,4 @@
--- DRAFT ONLY. Apply atomically with deletion guard policies, after verification.
+-- Deployed atomically with the deletion guard policies; deletion remains off.
 -- Preserve existing signatures, caller privileges, volatility and result values.
 -- Write triggers serialize mutations; an already-started read can race deletion.
 create function papi_private.require_coffee_actor_active() returns void

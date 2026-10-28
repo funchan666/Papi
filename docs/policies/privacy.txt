@@ -1,0 +1,33 @@
+PAPI PRIVACY POLICY
+Effective: 28 October 2026
+
+This policy explains information handled by Papi, a coffee-themed app. It describes the current local experience and identifies services that are not yet enabled. Read it together with the Papi User Agreement. You can contact Papi at the email address below.
+
+1. Information you create or provide
+Depending on the features you use, you may enter a display name, profile details, coffee recipes, tasting notes, journal entries, collection and wallet activity, messages, reports and preferences. You may select or create photos, video or audio. Please do not include information you do not want stored or shared.
+
+2. Information stored on your device
+The current guest coffee book, settings, local social activity and related state are stored on your device, including an app state snapshot in the iOS Keychain and separately stored media files. A generated local identifier and transaction identifiers may be retained for account and purchase integrity. Logging out keeps the saved profile, messages and drafts. Device backups and operating-system storage behavior are governed by your device settings and Apple.
+
+3. Network requests and service providers
+An internet connection is used to display published policies and to retrieve remote images and videos included in Papi. The servers delivering those resources can receive technical request information such as your IP address, request time and device or browser connection details. Apple processes App Store and StoreKit purchase activity where available; Papi does not receive your full payment-card details. These providers process information under their own terms and policies.
+
+The project includes Supabase infrastructure and client code for authentication, database and private media, and LiveKit integration for voice and video. The app's online-policy version and live voice, live calls, email linking and online account deletion switches are not currently enabled. Do not assume a local guest's data has been uploaded or that these services are available. Before those features are enabled, this policy must be updated to reflect the actual active data flows, retention and support arrangements and the app must request renewed consent where appropriate.
+
+4. Camera, microphone and photos
+Papi requests system permission where a feature needs the camera, microphone or photo library. You can decline or change permissions in iOS Settings. In the current local edition, a camera or microphone preview is not an online call to another person. Real-time voice and calls are currently disabled. Permission to select a photo does not mean you must enable unrelated permissions.
+
+5. How information is used
+Information is used to provide the features you select, retain your coffee book and preferences, show content, maintain transaction and account integrity, respond to actions you initiate, and protect the service. Local sample content and locally saved reports do not imply that a remote moderation team has received or reviewed a report.
+
+6. Retention and deletion
+Local information remains until you remove it through the app or otherwise remove the relevant device data, subject to operating-system behavior. The app's local deletion flow attempts to reset the guest account and remove its media; it retains certain retired guest and transaction identifiers for integrity, and may retain bookkeeping needed to finish media cleanup. Deletion or uninstalling the app does not necessarily remove information held by Apple or another independent provider. Online deletion is currently disabled and must not be presented as operational; if cloud services are enabled, their retention, deletion and any legal exceptions must be specified in an updated policy.
+
+7. Choices and security
+You can choose which information to enter, use available in-app controls, stop using a feature, and change device permissions. Papi uses platform storage protections and access controls where implemented, but no system can promise absolute security. Avoid sharing sensitive information unnecessarily. The app does not claim that local data is automatically synchronized or recoverable on another device.
+
+8. Children and international access
+Papi is not intended to collect information from children contrary to applicable law. A parent or guardian should supervise a minor's use where required. Remote content or service providers may process technical information in regions other than the user's location, subject to their policies and applicable law.
+
+9. Changes and contact
+This policy may change as features change. Review the updated policy when prompted. Contact: Papi_service2026@outlook.com.
