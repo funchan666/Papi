@@ -34,6 +34,9 @@ do $$ declare cid uuid:=current_setting('papi.test.comment')::uuid; rid uuid:=cu
  perform public.report_coffee_editorial(rid,'editorial-video-1',cid,'Harassment or hate');
  perform public.report_coffee_editorial(rid,'editorial-video-1',cid,'Harassment or hate');
  if exists(select 1 from public.coffee_editorial_comments('editorial-video-1') where id=cid) then raise exception 'Reported comment still visible'; end if;
+ if exists(select 1 from public.coffee_editorial_reported_posts() where content_id='editorial-video-1') then raise exception 'Comment report hid the post'; end if;
+ perform public.report_coffee_editorial(gen_random_uuid(),'editorial-video-1',null,'Inappropriate content');
+ if not exists(select 1 from public.coffee_editorial_reported_posts() where content_id='editorial-video-1') then raise exception 'Reported post was not saved'; end if;
  perform public.delete_coffee_editorial_comment(cid);
 end $$;
 reset role;
@@ -46,4 +49,11 @@ set local role authenticated;
 select set_config('request.jwt.claims',json_build_object('role','authenticated','sub',current_setting('papi.test.b'),'session_id',current_setting('papi.test.sb'))::text,true);
 do $$ begin if exists(select 1 from public.coffee_editorial_comments('editorial-video-1') where author_id=current_setting('papi.test.a')::uuid) then raise exception 'Blocked author visible'; end if; end $$;
 reset role;
+-- A report made by another user survives, but its deleted author's identity and text do not.
+delete from public.coffee_profiles where id=current_setting('papi.test.a')::uuid;
+do $$ begin
+ if not exists(select 1 from papi_private.editorial_reports where id=current_setting('papi.test.report')::uuid and comment_author_id is null and comment_excerpt is null) then
+   raise exception 'Deleted author remains in report';
+ end if;
+end $$;
 rollback;

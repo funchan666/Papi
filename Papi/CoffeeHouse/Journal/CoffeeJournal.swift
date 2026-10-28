@@ -240,7 +240,7 @@ struct CoffeeMomentView:View {
                                     HStack(spacing:12) {
                                         PapiUserLink(userID:post.authorID,size:46,showsName:false)
                                         VStack(alignment:.leading,spacing:3) {
-                                            Button {router.go(.person(post.authorID))} label:{PapiText(verbatim:store.person(post.authorID)?.name ?? "Papi coffee journal").font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true)}.buttonStyle(.plain)
+                                            Button {router.go(.person(post.authorID))} label:{PapiText(verbatim:store.person(post.authorID)?.name ?? store.text("Coffee member")).font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true)}.buttonStyle(.plain)
                                             PapiText(post.category).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                                         }
                                         Spacer(minLength:0)
