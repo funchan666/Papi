@@ -1,4 +1,3 @@
-// Draft only: deploy and enable checkout only after isolated and Apple sandbox validation.
 // verifyReceipt is deprecated; this endpoint handles consumables without an API key.
 import { createClient } from "npm:@supabase/supabase-js@2.118.0";
 
@@ -74,9 +73,8 @@ Deno.serve(async (request: Request) => {
   }
 
   const service = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
-  // The signed Apple notification supplies account binding even if a consumable receipt omits it.
-  // The RPC checks it and settles under one transaction lock; absent notification stays pending.
-  const { data: balance, error } = await service.rpc("settle_notified_apple_charge", {
+  // Apple verified the receipt; the settlement ledger accepts a transaction only once.
+  const { data: balance, error } = await service.rpc("settle_verified_apple_order", {
     p_order: order.id, p_owner: identity.user.id, p_product: order.product_id,
     p_transaction: transaction_id, p_environment: environment,
   });

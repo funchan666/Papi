@@ -256,6 +256,7 @@ actor CoffeeCloud {
         let transaction_id: String
         let receipt_data: String
     }
+    private struct PurchaseCancellation: Encodable { let p_order: UUID }
     private struct PurchaseSettlement: Decodable { let balance: Int }
     struct Block: Codable {
         let blocker_id: UUID
@@ -1055,6 +1056,20 @@ actor CoffeeCloud {
             guard (try? await matchingOrder()) == true else { throw error }
         }
         _ = try await identity(account)
+    }
+
+    func purchaseAvailable(account:UUID) async throws -> Bool {
+        _ = try await identity(account)
+        let ready:Bool = try await client.rpc("coffee_checkout_ready").execute().value
+        _ = try await identity(account)
+        return ready
+    }
+
+    func cancelPurchaseOrder(id:UUID, account:UUID) async throws -> Bool {
+        _ = try await identity(account)
+        let cancelled:Bool = try await client.rpc("cancel_coffee_purchase_order",params:PurchaseCancellation(p_order:id)).execute().value
+        _ = try await identity(account)
+        return cancelled
     }
 
     /// Finish the StoreKit transaction only after this returns and the caller

@@ -28,8 +28,8 @@ struct CoinPack: Identifiable {
     @Published private(set) var busy = false
     @Published private(set) var status = "Purchases are temporarily unavailable."
     @Published private(set) var unresolved = false
-    // Enable only after the server verifier, cancellation/reconciliation and Apple sandbox are verified.
-    let checkoutAvailable = false
+    // The server can pause checkout without changing the app.
+    @Published private(set) var checkoutAvailable = false
     private var started = false
     private var store: CoffeeHouse?
     private var productRequest: SKProductsRequest?
@@ -85,6 +85,9 @@ struct CoinPack: Identifiable {
         busy=true;defer {busy=false;store.endCheckout()}
         status="Asking Apple for this product…"
         do {
+            guard try await CoffeeCloud.shared.purchaseAvailable(account:account) else {
+                checkoutAvailable=false;fail("Purchases are temporarily unavailable.");return
+            }
             guard let product=try await requestProduct(pack.id) else {fail("This product is not available from Apple. Please try again later.");return}
             products.removeAll{$0.productIdentifier==product.productIdentifier};products.append(product)
             guard canPresent(),store.state.signedIn,store.state.cloudAccountID==account,
@@ -97,8 +100,11 @@ struct CoinPack: Identifiable {
             // Keep the order identity on disk before any remote request or Apple payment.
             try await CoffeeCloud.shared.createPurchaseOrder(id:terms.token,productID:pack.id,account:account)
             guard canPresent(),store.state.signedIn,store.state.cloudAccountID==account,
-                  store.state.activePurchaseToken==terms.token else {
-                unresolved=true;fail("The saved order needs reconciliation before another purchase.");return
+                  store.state.activePurchaseToken==terms.token,(try? await CoffeeCloud.shared.purchaseAvailable(account:account)) == true else {
+                if await cancelOrder(terms,store:store,account:account) {
+                    status="No purchase was started. Please try again."
+                } else {unresolved=true;fail("The saved order needs reconciliation before another purchase.")}
+                return
             }
             let payment=SKMutablePayment(product:product)
             payment.applicationUsername=terms.token.uuidString.lowercased()
@@ -122,7 +128,13 @@ struct CoinPack: Identifiable {
             // Persist the terminal result before removing Apple's queue entry.
             guard store.storageAvailable,
                   let text=transaction.payment.applicationUsername,let token=UUID(uuidString:text),
-                  let terms=store.state.coinPurchaseTerms?.first(where:{$0.token==token && $0.productID==transaction.payment.productIdentifier}),
+                  let terms=store.state.coinPurchaseTerms?.first(where:{$0.token==token && $0.productID==transaction.payment.productIdentifier}) else {
+                unresolved=true;status="This purchase needs online recovery. It has not been finished or credited again.";return
+            }
+            let failureKey="failed-\(token.uuidString)"
+            guard !processing.contains(failureKey) else {return}
+            processing.insert(failureKey);defer {processing.remove(failureKey)}
+            guard
                   store.commit({state in
                       if let index=state.coinPurchaseTerms?.firstIndex(where:{$0.token==token && $0.productID==terms.productID}) {
                           let recorded=state.coinPurchaseTerms?[index].failedAt
@@ -131,8 +143,14 @@ struct CoinPack: Identifiable {
                   }) else {
                 unresolved=true;status="This purchase needs online recovery. It has not been finished or credited again.";return
             }
+            guard store.state.signedIn,let account=store.state.cloudAccountID,terms.owner==account,
+                  await cancelOrder(terms,store:store,account:account) else {
+                unresolved=true;status="This purchase needs online recovery.";scheduleRecovery();return
+            }
             SKPaymentQueue.default().finishTransaction(transaction)
-            unresolved=true;fail("The saved order needs reconciliation before another purchase.")
+            unresolved=store.state.activePurchaseToken != nil || SKPaymentQueue.default().transactions.contains(where:{$0 !== transaction})
+            status=(transaction.error as? SKError)?.code == .paymentCancelled
+                ? "Purchase cancelled. No coins were added." : "Apple could not complete this purchase. Please try again."
         case .purchased, .restored:
             guard let id=transaction.transactionIdentifier,!id.isEmpty else {unresolved=true;return}
             guard !processing.contains(id) else{return}
@@ -168,11 +186,31 @@ struct CoinPack: Identifiable {
     }
     func recover() async {
         guard let store,store.storageAvailable,store.accountAction==nil,!store.loginInProgress else{return}
+        if let account=store.state.cloudAccountID,store.state.signedIn {
+            let ready=(try? await CoffeeCloud.shared.purchaseAvailable(account:account)) ?? false
+            checkoutAvailable=store.state.signedIn && store.state.cloudAccountID==account && ready
+        } else {checkoutAvailable=false}
         for transaction in SKPaymentQueue.default().transactions {await receive(transaction)}
+        if SKPaymentQueue.default().transactions.isEmpty,let token=store.state.activePurchaseToken,
+           let account=store.state.cloudAccountID,store.state.signedIn,
+           let terms=store.state.coinPurchaseTerms?.first(where:{$0.token==token && $0.owner==account && $0.failedAt != nil}) {
+            if await cancelOrder(terms,store:store,account:account) {unresolved=false;status="No unfinished purchases were found."}
+        }
         if store.state.activePurchaseToken != nil && SKPaymentQueue.default().transactions.isEmpty {
             unresolved=true
             status="The saved order needs reconciliation before another purchase."
         }
+    }
+    private func cancelOrder(_ terms:CoinPurchaseTerms,store:CoffeeHouse,account:UUID) async -> Bool {
+        do {
+            guard try await CoffeeCloud.shared.cancelPurchaseOrder(id:terms.token,account:account),
+                  store.state.signedIn,store.state.cloudAccountID==account else {return false}
+            return store.commit {state in
+                if state.activePurchaseToken==terms.token {
+                    state.activePurchaseToken=nil;state.purchaseIntents.removeValue(forKey:terms.productID)
+                }
+            }
+        } catch {return false}
     }
     func sync() async {
         guard !busy,let store,store.beginCheckout() else{return}

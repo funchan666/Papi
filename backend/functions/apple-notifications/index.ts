@@ -65,5 +65,7 @@ Deno.serve(async (request: Request) => {
     });
     if (recorded.error || recorded.data !== true) return reply(503);
   }
+  // Keep non-purchase events retryable until their accounting processor exists.
+  if (notification.notificationType !== "ONE_TIME_CHARGE") return reply(503);
   return reply(200);
 });
