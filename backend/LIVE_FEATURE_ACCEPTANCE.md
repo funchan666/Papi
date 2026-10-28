@@ -45,6 +45,30 @@ Never delete, overwrite or reuse the existing device archive or real accounts.
   PostgreSQL database: idle behavior, wake on pending work, ticket expiry and
   concurrent single use, concurrent call batches and voice queue rotation
   passed. This does not verify hosted pg_cron/pg_net timing or actual delivery.
+- Further PostgreSQL fixtures exercised both orderings of voice join versus
+  blocking, repeat cleanup of an earlier voice session after a new join,
+  accepted-call versus unfollow, 20-person room capacity, stale heartbeat
+  cleanup and the voice/call runtime disable switches. These checks use local
+  transactions and do not prove LiveKit Cloud participant removal or device
+  behavior.
+- The voice and call token functions now return a retryable error when Auth
+  fails unexpectedly; cleanup does the same when ticket verification cannot
+  reach the database, and still rejects an invalid ticket. Local mocked error
+  checks passed. Both token functions and the cleanup function were deployed
+  as version 3 and read back. Deno 2.9.6 type-checked these three functions
+  and deletion version 4; this is not a hosted end-to-end test.
+- A disposable PostgreSQL fixture applied the complete draft RPC guards and
+  checked all 27 guarded operation signatures against both deletion-pending
+  accounts and revoked sessions. A separate fixture exercised eight actual
+  read RPCs with the draft RLS rules: each returned expected fixture data
+  before revocation and hid it after session revocation or deletion start.
+  These draft policies are not deployed and the tests do not substitute for
+  real Supabase Auth/Storage or full business-operation acceptance.
+- Read-only catalog comparison found the 27 draft wrappers match the existing
+  production RPCs' argument and return types, volatility and invoker status;
+  production grants currently allow authenticated and deny anon. This is a
+  signature/privilege comparison, not proof of complete behavior or approval
+  to enable the draft migrations.
 - Supabase rejected creation of a disposable branch on the current plan; no
   upgrade was purchased. The production gates and cleanup schedule remain off.
 

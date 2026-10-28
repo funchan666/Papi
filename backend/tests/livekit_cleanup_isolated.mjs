@@ -21,7 +21,10 @@ globalThis.__papiCleanupClient=(url,key)=>{
   assert.equal(url,'https://isolated.invalid');assert.equal(key,'test');
   return {rpc:async(name,args)=>{
     state.calls.push(name);
-    if(name==='consume_coffee_cleanup_ticket') return {data:state.authorized,error:null};
+    if(name==='consume_coffee_cleanup_ticket') {
+      if(state.ticketThrows) throw new Error('database unavailable');
+      return {data:state.authorized,error:state.ticketError ? {message:'database unavailable'} : null};
+    }
     if(name==='pending_call_revocations') return {data:state.callJobs,error:null};
     if(name==='pending_voice_revocations') return {data:state.voiceJobs,error:null};
     if(name==='complete_call_revocation' || name==='complete_voice_revocation') {state.completed.push({name,args});return {data:true,error:null};}
@@ -52,6 +55,10 @@ try {
   assert.equal(state.completed.some(x=>x.name==='complete_call_revocation'),false);
   state=initial();state.authorized=false;response=await handler(request());
   assert.equal(response.status,401);assert.deepEqual(state.calls,['consume_coffee_cleanup_ticket']);assert.equal(state.removals.length,0);
+  state=initial();state.ticketError=true;response=await handler(request());
+  assert.equal(response.status,503);assert.equal(state.removals.length,0);
+  state=initial();state.ticketThrows=true;response=await handler(request());
+  assert.equal(response.status,503);assert.equal(state.removals.length,0);
   state=initial();state.callJobs[0].call_id='invalid';response=await handler(request());
   assert.equal(response.status,503);assert.equal(state.removals.length,1);assert.equal(state.completed.length,1);
   state=initial();response=await handler(request('invalid'));

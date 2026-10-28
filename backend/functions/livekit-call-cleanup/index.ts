@@ -22,13 +22,14 @@ Deno.serve(async (request:Request) => {
     if (parsed.protocol!=="wss:" || parsed.username || parsed.password || parsed.search || parsed.hash) throw new Error("Invalid host");
     parsed.protocol="https:";host=parsed.toString();
   } catch {return reply(503,{error:"Call cleanup unavailable"});}
-  const service=createClient(url,serviceKey,{auth:{persistSession:false,autoRefreshToken:false}});
-  // Single-use scheduler capability; neither database nor network queues hold
-  // the long-lived service-role or LiveKit credentials.
-  const {data:authorized,error:ticketError}=await service.rpc("consume_coffee_cleanup_ticket",{p_ticket:provided});
-  if (ticketError || authorized!==true) return reply(401,{error:"Unauthorized"});
-  const rooms=new RoomServiceClient(host,apiKey,apiSecret);
   try {
+    const service=createClient(url,serviceKey,{auth:{persistSession:false,autoRefreshToken:false}});
+    // Single-use scheduler capability; neither database nor network queues hold
+    // the long-lived service-role or LiveKit credentials.
+    const {data:authorized,error:ticketError}=await service.rpc("consume_coffee_cleanup_ticket",{p_ticket:provided});
+    if (ticketError) return reply(503,{error:"Call cleanup needs retry"});
+    if (authorized!==true) return reply(401,{error:"Unauthorized"});
+    const rooms=new RoomServiceClient(host,apiKey,apiSecret);
     const {data:jobs,error}=await service.rpc("pending_call_revocations");
     if (error || !Array.isArray(jobs)) throw error ?? new Error("Invalid queue");
     let completed=0,failed=0;

@@ -39,18 +39,20 @@ Deno.serve(async (request:Request) => {
     callID=(body as Record<string,unknown>).call_id;
   } catch {return reply(400,{error:"Invalid request"});}
   if (typeof callID!=="string" || !uuid.test(callID)) return reply(400,{error:"Invalid request"});
-  const client=createClient(dbURL,publicKey,{
-    global:{headers:{Authorization:`Bearer ${bearer}`}},
-    auth:{persistSession:false,autoRefreshToken:false},
-  });
-  const {data:identity,error:authError}=await client.auth.getUser(bearer);
-  if (authError || !identity.user) return reply(401,{error:"Authentication required"});
-  const authorized=async () => {
-    const {data,error}=await client.rpc("can_join_coffee_call",{p_id:callID});
-    if (error) throw error;
-    return data===true;
-  };
   try {
+    const client=createClient(dbURL,publicKey,{
+      global:{headers:{Authorization:`Bearer ${bearer}`}},
+      auth:{persistSession:false,autoRefreshToken:false},
+    });
+    const {data:identity,error:authError}=await client.auth.getUser(bearer);
+    if (authError) return [400,401,403].includes(authError.status ?? 0)
+      ? reply(401,{error:"Authentication required"}) : reply(503,{error:"Call unavailable; retry later"});
+    if (!identity.user) return reply(401,{error:"Authentication required"});
+    const authorized=async () => {
+      const {data,error}=await client.rpc("can_join_coffee_call",{p_id:callID});
+      if (error) throw error;
+      return data===true;
+    };
     if (!await authorized()) return reply(403,{error:"Call unavailable"});
     const {data:reserved,error:reserveError}=await client.rpc("reserve_coffee_call_token",{p_id:callID});
     if (reserveError) throw reserveError;

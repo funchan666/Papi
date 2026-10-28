@@ -19,7 +19,10 @@ globalThis.Deno={env:{get:key=>({SUPABASE_URL:'https://isolated.invalid',SUPABAS
 globalThis.__papiAccessToken=AccessToken;globalThis.__papiTrackSource=TrackSource;
 globalThis.__papiTokenClient=(url,key)=>{
   assert.equal(url,'https://isolated.invalid');assert.equal(key,'fake');
-  return {auth:{getUser:async()=>({data:{user:state.user ? {id:ids.user} : null},error:null})},rpc:async(name,args)=>{
+  return {auth:{getUser:async()=>{
+    if(state.authThrows) throw new Error('network unavailable');
+    return {data:{user:state.user ? {id:ids.user} : null},error:state.authError ?? null};
+  }},rpc:async(name,args)=>{
     state.calls.push(name);
     if(name.startsWith('can_join_')) return {data:state.allowed.shift(),error:null};
     if(name.startsWith('reserve_')) return {data:state.reserved,error:null};
@@ -52,9 +55,12 @@ try {
     state={user:true,allowed:[true,false],reserved:true,calls:[]};response=await handler(request(body));assert.equal(response.status,403);
     assert.equal(Object.hasOwn(await response.json(),'participant_token'),false);
     state={user:false,allowed:[],reserved:true,calls:[]};response=await handler(request(body));assert.equal(response.status,401);assert.equal(state.calls.length,0);
+    state={user:false,allowed:[],reserved:true,calls:[],authThrows:true};response=await handler(request(body));assert.equal(response.status,503);assert.equal(state.calls.length,0);
+    state={user:false,allowed:[],reserved:true,calls:[],authError:{status:503}};response=await handler(request(body));assert.equal(response.status,503);
+    state={user:false,allowed:[],reserved:true,calls:[],authError:{status:401}};response=await handler(request(body));assert.equal(response.status,401);
     state={user:true,allowed:[],reserved:true,calls:[]};response=await handler(request({}));assert.equal(response.status,400);
   }
-  console.log('PASS: isolated voice and call token scope, authorization recheck and rate limits');
+  console.log('PASS: isolated token scope, authorization recheck, rate limits and Auth failure handling');
 } finally {
   delete globalThis.Deno;delete globalThis.__papiTokenClient;delete globalThis.__papiAccessToken;delete globalThis.__papiTrackSource;
   await rm(dir,{recursive:true,force:true});

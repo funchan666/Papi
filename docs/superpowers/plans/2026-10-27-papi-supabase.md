@@ -93,3 +93,21 @@ Isolated token-handler tests used the pinned LiveKit SDK with fake Auth/RPC;
 scheduler tests used native PostgreSQL and fake pg_net to check ticket
 single-use, concurrent call batches and voice queue rotation. These checks do
 not replace the hosted scheduler, Cloud revocation or physical-device checks.
+
+Additional disposable PostgreSQL tests cover voice join versus block in both
+transaction orders, repeated cleanup of an old session after a new join,
+accepted call versus unfollow, room capacity, heartbeat expiry and runtime
+disable behavior. They do not exercise real Cloud participant removal.
+
+Voice and call token functions and cleanup function are deployed as version 3.
+Auth or ticket-service failures are handled as retryable failures without
+granting access; invalid credentials remain rejected. Mocked failure checks
+passed, and Deno type-checked these functions along with deletion version 4.
+All runtime switches and the cleanup schedule remain off pending full
+acceptance.
+
+The 27 proposed account-active RPC guards were checked against pending and
+revoked sessions in a disposable PostgreSQL fixture. Eight actual read RPCs
+were checked with draft RLS before and after revocation/deletion; they hid
+fixture data as expected. These guards remain drafts and do not establish
+hosted Auth, Storage or full application behavior.

@@ -38,10 +38,12 @@ Deno.serve(async (request:Request) => {
     topicID=(body as Record<string,unknown>).topic_id;sessionID=(body as Record<string,unknown>).session_id;
   } catch {return reply(400,{error:"Invalid request"});}
   if (typeof topicID!=="string" || !/^room-[a-z]{1,30}$/.test(topicID) || typeof sessionID!=="string" || !uuid.test(sessionID)) return reply(400,{error:"Invalid request"});
-  const client=createClient(dbURL,publicKey,{global:{headers:{Authorization:`Bearer ${bearer}`}},auth:{persistSession:false,autoRefreshToken:false}});
-  const {data:identity,error:authError}=await client.auth.getUser(bearer);
-  if (authError || !identity.user) return reply(401,{error:"Authentication required"});
   try {
+    const client=createClient(dbURL,publicKey,{global:{headers:{Authorization:`Bearer ${bearer}`}},auth:{persistSession:false,autoRefreshToken:false}});
+    const {data:identity,error:authError}=await client.auth.getUser(bearer);
+    if (authError) return [400,401,403].includes(authError.status ?? 0)
+      ? reply(401,{error:"Authentication required"}) : reply(503,{error:"Voice room unavailable"});
+    if (!identity.user) return reply(401,{error:"Authentication required"});
     const allowed=async () => {
       const {data,error}=await client.rpc("can_join_coffee_voice",{p_topic:topicID,p_session:sessionID});
       if (error) throw error;
