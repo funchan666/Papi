@@ -31,7 +31,6 @@ import AVFoundation
             let allowed=try await CoffeeCloud.shared.canJoinCall(id:call,account:account)
             guard generation==attempt,!Task.isCancelled,allowed else {await room.disconnect();return}
             connected=true
-            Task {await store.recordCloudRoomVisit(topic,account:account)}
             monitor=Task { [weak self] in
                 while !Task.isCancelled {
                     do {
@@ -163,6 +162,7 @@ private struct LiveParticipantVideo:View {
             let allowed=try await CoffeeCloud.shared.voiceSession(topic:topic,id:session.id,account:account,operation:.heartbeat)
             guard generation==attempt,!Task.isCancelled,allowed else {await room.disconnect();await store.finishCloudVoice(expectedID:session.id);return}
             connected=true
+            Task {await store.recordCloudRoomVisit(topic,account:account)}
             monitor=Task { [weak self,weak store] in
                 while !Task.isCancelled {
                     do {
