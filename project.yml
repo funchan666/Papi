@@ -26,9 +26,6 @@ targets:
       - path: Papi/Resources/Fonts
         type: folder
         buildPhase: resources
-      - path: Papi/Resources/Media
-        type: folder
-        buildPhase: resources
       - path: Papi/Resources/PrivacyInfo.xcprivacy
         buildPhase: resources
       - path: Papi/Resources/Localization

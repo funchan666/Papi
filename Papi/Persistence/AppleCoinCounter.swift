@@ -25,6 +25,7 @@ struct CoinPack: Identifiable {
 }
 @MainActor final class AppleCoinCounter: NSObject, ObservableObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     @Published private(set) var products: [SKProduct] = []
+    @Published private(set) var catalogLoading = false
     @Published private(set) var busy = false
     @Published private(set) var status = "Purchases are temporarily unavailable."
     @Published private(set) var unresolved = false
@@ -33,6 +34,7 @@ struct CoinPack: Identifiable {
     private var started = false
     private var store: CoffeeHouse?
     private var productRequest: SKProductsRequest?
+    private var catalogRequest: SKProductsRequest?
     private var productContinuation: CheckedContinuation<SKProduct?, Error>?
     private var requestedProductID: String?
     private var processing: Set<String> = []
@@ -52,6 +54,14 @@ struct CoinPack: Identifiable {
         return formatter.string(from:product.price)
     }
 
+    func loadProducts() {
+        guard catalogRequest == nil else {return}
+        catalogLoading=true
+        products=[]
+        let request=SKProductsRequest(productIdentifiers:Set(CoinPack.all.map(\.id)))
+        catalogRequest=request;request.delegate=self;request.start()
+    }
+
     private func requestProduct(_ id:String) async throws -> SKProduct? {
         try await withCheckedThrowingContinuation {continuation in
             productContinuation=continuation;requestedProductID=id
@@ -60,6 +70,11 @@ struct CoinPack: Identifiable {
     }
     nonisolated func productsRequest(_ request:SKProductsRequest,didReceive response:SKProductsResponse) {
         Task { @MainActor in
+            if self.catalogRequest === request {
+                self.catalogRequest=nil;self.catalogLoading=false
+                self.products=response.products
+                return
+            }
             guard self.productRequest === request,let continuation=self.productContinuation else{return}
             let product=response.products.first(where:{$0.productIdentifier==self.requestedProductID})
             self.productContinuation=nil;self.productRequest=nil;self.requestedProductID=nil
@@ -68,6 +83,10 @@ struct CoinPack: Identifiable {
     }
     nonisolated func request(_ request:SKRequest,didFailWithError error:Error) {
         Task { @MainActor in
+            if self.catalogRequest === request {
+                self.catalogRequest=nil;self.catalogLoading=false;self.products=[]
+                return
+            }
             guard self.productRequest === request,let continuation=self.productContinuation else{return}
             self.productContinuation=nil;self.productRequest=nil;self.requestedProductID=nil
             continuation.resume(throwing:error)

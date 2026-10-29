@@ -204,13 +204,17 @@ struct CoinReserveView:View {
                             }.foregroundStyle(Color.cream).padding(16).frame(maxWidth:.infinity,alignment:.leading).background(Color.coffee,in:RoundedRectangle(cornerRadius:20)).papiAvoidReserved()
                             VStack(alignment:.leading,spacing:6) {
                                 PapiText("Choose your next pour").font(CoffeeType.display(.title2,weight:.bold)).italic()
-                                PapiText("Reference prices are in USD. Apple confirms your local price before payment.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                                PapiText("Prices are provided by Apple for your region.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                             }
                             LazyVGrid(columns:Array(repeating:GridItem(.flexible(),spacing:10),count:columnCount),spacing:10) {
                                 ForEach(CoinPack.all) {item in
                                     Button {selected=item.id} label:{packTile(item)}.buttonStyle(.plain).disabled(commerce.busy)
                                         .accessibilityAddTraits(selected==item.id ? .isSelected:[])
                                 }
+                            }
+                            if !commerce.catalogLoading && commerce.products.count < CoinPack.all.count {
+                                PapiTextButton("Retry loading Apple products"){commerce.loadProducts()}
+                                    .font(CoffeeType.face(.subheadline,weight:.bold)).frame(minHeight:44).disabled(commerce.busy)
                             }
                             if inlinePurchase {purchasePanel}
                             PapiText(commerce.status).font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).accessibilityAddTraits(.updatesFrequently)
@@ -253,7 +257,7 @@ struct CoinReserveView:View {
                     if !inlinePurchase {purchasePanel}
                 }
             }
-        }.onAppear{purchaseVisitID=UUID();visible=true;activeScene=phase == .active}
+        }.onAppear{purchaseVisitID=UUID();visible=true;activeScene=phase == .active;commerce.loadProducts()}
             .onDisappear{visible=false;purchaseVisitID=UUID()}
             .onChange(of:phase){_,value in activeScene=value == .active;if value != .active {purchaseVisitID=UUID()}}
     }
@@ -263,7 +267,7 @@ struct CoinReserveView:View {
                 let selectedPack=pack
                 let visit=purchaseVisitID
                 Task {await commerce.buy(selectedPack,canPresent:{visible && activeScene && purchaseVisitID==visit})}
-            }.buttonStyle(PapiButtonStyle(wide:true)).disabled(!commerce.checkoutAvailable || commerce.busy || commerce.unresolved || !store.storageAvailable || !store.usesCloudWallet || !store.state.purchaseIntents.isEmpty || store.state.activePurchaseToken != nil)
+            }.buttonStyle(PapiButtonStyle(wide:true)).disabled(commerce.displayPrice(for:pack.id) == nil || !commerce.checkoutAvailable || commerce.busy || commerce.unresolved || !store.storageAvailable || !store.usesCloudWallet || !store.state.purchaseIntents.isEmpty || store.state.activePurchaseToken != nil)
             PapiText("Apple confirms the price · No coins before verified payment").font(CoffeeType.face(.caption2)).multilineTextAlignment(.center).foregroundStyle(Color.mutedCoffee)
         }.padding(.horizontal,20).padding(.vertical,12).frame(maxWidth:680).frame(maxWidth:.infinity).background(Color.cream).papiAvoidReserved()
     }
@@ -280,8 +284,7 @@ struct CoinReserveView:View {
                 Text(verbatim:price).font(CoffeeType.face(.subheadline,weight:.bold)).fixedSize(horizontal:false,vertical:true)
                 PapiText("Price from Apple").font(CoffeeType.face(.caption2)).fixedSize(horizontal:false,vertical:true)
             } else {
-                Text(verbatim:"$"+item.referenceUSD).font(CoffeeType.face(.subheadline,weight:.bold))
-                PapiText("USD reference").font(CoffeeType.face(.caption2)).fixedSize(horizontal:false,vertical:true)
+                PapiText(commerce.catalogLoading ? "Loading price…":"Unavailable").font(CoffeeType.face(.caption)).fixedSize(horizontal:false,vertical:true)
             }
         }.foregroundStyle(Color.coffee).frame(maxWidth:.infinity,alignment:.leading).padding(11).frame(maxWidth:.infinity,minHeight:132,alignment:.topLeading)
             .background(selected==item.id ? Color.butter:Color.white.opacity(0.85),in:RoundedRectangle(cornerRadius:16)).papiAvoidReserved()
