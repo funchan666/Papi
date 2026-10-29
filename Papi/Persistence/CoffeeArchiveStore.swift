@@ -38,6 +38,14 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var cloudEditorialCatalogReady=false
     @Published private(set) var cloudRecipesReady=false
     @Published private(set) var cloudGiftsReady=false
+    @Published private(set) var cloudDisplayedGift:String?
+    @Published private(set) var cloudDisplayedGiftReady=false
+    @Published private(set) var cloudDisplayedGiftBusy=false
+    @Published private(set) var cloudGiftIdeas:[CoffeeCloud.GiftIdea]?
+    @Published private(set) var cloudGiftIdeasBusy=false
+    @Published private(set) var cloudRecentRooms:[String]?
+    @Published private(set) var cloudRecentRoomsBusy=false
+    private var cloudRecentRoomsGeneration=0
     @Published private(set) var cloudSavedScenes:Set<String>?
     @Published private(set) var cloudSavedScenesBusy=false
     @Published private(set) var cloudReferencedProfiles:[UUID:CoffeeCloud.Profile] = [:]
@@ -449,6 +457,9 @@ struct CoffeeReceipt: Identifiable {
         let gifts=try? await CoffeeCloud.shared.giftCatalog(account:account)
         guard state.signedIn,state.cloudAccountID==account else {return}
         cloudGiftsReady = gifts.map {CoffeeCollection.useCloudGifts($0)} ?? false
+        await refreshCloudDisplayedGift()
+        await refreshCloudGiftIdeas()
+        await refreshCloudRecentRooms()
         do {
             let profiles=try await CoffeeCloud.shared.profiles(for:account)
             let imageSummaries=try await CoffeeCloud.shared.profileImageSummaries(profiles.map(\.id),account:account)
@@ -478,6 +489,64 @@ struct CoffeeReceipt: Identifiable {
             guard state.signedIn,state.cloudAccountID==account else{return}
             cloudSavedScenes=scenes
         } catch {if state.cloudAccountID==account {cloudSavedScenes=nil}}
+    }
+    func refreshCloudDisplayedGift() async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudDisplayedGiftBusy else{return}
+        cloudDisplayedGiftBusy=true;cloudDisplayedGiftReady=false;defer{cloudDisplayedGiftBusy=false}
+        do {
+            let gift=try await CoffeeCloud.shared.displayedGift(account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            cloudDisplayedGift=gift;cloudDisplayedGiftReady=true
+        } catch {if state.cloudAccountID==account {cloudDisplayedGift=nil;cloudDisplayedGiftReady=false}}
+    }
+    func setCloudDisplayedGift(_ gift:String?) async {
+        guard let account=state.cloudAccountID,state.signedIn,cloudDisplayedGiftReady,!cloudDisplayedGiftBusy else{return}
+        cloudDisplayedGiftBusy=true;defer{cloudDisplayedGiftBusy=false}
+        do {
+            try await CoffeeCloud.shared.setDisplayedGift(gift,account:account)
+            let saved=try await CoffeeCloud.shared.displayedGift(account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            guard saved==gift else {throw CoffeeCloud.ConnectionError.actionUnavailable}
+            cloudDisplayedGift=saved;cloudDisplayedGiftReady=true
+        } catch {if state.cloudAccountID==account {cloudDisplayedGiftReady=false;inform("Display unavailable","The update could not be confirmed. Please retry.")}}
+    }
+    func refreshCloudGiftIdeas() async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudGiftIdeasBusy else{return}
+        cloudGiftIdeasBusy=true;cloudGiftIdeas=nil;defer{cloudGiftIdeasBusy=false}
+        do {let ideas=try await CoffeeCloud.shared.giftIdeas(account:account);guard state.signedIn,state.cloudAccountID==account else{return};cloudGiftIdeas=ideas}
+        catch {if state.cloudAccountID==account {cloudGiftIdeas=nil}}
+    }
+    func saveCloudGiftIdea(_ gift:CoffeeCollectible,quantity:Int,context:String) async {
+        guard let account=state.cloudAccountID,state.signedIn,cloudGiftIdeas != nil,!cloudGiftIdeasBusy,
+              (1...99).contains(quantity),!context.isEmpty,context.count<=128 else{return}
+        cloudGiftIdeasBusy=true;defer{cloudGiftIdeasBusy=false}
+        do {
+            try await CoffeeCloud.shared.saveGiftIdea(id:UUID(),gift:gift.id,quantity:quantity,context:context,account:account)
+            let ideas=try await CoffeeCloud.shared.giftIdeas(account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            cloudGiftIdeas=ideas
+            inform("Gift idea saved","No coins or inventory were spent.")
+        } catch {if state.cloudAccountID==account {cloudGiftIdeas=nil;inform("Gift idea unavailable","The result could not be confirmed. Refresh your ideas before trying again.")}}
+    }
+    func refreshCloudRecentRooms() async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudRecentRoomsBusy else{return}
+        cloudRecentRoomsGeneration += 1;let generation=cloudRecentRoomsGeneration
+        cloudRecentRoomsBusy=true;cloudRecentRooms=nil
+        defer{if cloudRecentRoomsGeneration==generation {cloudRecentRoomsBusy=false}}
+        do {let rooms=try await CoffeeCloud.shared.recentRooms(account:account);guard state.signedIn,state.cloudAccountID==account,cloudRecentRoomsGeneration==generation else{return};cloudRecentRooms=rooms}
+        catch {if state.cloudAccountID==account,cloudRecentRoomsGeneration==generation {cloudRecentRooms=nil}}
+    }
+    func recordCloudRoomVisit(_ topic:String,account:UUID) async {
+        guard state.signedIn,state.cloudAccountID==account else{return}
+        cloudRecentRoomsGeneration += 1;let generation=cloudRecentRoomsGeneration
+        cloudRecentRoomsBusy=true;cloudRecentRooms=nil
+        defer{if cloudRecentRoomsGeneration==generation {cloudRecentRoomsBusy=false}}
+        do {
+            try await CoffeeCloud.shared.recordRoomVisit(topic,account:account)
+            let rooms=try await CoffeeCloud.shared.recentRooms(account:account)
+            guard state.signedIn,state.cloudAccountID==account,cloudRecentRoomsGeneration==generation else{return}
+            cloudRecentRooms=rooms
+        } catch {if state.cloudAccountID==account,cloudRecentRoomsGeneration==generation {cloudRecentRooms=nil}}
     }
     func setSavedScene(_ scene:String,enabled:Bool) async {
         guard let account=state.cloudAccountID,state.signedIn,!cloudSavedScenesBusy,cloudSavedScenes != nil else{return}
@@ -1644,7 +1713,7 @@ struct CoffeeReceipt: Identifiable {
         notice = .init(title:"A little more for your coffee reserve",message:"This needs \(cost) coins. Your balance is \(state.coinBalance). Your draft and selections are kept; recharge to continue.",kind:.insufficient)
     }
     func performAccountAction(_ action:AccountTransition) async {
-        guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,!cloudSubmissionsBusy,!cloudBrewBusy,!cloudBrewHistoryBusy,!cloudSocialBusy,!cloudFeedBusy,!editorialBusy,cloudShelfBusy.isEmpty,!cloudCommentsBusy,!cloudProfileMediaBusy,!cloudCallsBusy,!cloudVoiceTopicsBusy,!cloudVoiceBusy,!emailLinkBusy,cloudConversationBusy.isEmpty,storageAvailable else{return}
+        guard accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!cloudWalletBusy,!cloudSubmissionsBusy,!cloudBrewBusy,!cloudBrewHistoryBusy,!cloudSocialBusy,!cloudFeedBusy,!editorialBusy,cloudShelfBusy.isEmpty,!cloudCommentsBusy,!cloudProfileMediaBusy,!cloudCallsBusy,!cloudVoiceTopicsBusy,!cloudVoiceBusy,!cloudDisplayedGiftBusy,!cloudGiftIdeasBusy,!cloudRecentRoomsBusy,!emailLinkBusy,cloudConversationBusy.isEmpty,storageAvailable else{return}
         if state.pendingCloudDeletionID != nil && action != .delete {inform("Account action needs attention","Finish the saved account deletion before changing accounts.");return}
         guard !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,state.pendingCloudRecoveryID==nil,state.pendingCloudCollectible==nil,state.pendingCloudRoomGift==nil,state.pendingCloudMoment==nil,state.pendingCloudPostDeletion==nil,state.pendingCloudReport==nil,state.pendingCloudMessage==nil,state.pendingCloudAttachment==nil,state.pendingCloudFriendship==nil,state.pendingCloudProfile==nil,state.pendingCloudComment==nil,state.pendingCloudEditorialComment==nil,state.pendingCloudProfileImage==nil,state.pendingCloudProfileImageRemoval==nil,state.pendingCloudCall==nil,state.pendingCloudCallEnd==nil,state.pendingCloudVoice==nil else {
             inform("Account action needs attention","Finish pending account or purchase activity before changing accounts.");return
@@ -1729,6 +1798,7 @@ struct CoffeeReceipt: Identifiable {
         cloudReferenceGuides=nil
         cloudMediaCatalogReady=false;cloudEditorialPeopleReady=false;cloudEditorialCatalogReady=false
         cloudRecipesReady=false;cloudGiftsReady=false
+        cloudDisplayedGift=nil;cloudDisplayedGiftReady=false;cloudGiftIdeas=nil;cloudRecentRooms=nil;cloudRecentRoomsGeneration += 1;cloudRecentRoomsBusy=false
         cloudSavedScenes=nil
         brewSyncDebounce?.cancel();brewSyncDebounce=nil
         cloudWallet=nil;cloudWalletUnavailable=false;cloudSubmissions=nil;cloudBrewNeedsAttention=false;cloudBrewHistory=nil

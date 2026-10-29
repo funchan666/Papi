@@ -113,6 +113,12 @@ actor CoffeeCloud {
     }
     private struct SavedScene:Decodable {let scene_id:String}
     private struct SavedSceneUpdate:Encodable {let p_scene:String;let p_enabled:Bool}
+    private struct DisplayedGiftRow:Decodable {let gift_id:String?}
+    struct GiftIdea:Decodable,Identifiable {let id:UUID;let gift_id:String;let quantity:Int;let context:String}
+    private struct RecentRoomRow:Decodable {let topic_id:String}
+    private struct DisplayedGiftUpdate:Encodable {let p_gift:String}
+    private struct GiftIdeaCreate:Encodable {let p_id:UUID;let p_gift:String;let p_quantity:Int;let p_context:String}
+    private struct RoomVisitCreate:Encodable {let p_topic:String}
     private struct BrewRecipeEntry:Decodable {let item:BrewRecipe}
     private struct GiftEntry:Decodable {let item:CoffeeCollectible}
     struct EditorialCatalogEntry:Decodable {
@@ -530,6 +536,42 @@ actor CoffeeCloud {
         _ = try await identity(account)
         let result:Bool = try await client.rpc("set_saved_coffee_scene",params:SavedSceneUpdate(p_scene:id,p_enabled:enabled)).execute().value
         guard result==enabled else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
+    }
+    func displayedGift(account:UUID) async throws -> String? {
+        _ = try await identity(account)
+        let rows:[DisplayedGiftRow] = try await client.from("coffee_displayed_gifts").select("gift_id").limit(1).execute().value
+        _ = try await identity(account)
+        return rows.first?.gift_id
+    }
+    func setDisplayedGift(_ id:String?,account:UUID) async throws {
+        _ = try await identity(account)
+        let saved:Bool = try await client.rpc("set_coffee_displayed_gift",params:DisplayedGiftUpdate(p_gift:id ?? "")).execute().value
+        guard saved else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
+    }
+    func giftIdeas(account:UUID) async throws -> [GiftIdea] {
+        _ = try await identity(account)
+        let rows:[GiftIdea] = try await client.from("coffee_gift_ideas").select("id,gift_id,quantity,context").order("created_at",ascending:false).order("id",ascending:false).limit(20).execute().value
+        _ = try await identity(account)
+        return rows
+    }
+    func saveGiftIdea(id:UUID,gift:String,quantity:Int,context:String,account:UUID) async throws {
+        _ = try await identity(account)
+        let saved:Bool = try await client.rpc("save_coffee_gift_idea",params:GiftIdeaCreate(p_id:id,p_gift:gift,p_quantity:quantity,p_context:context)).execute().value
+        guard saved else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
+    }
+    func recentRooms(account:UUID) async throws -> [String] {
+        _ = try await identity(account)
+        let rows:[RecentRoomRow] = try await client.from("coffee_recent_voice_rooms").select("topic_id").order("visited_at",ascending:false).order("topic_id",ascending:true).limit(100).execute().value
+        _ = try await identity(account)
+        return rows.map(\.topic_id)
+    }
+    func recordRoomVisit(_ topic:String,account:UUID) async throws {
+        _ = try await identity(account)
+        let saved:Bool = try await client.rpc("record_coffee_room_visit",params:RoomVisitCreate(p_topic:topic)).execute().value
+        guard saved else {throw ConnectionError.actionUnavailable}
         _ = try await identity(account)
     }
 

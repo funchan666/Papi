@@ -42,18 +42,19 @@ struct CoffeeTablesView:View {
     @State private var filter=0
     private var rooms:[CoffeeTable] {
         let source:[CoffeeTable]
+        let recent=store.usesCloudWallet ? (store.cloudRecentRooms ?? []):store.state.recentRooms
         if store.usesCloudWallet {
             source=(store.cloudVoiceTopics ?? []).compactMap(\.room)
         } else {source=CoffeeTable.previews}
         return source.filter {room in
-            if store.usesCloudWallet {return store.isRoomVisible(room) && (filter==0 || store.state.recentRooms.contains(room.id))}
+            if store.usesCloudWallet {return store.isRoomVisible(room) && (filter==0 || recent.contains(room.id))}
             return store.isRoomVisible(room) && (filter==0 || (filter==1 && store.state.followedMembers.contains(room.hostMemberID)) || (filter==2 && store.state.recentRooms.contains(room.id)))
         }.sorted {a,b in
             guard (store.usesCloudWallet ? filter==1:filter==2) else {
                 if store.usesCloudWallet {return (store.cloudVoiceTopics?.first(where:{$0.id==a.id})?.sort_order ?? 0)<(store.cloudVoiceTopics?.first(where:{$0.id==b.id})?.sort_order ?? 0)}
                 return a.id<b.id
             }
-            return (store.state.recentRooms.firstIndex(of:a.id) ?? 99)<(store.state.recentRooms.firstIndex(of:b.id) ?? 99)
+            return (recent.firstIndex(of:a.id) ?? 99)<(recent.firstIndex(of:b.id) ?? 99)
         }
     }
     var body:some View {
@@ -99,7 +100,8 @@ struct CoffeeTablesView:View {
                                 Button {router.go(.room(id))} label:{HStack {Image("voiceOn").resizable().scaledToFit().frame(width:26,height:26);PapiText("Return to \(room.title)");Spacer();PapiText("Open")}.padding(12).background(Color.butter,in:RoundedRectangle(cornerRadius:15))}.buttonStyle(.plain)
                             }
                             if store.usesCloudWallet && store.cloudVoiceTopics==nil {PapiTextButton("Retry topics"){Task {await store.refreshCloudVoiceTopics()}}.disabled(store.cloudVoiceTopicsBusy)}
-                            else if rooms.isEmpty {PapiEmpty(title:store.usesCloudWallet ? "No topics available":(filter==1 ? "No followed rooms yet":"No recent rooms"),detail:"Open a coffee topic to keep it here.")}
+                            else if store.usesCloudWallet && filter==1 && store.cloudRecentRooms==nil {PapiTextButton("Retry recent rooms"){Task {await store.refreshCloudRecentRooms()}}.disabled(store.cloudRecentRoomsBusy)}
+                            else if rooms.isEmpty {PapiEmpty(title:store.usesCloudWallet ? (filter==1 ? "No recent rooms":"No topics available"):(filter==1 ? "No followed rooms yet":"No recent rooms"),detail:"Open a coffee topic to keep it here.")}
                             LazyVGrid(columns:Array(repeating:GridItem(.flexible(),spacing:12),count:columnCount),spacing:14) {
                                 ForEach(rooms) {room in
                                     roomCard(room)

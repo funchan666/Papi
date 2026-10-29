@@ -31,6 +31,7 @@ import AVFoundation
             let allowed=try await CoffeeCloud.shared.canJoinCall(id:call,account:account)
             guard generation==attempt,!Task.isCancelled,allowed else {await room.disconnect();return}
             connected=true
+            Task {await store.recordCloudRoomVisit(topic,account:account)}
             monitor=Task { [weak self] in
                 while !Task.isCancelled {
                     do {

@@ -100,7 +100,10 @@ struct CollectibleCounterView:View {
                 PapiTextButton("Retry wallet"){Task {await store.refreshCloudWallet()}}.disabled(store.cloudWalletBusy)
             }
             if context != "backpack" {
-                PapiTextButton("Save gift idea"){store.previewGift(gift,quantity:quantity,context:context)}.font(CoffeeType.face(.subheadline,weight:.bold)).frame(maxWidth:.infinity,minHeight:44)
+                PapiTextButton("Save gift idea") {if store.usesCloudWallet {let selectedGift=gift;let selectedQuantity=quantity;Task {await store.saveCloudGiftIdea(selectedGift,quantity:selectedQuantity,context:context)}} else {store.previewGift(gift,quantity:quantity,context:context)}}
+                    .font(CoffeeType.face(.subheadline,weight:.bold)).frame(maxWidth:.infinity,minHeight:44)
+                    .disabled(store.usesCloudWallet && (store.cloudGiftIdeas==nil || store.cloudGiftIdeasBusy))
+                if store.usesCloudWallet && store.cloudGiftIdeas==nil {PapiTextButton("Retry ideas"){Task {await store.refreshCloudGiftIdeas()}}.disabled(store.cloudGiftIdeasBusy)}
                 PapiText("Gift ideas are not sent and do not cost coins.").font(CoffeeType.face(.caption2)).foregroundStyle(Color.mutedCoffee).multilineTextAlignment(.center).fixedSize(horizontal:false,vertical:true)
             }
         }.padding(12).frame(maxWidth:.infinity).background(Color.cream.opacity(0.97),in:RoundedRectangle(cornerRadius:20)).papiAvoidReserved()
@@ -132,24 +135,35 @@ struct CoffeeCollectionView:View {
                                     PapiArtworkFit(asset:gift.asset).frame(height:110)
                                     PapiText(gift.name).font(CoffeeType.face(.headline))
                                     PapiText("×\(store.collectedItems[gift.id] ?? 0)").font(CoffeeType.face(.caption))
-                                    PapiTextButton(store.state.displayedGift==gift.id ? "Remove display":"Display on profile") {
-                                        _ = store.commit{$0.displayedGift = $0.displayedGift==gift.id ? nil:gift.id}
+                                    let displayed=store.usesCloudWallet ? store.cloudDisplayedGift:store.state.displayedGift
+                                    PapiTextButton(displayed==gift.id ? "Remove display":"Display on profile") {
+                                        let next=displayed==gift.id ? nil:gift.id
+                                        if store.usesCloudWallet {Task {await store.setCloudDisplayedGift(next)}} else {_ = store.commit{$0.displayedGift=next}}
                                     }.font(CoffeeType.face(.caption,weight:.semibold)).padding(10).background(Color.butter,in:Capsule())
+                                        .disabled(store.usesCloudWallet && (!store.cloudDisplayedGiftReady || store.cloudDisplayedGiftBusy))
                                 }.padding(15).frame(maxWidth:.infinity).background(Color.white.opacity(0.75),in:RoundedRectangle(cornerRadius:20))
                             }
                         }
-                        if (!store.usesCloudWallet || store.cloudGiftsReady) && !store.state.giftHistory.isEmpty {
+                        if store.usesCloudWallet && !store.cloudDisplayedGiftReady {PapiTextButton("Retry display"){Task {await store.refreshCloudDisplayedGift()}}.disabled(store.cloudDisplayedGiftBusy)}
+                        if store.usesCloudWallet && store.cloudGiftIdeas==nil {PapiTextButton("Retry ideas"){Task {await store.refreshCloudGiftIdeas()}}.disabled(store.cloudGiftIdeasBusy)}
+                        if store.usesCloudWallet,store.cloudGiftsReady,let ideas=store.cloudGiftIdeas,!ideas.isEmpty {
+                            PapiText("Gift ideas").font(CoffeeType.face(.headline)).frame(maxWidth:.infinity,alignment:.leading)
+                            ForEach(ideas) {event in
+                                if let gift=CoffeeCollectible.all.first(where:{$0.id==event.gift_id}) {giftIdeaRow(gift,quantity:event.quantity)}
+                            }
+                        } else if !store.usesCloudWallet && !store.state.giftHistory.isEmpty {
                             PapiText("Gift ideas").font(CoffeeType.face(.headline)).frame(maxWidth:.infinity,alignment:.leading)
                             ForEach(store.state.giftHistory.prefix(20)) {event in
-                                if let gift=CoffeeCollectible.all.first(where:{$0.id==event.giftID}) {
-                                    HStack {Image(gift.asset).resizable().scaledToFit().frame(width:48,height:48);VStack(alignment:.leading){PapiText("\(gift.name) × \(event.quantity)");PapiText("Not sent · No coins spent").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)};Spacer()}.padding(12).background(Color.white,in:RoundedRectangle(cornerRadius:15))
-                                }
+                                if let gift=CoffeeCollectible.all.first(where:{$0.id==event.giftID}) {giftIdeaRow(gift,quantity:event.quantity)}
                             }
                         }
                     }.padding(20).frame(maxWidth:850).frame(maxWidth:.infinity)
                 }
             }
         }
+    }
+    private func giftIdeaRow(_ gift:CoffeeCollectible,quantity:Int)->some View {
+        HStack {Image(gift.asset).resizable().scaledToFit().frame(width:48,height:48);VStack(alignment:.leading){PapiText("\(gift.name) × \(quantity)");PapiText("Not sent · No coins spent").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)};Spacer()}.padding(12).background(Color.white,in:RoundedRectangle(cornerRadius:15))
     }
 }
 struct CoinReserveView:View {
