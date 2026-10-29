@@ -53,51 +53,6 @@ enum CoffeeArtwork {
         "coffeeVideo20":"coffee-over-ice",
     ]
     static func canonical(_ reference:String)->String {aliases[reference] ?? reference}
-    static let photoNames:[Int:String] = [
-        0:"corner-latte",
-        1:"breakfast-tray",
-        2:"window-americano",
-        3:"canal-coffee",
-        4:"croissant-table",
-        5:"round-cafe-table",
-        6:"pastry-ritual",
-        7:"handheld-cold-brew",
-        8:"garden-coffee-seat",
-        9:"home-espresso-corner",
-        10:"sunlit-cup",
-        11:"two-iced-lattes",
-        12:"marbled-latte",
-        13:"courtyard-brunch",
-        14:"matcha-and-cookie",
-        15:"glasshouse-cafe",
-        16:"coffee-and-dates",
-        17:"rose-front-cafe",
-        30:"street-espresso"
-    ]
-    static let portraits = ["portrait-clara","portrait-jun","portrait-kai","portrait-theo","portrait-elise","portrait-mateo","portrait-ren","portrait-dae"]
-    static let filmNames:[Int:String] = [
-        0:"ghost-latte-art",
-        1:"rosetta-practice",
-        2:"cafe-company-portrait",
-        3:"window-seat-journey",
-        4:"iced-espresso-glass",
-        5:"bar-counter-iced-latte",
-        6:"blue-cup-pour",
-        7:"caramel-swirl-glass",
-        8:"heart-latte-workshop",
-        9:"moka-orange-peel",
-        10:"evening-city-company",
-        11:"tulip-latte-pour",
-        12:"city-cafe-walk",
-        13:"espresso-on-off",
-        14:"stirred-caramel-latte",
-        15:"citrus-iced-coffee",
-        16:"cappuccino-rosetta",
-        17:"spiral-dessert-coffee",
-        18:"grinder-to-espresso",
-        19:"iced-milk-rosetta",
-        20:"coffee-over-ice",
-    ]
     static func isFilm(_ reference:String)->Bool {CoffeeCollection.entry(reference)?.kind == "film"}
 }
 
@@ -205,11 +160,5 @@ enum CoffeeCollection {
               item.path.hasPrefix(item.kind=="film" ? "vv/":"pp/"),
               !item.path.contains(".."),item.path.split(separator:"/").count==2 else{return nil}
         return URL(string:current.baseURL+"/"+item.path)
-    }
-    static var additionalPeople:[CoffeeMember] {
-        assets.compactMap {item in
-            guard item.usage=="profile",let id=item.memberID,!id.hasPrefix("preview-member-"),let name=item.displayName,let bio=item.bio else{return nil}
-            return CoffeeMember(id:id,name:name,portrait:item.asset,bio:bio)
-        }
     }
 }

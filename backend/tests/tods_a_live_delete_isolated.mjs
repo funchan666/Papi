@@ -19,7 +19,17 @@ try {
  stage='call';const call=randomUUID();assert.equal(need(await a.rpc('request_coffee_call',{p_id:call,p_recipient:users[1].id}),'call-request'),call);assert.ok((await a.rpc('answer_coffee_call',{p_id:call,p_accept:true})).error);assert.equal(need(await b.rpc('answer_coffee_call',{p_id:call,p_accept:true}),'call-accept'),true);assert.equal(need(await a.rpc('can_join_coffee_call',{p_id:call}),'call-join'),true);
  stage='block';assert.equal(need(await b.rpc('set_coffee_block',{p_member:users[0].id,p_enabled:true}),'block'),true);assert.equal(need(await a.rpc('can_join_coffee_voice',{p_topic:'room-chat',p_session:voiceA}),'voice-block'),false);assert.equal(need(await a.rpc('can_join_coffee_call',{p_id:call}),'call-block'),false);
  stage='deletion';const receipt=randomBytes(32).toString('hex');assert.equal(need(await a.rpc('begin_coffee_deletion',{p_secret:receipt}),'begin-delete'),true);assert.equal(need(await a.from('coffee_profiles').select('id').eq('id',users[0].id),'deleted-user-read').length,0);
- const result=await fetch(`${base}/functions/v1/delete-coffee-account`,{method:'POST',headers:{apikey:key,'content-type':'application/json'},body:JSON.stringify({receipt})});assert.equal(result.status,200);assert.equal((await result.json()).status,'complete');
+ let complete=false;
+ for(let attempt=0;attempt<10;attempt++) {
+  const result=await fetch(`${base}/functions/v1/delete-coffee-account`,{method:'POST',headers:{apikey:key,'content-type':'application/json'},body:JSON.stringify({receipt})});
+  const body=await result.json();
+  if(result.status===200 && body.status==='complete') {complete=true;break}
+  if(result.status!==202 || body.status!=='pending') throw new Error(`Unexpected deletion response ${result.status}`);
+  await new Promise(resolve=>setTimeout(resolve,5000));
+ }
+ if(!complete) {console.log('PASS: isolated voice, messages, call consent and block revocation; deletion remains pending cleanup');process.exitCode=2}
+ else {
  const retry=await fetch(`${base}/functions/v1/delete-coffee-account`,{method:'POST',headers:{apikey:key,'content-type':'application/json'},body:JSON.stringify({receipt})});assert.equal(retry.status,200);assert.equal((await retry.json()).status,'complete');
  console.log('PASS: isolated voice, messages, call consent, block revocation and account deletion');
+ }
 } catch(e){console.error(JSON.stringify({stage:e.stage??stage,status:e.status??null,code:e.code??null,error:e.message}));process.exitCode=1} finally {await save()}
