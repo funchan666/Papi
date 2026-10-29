@@ -528,7 +528,7 @@
 					"@executable_path/Frameworks",
 				);
 				PAPI_APNS_ENVIRONMENT = development;
-				PRODUCT_BUNDLE_IDENTIFIER = com.papi.coffee;
+				PRODUCT_BUNDLE_IDENTIFIER = com.papicoffee.collectiveritual;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -626,7 +626,7 @@
 					"@executable_path/Frameworks",
 				);
 				PAPI_APNS_ENVIRONMENT = production;
-				PRODUCT_BUNDLE_IDENTIFIER = com.papi.coffee;
+				PRODUCT_BUNDLE_IDENTIFIER = com.papicoffee.collectiveritual;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

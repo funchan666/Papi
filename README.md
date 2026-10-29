@@ -2,7 +2,7 @@
 
 按蓝湖「咖啡社区（34）」39 张设计原稿实现的 SwiftUI 原生 iOS 首版。用户已确认应用名称为 Papi、**保留礼物与背包**、采用**本地访客一键登录**。
 
-打开 `Papi.xcodeproj`，选择共享 scheme `Papi`。工程部署目标为 iOS 17，当前配置使用 Xcode 27.1 / iOS 27.1 SDK 的 Duo API；旧 SDK 必须移除 `PAPI_DUO_SDK` 编译条件，保留普通容器布局回退。Bundle ID 暂为 `com.papi.coffee`，签名团队尚未配置；本轮已按新要求开放真实 Apple 充值代码，商品清单与商店配置缺项见 [金币与内购](docs/WALLET_AND_IAP.md)。协议已发布公开阅读页；社区互动继续为本地版。
+打开 `Papi.xcodeproj`，选择共享 scheme `Papi`。工程部署目标为 iOS 17，当前配置使用 Xcode 27.1 / iOS 27.1 SDK 的 Duo API；旧 SDK 必须移除 `PAPI_DUO_SDK` 编译条件，保留普通容器布局回退。Bundle ID 为 `com.papicoffee.collectiveritual`，签名团队尚未配置；商店注册与服务端验单配置需同步，商品清单与商店配置缺项见 [金币与内购](docs/WALLET_AND_IAP.md)。协议已发布公开阅读页。
 
 ## 当前能力
 
