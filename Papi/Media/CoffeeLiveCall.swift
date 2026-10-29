@@ -303,7 +303,7 @@ struct CoffeeLiveVoiceRoomView:View {
                                     }.foregroundStyle(Color.coffee).padding(12).background(Color.cream,in:RoundedRectangle(cornerRadius:16))
                                 }
                                 ForEach(roomGifts.filter{!store.isUserHidden($0.sender_id.uuidString)}.suffix(5)) {event in
-                                    if let gift=CoffeeCollectible.all.first(where:{$0.id==event.gift_id}) {
+                                    if store.cloudGiftsReady,let gift=CoffeeCollectible.all.first(where:{$0.id==event.gift_id}) {
                                         HStack(spacing:9) {
                                             PapiArtworkFit(asset:gift.asset).frame(width:42,height:42)
                                             VStack(alignment:.leading,spacing:3) {
@@ -350,7 +350,7 @@ struct CoffeeLiveVoiceRoomView:View {
             if let session=activeSession {VoiceRoomGiftSheet(topic:topic.id,session:session)}
         }
         .overlay(alignment:.top) {
-            if let event=giftAnnouncement,let gift=CoffeeCollectible.all.first(where:{$0.id==event.gift_id}),!store.isUserHidden(event.sender_id.uuidString) {
+            if store.cloudGiftsReady,let event=giftAnnouncement,let gift=CoffeeCollectible.all.first(where:{$0.id==event.gift_id}),!store.isUserHidden(event.sender_id.uuidString) {
                 HStack(spacing:10) {
                     PapiArtworkFit(asset:gift.asset).frame(width:54,height:54)
                     VStack(alignment:.leading,spacing:3) {
@@ -453,6 +453,8 @@ private struct VoiceRoomGiftSheet:View {
     @State private var confirming=false
     private var gift:CoffeeCollectible {CoffeeCollectible.all.first(where:{$0.id==selected}) ?? CoffeeCollectible.all[0]}
     var body:some View {
+        Group {
+        if store.cloudGiftsReady {
         PapiDeviceContainer {
             PapiScreen {
                 VStack(spacing:0) {
@@ -515,6 +517,10 @@ private struct VoiceRoomGiftSheet:View {
                     }
                 }
             }
+        }
+        } else {
+            PapiDeviceContainer {PapiScreen {VStack(spacing:16) {PapiHeader("Gifts");PapiText(store.cloudSocialBusy ? "Loading gifts…":"Gifts unavailable");PapiTextButton("Retry"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy);Spacer()}}}
+        }
         }.onAppear {
             if let pending=store.state.pendingCloudRoomGift {selected=pending.giftID;quantity=pending.quantity}
         }

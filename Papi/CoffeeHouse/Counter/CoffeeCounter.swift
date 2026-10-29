@@ -14,6 +14,8 @@ struct CollectibleCounterView:View {
     @State private var confirmCollect=false
     private var gift:CoffeeCollectible {CoffeeCollectible.all.first{$0.id==selected} ?? CoffeeCollectible.all[0]}
     var body:some View {
+        Group {
+        if !store.usesCloudWallet || store.cloudGiftsReady {
         PapiScreen {
             GeometryReader {viewport in
                 let width=max(0,min(680,viewport.size.width)-32)
@@ -40,6 +42,10 @@ struct CollectibleCounterView:View {
                     PapiDialog(title:"Collect \(gift.name)?",message:"Spend \(gift.cost*quantity) coins to add \(quantity) to your backpack. You can display an owned gift on your profile.",confirm:"Collect",cancel:"Cancel",action:{let selectedGift=gift;let selectedQuantity=quantity;confirmCollect=false;if store.usesCloudWallet {Task {await store.cloudCollect(selectedGift,quantity:selectedQuantity)}} else if store.collect(selectedGift,quantity:selectedQuantity){store.inform("Added to your backpack","\(selectedGift.name) × \(selectedQuantity) is saved to this guest's collection.")}},dismiss:{confirmCollect=false})
                 }
             }
+        }
+        } else {
+            PapiScreen {VStack(spacing:16) {PapiHeader("Gifts");PapiText(store.cloudSocialBusy ? "Loading gifts…":"Gifts unavailable");PapiTextButton("Retry"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy);Spacer()}}
+        }
         }.onAppear {
             if let pending=store.state.pendingCloudCollectible,pending.accountID==store.state.cloudAccountID {
                 selected=pending.item;quantity=pending.quantity
@@ -110,9 +116,11 @@ struct CoffeeCollectionView:View {
                 PapiHeader(store.text("Backpack")) {PapiIconButton(asset:"plus",label:"Collect gifts"){router.go(.gifts("backpack"))}}
                 ScrollView {
                     VStack(spacing:20) {
-                        let owned=CoffeeCollectible.all.filter{(store.collectedItems[$0.id] ?? 0)>0}
+                        let owned=(!store.usesCloudWallet || store.cloudGiftsReady) ? CoffeeCollectible.all.filter{(store.collectedItems[$0.id] ?? 0)>0}:[]
                         CoffeeSectionIntro(artwork:"passportKeepsakeArt",title:"My backpack",detail:"Collect a keepsake with coins, then display your favourite on your coffee passport.")
-                        if store.usesCloudWallet && store.cloudWallet==nil {
+                        if store.usesCloudWallet && !store.cloudGiftsReady {
+                            PapiTextButton("Retry gifts"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)
+                        } else if store.usesCloudWallet && store.cloudWallet==nil {
                             PapiTextButton("Retry wallet"){Task {await store.refreshCloudWallet()}}.disabled(store.cloudWalletBusy)
                         } else if owned.isEmpty {
                             PapiEmpty(title:"A little shelf of coffee keepsakes")
@@ -130,7 +138,7 @@ struct CoffeeCollectionView:View {
                                 }.padding(15).frame(maxWidth:.infinity).background(Color.white.opacity(0.75),in:RoundedRectangle(cornerRadius:20))
                             }
                         }
-                        if !store.state.giftHistory.isEmpty {
+                        if (!store.usesCloudWallet || store.cloudGiftsReady) && !store.state.giftHistory.isEmpty {
                             PapiText("Gift ideas").font(CoffeeType.face(.headline)).frame(maxWidth:.infinity,alignment:.leading)
                             ForEach(store.state.giftHistory.prefix(20)) {event in
                                 if let gift=CoffeeCollectible.all.first(where:{$0.id==event.giftID}) {
@@ -267,7 +275,7 @@ struct CoinReserveView:View {
     private var spendingGuide:some View {
         VStack(alignment:.leading,spacing:16) {
             PapiText("Where your coins go").font(CoffeeType.display(.title2,weight:.bold))
-            ForEach(BrewRecipe.collection.filter{$0.unlockCoins>0}) {recipe in
+            ForEach((!store.usesCloudWallet || store.cloudRecipesReady) ? BrewRecipe.collection.filter{$0.unlockCoins>0}:[]) {recipe in
                 usage(recipe.title,cost:recipe.unlockCoins)
             }
             PapiText("Recipe unlocks are a one-time purchase for this account. Reusing recipes, saving brews and two-cup tastings are free.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
@@ -276,7 +284,7 @@ struct CoinReserveView:View {
             usage("Video moment submission",cost:CoffeeEconomy.postCost(isVideo:true))
             PapiText("A submission saves a private coffee moment. It does not buy approval or public visibility; community review is not connected.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
             Divider()
-            ForEach(CoffeeCollectible.all) {gift in
+            ForEach((!store.usesCloudWallet || store.cloudGiftsReady) ? CoffeeCollectible.all:[]) {gift in
                 HStack(spacing:12) {
                     Image(gift.asset).resizable().scaledToFit().frame(width:36,height:36).accessibilityHidden(true)
                     PapiText(gift.name).font(CoffeeType.face(.subheadline))
@@ -285,6 +293,9 @@ struct CoinReserveView:View {
                 }
             }
             PapiText("Gifts are optional backpack collectibles. Displaying an owned gift and saving gift ideas are free.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+            if store.usesCloudWallet && (!store.cloudRecipesReady || !store.cloudGiftsReady) {
+                PapiTextButton("Retry prices"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)
+            }
             VStack(alignment:.leading,spacing:7) {
                 PapiText("Conversation is always free").font(CoffeeType.face(.headline))
                 PapiText("Text, photos, voice messages, video calls, follows and friend requests never cost coins. Mutual consent still applies.").font(CoffeeType.face(.subheadline))

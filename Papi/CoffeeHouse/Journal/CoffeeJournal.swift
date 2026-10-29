@@ -96,13 +96,13 @@ struct CoffeeJournalView:View {
                             PapiText(store.cloudFeedBusy ? "Loading moments…":"Moments unavailable")
                             PapiTextButton("Retry"){Task {await store.refreshCloudFeed()}}.disabled(store.cloudFeedBusy)
                         }
-                        if store.usesCloudWallet && store.cloudFeed != nil && (!store.editorialReportsReady || store.editorialSummariesUnavailable) {
-                            PapiText(store.cloudFeedBusy ? "Loading moments…":(!store.editorialReportsReady ? "Some moments could not be loaded.":"Some interactions could not be loaded.")).font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
-                            PapiTextButton("Retry"){Task {await store.refreshCloudFeed()}}.disabled(store.cloudFeedBusy)
+                        if store.usesCloudWallet && store.cloudFeed != nil && (!store.editorialReportsReady || store.editorialSummariesUnavailable || !store.cloudEditorialCatalogReady || !store.cloudEditorialPeopleReady || !store.cloudMediaCatalogReady) {
+                            PapiText((store.cloudFeedBusy || store.cloudSocialBusy) ? "Loading moments…":"Some moments could not be loaded.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
+                            PapiTextButton("Retry"){Task {await store.refreshCloudSocial();await store.refreshCloudFeed()}}.disabled(store.cloudFeedBusy || store.cloudSocialBusy)
                         }
                         let collectionIDs=Set(store.visibleCollectionPosts.map(\.id))
                         let posts=interleavedMoments(store.usesCloudWallet ? store.visiblePosts+store.visibleCollectionPosts:store.visiblePosts)
-                        if posts.isEmpty && (!store.usesCloudWallet || (store.cloudFeed != nil && store.editorialReportsReady)) {
+                        if posts.isEmpty && (!store.usesCloudWallet || (store.cloudFeed != nil && store.editorialReportsReady && store.cloudEditorialCatalogReady && store.cloudEditorialPeopleReady && store.cloudMediaCatalogReady)) {
                             PapiText("No moments yet").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
                         }
                         if store.usesCloudWallet && store.cloudFeedHasMore {PapiTextButton("Load more"){Task {await store.loadMoreCloudFeed()}}.disabled(store.cloudFeedBusy)}

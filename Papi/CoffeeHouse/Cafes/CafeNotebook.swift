@@ -9,7 +9,7 @@ struct CafeInspirationView:View {
     private let subtitles=["Tools within reach, room for a careful pour","Natural light across a busy coffee bar","Outdoor tables and a quieter evening cup","Coffee and pastry in the open air"]
     private let images=["home-espresso-corner","glasshouse-cafe","rose-front-cafe","courtyard-brunch"]
     private var guides:[CoffeeCloud.ReferenceGuide] {
-        if let cloud=store.cloudReferenceGuides {return cloud.filter{$0.kind=="cafe"}}
+        if store.usesCloudWallet {return (store.cloudReferenceGuides ?? []).filter{$0.kind=="cafe"}}
         return names.indices.map {CoffeeCloud.ReferenceGuide(id:images[$0],kind:"cafe",title:names[$0],asset:images[$0],detail:subtitles[$0],position:$0)}
     }
     private var visibleScenes:[CoffeeCloud.ReferenceGuide] {guides.filter{!savedOnly || isSaved($0)}}
@@ -25,7 +25,9 @@ struct CafeInspirationView:View {
                             filterButton("All",isSelected:!savedOnly){savedOnly=false}
                             filterButton("Saved",isSelected:savedOnly){savedOnly=true}
                         }.padding(5).background(Color.cream,in:RoundedRectangle(cornerRadius:18))
-                        if savedOnly && store.usesCloudWallet && store.cloudSavedScenes == nil {
+                        if store.usesCloudWallet && store.cloudReferenceGuides == nil {
+                            PapiTextButton("Retry"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)
+                        } else if savedOnly && store.usesCloudWallet && store.cloudSavedScenes == nil {
                             PapiTextButton(store.cloudSavedScenesBusy ? "Connecting…":"Retry") {Task {await store.refreshSavedScenes()}}
                                 .disabled(store.cloudSavedScenesBusy)
                         } else if visibleScenes.isEmpty {

@@ -33,6 +33,11 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var cloudBrewHistoryBusy=false
     @Published private(set) var cloudProfiles: [CoffeeCloud.Profile]?
     @Published private(set) var cloudReferenceGuides:[CoffeeCloud.ReferenceGuide]?
+    @Published private(set) var cloudMediaCatalogReady=false
+    @Published private(set) var cloudEditorialPeopleReady=false
+    @Published private(set) var cloudEditorialCatalogReady=false
+    @Published private(set) var cloudRecipesReady=false
+    @Published private(set) var cloudGiftsReady=false
     @Published private(set) var cloudSavedScenes:Set<String>?
     @Published private(set) var cloudSavedScenesBusy=false
     @Published private(set) var cloudReferencedProfiles:[UUID:CoffeeCloud.Profile] = [:]
@@ -419,30 +424,31 @@ struct CoffeeReceipt: Identifiable {
         guard let account=state.cloudAccountID,state.signedIn,!cloudSocialBusy else {return}
         cloudSocialBusy=true
         defer {cloudSocialBusy=false}
+        cloudReferenceGuides=nil;cloudMediaCatalogReady=false;cloudEditorialPeopleReady=false
         do {try await CoffeeCloud.shared.bootstrap(account:account)}
-        catch {if state.cloudAccountID==account {cloudProfiles=nil};return}
+        catch {if state.cloudAccountID==account {cloudProfiles=nil;cloudRecipesReady=false;cloudGiftsReady=false};return}
         if let entries=try? await CoffeeCloud.shared.mediaCatalog(account:account),
-           state.signedIn,state.cloudAccountID==account,let first=entries.first,
-           entries.allSatisfy({$0.base_url==first.base_url && $0.asset==$0.item.asset}) {
-            _ = CoffeeCollection.useCloud(baseURL:first.base_url,items:entries.map(\.item))
+           state.signedIn,state.cloudAccountID==account {
+            let base=entries.first?.base_url ?? "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev"
+            if entries.allSatisfy({$0.base_url==base && $0.asset==$0.item.asset}) {
+                cloudMediaCatalogReady = CoffeeCollection.useCloud(baseURL:base,items:entries.map(\.item))
+            }
         }
         if let people=try? await CoffeeCloud.shared.editorialPeople(account:account),
            state.signedIn,state.cloudAccountID==account {
-            _ = CoffeeCollection.useCloudPeople(people)
+            cloudEditorialPeopleReady = CoffeeCollection.useCloudPeople(people)
         }
         if let guides=try? await CoffeeCloud.shared.referenceGuides(account:account),
            state.signedIn,state.cloudAccountID==account,
            Set(guides.map(\.id)).count==guides.count {
             cloudReferenceGuides=guides
         }
-        if let recipes=try? await CoffeeCloud.shared.brewRecipes(account:account),
-           state.signedIn,state.cloudAccountID==account {
-            _ = CoffeeCollection.useCloudRecipes(recipes)
-        }
-        if let gifts=try? await CoffeeCloud.shared.giftCatalog(account:account),
-           state.signedIn,state.cloudAccountID==account {
-            _ = CoffeeCollection.useCloudGifts(gifts)
-        }
+        let recipes=try? await CoffeeCloud.shared.brewRecipes(account:account)
+        guard state.signedIn,state.cloudAccountID==account else {return}
+        cloudRecipesReady = recipes.map {CoffeeCollection.useCloudRecipes($0)} ?? false
+        let gifts=try? await CoffeeCloud.shared.giftCatalog(account:account)
+        guard state.signedIn,state.cloudAccountID==account else {return}
+        cloudGiftsReady = gifts.map {CoffeeCollection.useCloudGifts($0)} ?? false
         do {
             let profiles=try await CoffeeCloud.shared.profiles(for:account)
             let imageSummaries=try await CoffeeCloud.shared.profileImageSummaries(profiles.map(\.id),account:account)
@@ -570,10 +576,11 @@ struct CoffeeReceipt: Identifiable {
     func refreshCloudFeed() async {
         guard let account=state.cloudAccountID,state.signedIn,!cloudFeedBusy,!editorialBusy else{return}
         cloudFeedBusy=true;defer{cloudFeedBusy=false}
+        cloudEditorialCatalogReady=false
         if let entries=try? await CoffeeCloud.shared.editorialCatalog(account:account),
            state.signedIn,state.cloudAccountID==account {
             let conversations=entries.compactMap(\.conversation)
-            _ = CoffeeCollection.useCloudEditorial(entries.map(\.moment),conversations:conversations)
+            cloudEditorialCatalogReady = CoffeeCollection.useCloudEditorial(entries.map(\.moment),conversations:conversations)
         }
         do {
             let feed=try await CoffeeCloud.shared.recentMoments(for:account)
@@ -593,6 +600,7 @@ struct CoffeeReceipt: Identifiable {
             editorialReportsReady=false
         }
         do {
+            guard cloudEditorialCatalogReady else {throw CoffeeCloud.ConnectionError.actionUnavailable}
             let summaries=try await CoffeeCloud.shared.editorialSummary(CoffeeMoment.editorial.map(\.id),account:account)
             guard state.signedIn,state.cloudAccountID==account else{return}
             editorialSummaries=Dictionary(uniqueKeysWithValues:summaries.map{($0.content_id,$0)});editorialSummariesUnavailable=false
@@ -1719,6 +1727,8 @@ struct CoffeeReceipt: Identifiable {
     }
     private func resetCloudState() {
         cloudReferenceGuides=nil
+        cloudMediaCatalogReady=false;cloudEditorialPeopleReady=false;cloudEditorialCatalogReady=false
+        cloudRecipesReady=false;cloudGiftsReady=false
         cloudSavedScenes=nil
         brewSyncDebounce?.cancel();brewSyncDebounce=nil
         cloudWallet=nil;cloudWalletUnavailable=false;cloudSubmissions=nil;cloudBrewNeedsAttention=false;cloudBrewHistory=nil

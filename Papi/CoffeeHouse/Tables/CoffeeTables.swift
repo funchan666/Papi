@@ -115,7 +115,7 @@ struct CoffeeTablesView:View {
         VStack(alignment:.leading,spacing:0) {
             Button {if store.enter(room){router.go(.room(room.id))}} label:{
                 ZStack(alignment:.bottomLeading) {
-                    PapiImage(name:room.coverReference,fallback:room.image).frame(height:typeSize.isAccessibilitySize ? 290:245).clipped()
+                    PapiImage(name:store.usesCloudWallet ? (store.person(room.hostMemberID)?.portrait ?? room.image):room.coverReference,fallback:room.image).frame(height:typeSize.isAccessibilitySize ? 290:245).clipped()
                         .overlay {LinearGradient(colors:[.clear,Color.coffee.opacity(0.3),Color.coffee.opacity(0.96)],startPoint:.center,endPoint:.bottom)}
                         .overlay(alignment:.topLeading) {
                             HStack(spacing:4) {

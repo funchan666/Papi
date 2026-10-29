@@ -54,6 +54,7 @@ import Foundation
             }
             return nil
         }
+        if usesCloudWallet {return cloudEditorialPeopleReady ? CoffeeCollection.cloudPeople()?.first(where:{$0.id==id}) : nil}
         return CoffeeMember.find(id) ?? community.rememberedPeople[id]
     }
     func isUserHidden(_ id:String)->Bool {
@@ -79,7 +80,7 @@ import Foundation
         return visibleCloudMoments(cloudFeed ?? [])
     }
     var visibleCollectionPosts:[CoffeeMoment] {
-        guard !usesCloudWallet || editorialReportsReady else{return []}
+        guard !usesCloudWallet || (editorialReportsReady && cloudEditorialCatalogReady && cloudEditorialPeopleReady && cloudMediaCatalogReady) else{return []}
         return CoffeeMoment.editorial.filter{isPostVisible($0)}
     }
     func visibleCloudMoments(_ items:[CoffeeCloud.FeedMoment])->[CoffeeMoment] {

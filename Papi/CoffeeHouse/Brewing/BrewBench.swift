@@ -120,7 +120,7 @@ struct BrewBenchView:View {
                                 }
                             }.font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
                         }
-                        if let active=store.brewBook.activePour,let recipe=BrewRecipe.recipe(active.recipeID) {
+                        if (!store.usesCloudWallet || store.cloudRecipesReady),let active=store.brewBook.activePour,let recipe=BrewRecipe.recipe(active.recipeID) {
                             Button {router.go(.brewRecipe(recipe.id))} label:{
                                 HStack(spacing:12) {Image("brewDripper").resizable().scaledToFit().frame(width:44,height:44);VStack(alignment:.leading){PapiText("Return to your pour").font(CoffeeType.face(.headline));PapiText(verbatim:active.coffeeLot).font(CoffeeType.face(.subheadline))};Spacer();PapiText("Open").font(CoffeeType.face(.subheadline,weight:.bold))}
                                     .padding(18).background(Color.butter,in:RoundedRectangle(cornerRadius:18))
@@ -128,7 +128,11 @@ struct BrewBenchView:View {
                         }
                         HStack {PapiText("The recipe shelf").font(CoffeeType.face(.title2,weight:.bold));Spacer();Button{router.openWallet()}label:{CoffeeCurrentBalance()}.buttonStyle(.plain)}
                         PapiText("Two recipes are yours from the start. Unlock another once, then brew it as often as you like.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee)
-                        ForEach(BrewRecipe.collection) {recipe in
+                        if store.usesCloudWallet && !store.cloudRecipesReady {
+                            PapiText(store.cloudSocialBusy ? "Loading recipes…":"Recipes unavailable").foregroundStyle(Color.mutedCoffee)
+                            PapiTextButton("Retry"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)
+                        }
+                        ForEach((!store.usesCloudWallet || store.cloudRecipesReady) ? BrewRecipe.collection:[]) {recipe in
                             Button {router.go(.brewRecipe(recipe.id))} label:{
                                 VStack(alignment:.leading,spacing:10) {
                                     HStack(alignment:.firstTextBaseline,spacing:12) {PapiText(recipe.title).font(CoffeeType.face(.title3,weight:.bold));Spacer(minLength:4);if store.ownsRecipe(recipe){PapiText(recipe.unlockCoins==0 ? "Included":"On your shelf").font(CoffeeType.face(.caption,weight:.bold))}else{CoinLabel(value:recipe.unlockCoins).font(CoffeeType.face(.subheadline))}}
@@ -193,7 +197,7 @@ struct BrewRecipeView:View {
     }
     var body:some View {
         PapiScreen {
-            if let recipe=BrewRecipe.recipe(recipeID) {
+            if (!store.usesCloudWallet || store.cloudRecipesReady),let recipe=BrewRecipe.recipe(recipeID) {
                 VStack(spacing:0) {
                     PapiHeader(recipe.title)
                     ScrollView {
@@ -223,7 +227,7 @@ struct BrewRecipeView:View {
                     if confirmSave {PapiDialog(title:"Keep this cup?",message:"Save the elapsed brew time and recipe to your book. Add tasting notes after the cup has cooled. Saving costs no coins.",confirm:"Save this cup",cancel:"Keep brewing",action:{confirmSave=false;if store.saveBrew(){router.go(.brewArchive)}},dismiss:{confirmSave=false})}
                     if confirmDiscard {PapiDialog(title:"Clear this pour?",message:"This removes the running timer. Your bean details and unlocked recipes stay in your book.",confirm:"Clear pour",cancel:"Keep brewing",action:{confirmDiscard=false;store.discardPour()},dismiss:{confirmDiscard=false})}
                 }
-            } else {VStack(spacing:0){PapiHeader("Brew bench");ScrollView {PapiEmpty(title:"Recipe unavailable")}}}
+            } else {VStack(spacing:0){PapiHeader("Brew bench");ScrollView {PapiEmpty(title:"Recipe unavailable");if store.usesCloudWallet && !store.cloudRecipesReady {PapiTextButton("Retry"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)}}}}
         }
     }
     private func brewSetup(_ recipe:BrewRecipe)->some View {

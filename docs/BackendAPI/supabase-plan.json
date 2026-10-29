@@ -9,7 +9,11 @@
     "reason": "User previously directed the work back to the existing Papi production environment and requested preservation of old data."
   },
   "appTarget": "Papi",
-  "bootstrap": {"function": "papi-bootstrap", "status": "deployed", "version": 1},
+  "bootstrap": {
+    "function": "papi-bootstrap",
+    "status": "deployed",
+    "version": 1
+  },
   "mediaCatalog": {
     "table": "coffee_asset_catalog",
     "migration": "papi_tods_media_catalog",
@@ -63,17 +67,67 @@
   "validation": {
     "sourceAndConfigurationInspection": "performed",
     "protocolPublicFetch": "HTTP 200 application/pdf; text and contact address inspected",
-    "build": "not performed",
-    "appRuntime": "not performed",
+    "build": "not performed at user direction",
+    "appRuntime": "not performed at user direction",
     "purchaseTesting": "not performed",
-    "isolatedRlsValidation": "not performed"
+    "isolatedRlsValidation": "not performed",
+    "newCatalogs": "read-only full-field comparison matched 10 guides, 5 recipes and 8 gifts; six voice topics have metadata"
   },
   "remaining": [
-    "Export and migrate remaining local collections, rooms, recipes and other content with stable IDs and relationships.",
-    "Replace runtime bundled content and failure fallbacks only after complete data migration and verification, while preserving genuine old device data and entitlements.",
-    "Finish and validate bounded network readiness and APNs registration using actual signing capabilities.",
-    "Validate already-signed-in bootstrap recovery and complete post-deletion recovery without changing account identity.",
-    "Implement Apple sandbox wallet isolation and refund handling without mixing sandbox value into production balances.",
-    "Build and perform authorized device and cloud checks before describing A as complete."
-  ]
+    "Move account-specific displayed gift, saved gift ideas and recent voice-room history from the existing device archive to protected cloud storage; preserve existing device records. Local illustrative collections also remain for legacy offline use.",
+    "Validate first login and returning session, isolated account ownership and cloud CRUD including storage, realtime, voice, moderation and account deletion when authorized.",
+    "Configure Apple Developer push capability, provisioning and a push sender when developer access is available; APNs token delivery is not yet wired to a sender.",
+    "Resolve Apple sandbox wallet isolation and refund/reversal handling, and verify real StoreKit transactions when authorized.",
+    "Build, run and verify on real devices when authorized; static inspection and read-only catalog comparison do not prove runtime behavior."
+  ],
+  "referenceGuides": {
+    "table": "coffee_reference_guides",
+    "migration": "papi_tods_reference_guides",
+    "source": "seed/reference_guides.json",
+    "exporter": "../../backend/scripts/export_tods_guides.py",
+    "sourceCount": 10,
+    "cloudCountObserved": 10,
+    "sourceCloudDifferences": 0
+  },
+  "savedScenes": {
+    "table": "coffee_saved_scenes",
+    "migration": "papi_tods_saved_scenes",
+    "ownership": "Supabase Auth UUID with RLS and guarded write RPC",
+    "legacyDeviceSaves": "retained on device; not attributed to a new account automatically"
+  },
+  "brewRecipes": {
+    "table": "coffee_brew_recipes",
+    "migration": "papi_tods_brew_recipes",
+    "source": "seed/brew_recipes.json",
+    "exporter": "../../backend/scripts/export_tods_recipes.py",
+    "sourceCount": 5,
+    "cloudCountObserved": 5,
+    "sourceCloudDifferences": 0,
+    "costsCheckedAgainstExistingWalletRules": true
+  },
+  "gifts": {
+    "table": "coffee_gift_catalog",
+    "migration": "papi_tods_gift_catalog",
+    "source": "seed/gifts.json",
+    "exporter": "../../backend/scripts/export_tods_gifts.py",
+    "sourceCount": 8,
+    "cloudCountObserved": 8,
+    "sourceCloudDifferences": 0,
+    "costsCheckedAgainstExistingWalletRules": true
+  },
+  "voiceTopics": {
+    "table": "coffee_voice_topics",
+    "migrations": [
+      "papi_tods_voice_room_metadata",
+      "papi_tods_voice_room_copy"
+    ],
+    "completeMetadataCountObserved": 6,
+    "liveMembersMessagesGifts": "actual sessions only"
+  },
+  "networkAndPush": {
+    "reachability": "NWPathMonitor and bounded Supabase HTTPS probe with retry",
+    "apnsClient": "registration and permission requested; token held in memory",
+    "appleSigning": "pending Apple Developer capability and provisioning profile",
+    "pushSender": "not configured; no delivery claim"
+  }
 }

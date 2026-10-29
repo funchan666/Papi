@@ -159,8 +159,7 @@ enum CoffeeCollection {
     }
     static func useCloudPeople(_ people:[CoffeeMember]) -> Bool {
         let ids=Set(people.map(\.id))
-        guard !people.isEmpty,ids.count==people.count,
-              (0..<8).allSatisfy({ids.contains("preview-member-\($0)")}) else {return false}
+        guard ids.count==people.count else {return false}
         catalogLock.lock();defer {catalogLock.unlock()}
         collectionPeople=people
         return true
@@ -174,7 +173,7 @@ enum CoffeeCollection {
         return editorialConversations
     }
     static func useCloudEditorial(_ moments:[CoffeeMoment],conversations:[CollectionConversation]) -> Bool {
-        guard !moments.isEmpty,Set(moments.map(\.id)).count==moments.count,
+        guard Set(moments.map(\.id)).count==moments.count,
               moments.count==conversations.count,
               Set(moments.map(\.id))==Set(conversations.map(\.momentID)),
               moments.allSatisfy({$0.id.hasPrefix("editorial-") && !$0.isOwnMoment}) else {return false}
@@ -184,7 +183,7 @@ enum CoffeeCollection {
     }
     static func entry(_ reference:String)->CoffeeCollectionAsset? {assets.first{$0.asset==CoffeeArtwork.canonical(reference)}}
     static func useCloud(baseURL:String,items:[CoffeeCollectionAsset]) -> Bool {
-        guard baseURL=="https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev",!items.isEmpty,
+        guard baseURL=="https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev",
               Set(items.map(\.asset)).count==items.count,
               items.allSatisfy({item in
                   ["photo","film"].contains(item.kind) &&

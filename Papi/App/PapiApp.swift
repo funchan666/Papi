@@ -279,7 +279,7 @@ struct PapiRootView:View {
         case .room(let id):
             if store.usesCloudWallet,store.liveVoiceEnabled,let account=store.state.cloudAccountID,
                let topic=store.cloudVoiceTopics?.first(where:{$0.id==id}),let room=topic.room {
-                CoffeeLiveVoiceRoomView(topic:topic,cover:room.coverReference,account:account)
+                CoffeeLiveVoiceRoomView(topic:topic,cover:store.person(room.hostMemberID)?.portrait ?? room.image,account:account)
             }
             else if store.usesCloudWallet {PapiScreen {VStack(spacing:0){PapiHeader("Coffee tables");ScrollView {PapiEmpty(title:"Voice rooms unavailable")}}}}
             else if let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {CoffeeTableView(room:room)}

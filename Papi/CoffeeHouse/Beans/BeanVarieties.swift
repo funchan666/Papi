@@ -9,7 +9,7 @@ struct BeanVarietyShelf:View {
     private let assets=["beanArabica","beanRobusta","beanGeisha","beanBourbon","beanPacamara","beanSL28"]
     private let notes=["Often enjoyed for a nuanced cup. Try recording the aroma, sweetness and finish of your own brew.","A fuller-bodied coffee often used in blends. Compare different brew ratios in your journal.","Take time with the aroma and let the cup cool before adding your tasting notes.","Compare roast levels and note how sweetness changes in your cup.","Explore your brewing recipe and note the texture and finish.","Keep track of grind size and water temperature as you explore each cup."]
     private var guides:[CoffeeCloud.ReferenceGuide] {
-        if let cloud=store.cloudReferenceGuides {return cloud.filter{$0.kind=="bean"}}
+        if store.usesCloudWallet {return (store.cloudReferenceGuides ?? []).filter{$0.kind=="bean"}}
         return names.indices.map {CoffeeCloud.ReferenceGuide(id:assets[$0],kind:"bean",title:names[$0],asset:assets[$0],detail:notes[$0],position:$0)}
     }
     var body:some View {
@@ -29,6 +29,9 @@ struct BeanVarietyShelf:View {
                             }.frame(maxWidth:.infinity,alignment:.leading)
                             PapiArtworkFit(asset:"beanGuideArt").frame(width:96,height:96)
                         }.padding(18).background(Color.cream.opacity(0.96),in:RoundedRectangle(cornerRadius:22))
+                        if store.usesCloudWallet && store.cloudReferenceGuides == nil {
+                            PapiTextButton("Retry"){Task {await store.refreshCloudSocial()}}.disabled(store.cloudSocialBusy)
+                        }
                         LazyVGrid(columns:Array(repeating:GridItem(.flexible(),spacing:12),count:columnCount),spacing:14) {
                             ForEach(guides) {guide in
                                 Button {selected=guide.id} label:{
