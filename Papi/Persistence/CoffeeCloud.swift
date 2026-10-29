@@ -103,6 +103,16 @@ actor CoffeeCloud {
         let base_url:String
         let item:CoffeeCollectionAsset
     }
+    struct ReferenceGuide:Decodable,Identifiable {
+        let id:String
+        let kind:String
+        let title:String
+        let asset:String
+        let detail:String
+        let position:Int
+    }
+    private struct SavedScene:Decodable {let scene_id:String}
+    private struct SavedSceneUpdate:Encodable {let p_scene:String;let p_enabled:Bool}
     struct EditorialCatalogEntry:Decodable {
         let id:String
         let author_id:String
@@ -478,6 +488,25 @@ actor CoffeeCloud {
             .select("id,name,portrait,bio").order("position",ascending:true).execute().value
         _ = try await identity(account)
         return people
+    }
+    func referenceGuides(account:UUID) async throws -> [ReferenceGuide] {
+        _ = try await identity(account)
+        let guides:[ReferenceGuide] = try await client.from("coffee_reference_guides")
+            .select("id,kind,title,asset,detail,position").order("position",ascending:true).execute().value
+        _ = try await identity(account)
+        return guides
+    }
+    func savedScenes(account:UUID) async throws -> Set<String> {
+        _ = try await identity(account)
+        let rows:[SavedScene] = try await client.from("coffee_saved_scenes").select("scene_id").execute().value
+        _ = try await identity(account)
+        return Set(rows.map(\.scene_id))
+    }
+    func setSavedScene(_ id:String,enabled:Bool,account:UUID) async throws {
+        _ = try await identity(account)
+        let result:Bool = try await client.rpc("set_saved_coffee_scene",params:SavedSceneUpdate(p_scene:id,p_enabled:enabled)).execute().value
+        guard result==enabled else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
     }
 
     // Email verification uses a separate Keychain session so an OTP can never

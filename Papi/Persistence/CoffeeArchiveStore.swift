@@ -32,6 +32,9 @@ struct CoffeeReceipt: Identifiable {
     @Published private(set) var cloudBrewHistory: [CoffeeCloud.BrewBookHistory]?
     @Published private(set) var cloudBrewHistoryBusy=false
     @Published private(set) var cloudProfiles: [CoffeeCloud.Profile]?
+    @Published private(set) var cloudReferenceGuides:[CoffeeCloud.ReferenceGuide]?
+    @Published private(set) var cloudSavedScenes:Set<String>?
+    @Published private(set) var cloudSavedScenesBusy=false
     @Published private(set) var cloudReferencedProfiles:[UUID:CoffeeCloud.Profile] = [:]
     @Published private(set) var cloudFollows: [CoffeeCloud.Follow] = []
     @Published private(set) var cloudFriendships: [CoffeeCloud.Friendship] = []
@@ -420,6 +423,11 @@ struct CoffeeReceipt: Identifiable {
            state.signedIn,state.cloudAccountID==account {
             _ = CoffeeCollection.useCloudPeople(people)
         }
+        if let guides=try? await CoffeeCloud.shared.referenceGuides(account:account),
+           state.signedIn,state.cloudAccountID==account,
+           Set(guides.map(\.id)).count==guides.count {
+            cloudReferenceGuides=guides
+        }
         do {
             let profiles=try await CoffeeCloud.shared.profiles(for:account)
             let imageSummaries=try await CoffeeCloud.shared.profileImageSummaries(profiles.map(\.id),account:account)
@@ -438,6 +446,28 @@ struct CoffeeReceipt: Identifiable {
         } catch {
             guard state.cloudAccountID==account else {return}
             cloudProfiles=nil
+        }
+    }
+
+    func refreshSavedScenes() async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudSavedScenesBusy else{return}
+        cloudSavedScenesBusy=true;defer{cloudSavedScenesBusy=false}
+        do {
+            let scenes=try await CoffeeCloud.shared.savedScenes(account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            cloudSavedScenes=scenes
+        } catch {if state.cloudAccountID==account {cloudSavedScenes=nil}}
+    }
+    func setSavedScene(_ scene:String,enabled:Bool) async {
+        guard let account=state.cloudAccountID,state.signedIn,!cloudSavedScenesBusy,cloudSavedScenes != nil else{return}
+        cloudSavedScenesBusy=true;defer{cloudSavedScenesBusy=false}
+        do {
+            try await CoffeeCloud.shared.setSavedScene(scene,enabled:enabled,account:account)
+            let scenes=try await CoffeeCloud.shared.savedScenes(account:account)
+            guard state.signedIn,state.cloudAccountID==account else{return}
+            cloudSavedScenes=scenes
+        } catch {
+            if state.cloudAccountID==account {cloudSavedScenes=nil;inform("Saved scenes unavailable","The update could not be confirmed. Please retry.")}
         }
     }
 
@@ -1673,6 +1703,8 @@ struct CoffeeReceipt: Identifiable {
         }
     }
     private func resetCloudState() {
+        cloudReferenceGuides=nil
+        cloudSavedScenes=nil
         brewSyncDebounce?.cancel();brewSyncDebounce=nil
         cloudWallet=nil;cloudWalletUnavailable=false;cloudSubmissions=nil;cloudBrewNeedsAttention=false;cloudBrewHistory=nil
         cloudProfiles=nil;cloudReferencedProfiles=[:];cloudImageSummaries=[:];cloudProfileImages=[:];cloudProfileImagesHasMore=[:]

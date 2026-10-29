@@ -3,12 +3,16 @@ import SwiftUI
 struct CafeInspirationView:View {
     @EnvironmentObject private var store:CoffeeHouse
     @Environment(\.layoutDirection) private var direction
-    @State private var selected:Int?
+    @State private var selected:String?
     @State private var savedOnly=false
     private let names=["The home coffee corner","Under the glass roof","A rose-coloured terrace","The courtyard table"]
     private let subtitles=["Tools within reach, room for a careful pour","Natural light across a busy coffee bar","Outdoor tables and a quieter evening cup","Coffee and pastry in the open air"]
     private let images=["home-espresso-corner","glasshouse-cafe","rose-front-cafe","courtyard-brunch"]
-    private var visibleScenes:[Int] {images.indices.filter{!savedOnly || isSaved($0)}}
+    private var guides:[CoffeeCloud.ReferenceGuide] {
+        if let cloud=store.cloudReferenceGuides {return cloud.filter{$0.kind=="cafe"}}
+        return names.indices.map {CoffeeCloud.ReferenceGuide(id:images[$0],kind:"cafe",title:names[$0],asset:images[$0],detail:subtitles[$0],position:$0)}
+    }
+    private var visibleScenes:[CoffeeCloud.ReferenceGuide] {guides.filter{!savedOnly || isSaved($0)}}
 
     var body:some View {
         PapiScreen {
@@ -24,12 +28,12 @@ struct CafeInspirationView:View {
                         if visibleScenes.isEmpty {
                             PapiEmpty(title:"No saved scenes yet",detail:"Save a coffee scene to find it here.")
                         } else {
-                            ForEach(visibleScenes,id:\.self) {index in sceneCard(index)}
+                            ForEach(visibleScenes) {guide in sceneCard(guide)}
                         }
                     }.padding(20).frame(maxWidth:700).frame(maxWidth:.infinity)
                 }
-            }.overlay {if let selected {cafeDetail(selected)}}
-        }
+            }.overlay {if let selected,let guide=guides.first(where:{$0.id==selected}) {cafeDetail(guide)}}
+        }.task(id:store.state.cloudAccountID) {if store.usesCloudWallet {await store.refreshSavedScenes()}}
     }
     private func filterButton(_ title:String,isSelected:Bool,action:@escaping ()->Void)->some View {
         Button(action:action) {
@@ -39,16 +43,16 @@ struct CafeInspirationView:View {
                 .contentShape(Rectangle())
         }.buttonStyle(.plain).accessibilityAddTraits(isSelected ? .isSelected:[])
     }
-    private func sceneCard(_ index:Int)->some View {
-        Button {selected=index} label:{
+    private func sceneCard(_ guide:CoffeeCloud.ReferenceGuide)->some View {
+        Button {selected=guide.id} label:{
             VStack(alignment:.leading,spacing:0) {
-                PapiImage(name:images[index]).frame(height:170).accessibilityHidden(true)
+                PapiImage(name:guide.asset).frame(height:170).accessibilityHidden(true)
                 HStack(alignment:.center,spacing:12) {
                     VStack(alignment:.leading,spacing:6) {
-                        PapiText(names[index]).font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true)
-                        PapiText(subtitles[index]).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                        PapiText(guide.title).font(CoffeeType.face(.headline)).fixedSize(horizontal:false,vertical:true)
+                        PapiText(guide.detail).font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
                     }.frame(maxWidth:.infinity,alignment:.leading)
-                    if isSaved(index) {
+                    if isSaved(guide) {
                         Image("check").resizable().scaledToFit().frame(width:20,height:20).papiAccessibilityLabel("Saved")
                     } else {
                         Image("chevron").resizable().scaledToFit().scaleEffect(x:direction == .rightToLeft ? -1:1,y:1).frame(width:12,height:12).accessibilityHidden(true)
@@ -58,15 +62,19 @@ struct CafeInspirationView:View {
                 .clipShape(RoundedRectangle(cornerRadius:20)).contentShape(Rectangle())
         }.buttonStyle(.plain)
     }
-    private func cafeDetail(_ index:Int)->some View {
+    private func cafeDetail(_ guide:CoffeeCloud.ReferenceGuide)->some View {
         CoffeeModal(maximumWidth:360,maximumHeight:620,shade:Color.coffee.opacity(0.56),artwork:nil) {
             VStack(alignment:.leading,spacing:14) {
-                PapiImage(name:images[index]).frame(height:170).clipShape(RoundedRectangle(cornerRadius:18)).accessibilityHidden(true)
+                PapiImage(name:guide.asset).frame(height:170).clipShape(RoundedRectangle(cornerRadius:18)).accessibilityHidden(true)
                 PapiText("Coffee inspiration").font(CoffeeType.face(.caption,weight:.bold)).foregroundStyle(Color.mutedCoffee)
-                PapiText(names[index]).font(CoffeeType.display(.title2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
-                PapiText(subtitles[index]).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
-                PapiTextButton(isSaved(index) ? "Remove from saved":"Save scene"){toggleSaved(index)}
-                    .buttonStyle(PapiButtonStyle(light:isSaved(index),wide:true,cornerRadius:15))
+                PapiText(guide.title).font(CoffeeType.display(.title2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                PapiText(guide.detail).font(CoffeeType.face(.subheadline)).fixedSize(horizontal:false,vertical:true)
+                PapiTextButton(isSaved(guide) ? "Remove from saved":"Save scene"){toggleSaved(guide)}
+                    .buttonStyle(PapiButtonStyle(light:isSaved(guide),wide:true,cornerRadius:15))
+                    .disabled(store.usesCloudWallet && (store.cloudSavedScenes == nil || store.cloudSavedScenesBusy))
+                if store.usesCloudWallet && store.cloudSavedScenes == nil {
+                    PapiTextButton("Retry"){Task {await store.refreshSavedScenes()}}.disabled(store.cloudSavedScenesBusy)
+                }
                 Button {selected=nil} label: {
                     PapiText("Close").font(CoffeeType.face(.subheadline,weight:.semibold))
                         .frame(maxWidth:.infinity,minHeight:44).contentShape(Rectangle())
@@ -74,9 +82,14 @@ struct CafeInspirationView:View {
             }.frame(maxWidth:.infinity,alignment:.leading)
         }
     }
-    private func isSaved(_ index:Int)->Bool {store.state.savedCoffeeScenes?.contains(images[index]) == true}
-    private func toggleSaved(_ index:Int) {
-        let reference=images[index]
+    private func isSaved(_ guide:CoffeeCloud.ReferenceGuide)->Bool {
+        store.usesCloudWallet ? store.cloudSavedScenes?.contains(guide.id) == true : store.state.savedCoffeeScenes?.contains(guide.asset) == true
+    }
+    private func toggleSaved(_ guide:CoffeeCloud.ReferenceGuide) {
+        if store.usesCloudWallet {
+            Task {await store.setSavedScene(guide.id,enabled:!isSaved(guide))};return
+        }
+        let reference=guide.asset
         _ = store.commit {state in
             var saved=state.savedCoffeeScenes ?? []
             if !saved.insert(reference).inserted {saved.remove(reference)}
