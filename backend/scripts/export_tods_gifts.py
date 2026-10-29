@@ -4,12 +4,9 @@ import json
 import re
 
 root = Path(__file__).resolve().parents[2]
-source = (root / "Papi/CoffeeDomain/CoffeeArchive.swift").read_text(encoding="utf-8")
-section = source.split("extension CoffeeCollectible {", 1)[1].split("extension CoffeeTable", 1)[0]
-pattern = r'\.init\(id:\s*("(?:[^"\\]|\\.)*"),\s*name:\s*("(?:[^"\\]|\\.)*"),\s*asset:\s*("(?:[^"\\]|\\.)*"),\s*cost:\s*(\d+)\)'
-items = [{"id":json.loads(i),"name":json.loads(n),"asset":json.loads(a),"cost":int(c)} for i,n,a,c in re.findall(pattern,section)]
-if len(items)!=8 or len({x["id"] for x in items})!=len(items):
-    raise ValueError("Gift source is incomplete")
+items = json.loads((root / "Docs/BackendAPI/seed/gifts.json").read_text(encoding="utf-8"))
+if not items or len({item["id"] for item in items}) != len(items):
+    raise ValueError("Archived source is incomplete or has duplicate IDs")
 raw = json.dumps(items,ensure_ascii=False,indent=2)+"\n"
 if "$papi_gifts$" in raw:
     raise ValueError("Source conflicts with SQL quoting")

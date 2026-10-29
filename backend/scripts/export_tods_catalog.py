@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 
 root = Path(__file__).resolve().parents[2]
-source = root / "Papi/Resources/Media/CoffeeCollection.json"
+source = root / "Docs/BackendAPI/seed/coffee_collection.json"
 archive = root / "Docs/BackendAPI/seed/coffee_collection.json"
 sql = root / "backend/papi_tods_media_catalog.sql"
 raw = source.read_text(encoding="utf-8")

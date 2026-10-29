@@ -5,12 +5,8 @@ struct CafeInspirationView:View {
     @Environment(\.layoutDirection) private var direction
     @State private var selected:String?
     @State private var savedOnly=false
-    private let names=["The home coffee corner","Under the glass roof","A rose-coloured terrace","The courtyard table"]
-    private let subtitles=["Tools within reach, room for a careful pour","Natural light across a busy coffee bar","Outdoor tables and a quieter evening cup","Coffee and pastry in the open air"]
-    private let images=["home-espresso-corner","glasshouse-cafe","rose-front-cafe","courtyard-brunch"]
     private var guides:[CoffeeCloud.ReferenceGuide] {
-        if store.usesCloudWallet {return (store.cloudReferenceGuides ?? []).filter{$0.kind=="cafe"}}
-        return names.indices.map {CoffeeCloud.ReferenceGuide(id:images[$0],kind:"cafe",title:names[$0],asset:images[$0],detail:subtitles[$0],position:$0)}
+        (store.cloudReferenceGuides ?? []).filter{$0.kind=="cafe"}
     }
     private var visibleScenes:[CoffeeCloud.ReferenceGuide] {guides.filter{!savedOnly || isSaved($0)}}
 

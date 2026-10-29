@@ -254,7 +254,7 @@ import Foundation
         if commit({$0.blockedMembers.remove(id)}) {notice = .init(title:"User unblocked",message:"The block has been removed. Previously reported items remain hidden, and following or friendship is never restored automatically.",kind:.safety)}
     }
     private func leaveHiddenRoom() {
-        if let id=activeRoomID,let room=CoffeeTable.previews.first(where:{$0.id==id}),!isRoomVisible(room) {activeRoomID=nil;roomMicRequested=false}
+        if let id=activeRoomID,let room=cloudVoiceTopics?.first(where:{$0.id==id})?.room,!isRoomVisible(room) {activeRoomID=nil;roomMicRequested=false}
     }
     var conversationPeople:[CoffeeMember] {
         if let account=state.cloudAccountID {

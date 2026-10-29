@@ -4,26 +4,9 @@ import json
 import re
 
 root = Path(__file__).resolve().parents[2]
-source = (root / "Papi/CoffeeDomain/BrewRecords.swift").read_text(encoding="utf-8")
-section = source.split("private static let bundledCollection:[BrewRecipe] = [", 1)[1].split("static func recipe", 1)[0]
-recipe_pattern = re.compile(
-    r'\.init\(id:("(?:[^"\\]|\\.)*"),title:("(?:[^"\\]|\\.)*"),'
-    r'brewer:("(?:[^"\\]|\\.)*"),story:("(?:[^"\\]|\\.)*"),'
-    r'coffeeGrams:(\d+),hotWaterGrams:(\d+),iceGrams:(\d+),waterCelsius:(\d+),'
-    r'drawdownSeconds:(\d+),unlockCoins:(\d+),checkpoints:\[(.*?)\]\)', re.DOTALL)
-step_pattern = re.compile(r'\.init\(id:(\d+),cue:("(?:[^"\\]|\\.)*"),elapsedSeconds:(\d+),cumulativeWaterFraction:([\d.]+)\)')
-recipes = []
-for match in recipe_pattern.finditer(section):
-    ident, title, brewer, story, dose, hot, ice, temp, duration, cost, steps = match.groups()
-    checkpoints = [{"id":int(i),"cue":json.loads(cue),"elapsedSeconds":int(seconds),"cumulativeWaterFraction":float(fraction)}
-                   for i,cue,seconds,fraction in step_pattern.findall(steps)]
-    if not checkpoints:
-        raise ValueError("Recipe has no checkpoints")
-    recipes.append({"id":json.loads(ident),"title":json.loads(title),"brewer":json.loads(brewer),"story":json.loads(story),
-                    "coffeeGrams":int(dose),"hotWaterGrams":int(hot),"iceGrams":int(ice),"waterCelsius":int(temp),
-                    "drawdownSeconds":int(duration),"unlockCoins":int(cost),"checkpoints":checkpoints})
-if len(recipes) != 5 or len({r["id"] for r in recipes}) != len(recipes):
-    raise ValueError("Recipe source is incomplete")
+recipes = json.loads((root / "Docs/BackendAPI/seed/brew_recipes.json").read_text(encoding="utf-8"))
+if not recipes or len({item["id"] for item in recipes}) != len(recipes):
+    raise ValueError("Archived source is incomplete or has duplicate IDs")
 raw = json.dumps(recipes, ensure_ascii=False, indent=2) + "\n"
 if "$papi_recipes$" in raw:
     raise ValueError("Source conflicts with SQL quoting")

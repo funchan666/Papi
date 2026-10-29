@@ -4,45 +4,9 @@ import json
 import re
 
 root = Path(__file__).resolve().parents[2]
-swift = (root / "Papi/CoffeeDomain/CoffeeArchive.swift").read_text(encoding="utf-8")
-media = json.loads((root / "Docs/BackendAPI/seed/coffee_collection.json").read_text(encoding="utf-8"))
-
-def notes_between(start: str, end: str) -> dict[int, str]:
-    section = swift.split(start, 1)[1].split(end, 1)[0]
-    return {int(index): json.loads(value) for index, value in re.findall(r'^\s*(\d+):("(?:[^"\\]|\\.)*")\s*,?\s*$', section, re.MULTILINE)}
-
-captions = notes_between('let captions: [Int:String] = [', 'let photographs=')
-films = notes_between('let filmNotes:[Int:String] = [', 'let films=')
-conversations = {}
-pattern = r'\.init\(momentID:"([^"]+)",contributorIndex:(\d+),appreciationCount:(\d+),cupNotes:(\[.*\])\)'
-for line in swift.splitlines():
-    match = re.search(pattern, line)
-    if match:
-        moment, contributor, likes, notes = match.groups()
-        conversations[moment] = {"contributor": int(contributor), "likes": int(likes), "comments": json.loads(notes)}
-
-moments = []
-for item in media["items"]:
-    moment = item.get("momentID")
-    if not moment:
-        continue
-    kind, index = moment.removeprefix("editorial-").rsplit("-", 1)
-    index = int(index)
-    discussion = conversations[moment]
-    caption = (films if kind == "video" else captions)[index]
-    moments.append({
-        "id": moment, "author_id": f"preview-member-{discussion['contributor']}",
-        "asset": item["asset"], "is_video": kind == "video", "caption": caption,
-        "category": ("Between cafés" if index in [2, 3, 10, 12] else "Coffee films") if kind == "video" else "Café journal",
-        "created_epoch": 1790000000 + index * 3600,
-        "sample_likes": discussion["likes"], "sample_comments": discussion["comments"],
-    })
-
-if len(moments) != 40 or len({x["id"] for x in moments}) != len(moments) or len(conversations) != len(moments):
-    raise ValueError("Editorial IDs or source data are incomplete")
-photos = [x for x in moments if not x["is_video"]]
-videos = [x for x in moments if x["is_video"]]
-moments = photos[:4] + videos + photos[4:]
+moments = json.loads((root / "Docs/BackendAPI/seed/editorial_moments.json").read_text(encoding="utf-8"))
+if not moments or len({item["id"] for item in moments}) != len(moments):
+    raise ValueError("Archived source is incomplete or has duplicate IDs")
 raw = json.dumps(moments, ensure_ascii=False, indent=2) + "\n"
 if "$papi_moments$" in raw:
     raise ValueError("Source conflicts with SQL quoting")

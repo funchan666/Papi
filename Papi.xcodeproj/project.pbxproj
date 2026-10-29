@@ -16,7 +16,6 @@
 		511032DC01E8F8C6CADF47CF /* AppleCoinCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1F97BC92B7B11E080723B6 /* AppleCoinCounter.swift */; };
 		56E51BD446B372FDB67AC446 /* CoffeeCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB621FF2F2A5F301058B3F88 /* CoffeeCounter.swift */; };
 		638C89AA29723A0674CF3807 /* CoffeeMediaFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC58D9339AE955DD821BFC /* CoffeeMediaFiles.swift */; };
-		69B22EAE2A1E4331D9468053 /* Media in Resources */ = {isa = PBXBuildFile; fileRef = 7A9D7A9E9A9325A9158EB1B2 /* Media */; };
 		8388CEA6576E29EB95A694E8 /* Localization in Resources */ = {isa = PBXBuildFile; fileRef = A1446FB63CAE79B500D60548 /* Localization */; };
 		8482AC7F554B8B50D975FB57 /* CorrespondenceLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADD11DBCE1B281A6D56507B /* CorrespondenceLedger.swift */; };
 		892614CFE3EB7A24617FBC31 /* CoffeeLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9069568E3AA3630D443D2E4 /* CoffeeLanguage.swift */; };
@@ -72,7 +71,6 @@
 		7660535BDFD0DDE1A202C132 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		76A8253097A5E3A09F0561AC /* CoffeeTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeTables.swift; sourceTree = "<group>"; };
 		7881B113CDDB9E5E029ADBA7 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		7A9D7A9E9A9325A9158EB1B2 /* Media */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Media; path = Papi/Resources/Media; sourceTree = SOURCE_ROOT; };
 		8419C26EF3D2FD156DEE6931 /* BrewRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrewRecords.swift; sourceTree = "<group>"; };
 		90289257D4B76CE26D0802FE /* CafeNotebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeNotebook.swift; sourceTree = "<group>"; };
 		94C615E93043C9CD0E094546 /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
@@ -189,7 +187,6 @@
 			children = (
 				27A0CDF6DC8AD2039DB2FE42 /* Fonts */,
 				A1446FB63CAE79B500D60548 /* Localization */,
-				7A9D7A9E9A9325A9158EB1B2 /* Media */,
 				C6BB4824B23223F3137D03A5 /* InfoPlistLocalizations */,
 				49406E08711CB0B8B25A5A9F /* Papi */,
 				8B96218223829754B01E5E78 /* Resources */,
@@ -385,7 +382,6 @@
 				099EEFA527F597BA007303BD /* Fonts in Resources */,
 				F60ADE5B1CF75CC5D8D380FA /* InfoPlist.strings in Resources */,
 				8388CEA6576E29EB95A694E8 /* Localization in Resources */,
-				69B22EAE2A1E4331D9468053 /* Media in Resources */,
 				EA0C59647DF047553ED2F531 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

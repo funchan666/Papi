@@ -4,23 +4,9 @@ import json
 import re
 
 root = Path(__file__).resolve().parents[2]
-swift = (root / "Papi/CoffeeDomain/CoffeeArchive.swift").read_text(encoding="utf-8")
-catalog = json.loads((root / "Docs/BackendAPI/seed/coffee_collection.json").read_text(encoding="utf-8"))
-section = swift.split("static let portraits:[CoffeeMember] =", 1)[1].split("// Legacy identifiers", 1)[0]
-names = json.loads(re.search(r'let names=(\[.*\])', section).group(1))
-bios = json.loads(re.search(r'let notes=(\[.*\])', section).group(1))
-people = []
-for item in catalog["items"]:
-    if item["usage"] != "profile":
-        continue
-    identifier = item["memberID"]
-    name, bio = item["displayName"], item["bio"]
-    if identifier.startswith("preview-member-"):
-        index = int(identifier.removeprefix("preview-member-"))
-        name, bio = names[index], bios[index]
-    people.append({"id": identifier, "name": name, "portrait": item["asset"], "bio": bio})
-if len(people) != 41 or len({p["id"] for p in people}) != len(people):
-    raise ValueError("Collection author IDs are incomplete or duplicated")
+people = json.loads((root / "Docs/BackendAPI/seed/editorial_people.json").read_text(encoding="utf-8"))
+if not people or len({item["id"] for item in people}) != len(people):
+    raise ValueError("Archived source is incomplete or has duplicate IDs")
 raw = json.dumps(people, ensure_ascii=False, indent=2) + "\n"
 if "$papi_people$" in raw:
     raise ValueError("Source conflicts with SQL quoting")

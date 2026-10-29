@@ -4,26 +4,9 @@ import json
 import re
 
 root = Path(__file__).resolve().parents[2]
-def array(source: str, name: str) -> list[str]:
-    match = re.search(rf'private let {name}=(\[.*\])', source)
-    if not match:
-        raise ValueError(f"Missing {name}")
-    return json.loads(match.group(1))
-
-bean = (root / "Papi/CoffeeHouse/Beans/BeanVarieties.swift").read_text(encoding="utf-8")
-cafe = (root / "Papi/CoffeeHouse/Cafes/CafeNotebook.swift").read_text(encoding="utf-8")
-entries = []
-for kind, source, name_key, asset_key, note_key in [
-    ("bean", bean, "names", "assets", "notes"),
-    ("cafe", cafe, "names", "images", "subtitles"),
-]:
-    names, assets, notes = [array(source, key) for key in (name_key, asset_key, note_key)]
-    if not names or len(names) != len(assets) or len(names) != len(notes):
-        raise ValueError(f"Incomplete {kind} source arrays")
-    entries += [{"id": asset, "kind": kind, "title": name, "asset": asset, "detail": note, "position": i}
-                for i, (name, asset, note) in enumerate(zip(names, assets, notes))]
-if len({item["id"] for item in entries}) != len(entries):
-    raise ValueError("Guide IDs must be unique")
+entries = json.loads((root / "Docs/BackendAPI/seed/reference_guides.json").read_text(encoding="utf-8"))
+if not entries or len({item["id"] for item in entries}) != len(entries):
+    raise ValueError("Archived source is incomplete or has duplicate IDs")
 raw = json.dumps(entries, ensure_ascii=False, indent=2) + "\n"
 if "$papi_guides$" in raw:
     raise ValueError("Source conflicts with SQL quoting")
