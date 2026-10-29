@@ -1,0 +1,120 @@
+workflows:
+  papi-ios-app-store:
+    name: Papi iOS App Store
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+
+    integrations:
+      app_store_connect: Papi
+
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.papicoffee.collectiveritual
+
+      vars:
+        BUNDLE_ID: "com.papicoffee.collectiveritual"
+        XCODE_PROJECT: "Papi.xcodeproj"
+        XCODE_SCHEME: "Papi"
+        APP_STORE_APPLE_ID: "6828301319"
+
+      xcode: "27.1"
+
+    scripts:
+      - name: Verify native iOS project configuration
+        script: |
+          set -e
+          test -d "$CM_BUILD_DIR/$XCODE_PROJECT"
+          test -f "$CM_BUILD_DIR/$XCODE_PROJECT/xcshareddata/xcschemes/$XCODE_SCHEME.xcscheme"
+          test -f "$CM_BUILD_DIR/$XCODE_PROJECT/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+          grep -Fq "PRODUCT_BUNDLE_IDENTIFIER = $BUNDLE_ID;" \
+            "$CM_BUILD_DIR/$XCODE_PROJECT/project.pbxproj"
+
+      - name: Set up App Store signing
+        script: |
+          set -e
+          cd "$CM_BUILD_DIR"
+          xcode-project use-profiles
+
+      - name: Set next App Store build number
+        script: |
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+          LATEST_BUILD_NUMBER="$(app-store-connect get-latest-build-number \
+            "$APP_STORE_APPLE_ID" --platform IOS --all-versions)"
+          export LATEST_BUILD_NUMBER
+          PAPI_BUILD_NUMBER="$(python3 - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+
+          project = Path(os.environ['XCODE_PROJECT']) / 'project.pbxproj'
+          source = project.read_text()
+          versions = re.findall(r'CURRENT_PROJECT_VERSION = (\d+);', source)
+          if len(versions) != 2:
+              raise SystemExit('Expected one numeric build number in each project configuration.')
+          remote = os.environ['LATEST_BUILD_NUMBER'].strip()
+          run = os.environ.get('PROJECT_BUILD_NUMBER', '0')
+          if (remote and not remote.isdecimal()) or not run.isdecimal():
+              raise SystemExit('App Store Connect or Codemagic returned a nonnumeric build number.')
+          next_number = max([int(remote or '0'), int(run), *map(int, versions)]) + 1
+          updated = re.sub(r'CURRENT_PROJECT_VERSION = \d+;', f'CURRENT_PROJECT_VERSION = {next_number};', source)
+          project.write_text(updated)
+          print(next_number)
+          PY
+          )"
+          echo "PAPI_BUILD_NUMBER=$PAPI_BUILD_NUMBER" >> "$CM_ENV"
+          echo "Using build number: $PAPI_BUILD_NUMBER"
+
+      - name: Resolve Swift package dependencies
+        script: |
+          set -e
+          xcodebuild -resolvePackageDependencies \
+            -project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -onlyUsePackageVersionsFromResolvedFile
+
+      - name: Build signed IPA
+        script: |
+          set -e
+          cd "$CM_BUILD_DIR"
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME" \
+            --archive-flags="-disableAutomaticPackageResolution"
+
+      - name: Verify IPA identity and build number
+        script: |
+          set -e
+          python3 - <<'PY'
+          import glob
+          import os
+          import plistlib
+          import re
+          import zipfile
+
+          paths = glob.glob(os.path.join(os.environ['CM_BUILD_DIR'], 'build/ios/ipa/*.ipa'))
+          if len(paths) != 1:
+              raise SystemExit(f'Expected exactly one IPA, found {len(paths)}.')
+          with zipfile.ZipFile(paths[0]) as ipa:
+              plists = [name for name in ipa.namelist() if re.fullmatch(r'Payload/[^/]+\.app/Info\.plist', name)]
+              if len(plists) != 1:
+                  raise SystemExit('Expected exactly one application Info.plist in the IPA.')
+              info = plistlib.loads(ipa.read(plists[0]))
+          if info.get('CFBundleIdentifier') != os.environ['BUNDLE_ID']:
+              raise SystemExit('IPA bundle identifier does not match the configured app.')
+          if str(info.get('CFBundleVersion')) != os.environ['PAPI_BUILD_NUMBER']:
+              raise SystemExit('IPA build number does not match the selected build number.')
+          print('IPA identity and build number match the workflow.')
+          PY
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: false
+        submit_to_app_store: false
