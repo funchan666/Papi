@@ -25,7 +25,10 @@ struct CafeInspirationView:View {
                             filterButton("All",isSelected:!savedOnly){savedOnly=false}
                             filterButton("Saved",isSelected:savedOnly){savedOnly=true}
                         }.padding(5).background(Color.cream,in:RoundedRectangle(cornerRadius:18))
-                        if visibleScenes.isEmpty {
+                        if savedOnly && store.usesCloudWallet && store.cloudSavedScenes == nil {
+                            PapiTextButton(store.cloudSavedScenesBusy ? "Connecting…":"Retry") {Task {await store.refreshSavedScenes()}}
+                                .disabled(store.cloudSavedScenesBusy)
+                        } else if visibleScenes.isEmpty {
                             PapiEmpty(title:"No saved scenes yet",detail:"Save a coffee scene to find it here.")
                         } else {
                             ForEach(visibleScenes) {guide in sceneCard(guide)}

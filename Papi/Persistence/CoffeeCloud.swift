@@ -113,6 +113,7 @@ actor CoffeeCloud {
     }
     private struct SavedScene:Decodable {let scene_id:String}
     private struct SavedSceneUpdate:Encodable {let p_scene:String;let p_enabled:Bool}
+    private struct BrewRecipeEntry:Decodable {let item:BrewRecipe}
     struct EditorialCatalogEntry:Decodable {
         let id:String
         let author_id:String
@@ -139,6 +140,12 @@ actor CoffeeCloud {
         let title:String
         let category:String
         let sort_order:Int
+        let cover_asset:String?
+        let host_reference:String?
+        var room:CoffeeTable? {
+            guard let cover_asset,!cover_asset.isEmpty,let host_reference,!host_reference.isEmpty else{return nil}
+            return CoffeeTable(id:id,title:title,category:category,image:cover_asset,hostMemberID:host_reference)
+        }
     }
     struct VoiceMessage:Decodable,Identifiable {
         let id:UUID
@@ -496,6 +503,13 @@ actor CoffeeCloud {
         _ = try await identity(account)
         return guides
     }
+    func brewRecipes(account:UUID) async throws -> [BrewRecipe] {
+        _ = try await identity(account)
+        let rows:[BrewRecipeEntry] = try await client.from("coffee_brew_recipes")
+            .select("item").order("position",ascending:true).execute().value
+        _ = try await identity(account)
+        return rows.map(\.item)
+    }
     func savedScenes(account:UUID) async throws -> Set<String> {
         _ = try await identity(account)
         let rows:[SavedScene] = try await client.from("coffee_saved_scenes").select("scene_id").execute().value
@@ -659,7 +673,7 @@ actor CoffeeCloud {
     }
     func voiceTopics(account:UUID) async throws -> [VoiceTopic] {
         _ = try await identity(account)
-        let topics:[VoiceTopic] = try await client.from("coffee_voice_topics").select("id,title,category,sort_order").order("sort_order",ascending:true).execute().value
+        let topics:[VoiceTopic] = try await client.from("coffee_voice_topics").select("id,title,category,sort_order,cover_asset,host_reference").order("sort_order",ascending:true).execute().value
         _ = try await identity(account)
         return topics
     }

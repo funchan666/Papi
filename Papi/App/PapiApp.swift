@@ -1,6 +1,132 @@
 import SwiftUI
+import UIKit
+import UserNotifications
+import Network
+
+private final class PapiProbeRedirects:NSObject,URLSessionTaskDelegate {
+    func urlSession(_ session:URLSession,task:URLSessionTask,willPerformHTTPRedirection response:HTTPURLResponse,
+                    newRequest request:URLRequest,completionHandler:@escaping (URLRequest?)->Void) {completionHandler(nil)}
+}
+
+@MainActor final class PapiNetworkCoordinator {
+    static let shared=PapiNetworkCoordinator()
+    private let monitor=NWPathMonitor()
+    private let queue=DispatchQueue(label:"papi.network.path")
+    private let redirects=PapiProbeRedirects()
+    private var started=false
+    private var active=true
+    private var ready=false
+    private var generation=0
+    private var currentProbe:Task<Bool,Never>?
+    private var retryTask:Task<Void,Never>?
+    private var retryIndex=0
+    private var lastStatus:NWPath.Status?
+    private let session:URLSession = {
+        let configuration=URLSessionConfiguration.ephemeral
+        configuration.waitsForConnectivity=true
+        configuration.timeoutIntervalForRequest=12
+        configuration.timeoutIntervalForResource=15
+        return URLSession(configuration:configuration)
+    }()
+    func start() {
+        guard !started else{return}
+        started=true
+        monitor.pathUpdateHandler = { [weak self] path in
+            Task { @MainActor in
+                guard let self else{return}
+                if self.lastStatus == nil {
+                    self.lastStatus=path.status
+                    if path.status != .satisfied {self.invalidate()}
+                    else if self.active && self.currentProbe == nil {Task { _ = await self.probe() }}
+                    return
+                }
+                guard self.lastStatus != path.status else{return}
+                self.lastStatus=path.status
+                self.invalidate()
+                if path.status == .satisfied,self.active {Task { _ = await self.probe() }}
+            }
+        }
+        monitor.start(queue:queue)
+        Task {_ = await probe()}
+    }
+    func setActive(_ value:Bool) {
+        guard value != active else{return}
+        active=value;invalidate()
+        if value {Task {_ = await probe()}}
+    }
+    private func invalidate() {
+        generation += 1;ready=false;currentProbe?.cancel();currentProbe=nil
+        retryTask?.cancel();retryTask=nil;retryIndex=0
+    }
+    func markFailed() {invalidate();scheduleRetry()}
+    private func scheduleRetry() {
+        guard active,retryTask==nil else{return}
+        let delays=[2,4,8,16,30]
+        let delay=delays[min(retryIndex,delays.count-1)]
+        retryIndex=min(retryIndex+1,delays.count-1)
+        let attempt=generation
+        retryTask=Task { [weak self] in
+            do {try await Task.sleep(for:.seconds(delay))} catch {return}
+            guard let self,self.generation==attempt,self.active else{return}
+            self.retryTask=nil
+            _ = await self.probe()
+        }
+    }
+    func probe() async -> Bool {
+        guard active else{return false}
+        if ready {return true}
+        if let currentProbe {return await currentProbe.value}
+        let attempt=generation
+        let task=Task { [session,redirects] in
+            var request=URLRequest(url:URL(string:"https://cquoffowtjnxmgaxavym.supabase.co/")!)
+            request.httpMethod="HEAD"
+            do {let (_,response)=try await session.data(for:request,delegate:redirects);return response is HTTPURLResponse}
+            catch {return false}
+        }
+        currentProbe=task
+        let result=await task.value
+        guard attempt==generation else{return false}
+        currentProbe=nil;ready=result
+        if result {retryTask?.cancel();retryTask=nil;retryIndex=0} else {scheduleRetry()}
+        return result
+    }
+}
+
+@MainActor final class PapiPushCoordinator {
+    static let shared=PapiPushCoordinator()
+    private(set) var token:String?
+    private(set) var registrationFailed=false
+    private var requestingPermission=false
+    func registered(_ data:Data) {
+        token=data.map {String(format:"%02x",$0)}.joined()
+        registrationFailed=false
+    }
+    func failed() {token=nil;registrationFailed=true}
+    func requestPermissionIfNeeded() async {
+        guard !requestingPermission,UIApplication.shared.applicationState == .active else{return}
+        requestingPermission=true;defer{requestingPermission=false}
+        let center=UNUserNotificationCenter.current()
+        let settings=await center.notificationSettings()
+        guard settings.authorizationStatus == .notDetermined,UIApplication.shared.applicationState == .active else{return}
+        _ = try? await center.requestAuthorization(options:[.alert,.sound,.badge])
+    }
+}
+
+final class PapiApplicationDelegate:NSObject,UIApplicationDelegate {
+    func application(_ application:UIApplication,didFinishLaunchingWithOptions launchOptions:[UIApplication.LaunchOptionsKey:Any]?=nil)->Bool {
+        application.registerForRemoteNotifications()
+        return true
+    }
+    func application(_ application:UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken:Data) {
+        PapiPushCoordinator.shared.registered(deviceToken)
+    }
+    func application(_ application:UIApplication,didFailToRegisterForRemoteNotificationsWithError error:Error) {
+        PapiPushCoordinator.shared.failed()
+    }
+}
 
 @main struct PapiApp:App {
+    @UIApplicationDelegateAdaptor(PapiApplicationDelegate.self) private var applicationDelegate
     @StateObject private var store=CoffeeHouse()
     @StateObject private var commerce=AppleCoinCounter()
     @StateObject private var router=CoffeeNavigation()
@@ -29,11 +155,12 @@ import SwiftUI
                 do {try await Task.sleep(for:.milliseconds(700))} catch {return}
                 showingLaunch=false
             }
-            .task {commerce.start(store:store);guard store.state.pendingCloudDeletionID==nil else{return};store.presentWelcomeIfNeeded();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}
-            .onChange(of:scenePhase) { _,phase in if phase == .active && store.state.pendingCloudDeletionID==nil {store.presentWelcomeIfNeeded();Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}} }
+            .task {PapiNetworkCoordinator.shared.start();commerce.start(store:store);guard store.state.pendingCloudDeletionID==nil else{return};store.presentWelcomeIfNeeded();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}
+            .task {if scenePhase == .active && store.state.signedIn {await PapiPushCoordinator.shared.requestPermissionIfNeeded()}}
+            .onChange(of:scenePhase) { _,phase in PapiNetworkCoordinator.shared.setActive(phase != .background);if phase == .active && store.state.pendingCloudDeletionID==nil {store.presentWelcomeIfNeeded();if store.state.signedIn {Task {await PapiPushCoordinator.shared.requestPermissionIfNeeded()}};Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}} }
             .onChange(of:store.state.signedIn) { _,signedIn in
                 router.resetForAccountChange()
-                if signedIn {Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}}
+                if signedIn {Task {await PapiPushCoordinator.shared.requestPermissionIfNeeded()};Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}}
             }
             .onChange(of:store.state.cloudAccountID) {_,account in
                 if account != nil {Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}}
@@ -90,7 +217,13 @@ enum CoffeePresentation:Identifiable {
             switch route {
             case .post(let id),.playPost(let id):return store.post(id)==nil
             case .person(let id),.chat(let id):return store.isUserHidden(id)
-            case .room(let id):return CoffeeTable.previews.first(where:{$0.id==id}).map{!store.isRoomVisible($0)} ?? true
+            case .room(let id):
+                if store.usesCloudWallet {
+                    guard let topics=store.cloudVoiceTopics else{return false}
+                    guard let room=topics.first(where:{$0.id==id})?.room else{return true}
+                    return !store.isRoomVisible(room)
+                }
+                return CoffeeTable.previews.first(where:{$0.id==id}).map{!store.isRoomVisible($0)} ?? true
             default:return false
             }
         }) {path=Array(path.prefix(index))}
@@ -141,8 +274,8 @@ struct PapiRootView:View {
         switch route {
         case .room(let id):
             if store.usesCloudWallet,store.liveVoiceEnabled,let account=store.state.cloudAccountID,
-               let topic=store.cloudVoiceTopics?.first(where:{$0.id==id}),let original=CoffeeTable.previews.first(where:{$0.id==id}) {
-                CoffeeLiveVoiceRoomView(topic:topic,cover:original.coverReference,account:account)
+               let topic=store.cloudVoiceTopics?.first(where:{$0.id==id}),let room=topic.room {
+                CoffeeLiveVoiceRoomView(topic:topic,cover:room.coverReference,account:account)
             }
             else if store.usesCloudWallet {PapiScreen {VStack(spacing:0){PapiHeader("Coffee tables");ScrollView {PapiEmpty(title:"Voice rooms unavailable")}}}}
             else if let room=CoffeeTable.previews.first(where:{$0.id==id}),store.isRoomVisible(room) {CoffeeTableView(room:room)}

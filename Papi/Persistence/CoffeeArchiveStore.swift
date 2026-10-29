@@ -125,6 +125,9 @@ struct CoffeeReceipt: Identifiable {
         loginInProgress=true;defer{loginInProgress=false}
         let clock=ContinuousClock()
         let transitionEnd=clock.now.advanced(by:.milliseconds(450))
+        guard await PapiNetworkCoordinator.shared.probe(),!Task.isCancelled else {
+            inform("Online connection needs attention","Your saved device data is kept. Check your connection and try again.");return
+        }
         // Preserve the existing post-deletion recovery path and its device data.
         if state.deletedCloudAccountID == nil {
             guard state.pendingCloudDeletionID == nil,state.pendingCloudRecoveryID == nil,
@@ -158,6 +161,7 @@ struct CoffeeReceipt: Identifiable {
                     storageAvailable=false;inform("Could not save","Your online session is kept. Unlock the device and retry.");return
                 }
             } catch {
+                PapiNetworkCoordinator.shared.markFailed()
                 inform("Online connection needs attention","Your saved device data is kept. Check your connection and try again.");return
             }
         }
@@ -199,6 +203,9 @@ struct CoffeeReceipt: Identifiable {
         }
         cloudConnectionInProgress = true
         defer { cloudConnectionInProgress = false }
+        guard await PapiNetworkCoordinator.shared.probe(),!Task.isCancelled else {
+            throw CoffeeCloud.ConnectionError.actionUnavailable
+        }
         let owner = state.passport.id
         if state.cloudAccountID == nil, state.cloudBootstrapPending != true {
             try await CoffeeCloud.shared.requireFreshBootstrap()
@@ -427,6 +434,10 @@ struct CoffeeReceipt: Identifiable {
            state.signedIn,state.cloudAccountID==account,
            Set(guides.map(\.id)).count==guides.count {
             cloudReferenceGuides=guides
+        }
+        if let recipes=try? await CoffeeCloud.shared.brewRecipes(account:account),
+           state.signedIn,state.cloudAccountID==account {
+            _ = CoffeeCollection.useCloudRecipes(recipes)
         }
         do {
             let profiles=try await CoffeeCloud.shared.profiles(for:account)

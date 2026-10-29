@@ -6,7 +6,7 @@ struct PourCheckpoint:Identifiable,Codable {
     let elapsedSeconds:Int
     let cumulativeWaterFraction:Double
 }
-struct BrewRecipe:Identifiable {
+struct BrewRecipe:Identifiable,Codable {
     let id:String
     let title:String
     let brewer:String
@@ -20,7 +20,8 @@ struct BrewRecipe:Identifiable {
     let checkpoints:[PourCheckpoint]
     func water(for dose:Int)->Int {Int((Double(hotWaterGrams)*Double(dose)/Double(coffeeGrams)).rounded())}
     func ice(for dose:Int)->Int {Int((Double(iceGrams)*Double(dose)/Double(coffeeGrams)).rounded())}
-    static let collection:[BrewRecipe] = [
+    static var collection:[BrewRecipe] {CoffeeCollection.cloudRecipes() ?? bundledCollection}
+    private static let bundledCollection:[BrewRecipe] = [
         .init(id:"morning-cone",title:"The morning cone",brewer:"Cone dripper",story:"A gentle bloom and two steady pours. Keep the kettle low and let the bed drain naturally.",coffeeGrams:18,hotWaterGrams:300,iceGrams:0,waterCelsius:93,drawdownSeconds:180,unlockCoins:0,checkpoints:[
             .init(id:0,cue:"Bloom the grounds",elapsedSeconds:0,cumulativeWaterFraction:0.18),
             .init(id:1,cue:"Pour in slow circles",elapsedSeconds:45,cumulativeWaterFraction:0.6),

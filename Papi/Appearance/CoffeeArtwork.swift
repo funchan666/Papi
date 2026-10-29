@@ -117,6 +117,7 @@ enum CoffeeCollection {
     private static var editorialItems:[CoffeeMoment]?
     private static var editorialConversations:[CollectionConversation]?
     private static var collectionPeople:[CoffeeMember]?
+    private static var brewRecipes:[BrewRecipe]?
     private static var catalog:Catalog? = {
         guard let url=Bundle.main.url(forResource:"CoffeeCollection",withExtension:"json",subdirectory:"Media"),
               let data=try? Data(contentsOf:url) else{return nil}
@@ -127,6 +128,18 @@ enum CoffeeCollection {
         return catalog
     }
     static var assets:[CoffeeCollectionAsset] {snapshot()?.items ?? []}
+    static func cloudRecipes()->[BrewRecipe]? {
+        catalogLock.lock();defer {catalogLock.unlock()}
+        return brewRecipes
+    }
+    static func useCloudRecipes(_ recipes:[BrewRecipe]) -> Bool {
+        let costs=["morning-cone":0,"quiet-immersion":0,"bright-four-pour":120,"rounder-cup":180,"iced-window":240]
+        guard recipes.count==costs.count,Set(recipes.map(\.id))==Set(costs.keys),
+              recipes.allSatisfy({costs[$0.id]==$0.unlockCoins && $0.coffeeGrams>0 && !$0.checkpoints.isEmpty}) else {return false}
+        catalogLock.lock();defer {catalogLock.unlock()}
+        brewRecipes=recipes
+        return true
+    }
     static func cloudPeople()->[CoffeeMember]? {
         catalogLock.lock();defer {catalogLock.unlock()}
         return collectionPeople

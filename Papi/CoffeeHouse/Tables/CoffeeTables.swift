@@ -43,10 +43,7 @@ struct CoffeeTablesView:View {
     private var rooms:[CoffeeTable] {
         let source:[CoffeeTable]
         if store.usesCloudWallet {
-            source=(store.cloudVoiceTopics ?? []).compactMap {topic in
-                guard let art=CoffeeTable.previews.first(where:{$0.id==topic.id}) else{return nil}
-                return CoffeeTable(id:topic.id,title:topic.title,category:topic.category,image:art.coverReference,hostMemberID:"")
-            }
+            source=(store.cloudVoiceTopics ?? []).compactMap(\.room)
         } else {source=CoffeeTable.previews}
         return source.filter {room in
             if store.usesCloudWallet {return store.isRoomVisible(room) && (filter==0 || store.state.recentRooms.contains(room.id))}
