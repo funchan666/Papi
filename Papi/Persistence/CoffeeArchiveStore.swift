@@ -188,7 +188,7 @@ struct CoffeeReceipt: Identifiable {
         }
         var next=state
         let welcomeID="welcome-"+next.passport.id.uuidString
-        if next.acceptedPolicyVersion==nil,next.welcomeGrant==nil,!next.coinMovements.contains(where:{$0.id==welcomeID}) {
+        if next.cloudAccountID==nil,next.acceptedPolicyVersion==nil,next.welcomeGrant==nil,!next.coinMovements.contains(where:{$0.id==welcomeID}) {
             let reward=CoffeeEconomy.welcomeCoins
             next.coinBalance += reward
             next.welcomeGrant=WelcomeGrant(coins:reward)
@@ -209,7 +209,7 @@ struct CoffeeReceipt: Identifiable {
         }
     }
     func presentWelcomeIfNeeded() {
-        guard state.signedIn, let grant=state.welcomeGrant, !grant.acknowledged, notice == nil else{return}
+        guard state.signedIn,!usesCloudWallet, let grant=state.welcomeGrant, !grant.acknowledged, notice == nil else{return}
         notice = .init(title:"Your first brew is on Papi",message:"\(grant.coins) welcome coins are already in your wallet.",kind:.welcome)
     }
     /// Called only after the online policy is published and explicitly accepted.
@@ -275,16 +275,10 @@ struct CoffeeReceipt: Identifiable {
             guard state.signedIn,state.deletedCloudAccountID==deleted,state.cloudAccountID==nil,
                   accountAction==nil,!loginInProgress,!cloudConnectionInProgress,!emailLinkBusy,
                   !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken==nil,storageAvailable else{return}
-            _ = commit { value in
-                if let pending=value.pendingCloudBrewWrite {
-                    value.retiredCloudBrewWrites=(value.retiredCloudBrewWrites ?? [])+[pending]
-                }
-                value.pendingCloudBrewWrite=nil
-                value.cloudBrewRevision=nil;value.cloudBrewGeneration=nil;value.cloudBrewSyncedGeneration=nil
-                value.cloudBrewConflict = value.brewNotebook != nil
-                value.deletedCloudAccountID=nil;value.cloudBootstrapPending=false
-                value.acceptedPolicyVersion=nil
-            }
+            // Reuse the same guarded login path as a newly deleted account.
+            // Keeping the deletion marker until the new session is saved avoids
+            // attributing the old device profile or notebook to the new identity.
+            if commit({$0.signedIn=false;$0.sawOnboarding=true}) {resetCloudState()}
         } catch {
             inform("Online account needs attention", "Your device data is kept. A saved online session needs review before creating a new account.")
         }
@@ -443,7 +437,14 @@ struct CoffeeReceipt: Identifiable {
         defer {cloudSocialBusy=false}
         cloudReferenceGuides=nil;cloudMediaCatalogReady=false;cloudEditorialPeopleReady=false
         do {try await CoffeeCloud.shared.bootstrap(account:account)}
-        catch {if state.cloudAccountID==account {cloudProfiles=nil;cloudRecipesReady=false;cloudGiftsReady=false};return}
+        catch {
+            if state.cloudAccountID==account {
+                cloudProfiles=nil;cloudRecipesReady=false;cloudGiftsReady=false
+                cloudDisplayedGiftReady=false;cloudGiftIdeas=nil;cloudRecentRooms=nil
+                cloudRecentRoomsGeneration += 1;cloudRecentRoomsBusy=false
+            }
+            return
+        }
         if let entries=try? await CoffeeCloud.shared.mediaCatalog(account:account),
            state.signedIn,state.cloudAccountID==account {
             let base=entries.first?.base_url ?? "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev"

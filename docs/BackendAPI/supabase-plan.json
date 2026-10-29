@@ -74,7 +74,7 @@
     "newCatalogs": "read-only full-field comparison matched 10 guides, 5 recipes and 8 gifts; six voice topics have metadata"
   },
   "remaining": [
-    "Move account-specific displayed gift, saved gift ideas and recent voice-room history from the existing device archive to protected cloud storage; preserve existing device records. Local illustrative collections also remain for legacy offline use.",
+    "Review and migrate remaining production local-content fallback paths without removing old device records; example editorial activity remains explicitly identified.",
     "Validate first login and returning session, isolated account ownership and cloud CRUD including storage, realtime, voice, moderation and account deletion when authorized.",
     "Configure Apple Developer push capability, provisioning and a push sender when developer access is available; APNs token delivery is not yet wired to a sender.",
     "Resolve Apple sandbox wallet isolation and refund/reversal handling, and verify real StoreKit transactions when authorized.",
@@ -129,5 +129,18 @@
     "apnsClient": "registration and permission requested; token held in memory",
     "appleSigning": "pending Apple Developer capability and provisioning profile",
     "pushSender": "not configured; no delivery claim"
-  }
+  },
+  "personalCollections": {
+    "migration": "papi_tods_personal_collections",
+    "tables": [
+      "coffee_displayed_gifts",
+      "coffee_gift_ideas",
+      "coffee_recent_voice_rooms"
+    ],
+    "deployed": true,
+    "authorization": "owner-only SELECT RLS; writes through actor-checked RPCs with account-deletion lock",
+    "legacyLocalRecords": "preserved and not automatically assigned to the new account",
+    "validation": "deployment, RLS, grants and function metadata read back; no isolated-account runtime checks"
+  },
+  "loginAfterDeletion": "new anonymous account using default cloud profile, saved bootstrap marker, old device book retained and conflict-gated against automatic upload"
 }
