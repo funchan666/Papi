@@ -114,6 +114,7 @@ actor CoffeeCloud {
     private struct SavedScene:Decodable {let scene_id:String}
     private struct SavedSceneUpdate:Encodable {let p_scene:String;let p_enabled:Bool}
     private struct BrewRecipeEntry:Decodable {let item:BrewRecipe}
+    private struct GiftEntry:Decodable {let item:CoffeeCollectible}
     struct EditorialCatalogEntry:Decodable {
         let id:String
         let author_id:String
@@ -506,6 +507,13 @@ actor CoffeeCloud {
     func brewRecipes(account:UUID) async throws -> [BrewRecipe] {
         _ = try await identity(account)
         let rows:[BrewRecipeEntry] = try await client.from("coffee_brew_recipes")
+            .select("item").order("position",ascending:true).execute().value
+        _ = try await identity(account)
+        return rows.map(\.item)
+    }
+    func giftCatalog(account:UUID) async throws -> [CoffeeCollectible] {
+        _ = try await identity(account)
+        let rows:[GiftEntry] = try await client.from("coffee_gift_catalog")
             .select("item").order("position",ascending:true).execute().value
         _ = try await identity(account)
         return rows.map(\.item)

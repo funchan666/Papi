@@ -60,7 +60,7 @@ struct CommunityReport: Identifiable, Codable {
         case excerpt = "excerpt"
     }
 }
-struct CoffeeCollectible: Identifiable, Hashable {
+struct CoffeeCollectible: Identifiable, Hashable, Codable {
     let id: String
     let name: String
     let asset: String
@@ -394,7 +394,8 @@ extension CoffeeMember {
     }
 }
 extension CoffeeCollectible {
-    static let all: [CoffeeCollectible] = [
+    static var all:[CoffeeCollectible] {CoffeeCollection.cloudGifts() ?? bundledGifts}
+    private static let bundledGifts: [CoffeeCollectible] = [
         .init(id: "love", name: "Sending love", asset: "giftLove", cost: 80),
         .init(id: "peach", name: "Peach", asset: "giftPeach", cost: 120),
         .init(id: "umbrella", name: "Sweet brew", asset: "giftUmbrella", cost: 180),

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "love",
+    "name": "Sending love",
+    "asset": "giftLove",
+    "cost": 80
+  },
+  {
+    "id": "peach",
+    "name": "Peach",
+    "asset": "giftPeach",
+    "cost": 120
+  },
+  {
+    "id": "umbrella",
+    "name": "Sweet brew",
+    "asset": "giftUmbrella",
+    "cost": 180
+  },
+  {
+    "id": "cake",
+    "name": "Three wishes",
+    "asset": "giftCake",
+    "cost": 260
+  },
+  {
+    "id": "bird",
+    "name": "Little bird",
+    "asset": "giftBird",
+    "cost": 360
+  },
+  {
+    "id": "headphones",
+    "name": "Coffee beats",
+    "asset": "giftHeadphones",
+    "cost": 520
+  },
+  {
+    "id": "car",
+    "name": "Dream ride",
+    "asset": "giftCar",
+    "cost": 900
+  },
+  {
+    "id": "crown",
+    "name": "Café royalty",
+    "asset": "giftCrown",
+    "cost": 1400
+  }
+]

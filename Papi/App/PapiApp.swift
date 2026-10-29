@@ -75,7 +75,11 @@ private final class PapiProbeRedirects:NSObject,URLSessionTaskDelegate {
     func probe() async -> Bool {
         guard active else{return false}
         if ready {return true}
-        if let currentProbe {return await currentProbe.value}
+        if let currentProbe {
+            let attempt=generation
+            let result=await currentProbe.value
+            return attempt==generation && result
+        }
         let attempt=generation
         let task=Task { [session,redirects] in
             var request=URLRequest(url:URL(string:"https://cquoffowtjnxmgaxavym.supabase.co/")!)

@@ -439,6 +439,10 @@ struct CoffeeReceipt: Identifiable {
            state.signedIn,state.cloudAccountID==account {
             _ = CoffeeCollection.useCloudRecipes(recipes)
         }
+        if let gifts=try? await CoffeeCloud.shared.giftCatalog(account:account),
+           state.signedIn,state.cloudAccountID==account {
+            _ = CoffeeCollection.useCloudGifts(gifts)
+        }
         do {
             let profiles=try await CoffeeCloud.shared.profiles(for:account)
             let imageSummaries=try await CoffeeCloud.shared.profileImageSummaries(profiles.map(\.id),account:account)
