@@ -435,6 +435,8 @@ struct CoffeeReceipt: Identifiable {
         guard let account=state.cloudAccountID,state.signedIn,!cloudSocialBusy else {return}
         cloudSocialBusy=true
         defer {cloudSocialBusy=false}
+        CoffeeCollection.clearCloudCatalogs(includeEditorial:false)
+        cloudRecipesReady=false;cloudGiftsReady=false
         cloudReferenceGuides=nil;cloudMediaCatalogReady=false;cloudEditorialPeopleReady=false
         do {try await CoffeeCloud.shared.bootstrap(account:account)}
         catch {
@@ -656,6 +658,7 @@ struct CoffeeReceipt: Identifiable {
         guard let account=state.cloudAccountID,state.signedIn,!cloudFeedBusy,!editorialBusy else{return}
         cloudFeedBusy=true;defer{cloudFeedBusy=false}
         cloudEditorialCatalogReady=false
+        CoffeeCollection.clearEditorial()
         if let entries=try? await CoffeeCloud.shared.editorialCatalog(account:account),
            state.signedIn,state.cloudAccountID==account {
             let conversations=entries.compactMap(\.conversation)
@@ -1805,6 +1808,7 @@ struct CoffeeReceipt: Identifiable {
         }
     }
     private func resetCloudState() {
+        CoffeeCollection.clearCloudCatalogs()
         cloudReferenceGuides=nil
         cloudMediaCatalogReady=false;cloudEditorialPeopleReady=false;cloudEditorialCatalogReady=false
         cloudRecipesReady=false;cloudGiftsReady=false

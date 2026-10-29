@@ -378,14 +378,13 @@ struct CoffeeArchive: Codable {
 
 extension CoffeeMember {
     // Stable IDs are retained for archived references; display data comes from the cloud.
-    static var portraits:[CoffeeMember] {(0..<8).compactMap {index in CoffeeCollection.cloudPeople()?.first{$0.id=="preview-member-\(index)"}}}
     static var previews:[CoffeeMember] {CoffeeCollection.cloudPeople() ?? []}
     static let editorial=CoffeeMember(id:"papi-editorial",name:"The Papi coffee desk",portrait:"brandMark",bio:"Coffee scenes, brewing details and small rituals selected for the Papi journal.")
     static func find(_ id:String)->CoffeeMember? {id==editorial.id ? editorial:previews.first{$0.id==id}}
     var handle:String {
         if id==Self.editorial.id {return "papi.coffee.desk"}
         let handles=["clara.pourover","jun.ceramics","kai.trailcoffee","theo.espresso","elise.readsandbrews","mateo.icedcoffee","ren.roastnotes","dae.firstcup"]
-        if let index=Self.portraits.firstIndex(where:{$0.id==id}) {return handles[index]}
+        if id.hasPrefix("preview-member-"),let index=Int(id.dropFirst("preview-member-".count)),handles.indices.contains(index) {return handles[index]}
         return name.lowercased().replacingOccurrences(of:" ",with:".")
     }
 }

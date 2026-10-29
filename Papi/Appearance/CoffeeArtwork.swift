@@ -124,6 +124,15 @@ enum CoffeeCollection {
         catalogLock.lock();defer {catalogLock.unlock()}
         return catalog
     }
+    static func clearCloudCatalogs(includeEditorial:Bool=true) {
+        catalogLock.lock();defer {catalogLock.unlock()}
+        catalog=nil;collectionPeople=nil;brewRecipes=nil;gifts=nil
+        if includeEditorial {editorialItems=nil;editorialConversations=nil}
+    }
+    static func clearEditorial() {
+        catalogLock.lock();defer {catalogLock.unlock()}
+        editorialItems=nil;editorialConversations=nil
+    }
     static var assets:[CoffeeCollectionAsset] {snapshot()?.items ?? []}
     static func cloudGifts()->[CoffeeCollectible]? {
         catalogLock.lock();defer {catalogLock.unlock()}
