@@ -141,8 +141,8 @@ struct CoffeeReceipt: Identifiable {
         guard await PapiNetworkCoordinator.shared.probe(),!Task.isCancelled else {
             inform("Online connection needs attention","Your saved device data is kept. Check your connection and try again.");return
         }
-        // Preserve the existing post-deletion recovery path and its device data.
-        if state.deletedCloudAccountID == nil {
+        let startingAfterDeletion=state.deletedCloudAccountID != nil
+        do {
             guard state.pendingCloudDeletionID == nil,state.pendingCloudRecoveryID == nil,
                   !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken == nil else {
                 inform("Account action needs attention","Finish the saved account or purchase activity before signing in.");return
@@ -151,6 +151,13 @@ struct CoffeeReceipt: Identifiable {
                 do {try await CoffeeCloud.shared.requireFreshBootstrap()}
                 catch {inform("Online connection needs attention","Your saved device data is kept. Please try again.");return}
                 var pending=state
+                if startingAfterDeletion {
+                    if let oldWrite=pending.pendingCloudBrewWrite {pending.retiredCloudBrewWrites=(pending.retiredCloudBrewWrites ?? [])+[oldWrite]}
+                    pending.pendingCloudBrewWrite=nil
+                    pending.cloudBrewRevision=nil;pending.cloudBrewGeneration=nil;pending.cloudBrewSyncedGeneration=nil
+                    // A deleted account's book must not be silently uploaded to a new account.
+                    pending.cloudBrewConflict = pending.brewNotebook != nil
+                }
                 pending.cloudBootstrapPending=true
                 do {
                     let snapshot=pending
@@ -162,10 +169,11 @@ struct CoffeeReceipt: Identifiable {
             }
             do {
                 let account=try await CoffeeCloud.shared.openGuest(expectedID:state.cloudAccountID,
-                    passport:state.passport,hasPendingBootstrap:state.cloudBootstrapPending == true)
+                    passport:startingAfterDeletion ? CoffeePassport():state.passport,hasPendingBootstrap:state.cloudBootstrapPending == true)
                 guard !Task.isCancelled,state.cloudAccountID == nil || state.cloudAccountID == account else {return}
                 var connected=state
                 connected.cloudAccountID=account;connected.cloudBootstrapPending=false
+                if startingAfterDeletion {connected.deletedCloudAccountID=nil}
                 do {
                     let snapshot=connected
                     try await Task.detached(priority:.userInitiated){try CoffeeVault.write(snapshot)}.value
@@ -272,7 +280,8 @@ struct CoffeeReceipt: Identifiable {
                     value.retiredCloudBrewWrites=(value.retiredCloudBrewWrites ?? [])+[pending]
                 }
                 value.pendingCloudBrewWrite=nil
-                value.cloudBrewRevision=nil;value.cloudBrewGeneration=nil;value.cloudBrewSyncedGeneration=nil;value.cloudBrewConflict=nil
+                value.cloudBrewRevision=nil;value.cloudBrewGeneration=nil;value.cloudBrewSyncedGeneration=nil
+                value.cloudBrewConflict = value.brewNotebook != nil
                 value.deletedCloudAccountID=nil;value.cloudBootstrapPending=false
                 value.acceptedPolicyVersion=nil
             }
