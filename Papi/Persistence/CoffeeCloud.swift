@@ -138,7 +138,7 @@ actor CoffeeCloud {
         var conversation:CollectionConversation? {
             let prefix="preview-member-"
             guard author_id.hasPrefix(prefix),let index=Int(author_id.dropFirst(prefix.count)),
-                  (0..<CoffeeMember.portraits.count).contains(index),sample_likes>=0 else {return nil}
+                  (0..<8).contains(index),sample_likes>=0 else {return nil}
             return CollectionConversation(momentID:id,contributorIndex:index,appreciationCount:sample_likes,cupNotes:sample_comments)
         }
     }

@@ -449,13 +449,13 @@ private struct VoiceRoomGiftSheet:View {
     @EnvironmentObject private var store:CoffeeHouse
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var typeSize
-    @State private var selected=CoffeeCollectible.all[0].id
+    @State private var selected="love"
     @State private var quantity=1
     @State private var confirming=false
-    private var gift:CoffeeCollectible {CoffeeCollectible.all.first(where:{$0.id==selected}) ?? CoffeeCollectible.all[0]}
+    private var gift:CoffeeCollectible? {CoffeeCollectible.all.first(where:{$0.id==selected}) ?? CoffeeCollectible.all.first}
     var body:some View {
         Group {
-        if store.cloudGiftsReady {
+        if store.cloudGiftsReady,let gift {
         PapiDeviceContainer {
             PapiScreen {
                 VStack(spacing:0) {

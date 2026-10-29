@@ -9,13 +9,13 @@ struct CollectibleCounterView:View {
     @EnvironmentObject private var router:CoffeeNavigation
     @Environment(\.dynamicTypeSize) private var typeSize
     @Environment(\.verticalSizeClass) private var heightClass
-    @State private var selected=CoffeeCollectible.all[0].id
+    @State private var selected="love"
     @State private var quantity=1
     @State private var confirmCollect=false
-    private var gift:CoffeeCollectible {CoffeeCollectible.all.first{$0.id==selected} ?? CoffeeCollectible.all[0]}
+    private var gift:CoffeeCollectible? {CoffeeCollectible.all.first{$0.id==selected} ?? CoffeeCollectible.all.first}
     var body:some View {
         Group {
-        if !store.usesCloudWallet || store.cloudGiftsReady {
+        if (!store.usesCloudWallet || store.cloudGiftsReady),let gift {
         PapiScreen {
             GeometryReader {viewport in
                 let width=max(0,min(680,viewport.size.width)-32)
@@ -32,10 +32,10 @@ struct CollectibleCounterView:View {
                                         .accessibilityAddTraits(selected==item.id ? .isSelected:[])
                                 }
                             }
-                            if inlineActions {giftActions}
+                            if inlineActions {giftActions(gift)}
                         }.padding(.horizontal,16).padding(.top,10).padding(.bottom,16).frame(maxWidth:680).frame(maxWidth:.infinity)
                     }
-                    if !inlineActions {giftActions.padding(.horizontal,16).padding(.bottom,10).frame(maxWidth:680).frame(maxWidth:.infinity)}
+                    if !inlineActions {giftActions(gift).padding(.horizontal,16).padding(.bottom,10).frame(maxWidth:680).frame(maxWidth:.infinity)}
                 }
             }.overlay {
                 if confirmCollect {
@@ -79,7 +79,7 @@ struct CollectibleCounterView:View {
             .overlay(RoundedRectangle(cornerRadius:16).stroke(isSelected ? Color.coffee.opacity(0.55):Color.clear,lineWidth:1.5))
             .contentShape(RoundedRectangle(cornerRadius:16)).papiAvoidReserved()
     }
-    private var giftActions:some View {
+    private func giftActions(_ gift:CoffeeCollectible)->some View {
         VStack(spacing:8) {
             HStack(spacing:8) {
                 PapiTextButton("Less"){quantity=max(1,quantity-1)}.frame(minWidth:44,minHeight:44).disabled(quantity==1 || store.state.pendingCloudCollectible != nil)

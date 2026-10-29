@@ -119,11 +119,7 @@ enum CoffeeCollection {
     private static var collectionPeople:[CoffeeMember]?
     private static var brewRecipes:[BrewRecipe]?
     private static var gifts:[CoffeeCollectible]?
-    private static var catalog:Catalog? = {
-        guard let url=Bundle.main.url(forResource:"CoffeeCollection",withExtension:"json",subdirectory:"Media"),
-              let data=try? Data(contentsOf:url) else{return nil}
-        return try? JSONDecoder().decode(Catalog.self,from:data)
-    }()
+    private static var catalog:Catalog?
     private static func snapshot()->Catalog? {
         catalogLock.lock();defer {catalogLock.unlock()}
         return catalog

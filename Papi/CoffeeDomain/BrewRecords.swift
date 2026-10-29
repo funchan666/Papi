@@ -20,29 +20,7 @@ struct BrewRecipe:Identifiable,Codable {
     let checkpoints:[PourCheckpoint]
     func water(for dose:Int)->Int {Int((Double(hotWaterGrams)*Double(dose)/Double(coffeeGrams)).rounded())}
     func ice(for dose:Int)->Int {Int((Double(iceGrams)*Double(dose)/Double(coffeeGrams)).rounded())}
-    static var collection:[BrewRecipe] {CoffeeCollection.cloudRecipes() ?? bundledCollection}
-    private static let bundledCollection:[BrewRecipe] = [
-        .init(id:"morning-cone",title:"The morning cone",brewer:"Cone dripper",story:"A gentle bloom and two steady pours. Keep the kettle low and let the bed drain naturally.",coffeeGrams:18,hotWaterGrams:300,iceGrams:0,waterCelsius:93,drawdownSeconds:180,unlockCoins:0,checkpoints:[
-            .init(id:0,cue:"Bloom the grounds",elapsedSeconds:0,cumulativeWaterFraction:0.18),
-            .init(id:1,cue:"Pour in slow circles",elapsedSeconds:45,cumulativeWaterFraction:0.6),
-            .init(id:2,cue:"Finish the final pour",elapsedSeconds:90,cumulativeWaterFraction:1)]),
-        .init(id:"quiet-immersion",title:"A quiet immersion",brewer:"Immersion brewer",story:"Wet all the grounds, give one gentle stir, then let time do the work. Release the brewer into a stable server.",coffeeGrams:20,hotWaterGrams:300,iceGrams:0,waterCelsius:92,drawdownSeconds:270,unlockCoins:0,checkpoints:[
-            .init(id:0,cue:"Add water and stir gently",elapsedSeconds:0,cumulativeWaterFraction:1),
-            .init(id:1,cue:"Release and let it drain",elapsedSeconds:240,cumulativeWaterFraction:1)]),
-        .init(id:"bright-four-pour",title:"Four pours, brighter finish",brewer:"Cone dripper",story:"Four small pours make it easier to compare clarity. Try this with the same beans as your morning cone and record what changes.",coffeeGrams:18,hotWaterGrams:306,iceGrams:0,waterCelsius:94,drawdownSeconds:210,unlockCoins:120,checkpoints:[
-            .init(id:0,cue:"Bloom the grounds",elapsedSeconds:0,cumulativeWaterFraction:0.18),
-            .init(id:1,cue:"Begin the second pour",elapsedSeconds:40,cumulativeWaterFraction:0.45),
-            .init(id:2,cue:"Build the third pour",elapsedSeconds:80,cumulativeWaterFraction:0.73),
-            .init(id:3,cue:"Finish the final pour",elapsedSeconds:120,cumulativeWaterFraction:1)]),
-        .init(id:"rounder-cup",title:"A rounder cup",brewer:"Flat-bottom dripper",story:"A slightly shorter ratio and cooler water offer another starting point. Compare sweetness and texture after the cup cools.",coffeeGrams:20,hotWaterGrams:300,iceGrams:0,waterCelsius:90,drawdownSeconds:210,unlockCoins:180,checkpoints:[
-            .init(id:0,cue:"Bloom the grounds",elapsedSeconds:0,cumulativeWaterFraction:0.2),
-            .init(id:1,cue:"Pour in slow circles",elapsedSeconds:45,cumulativeWaterFraction:0.6),
-            .init(id:2,cue:"Finish the final pour",elapsedSeconds:100,cumulativeWaterFraction:1)]),
-        .init(id:"iced-window",title:"The iced window pour",brewer:"Dripper over ice",story:"Place the measured ice in the server before brewing. Hot water is only part of the final drink; swirl gently to melt the ice.",coffeeGrams:20,hotWaterGrams:160,iceGrams:140,waterCelsius:92,drawdownSeconds:150,unlockCoins:240,checkpoints:[
-            .init(id:0,cue:"Bloom over the ice-filled server",elapsedSeconds:0,cumulativeWaterFraction:0.25),
-            .init(id:1,cue:"Pour in slow circles",elapsedSeconds:35,cumulativeWaterFraction:0.63),
-            .init(id:2,cue:"Finish the final pour",elapsedSeconds:70,cumulativeWaterFraction:1)])
-    ]
+    static var collection:[BrewRecipe] {CoffeeCollection.cloudRecipes() ?? []}
     static func recipe(_ id:String)->BrewRecipe? {collection.first{$0.id==id}}
 }
 struct CupImpression:Codable {
