@@ -143,6 +143,8 @@ actor CoffeeCloud {
         let sort_order:Int
         let cover_asset:String?
         let host_reference:String?
+        let room_description:String?
+        let room_prompt:String?
         var room:CoffeeTable? {
             guard let cover_asset,!cover_asset.isEmpty,let host_reference,!host_reference.isEmpty else{return nil}
             return CoffeeTable(id:id,title:title,category:category,image:cover_asset,hostMemberID:host_reference)
@@ -681,7 +683,7 @@ actor CoffeeCloud {
     }
     func voiceTopics(account:UUID) async throws -> [VoiceTopic] {
         _ = try await identity(account)
-        let topics:[VoiceTopic] = try await client.from("coffee_voice_topics").select("id,title,category,sort_order,cover_asset,host_reference").order("sort_order",ascending:true).execute().value
+        let topics:[VoiceTopic] = try await client.from("coffee_voice_topics").select("id,title,category,sort_order,cover_asset,host_reference,room_description,room_prompt").order("sort_order",ascending:true).execute().value
         _ = try await identity(account)
         return topics
     }

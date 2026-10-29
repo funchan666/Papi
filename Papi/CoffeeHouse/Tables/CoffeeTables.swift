@@ -125,7 +125,7 @@ struct CoffeeTablesView:View {
                         }
                     VStack(alignment:.leading,spacing:6) {
                         PapiText(room.title).font(CoffeeType.display(.headline,weight:.bold)).fixedSize(horizontal:false,vertical:true)
-                        PapiText(TableRoomStory.forRoom(room.id).description).font(CoffeeType.face(.caption)).foregroundStyle(Color.cream.opacity(0.9)).fixedSize(horizontal:false,vertical:true)
+                        PapiText(store.usesCloudWallet ? (store.cloudVoiceTopics?.first(where:{$0.id==room.id})?.room_description ?? "") : TableRoomStory.forRoom(room.id).description).font(CoffeeType.face(.caption)).foregroundStyle(Color.cream.opacity(0.9)).fixedSize(horizontal:false,vertical:true)
                     }.foregroundStyle(Color.cream).padding(13).frame(maxWidth:.infinity,alignment:.leading)
                 }.contentShape(Rectangle())
             }.buttonStyle(.plain).disabled(store.usesCloudWallet && !store.liveVoiceEnabled)
@@ -134,7 +134,7 @@ struct CoffeeTablesView:View {
                         router.sheet = .safety(.init(kind:.room,contentReference:room.id,authorID:store.usesCloudWallet ? nil:room.hostMemberID))
                     }.background(Color.cream.opacity(0.95),in:Circle()).padding(6)
                 }
-            if let portrait=store.person(room.hostMemberID),!store.isUserHidden(portrait.id) {
+            if !store.usesCloudWallet,let portrait=store.person(room.hostMemberID),!store.isUserHidden(portrait.id) {
                 Button {router.go(.person(portrait.id))} label:{
                     HStack(spacing:8) {
                         Avatar(name:portrait.portrait,size:32)
