@@ -74,10 +74,9 @@
     "newCatalogs": "read-only full-field comparison matched 10 guides, 5 recipes and 8 gifts; six voice topics have metadata",
     "isolatedHostedApi": "2026-10-29: real anonymous Auth and bootstrap, six catalog reads, owner-only personal data, wallet isolation, book, messaging and private Storage passed in Papi-Isolated-Validation; synthetic test users and objects removed; anonymous sign-in and test switches restored.",
     "isolatedDatabaseTransactions": "2026-10-29: personal data, editorial interactions, moderation, voice messages and gifts passed rollback fixtures with two test sessions.",
-    "isolatedLive": "Voice membership and messages, call consent and block revocation passed through actual APIs. Idle deletion completed; active-call deletion returned pending with test cleanup scheduler disabled and was not verified to completion."
+    "isolatedLive": "Real isolated API checks passed for voice membership and messages, call consent, block revocation, active-session account deletion through completion after scheduled cleanup, and deletion retry. This does not verify actual audio/video or iOS devices."
   },
   "remaining": [
-    "Verify deletion after an active voice/call session completes with the isolated cleanup scheduler and LiveKit cleanup enabled; current attempt reached pending only.",
     "Validate iOS session restore and device-level cloud CRUD, media playback, microphone, calls, room gifts and account deletion; isolated API coverage is recorded above.",
     "Configure Apple Developer push capability, provisioning and a push sender when developer access is available; APNs token delivery is not yet wired to a sender.",
     "Resolve Apple sandbox wallet isolation and refund/reversal handling, and verify real StoreKit transactions when authorized.",
