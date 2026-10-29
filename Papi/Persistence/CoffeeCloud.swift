@@ -64,6 +64,7 @@ actor CoffeeCloud {
     private let emailVerificationKey = "papi-email-verification-session"
     private let deletionStorage = CoffeeKeychainStorage(service:"Papi.DeletionReceipt.v1")
     private let emailVerificationStorage = CoffeeKeychainStorage(service:"Papi.EmailVerification.v1")
+    private let deviceStorage = CoffeeKeychainStorage(service:"Papi.DeviceIdentity.v1")
     private let emailVerifier = SupabaseClient(
         supabaseURL: URL(string:"https://cquoffowtjnxmgaxavym.supabase.co")!,
         supabaseKey: "sb_publishable_srmPaTaw81JT37tSvfmCww_vqBh73A5",
@@ -96,6 +97,32 @@ actor CoffeeCloud {
         let owner_id:UUID
         let avatar_path:String?
         let cover_path:String?
+    }
+    struct MediaCatalogEntry:Decodable {
+        let asset:String
+        let base_url:String
+        let item:CoffeeCollectionAsset
+    }
+    struct EditorialCatalogEntry:Decodable {
+        let id:String
+        let author_id:String
+        let asset:String
+        let is_video:Bool
+        let caption:String
+        let category:String
+        let created_epoch:Double
+        let sample_likes:Int
+        let sample_comments:[String]
+        var moment:CoffeeMoment {
+            CoffeeMoment(id:id,authorID:author_id,media:asset,isVideo:is_video,caption:caption,
+                         category:category,createdAt:Date(timeIntervalSince1970:created_epoch))
+        }
+        var conversation:CollectionConversation? {
+            let prefix="preview-member-"
+            guard author_id.hasPrefix(prefix),let index=Int(author_id.dropFirst(prefix.count)),
+                  (0..<CoffeeMember.portraits.count).contains(index),sample_likes>=0 else {return nil}
+            return CollectionConversation(momentID:id,contributorIndex:index,appreciationCount:sample_likes,cupNotes:sample_comments)
+        }
     }
     struct VoiceTopic:Decodable,Identifiable {
         let id:String
@@ -258,6 +285,12 @@ actor CoffeeCloud {
     }
     private struct PurchaseCancellation: Encodable { let p_order: UUID }
     private struct PurchaseSettlement: Decodable { let balance: Int }
+    private struct BootstrapRequest: Encodable {}
+    private struct BootstrapResponse: Decodable {
+        let code: Int
+        let message: String
+        let data: [String: AnyJSON]
+    }
     struct Block: Codable {
         let blocker_id: UUID
         let blocked_id: UUID
@@ -359,6 +392,7 @@ actor CoffeeCloud {
     }
 
     func openGuest(expectedID: UUID?, passport: CoffeePassport, hasPendingBootstrap: Bool) async throws -> UUID {
+        try ensureDeviceIdentifier()
         let session: Session
         if client.auth.currentSession != nil {
             guard expectedID != nil || hasPendingBootstrap else { throw ConnectionError.unboundSession }
@@ -380,6 +414,8 @@ actor CoffeeCloud {
         let userID = session.user.id
         if let expectedID, expectedID != userID { throw ConnectionError.wrongAccount }
 
+        try await bootstrap(account:userID)
+
         let profiles: [Profile] = try await client.from("coffee_profiles")
             .select("id,display_name,biography,avatar_path,cover_path,revision")
             .eq("id", value: userID.uuidString.lowercased()).execute().value
@@ -393,11 +429,55 @@ actor CoffeeCloud {
         return userID
     }
 
+    private func ensureDeviceIdentifier() throws {
+        let key="device-uuid"
+        if let stored=try deviceStorage.retrieve(key:key) {
+            guard let value=String(data:stored,encoding:.utf8),UUID(uuidString:value) != nil else {
+                throw ConnectionError.sessionNotSaved
+            }
+            return
+        }
+        let value=UUID().uuidString.lowercased()
+        guard let encoded=value.data(using:.utf8) else {throw ConnectionError.sessionNotSaved}
+        try deviceStorage.store(key:key,value:encoded)
+        guard try deviceStorage.retrieve(key:key)==encoded else {throw ConnectionError.sessionNotSaved}
+    }
+
     private func identity(_ expectedID: UUID) async throws -> UUID {
         guard client.auth.currentSession != nil else { throw ConnectionError.missingSession }
         let userID = try await client.auth.session.user.id
         guard userID == expectedID else { throw ConnectionError.wrongAccount }
         return userID
+    }
+
+    func bootstrap(account:UUID) async throws {
+        _ = try await identity(account)
+        let result: BootstrapResponse = try await client.functions.invoke("papi-bootstrap",
+            options: FunctionInvokeOptions(body: BootstrapRequest()))
+        guard result.code == 0,result.data.isEmpty else {throw ConnectionError.actionUnavailable}
+        _ = try await identity(account)
+    }
+
+    func mediaCatalog(account:UUID) async throws -> [MediaCatalogEntry] {
+        _ = try await identity(account)
+        let entries:[MediaCatalogEntry] = try await client.from("coffee_asset_catalog")
+            .select("asset,base_url,item").order("position",ascending:true).execute().value
+        _ = try await identity(account)
+        return entries
+    }
+    func editorialCatalog(account:UUID) async throws -> [EditorialCatalogEntry] {
+        _ = try await identity(account)
+        let entries:[EditorialCatalogEntry] = try await client.from("coffee_editorial_catalog")
+            .select("id,author_id,asset,is_video,caption,category,created_epoch,sample_likes,sample_comments").order("position",ascending:true).execute().value
+        _ = try await identity(account)
+        return entries
+    }
+    func editorialPeople(account:UUID) async throws -> [CoffeeMember] {
+        _ = try await identity(account)
+        let people:[CoffeeMember] = try await client.from("coffee_editorial_people")
+            .select("id,name,portrait,bio").order("position",ascending:true).execute().value
+        _ = try await identity(account)
+        return people
     }
 
     // Email verification uses a separate Keychain session so an OTP can never

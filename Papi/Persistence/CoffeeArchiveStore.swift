@@ -122,6 +122,42 @@ struct CoffeeReceipt: Identifiable {
         loginInProgress=true;defer{loginInProgress=false}
         let clock=ContinuousClock()
         let transitionEnd=clock.now.advanced(by:.milliseconds(450))
+        // Preserve the existing post-deletion recovery path and its device data.
+        if state.deletedCloudAccountID == nil {
+            guard state.pendingCloudDeletionID == nil,state.pendingCloudRecoveryID == nil,
+                  !checkoutActive,state.purchaseIntents.isEmpty,state.activePurchaseToken == nil else {
+                inform("Account action needs attention","Finish the saved account or purchase activity before signing in.");return
+            }
+            if state.cloudAccountID == nil,state.cloudBootstrapPending != true {
+                do {try await CoffeeCloud.shared.requireFreshBootstrap()}
+                catch {inform("Online connection needs attention","Your saved device data is kept. Please try again.");return}
+                var pending=state
+                pending.cloudBootstrapPending=true
+                do {
+                    let snapshot=pending
+                    try await Task.detached(priority:.userInitiated){try CoffeeVault.write(snapshot)}.value
+                    savedSnapshotExpected=true;state=pending
+                } catch {
+                    storageAvailable=false;inform("Could not save","Your saved device data is kept. Unlock the device and retry.");return
+                }
+            }
+            do {
+                let account=try await CoffeeCloud.shared.openGuest(expectedID:state.cloudAccountID,
+                    passport:state.passport,hasPendingBootstrap:state.cloudBootstrapPending == true)
+                guard !Task.isCancelled,state.cloudAccountID == nil || state.cloudAccountID == account else {return}
+                var connected=state
+                connected.cloudAccountID=account;connected.cloudBootstrapPending=false
+                do {
+                    let snapshot=connected
+                    try await Task.detached(priority:.userInitiated){try CoffeeVault.write(snapshot)}.value
+                    savedSnapshotExpected=true;state=connected
+                } catch {
+                    storageAvailable=false;inform("Could not save","Your online session is kept. Unlock the device and retry.");return
+                }
+            } catch {
+                inform("Online connection needs attention","Your saved device data is kept. Check your connection and try again.");return
+            }
+        }
         var next=state
         let welcomeID="welcome-"+next.passport.id.uuidString
         if next.acceptedPolicyVersion==nil,next.welcomeGrant==nil,!next.coinMovements.contains(where:{$0.id==welcomeID}) {
@@ -373,6 +409,17 @@ struct CoffeeReceipt: Identifiable {
         guard let account=state.cloudAccountID,state.signedIn,!cloudSocialBusy else {return}
         cloudSocialBusy=true
         defer {cloudSocialBusy=false}
+        do {try await CoffeeCloud.shared.bootstrap(account:account)}
+        catch {if state.cloudAccountID==account {cloudProfiles=nil};return}
+        if let entries=try? await CoffeeCloud.shared.mediaCatalog(account:account),
+           state.signedIn,state.cloudAccountID==account,let first=entries.first,
+           entries.allSatisfy({$0.base_url==first.base_url && $0.asset==$0.item.asset}) {
+            _ = CoffeeCollection.useCloud(baseURL:first.base_url,items:entries.map(\.item))
+        }
+        if let people=try? await CoffeeCloud.shared.editorialPeople(account:account),
+           state.signedIn,state.cloudAccountID==account {
+            _ = CoffeeCollection.useCloudPeople(people)
+        }
         do {
             let profiles=try await CoffeeCloud.shared.profiles(for:account)
             let imageSummaries=try await CoffeeCloud.shared.profileImageSummaries(profiles.map(\.id),account:account)
@@ -478,6 +525,11 @@ struct CoffeeReceipt: Identifiable {
     func refreshCloudFeed() async {
         guard let account=state.cloudAccountID,state.signedIn,!cloudFeedBusy,!editorialBusy else{return}
         cloudFeedBusy=true;defer{cloudFeedBusy=false}
+        if let entries=try? await CoffeeCloud.shared.editorialCatalog(account:account),
+           state.signedIn,state.cloudAccountID==account {
+            let conversations=entries.compactMap(\.conversation)
+            _ = CoffeeCollection.useCloudEditorial(entries.map(\.moment),conversations:conversations)
+        }
         do {
             let feed=try await CoffeeCloud.shared.recentMoments(for:account)
             guard state.signedIn,state.cloudAccountID==account else{return}

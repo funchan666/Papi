@@ -92,7 +92,8 @@ struct CoinPack: Identifiable {
             products.removeAll{$0.productIdentifier==product.productIdentifier};products.append(product)
             guard canPresent(),store.state.signedIn,store.state.cloudAccountID==account,
                   !unresolved,store.state.purchaseIntents.isEmpty,store.state.activePurchaseToken==nil else{return}
-            let terms=CoinPurchaseTerms(token:UUID(),owner:account,productID:pack.id,coins:pack.coins)
+            var terms=CoinPurchaseTerms(token:UUID(),owner:account,productID:pack.id,coins:pack.coins)
+            terms.paymentStarted=false
             guard store.commit({
                 $0.purchaseIntents[pack.id]=account;$0.activePurchaseToken=terms.token
                 if $0.coinPurchaseTerms==nil {$0.coinPurchaseTerms=[]};$0.coinPurchaseTerms?.append(terms)
@@ -103,15 +104,24 @@ struct CoinPack: Identifiable {
                   store.state.activePurchaseToken==terms.token,(try? await CoffeeCloud.shared.purchaseAvailable(account:account)) == true else {
                 if await cancelOrder(terms,store:store,account:account) {
                     status="No purchase was started. Please try again."
-                } else {unresolved=true;fail("The saved order needs reconciliation before another purchase.")}
+                } else {unresolved=true;fail("The saved order needs reconciliation before another purchase.");scheduleRecovery()}
                 return
             }
             let payment=SKMutablePayment(product:product)
             payment.applicationUsername=terms.token.uuidString.lowercased()
+            // Record the point of no return before the payment enters Apple's queue.
+            guard store.commit({state in
+                if let index=state.coinPurchaseTerms?.firstIndex(where:{$0.token==terms.token}) {
+                    state.coinPurchaseTerms?[index].paymentStarted=true
+                }
+            }) else {
+                if !(await cancelOrder(terms,store:store,account:account)) {unresolved=true;scheduleRecovery()}
+                fail("The purchase could not be started. Please try again.");return
+            }
             SKPaymentQueue.default().add(payment)
             status="Confirm your purchase with Apple."
         } catch {
-            if store.state.activePurchaseToken != nil {unresolved=true;fail("The saved order needs reconciliation before another purchase.")}
+            if store.state.activePurchaseToken != nil {unresolved=true;fail("The saved order needs reconciliation before another purchase.");scheduleRecovery()}
             else {fail("Apple could not load this product. No purchase was started. Please try again.")}
         }
     }
@@ -195,6 +205,16 @@ struct CoinPack: Identifiable {
            let account=store.state.cloudAccountID,store.state.signedIn,
            let terms=store.state.coinPurchaseTerms?.first(where:{$0.token==token && $0.owner==account && $0.failedAt != nil}) {
             if await cancelOrder(terms,store:store,account:account) {unresolved=false;status="No unfinished purchases were found."}
+        }
+        // A newly recorded order with paymentStarted=false was never sent to
+        // Apple. Complete and cancel its remote order even after interruption.
+        if !busy,SKPaymentQueue.default().transactions.isEmpty,let token=store.state.activePurchaseToken,
+           let account=store.state.cloudAccountID,store.state.signedIn,
+           let terms=store.state.coinPurchaseTerms?.first(where:{$0.token==token && $0.owner==account && $0.paymentStarted == false}) {
+            do {
+                try await CoffeeCloud.shared.createPurchaseOrder(id:token,productID:terms.productID,account:account)
+                if await cancelOrder(terms,store:store,account:account) {unresolved=false;status="No unfinished purchases were found."}
+            } catch {unresolved=true;status="This purchase needs online recovery.";scheduleRecovery()}
         }
         if store.state.activePurchaseToken != nil && SKPaymentQueue.default().transactions.isEmpty {
             unresolved=true

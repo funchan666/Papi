@@ -36,7 +36,12 @@ struct FirstCupWelcomeView:View {
                                 PapiText("Papi").font(CoffeeType.display(size:23,weight:.bold))
                             }.foregroundStyle(Color.coffee).padding(.horizontal,16).frame(minHeight:52).papiAvoidReserved()
                             Color.clear.frame(height:max(120,proxy.size.height*0.72-52))
-                            PapiTextButton(store.text("Log in")) {Task{await store.login(acceptedPolicies:acceptedPolicies)}}.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:12)).frame(maxWidth:.infinity)
+                            Button {Task{await store.login(acceptedPolicies:acceptedPolicies)}} label: {
+                                HStack(spacing:8) {
+                                    if store.loginInProgress {ProgressView().tint(.white)}
+                                    PapiText(store.loginInProgress ? "Connecting…":"Log in")
+                                }
+                            }.buttonStyle(PapiButtonStyle(wide:true,cornerRadius:12)).frame(maxWidth:.infinity)
                                 .disabled(!acceptedPolicies || !store.storageAvailable || store.loginInProgress).padding(.horizontal,16)
                             PapiText("Your recipes, coffee moments and tasting notes, kept together.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).padding(.top,10).padding(.horizontal,20).multilineTextAlignment(.center)
                             if !store.storageAvailable {PapiTextButton("Retry"){store.reload()}.buttonStyle(PapiButtonStyle(light:true))}

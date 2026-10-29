@@ -1,0 +1,79 @@
+{
+  "stage": "A_in_progress",
+  "project": {
+    "name": "Papi",
+    "ref": "cquoffowtjnxmgaxavym",
+    "url": "https://cquoffowtjnxmgaxavym.supabase.co",
+    "region": "us-east-1",
+    "binding": "reuse_existing_production",
+    "reason": "User previously directed the work back to the existing Papi production environment and requested preservation of old data."
+  },
+  "appTarget": "Papi",
+  "bootstrap": {"function": "papi-bootstrap", "status": "deployed", "version": 1},
+  "mediaCatalog": {
+    "table": "coffee_asset_catalog",
+    "migration": "papi_tods_media_catalog",
+    "source": "seed/coffee_collection.json",
+    "exporter": "../../backend/scripts/export_tods_catalog.py",
+    "sourceCount": 81,
+    "cloudCountObserved": 81,
+    "photographs": 60,
+    "films": 21,
+    "journalEntries": 40,
+    "profileEntries": 41,
+    "appReadsCatalog": true,
+    "legacyFallbackRetained": true
+  },
+  "editorialCatalog": {
+    "table": "coffee_editorial_catalog",
+    "migration": "papi_tods_editorial_catalog",
+    "source": "seed/editorial_moments.json",
+    "exporter": "../../backend/scripts/export_tods_moments.py",
+    "sourceCount": 40,
+    "cloudCountObserved": 40,
+    "sourceCloudDifferences": 0,
+    "appReadsCatalog": true,
+    "legacyFallbackRetained": true,
+    "sampleInteractionsAreSeparateFromUserInteractions": true
+  },
+  "editorialPeople": {
+    "table": "coffee_editorial_people",
+    "migration": "papi_tods_editorial_people",
+    "source": "seed/editorial_people.json",
+    "exporter": "../../backend/scripts/export_tods_people.py",
+    "sourceCount": 41,
+    "cloudCountObserved": 41,
+    "sourceCloudDifferences": 0,
+    "appReadsCatalog": true,
+    "legacyFallbackRetained": true,
+    "hasAuthenticationAccounts": false
+  },
+  "existingAuthority": {
+    "userIdentity": "Supabase Auth user UUID",
+    "wallet": "Supabase coffee_wallets",
+    "purchases": "StoreKit 1 with existing Apple receipt verification",
+    "voice": "existing LiveKit and Supabase functions"
+  },
+  "legal": {
+    "terms": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms-online-v1.pdf",
+    "privacy": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy-online-v1.pdf",
+    "email": "Papi_service2026@outlook.com",
+    "frozen": "Keep existing versions unless explicitly requested by the user."
+  },
+  "validation": {
+    "sourceAndConfigurationInspection": "performed",
+    "protocolPublicFetch": "HTTP 200 application/pdf; text and contact address inspected",
+    "build": "not performed",
+    "appRuntime": "not performed",
+    "purchaseTesting": "not performed",
+    "isolatedRlsValidation": "not performed"
+  },
+  "remaining": [
+    "Export and migrate remaining local collections, rooms, recipes and other content with stable IDs and relationships.",
+    "Replace runtime bundled content and failure fallbacks only after complete data migration and verification, while preserving genuine old device data and entitlements.",
+    "Finish and validate bounded network readiness and APNs registration using actual signing capabilities.",
+    "Validate already-signed-in bootstrap recovery and complete post-deletion recovery without changing account identity.",
+    "Implement Apple sandbox wallet isolation and refund handling without mixing sandbox value into production balances.",
+    "Build and perform authorized device and cloud checks before describing A as complete."
+  ]
+}

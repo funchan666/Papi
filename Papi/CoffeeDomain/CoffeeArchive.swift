@@ -107,6 +107,8 @@ struct CoinPurchaseTerms: Codable {
     var transactionID: String? = nil
     // A terminal StoreKit failure is retained for later server reconciliation.
     var failedAt: Date? = nil
+    // Nil identifies older orders whose submission state is unknown.
+    var paymentStarted: Bool? = nil
 }
 struct PendingCloudCollectible: Codable {
     let id: UUID
@@ -381,7 +383,7 @@ extension CoffeeMember {
         return .init(id:"preview-member-\(index)",name:names[index],portrait:CoffeeArtwork.portraits[index],bio:notes[index])
     }
     // Legacy identifiers remain stable for existing follows, blocks and reports.
-    static var previews:[CoffeeMember] {portraits+CoffeeCollection.additionalPeople}
+    static var previews:[CoffeeMember] {CoffeeCollection.cloudPeople() ?? (portraits+CoffeeCollection.additionalPeople)}
     static let editorial=CoffeeMember(id:"papi-editorial",name:"The Papi coffee desk",portrait:"brandMark",bio:"Coffee scenes, brewing details and small rituals selected for the Papi journal.")
     static func find(_ id:String)->CoffeeMember? {id==editorial.id ? editorial:previews.first{$0.id==id}}
     var handle:String {
@@ -414,7 +416,8 @@ extension CoffeeTable {
     ]
 }
 extension CoffeeMoment {
-    static let editorial:[CoffeeMoment] = {
+    static var editorial:[CoffeeMoment] {CoffeeCollection.cloudEditorial() ?? bundledEditorial}
+    private static let bundledEditorial:[CoffeeMoment] = {
         let captions: [Int:String] = [
             0:"A window-side latte, with room to set the cup down and stay awhile.",
             1:"Coffee and a pastry on a breakfast tray: a reason to slow the morning.",
@@ -480,7 +483,8 @@ struct CollectionConversation {
     let cupNotes:[String]
     var contributorID:String {CoffeeMember.portraits[contributorIndex].id}
     static func entry(_ momentID:String)->Self? {entries.first{$0.momentID==momentID}}
-    static let entries:[CollectionConversation] = [
+    static var entries:[CollectionConversation] {CoffeeCollection.cloudConversations() ?? bundledEntries}
+    private static let bundledEntries:[CollectionConversation] = [
         .init(momentID:"editorial-photo-0",contributorIndex:3,appreciationCount:9,cupNotes:["That little cookie beside the cup is a lovely detail.","I'd pick the window seat for this one.","The wooden table gives the cup a warm backdrop.","A small latte is enough for a long sit in a place like this."]),
         .init(momentID:"editorial-photo-1",contributorIndex:4,appreciationCount:14,cupNotes:["Coffee first, then a slow breakfast. A good order of things.","I'd save the pastry for the last few sips.","There is room for both a sweet bite and something stronger on that tray."]),
         .init(momentID:"editorial-photo-2",contributorIndex:2,appreciationCount:6,cupNotes:["I like how the light comes through the americano.","The little reflections around the rim are easy to miss."]),
@@ -524,10 +528,10 @@ struct CollectionConversation {
     ]
 }
 extension TastingReply {
-    static let collectionSamples:[TastingReply] = CollectionConversation.entries.flatMap {entry -> [TastingReply] in
+    static var collectionSamples:[TastingReply] {CollectionConversation.entries.flatMap {entry -> [TastingReply] in
         guard let post=CoffeeMoment.editorial.first(where:{$0.id==entry.momentID}) else{return []}
         return entry.cupNotes.enumerated().map {offset,note in
             TastingReply(id:"collection-\(entry.momentID)-reply-\(offset)",momentID:entry.momentID,text:note,createdAt:post.createdAt.addingTimeInterval(Double(offset+1)*420),authorID:CoffeeMember.portraits[(entry.contributorIndex+offset+1)%CoffeeMember.portraits.count].id)
         }
-    }
+    }}
 }

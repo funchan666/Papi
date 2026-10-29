@@ -113,20 +113,68 @@ struct CoffeeCollectionAsset:Decodable {
 /// An explicit catalog keeps cloud filenames out of saved guest records.
 enum CoffeeCollection {
     private struct Catalog:Decodable {let baseURL:String;let items:[CoffeeCollectionAsset]}
-    private static let catalog:Catalog? = {
+    private static let catalogLock=NSLock()
+    private static var editorialItems:[CoffeeMoment]?
+    private static var editorialConversations:[CollectionConversation]?
+    private static var collectionPeople:[CoffeeMember]?
+    private static var catalog:Catalog? = {
         guard let url=Bundle.main.url(forResource:"CoffeeCollection",withExtension:"json",subdirectory:"Media"),
               let data=try? Data(contentsOf:url) else{return nil}
         return try? JSONDecoder().decode(Catalog.self,from:data)
     }()
-    static var assets:[CoffeeCollectionAsset] {catalog?.items ?? []}
-    private static let byName=Dictionary(uniqueKeysWithValues:assets.map{($0.asset,$0)})
-    static func entry(_ reference:String)->CoffeeCollectionAsset? {byName[CoffeeArtwork.canonical(reference)]}
+    private static func snapshot()->Catalog? {
+        catalogLock.lock();defer {catalogLock.unlock()}
+        return catalog
+    }
+    static var assets:[CoffeeCollectionAsset] {snapshot()?.items ?? []}
+    static func cloudPeople()->[CoffeeMember]? {
+        catalogLock.lock();defer {catalogLock.unlock()}
+        return collectionPeople
+    }
+    static func useCloudPeople(_ people:[CoffeeMember]) -> Bool {
+        let ids=Set(people.map(\.id))
+        guard !people.isEmpty,ids.count==people.count,
+              (0..<8).allSatisfy({ids.contains("preview-member-\($0)")}) else {return false}
+        catalogLock.lock();defer {catalogLock.unlock()}
+        collectionPeople=people
+        return true
+    }
+    static func cloudEditorial()->[CoffeeMoment]? {
+        catalogLock.lock();defer {catalogLock.unlock()}
+        return editorialItems
+    }
+    static func cloudConversations()->[CollectionConversation]? {
+        catalogLock.lock();defer {catalogLock.unlock()}
+        return editorialConversations
+    }
+    static func useCloudEditorial(_ moments:[CoffeeMoment],conversations:[CollectionConversation]) -> Bool {
+        guard !moments.isEmpty,Set(moments.map(\.id)).count==moments.count,
+              moments.count==conversations.count,
+              Set(moments.map(\.id))==Set(conversations.map(\.momentID)),
+              moments.allSatisfy({$0.id.hasPrefix("editorial-") && !$0.isOwnMoment}) else {return false}
+        catalogLock.lock();defer {catalogLock.unlock()}
+        editorialItems=moments;editorialConversations=conversations
+        return true
+    }
+    static func entry(_ reference:String)->CoffeeCollectionAsset? {assets.first{$0.asset==CoffeeArtwork.canonical(reference)}}
+    static func useCloud(baseURL:String,items:[CoffeeCollectionAsset]) -> Bool {
+        guard baseURL=="https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev",!items.isEmpty,
+              Set(items.map(\.asset)).count==items.count,
+              items.allSatisfy({item in
+                  ["photo","film"].contains(item.kind) &&
+                  item.path.hasPrefix(item.kind=="film" ? "vv/":"pp/") &&
+                  !item.path.contains("..") && item.path.split(separator:"/").count==2
+              }) else {return false}
+        catalogLock.lock();defer {catalogLock.unlock()}
+        catalog=Catalog(baseURL:baseURL,items:items)
+        return true
+    }
     static func url(_ reference:String)->URL? {
-        guard let item=entry(reference),let base=catalog?.baseURL,
-              base=="https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev",
+        guard let current=snapshot(),let item=current.items.first(where:{$0.asset==CoffeeArtwork.canonical(reference)}),
+              current.baseURL=="https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev",
               item.path.hasPrefix(item.kind=="film" ? "vv/":"pp/"),
               !item.path.contains(".."),item.path.split(separator:"/").count==2 else{return nil}
-        return URL(string:base+"/"+item.path)
+        return URL(string:current.baseURL+"/"+item.path)
     }
     static var additionalPeople:[CoffeeMember] {
         assets.compactMap {item in

@@ -1,0 +1,626 @@
+[
+  {
+    "id": "editorial-photo-0",
+    "author_id": "preview-member-3",
+    "asset": "corner-latte",
+    "is_video": false,
+    "caption": "A window-side latte, with room to set the cup down and stay awhile.",
+    "category": "Café journal",
+    "created_epoch": 1790000000,
+    "sample_likes": 9,
+    "sample_comments": [
+      "That little cookie beside the cup is a lovely detail.",
+      "I'd pick the window seat for this one.",
+      "The wooden table gives the cup a warm backdrop.",
+      "A small latte is enough for a long sit in a place like this."
+    ]
+  },
+  {
+    "id": "editorial-photo-1",
+    "author_id": "preview-member-4",
+    "asset": "breakfast-tray",
+    "is_video": false,
+    "caption": "Coffee and a pastry on a breakfast tray: a reason to slow the morning.",
+    "category": "Café journal",
+    "created_epoch": 1790003600,
+    "sample_likes": 14,
+    "sample_comments": [
+      "Coffee first, then a slow breakfast. A good order of things.",
+      "I'd save the pastry for the last few sips.",
+      "There is room for both a sweet bite and something stronger on that tray."
+    ]
+  },
+  {
+    "id": "editorial-photo-2",
+    "author_id": "preview-member-2",
+    "asset": "window-americano",
+    "is_video": false,
+    "caption": "An americano catches the light at a quiet window table.",
+    "category": "Café journal",
+    "created_epoch": 1790007200,
+    "sample_likes": 6,
+    "sample_comments": [
+      "I like how the light comes through the americano.",
+      "The little reflections around the rim are easy to miss."
+    ]
+  },
+  {
+    "id": "editorial-photo-3",
+    "author_id": "preview-member-6",
+    "asset": "canal-coffee",
+    "is_video": false,
+    "caption": "Two cups on a canal-side table, with the afternoon reflected in the water.",
+    "category": "Café journal",
+    "created_epoch": 1790010800,
+    "sample_likes": 17,
+    "sample_comments": [
+      "The canal reflection makes this feel so still.",
+      "Two cups and nowhere to rush.",
+      "Watching the water would probably make me forget the time.",
+      "This looks like a table worth waiting for.",
+      "I would take the smaller cup and leave the view to do the rest.",
+      "The buildings across the canal add so much to the scene."
+    ]
+  },
+  {
+    "id": "editorial-video-0",
+    "author_id": "preview-member-0",
+    "asset": "ghost-latte-art",
+    "is_video": true,
+    "caption": "A little ghost appears in the milk foam, one careful pour at a time.",
+    "category": "Coffee films",
+    "created_epoch": 1790000000,
+    "sample_likes": 18,
+    "sample_comments": [
+      "The tiny ghost only appears at the very end.",
+      "That last pour takes a steady hand.",
+      "The contrast against the dark coffee makes the little face so clear.",
+      "I would watch the ending twice to see the final detail.",
+      "The pitcher stays close to the foam for those last touches.",
+      "A small seasonal idea that still lets the coffee be the main thing.",
+      "I'd like to try this in a wide, shallow cup.",
+      "The moment the pattern takes shape is the part I keep coming back to."
+    ]
+  },
+  {
+    "id": "editorial-video-1",
+    "author_id": "preview-member-1",
+    "asset": "rosetta-practice",
+    "is_video": true,
+    "caption": "A steady milk stream opens into a rosetta in a dark cup.",
+    "category": "Coffee films",
+    "created_epoch": 1790003600,
+    "sample_likes": 11,
+    "sample_comments": [
+      "The rosetta opens so neatly when the pitcher comes closer.",
+      "The movement stays gentle even as the pattern gets wider.",
+      "Keeping the cup tilted seems to help the first part of the pour.",
+      "I like seeing the pattern develop without any cuts.",
+      "That final line pulls the leaves together so neatly."
+    ]
+  },
+  {
+    "id": "editorial-video-2",
+    "author_id": "preview-member-4",
+    "asset": "cafe-company-portrait",
+    "is_video": true,
+    "caption": "A portrait pause between café visits.",
+    "category": "Between cafés",
+    "created_epoch": 1790007200,
+    "sample_likes": 5,
+    "sample_comments": [
+      "A little pause before the next stop.",
+      "A portrait from the little moments between one café and the next."
+    ]
+  },
+  {
+    "id": "editorial-video-3",
+    "author_id": "preview-member-2",
+    "asset": "window-seat-journey",
+    "is_video": true,
+    "caption": "A window-side journey, watching the afternoon pass outside.",
+    "category": "Between cafés",
+    "created_epoch": 1790010800,
+    "sample_likes": 8,
+    "sample_comments": [
+      "The view from a window can be part of the coffee break too.",
+      "The scenery moves while the coffee ritual stays calm.",
+      "That compact brewer looks easy to keep close on a journey.",
+      "A window view makes a simple drink feel a bit more memorable."
+    ]
+  },
+  {
+    "id": "editorial-video-4",
+    "author_id": "preview-member-5",
+    "asset": "iced-espresso-glass",
+    "is_video": true,
+    "caption": "Espresso meets ice and milk in a clear glass.",
+    "category": "Coffee films",
+    "created_epoch": 1790014400,
+    "sample_likes": 7,
+    "sample_comments": [
+      "I could watch espresso slipping between ice cubes for a while.",
+      "The first ribbon of coffee around the ice is my favourite bit.",
+      "A clear glass lets you see the whole drink coming together."
+    ]
+  },
+  {
+    "id": "editorial-video-5",
+    "author_id": "preview-member-3",
+    "asset": "bar-counter-iced-latte",
+    "is_video": true,
+    "caption": "A bar-counter iced coffee, assembled from the first ice cube to the final stir.",
+    "category": "Coffee films",
+    "created_epoch": 1790018000,
+    "sample_likes": 13,
+    "sample_comments": [
+      "The ice goes in first and everything else follows.",
+      "I like seeing the whole glass come together.",
+      "The steps are easy to follow when the camera stays on the glass.",
+      "I usually leave the stirring until the very end too.",
+      "A plain glass makes all the small changes visible."
+    ]
+  },
+  {
+    "id": "editorial-video-6",
+    "author_id": "preview-member-6",
+    "asset": "blue-cup-pour",
+    "is_video": true,
+    "caption": "Two cups and a blue saucer frame a milk-pouring practice.",
+    "category": "Coffee films",
+    "created_epoch": 1790021600,
+    "sample_likes": 6,
+    "sample_comments": [
+      "That blue saucer makes the milk pour stand out.",
+      "The cup tilt is easier to notice from this angle."
+    ]
+  },
+  {
+    "id": "editorial-video-7",
+    "author_id": "preview-member-4",
+    "asset": "caramel-swirl-glass",
+    "is_video": true,
+    "caption": "Caramel trails line the glass before coffee and milk meet.",
+    "category": "Coffee films",
+    "created_epoch": 1790025200,
+    "sample_likes": 15,
+    "sample_comments": [
+      "The caramel trails stay visible until the first stir.",
+      "The syrup leaves a different pattern on every glass.",
+      "I would use a long spoon to get right down to the bottom.",
+      "The colours soften as soon as the milk starts moving."
+    ]
+  },
+  {
+    "id": "editorial-video-8",
+    "author_id": "preview-member-0",
+    "asset": "heart-latte-workshop",
+    "is_video": true,
+    "caption": "A heart takes shape as the pitcher drops close to the surface.",
+    "category": "Coffee films",
+    "created_epoch": 1790028800,
+    "sample_likes": 19,
+    "sample_comments": [
+      "A small drop at the end gives the heart its point.",
+      "Getting the pitcher low seems to make all the difference.",
+      "It is satisfying when a familiar pattern comes out cleanly.",
+      "The shape changes so quickly in the final second.",
+      "I'd practise the cup angle before worrying about the design.",
+      "A simple heart leaves plenty of room to enjoy the foam."
+    ]
+  },
+  {
+    "id": "editorial-video-9",
+    "author_id": "preview-member-2",
+    "asset": "moka-orange-peel",
+    "is_video": true,
+    "caption": "Orange peel joins the moka-pot ritual for a bright aromatic detail.",
+    "category": "Coffee films",
+    "created_epoch": 1790032400,
+    "sample_likes": 8,
+    "sample_comments": [
+      "Orange peel with a moka pot is an aroma combination I'd remember.",
+      "The orange peel is a small detail I'd want to smell as well as see.",
+      "I like watching a familiar moka routine take a slightly different direction."
+    ]
+  },
+  {
+    "id": "editorial-video-10",
+    "author_id": "preview-member-6",
+    "asset": "evening-city-company",
+    "is_video": true,
+    "caption": "An evening in the city, with company for the walk between stops.",
+    "category": "Between cafés",
+    "created_epoch": 1790036000,
+    "sample_likes": 4,
+    "sample_comments": [
+      "City evenings have their own pace."
+    ]
+  },
+  {
+    "id": "editorial-video-11",
+    "author_id": "preview-member-1",
+    "asset": "tulip-latte-pour",
+    "is_video": true,
+    "caption": "A tulip pattern builds from a few controlled milk pours.",
+    "category": "Coffee films",
+    "created_epoch": 1790039600,
+    "sample_likes": 14,
+    "sample_comments": [
+      "One little layer at a time, then the tulip comes through.",
+      "Each little push adds another layer to the pattern.",
+      "The pause between pours makes the technique easier to follow.",
+      "I can see why a wider cup helps when practising this.",
+      "That last movement makes the whole design look connected."
+    ]
+  },
+  {
+    "id": "editorial-video-12",
+    "author_id": "preview-member-3",
+    "asset": "city-cafe-walk",
+    "is_video": true,
+    "caption": "A city walk past familiar façades before the next coffee stop.",
+    "category": "Between cafés",
+    "created_epoch": 1790043200,
+    "sample_likes": 7,
+    "sample_comments": [
+      "I tend to notice the buildings on the way to a café.",
+      "Sometimes the walk to the coffee shop is half the reason to go."
+    ]
+  },
+  {
+    "id": "editorial-video-13",
+    "author_id": "preview-member-3",
+    "asset": "espresso-on-off",
+    "is_video": true,
+    "caption": "An empty cup becomes the first espresso of the morning.",
+    "category": "Coffee films",
+    "created_epoch": 1790046800,
+    "sample_likes": 5,
+    "sample_comments": [
+      "That first espresso of the morning deserves a clean cup.",
+      "A short extraction, a long pause afterward.",
+      "A clean cup and a short pour make a good beginning."
+    ]
+  },
+  {
+    "id": "editorial-video-14",
+    "author_id": "preview-member-4",
+    "asset": "stirred-caramel-latte",
+    "is_video": true,
+    "caption": "A spoon carries caramel through an iced latte.",
+    "category": "Coffee films",
+    "created_epoch": 1790050400,
+    "sample_likes": 10,
+    "sample_comments": [
+      "The caramel disappears slowly around the spoon.",
+      "The spoon leaves little swirls that disappear almost immediately.",
+      "I would taste a little before adding anything else.",
+      "There is something soothing about watching a drink slowly mix."
+    ]
+  },
+  {
+    "id": "editorial-video-15",
+    "author_id": "preview-member-5",
+    "asset": "citrus-iced-coffee",
+    "is_video": true,
+    "caption": "A citrus iced coffee comes together over a glass of ice.",
+    "category": "Coffee films",
+    "created_epoch": 1790054000,
+    "sample_likes": 16,
+    "sample_comments": [
+      "Citrus over ice makes this feel like an afternoon cup.",
+      "The bright colours make this feel like a warm-weather coffee break.",
+      "I'd give the glass a gentle stir before the first taste.",
+      "The ice keeps moving as each layer is added.",
+      "A clear view of the glass makes the order of the steps easy to see.",
+      "This is the sort of drink I'd make for an afternoon outside."
+    ]
+  },
+  {
+    "id": "editorial-video-16",
+    "author_id": "preview-member-6",
+    "asset": "cappuccino-rosetta",
+    "is_video": true,
+    "caption": "A rosetta unfolds on the surface of a cappuccino.",
+    "category": "Coffee films",
+    "created_epoch": 1790057600,
+    "sample_likes": 12,
+    "sample_comments": [
+      "The rosetta fills almost the whole cappuccino.",
+      "The edges of the leaves stay so clear.",
+      "The pattern spreads right out toward the edge of the cup.",
+      "I like how a small change in the pour makes each leaf visible."
+    ]
+  },
+  {
+    "id": "editorial-video-17",
+    "author_id": "preview-member-7",
+    "asset": "spiral-dessert-coffee",
+    "is_video": true,
+    "caption": "A spiral dessert meets a slow ribbon of coffee.",
+    "category": "Coffee films",
+    "created_epoch": 1790061200,
+    "sample_likes": 6,
+    "sample_comments": [
+      "The spiral dessert catches a little coffee in every fold.",
+      "I'd take a small bite first, then try it with the coffee.",
+      "The folds give the pour somewhere to settle."
+    ]
+  },
+  {
+    "id": "editorial-video-18",
+    "author_id": "preview-member-3",
+    "asset": "grinder-to-espresso",
+    "is_video": true,
+    "caption": "From freshly ground beans to a short espresso extraction.",
+    "category": "Coffee films",
+    "created_epoch": 1790064800,
+    "sample_likes": 17,
+    "sample_comments": [
+      "From grinder to cup is my favourite part of the routine.",
+      "The little pause between grinding and brewing feels familiar.",
+      "I'd keep the cup warm while preparing the next step.",
+      "The close view makes the texture of the grounds easy to notice.",
+      "A short film can still show the care that goes into a cup.",
+      "I'd write down the grind setting before changing anything.",
+      "This is a good reminder to give each step its own moment."
+    ]
+  },
+  {
+    "id": "editorial-video-19",
+    "author_id": "preview-member-5",
+    "asset": "iced-milk-rosetta",
+    "is_video": true,
+    "caption": "Coffee, ice and milk turn into a small layered ritual.",
+    "category": "Coffee films",
+    "created_epoch": 1790068400,
+    "sample_likes": 9,
+    "sample_comments": [
+      "The layers don't last long, but they're worth a look.",
+      "I'd stir this just before the first sip.",
+      "The milk takes a moment to find its way around the ice.",
+      "I'd leave a little room at the top for the final stir."
+    ]
+  },
+  {
+    "id": "editorial-video-20",
+    "author_id": "preview-member-2",
+    "asset": "coffee-over-ice",
+    "is_video": true,
+    "caption": "Fresh coffee falls over ice before the milk is stirred in.",
+    "category": "Coffee films",
+    "created_epoch": 1790072000,
+    "sample_likes": 7,
+    "sample_comments": [
+      "Pouring straight over ice makes the glass wake up.",
+      "The glass shows exactly where the hot coffee first meets the ice."
+    ]
+  },
+  {
+    "id": "editorial-photo-4",
+    "author_id": "preview-member-1",
+    "asset": "croissant-table",
+    "is_video": false,
+    "caption": "A croissant and a small latte share the same patch of morning light.",
+    "category": "Café journal",
+    "created_epoch": 1790014400,
+    "sample_likes": 8,
+    "sample_comments": [
+      "That croissant looks like it needs a second napkin.",
+      "Two cups make a simple breakfast feel like an occasion.",
+      "I'd let the coffee cool a little while pulling the croissant apart."
+    ]
+  },
+  {
+    "id": "editorial-photo-5",
+    "author_id": "preview-member-7",
+    "asset": "round-cafe-table",
+    "is_video": false,
+    "caption": "A round café table keeps the cups close and the conversation easy.",
+    "category": "Café journal",
+    "created_epoch": 1790018000,
+    "sample_likes": 12,
+    "sample_comments": [
+      "Round tables always seem to make a café feel friendlier.",
+      "That compact tray keeps everything together so neatly."
+    ]
+  },
+  {
+    "id": "editorial-photo-6",
+    "author_id": "preview-member-3",
+    "asset": "pastry-ritual",
+    "is_video": false,
+    "caption": "Pastry layers and latte foam: a small study in texture.",
+    "category": "Café journal",
+    "created_epoch": 1790021600,
+    "sample_likes": 5,
+    "sample_comments": [
+      "The pastry layers caught my eye before the foam did.",
+      "A little contrast between crisp and creamy.",
+      "The plates are just the right size for a shared coffee break.",
+      "A sip of coffee between bites makes pastry easier to appreciate.",
+      "I like a table where the cups don't have to compete with a laptop.",
+      "The overhead angle makes all those small textures stand out."
+    ]
+  },
+  {
+    "id": "editorial-photo-7",
+    "author_id": "preview-member-5",
+    "asset": "handheld-cold-brew",
+    "is_video": false,
+    "caption": "Cold brew in hand, ready for the walk between one place and the next.",
+    "category": "Café journal",
+    "created_epoch": 1790025200,
+    "sample_likes": 11,
+    "sample_comments": [
+      "A cold brew for the walk home sounds right."
+    ]
+  },
+  {
+    "id": "editorial-photo-8",
+    "author_id": "preview-member-2",
+    "asset": "garden-coffee-seat",
+    "is_video": false,
+    "caption": "A café garden seat makes an ordinary coffee break feel a little longer.",
+    "category": "Café journal",
+    "created_epoch": 1790028800,
+    "sample_likes": 7,
+    "sample_comments": [
+      "I'd stay outside until that patch of sun moved.",
+      "The plants make this corner feel tucked away from the street.",
+      "An outdoor seat changes the whole pace of a cup."
+    ]
+  },
+  {
+    "id": "editorial-photo-9",
+    "author_id": "preview-member-1",
+    "asset": "home-espresso-corner",
+    "is_video": false,
+    "caption": "An espresso corner keeps grinder, brewer and favourite cups within reach.",
+    "category": "Café journal",
+    "created_epoch": 1790032400,
+    "sample_likes": 16,
+    "sample_comments": [
+      "Everything within reach of the grinder. A tidy little setup.",
+      "The cups make the counter feel lived in.",
+      "A counter that makes it easy to start brewing is a good counter.",
+      "I would keep a small notebook beside that setup.",
+      "It is nice when the everyday cups are on display instead of hidden away."
+    ]
+  },
+  {
+    "id": "editorial-photo-10",
+    "author_id": "preview-member-4",
+    "asset": "sunlit-cup",
+    "is_video": false,
+    "caption": "The sun reaches the cup before the first sip.",
+    "category": "Café journal",
+    "created_epoch": 1790036000,
+    "sample_likes": 4,
+    "sample_comments": [
+      "Just enough morning light for one quiet cup.",
+      "That is the kind of seat I'd look for on a cool morning."
+    ]
+  },
+  {
+    "id": "editorial-photo-11",
+    "author_id": "preview-member-5",
+    "asset": "two-iced-lattes",
+    "is_video": false,
+    "caption": "Two iced coffees on a wooden table, slowly losing their frost.",
+    "category": "Café journal",
+    "created_epoch": 1790039600,
+    "sample_likes": 10,
+    "sample_comments": [
+      "Those iced lattes won't stay cold for long in that sun.",
+      "I like how the glass shows the coffee and milk separately.",
+      "One for each side of the table.",
+      "The wooden tray looks made for carrying both cups outside."
+    ]
+  },
+  {
+    "id": "editorial-photo-12",
+    "author_id": "preview-member-7",
+    "asset": "marbled-latte",
+    "is_video": false,
+    "caption": "Milk meets coffee in soft marbled layers beside a warm cup.",
+    "category": "Café journal",
+    "created_epoch": 1790043200,
+    "sample_likes": 13,
+    "sample_comments": [
+      "I always pause before stirring the milk through.",
+      "The marble pattern changes with every pour.",
+      "The ice makes the layers look different from every angle."
+    ]
+  },
+  {
+    "id": "editorial-photo-13",
+    "author_id": "preview-member-2",
+    "asset": "courtyard-brunch",
+    "is_video": false,
+    "caption": "A courtyard table brings breakfast out into the open air.",
+    "category": "Café journal",
+    "created_epoch": 1790046800,
+    "sample_likes": 6,
+    "sample_comments": [
+      "Breakfast in a courtyard feels like a small holiday.",
+      "A table at the edge of the courtyard would be my first choice.",
+      "The greenery softens the whole breakfast setting.",
+      "There is something lovely about taking the first cup outdoors."
+    ]
+  },
+  {
+    "id": "editorial-photo-14",
+    "author_id": "preview-member-3",
+    "asset": "matcha-and-cookie",
+    "is_video": false,
+    "caption": "A cookie, a milk drink and a little pause at the table.",
+    "category": "Café journal",
+    "created_epoch": 1790050400,
+    "sample_likes": 15,
+    "sample_comments": [
+      "A cookie with a milk drink is a pairing I keep coming back to.",
+      "The low light makes the little table feel especially quiet."
+    ]
+  },
+  {
+    "id": "editorial-photo-15",
+    "author_id": "preview-member-6",
+    "asset": "glasshouse-cafe",
+    "is_video": false,
+    "caption": "Light through the glass roof falls across an afternoon café.",
+    "category": "Café journal",
+    "created_epoch": 1790054000,
+    "sample_likes": 8,
+    "sample_comments": [
+      "That glass roof would make a rainy coffee break interesting too.",
+      "So many soft reflections in this corner.",
+      "You get the feeling of sitting outside while still being under cover.",
+      "I'd bring something short to read and order a small coffee."
+    ]
+  },
+  {
+    "id": "editorial-photo-16",
+    "author_id": "preview-member-7",
+    "asset": "coffee-and-dates",
+    "is_video": false,
+    "caption": "Coffee and dates: a simple pairing to taste slowly.",
+    "category": "Café journal",
+    "created_epoch": 1790057600,
+    "sample_likes": 12,
+    "sample_comments": [
+      "Dates bring their own sweetness to a small strong coffee.",
+      "A small serving gives you time to notice the aroma.",
+      "I'd try a date between sips rather than sweetening the cup."
+    ]
+  },
+  {
+    "id": "editorial-photo-17",
+    "author_id": "preview-member-4",
+    "asset": "rose-front-cafe",
+    "is_video": false,
+    "caption": "Rose-coloured chairs gather outside a café terrace as the light fades.",
+    "category": "Café journal",
+    "created_epoch": 1790061200,
+    "sample_likes": 5,
+    "sample_comments": [
+      "The rose chairs are a good reason to take the long way home."
+    ]
+  },
+  {
+    "id": "editorial-photo-30",
+    "author_id": "preview-member-2",
+    "asset": "street-espresso",
+    "is_video": false,
+    "caption": "A street-side espresso, carried into the rest of the day.",
+    "category": "Café journal",
+    "created_epoch": 1790108000,
+    "sample_likes": 9,
+    "sample_comments": [
+      "A quick street-side espresso, then back to the day.",
+      "Small cup, good pause.",
+      "A tiny cup can still be the best part of a walk."
+    ]
+  }
+]
