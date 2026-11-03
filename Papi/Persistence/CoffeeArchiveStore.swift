@@ -973,6 +973,40 @@ struct CoffeeReceipt: Identifiable {
         }
     }
 
+    func watchCloudMessageChanges(account:UUID) async {
+        var failures=0
+        while !Task.isCancelled,state.signedIn,state.cloudAccountID==account {
+            do {
+                try await CoffeeCloud.shared.watchMessageChanges(account:account) { [weak self] in
+                    await self?.reconcileCloudMessages(account:account)
+                }
+                return
+            } catch {
+                guard !Task.isCancelled,state.signedIn,state.cloudAccountID==account else{return}
+                failures += 1
+                cloudMessagesUnavailable=true
+                guard failures<4 else{return}
+                do {try await Task.sleep(for:.seconds(failures*2))} catch {return}
+            }
+        }
+    }
+
+    private func reconcileCloudMessages(account:UUID) async {
+        while !Task.isCancelled,state.signedIn,state.cloudAccountID==account,
+              (cloudSocialBusy || !cloudConversationBusy.isEmpty) {
+            do {try await Task.sleep(for:.milliseconds(200))} catch {return}
+        }
+        guard !Task.isCancelled,state.signedIn,state.cloudAccountID==account else{return}
+        await refreshCloudMessages()
+        for peer in Array(cloudConversations.keys) {
+            guard !Task.isCancelled,state.signedIn,state.cloudAccountID==account else{return}
+            while cloudConversationBusy.contains(peer) {
+                do {try await Task.sleep(for:.milliseconds(200))} catch {return}
+            }
+            await refreshCloudConversation(peer)
+        }
+    }
+
     func refreshCloudMessages() async {
         guard let account=state.cloudAccountID,state.signedIn,!cloudSocialBusy else {return}
         if cloudProfiles==nil {await refreshCloudSocial();return}
@@ -985,7 +1019,7 @@ struct CoffeeReceipt: Identifiable {
             guard state.signedIn,state.cloudAccountID==account else {return}
             cloudMessages=messages;cloudFollows=follows;cloudMessagesUnavailable=false
             await ensureCloudProfiles(participants)
-        } catch {if state.cloudAccountID==account {cloudMessagesUnavailable=true}}
+        } catch {if state.cloudAccountID==account {cloudMessages=[];cloudMessagesUnavailable=true}}
     }
 
     func refreshCloudConversation(_ peer:UUID) async {
@@ -1002,7 +1036,7 @@ struct CoffeeReceipt: Identifiable {
                 if older.isEmpty || (older.count<100 && recent.count==100) {cloudConversationHasMore[peer]=recent.count==100}
             }
             cloudConversationUnavailable.remove(peer)
-        } catch {if state.cloudAccountID==account {cloudConversationUnavailable.insert(peer)}}
+        } catch {if state.cloudAccountID==account {cloudConversations[peer]=[];cloudConversationHasMore[peer]=false;cloudConversationUnavailable.insert(peer)}}
     }
 
     func loadEarlierCloudConversation(_ peer:UUID) async {

@@ -1015,6 +1015,26 @@ actor CoffeeCloud {
         return allowed
     }
 
+    func watchMessageChanges(account:UUID,onChange:@escaping @Sendable () async -> Void) async throws {
+        _ = try await identity(account)
+        let channel=client.channel("papi-messages:\(account.uuidString.lowercased())") {$0.isPrivate=true}
+        let changes=channel.broadcastStream(event:"message_changed")
+        let statuses=channel.statusChange
+        do {try await channel.subscribeWithError()}
+        catch {await client.removeChannel(channel);throw error}
+        await withTaskGroup(of:Void.self) {group in
+            group.addTask {for await _ in changes {if Task.isCancelled {break};await onChange()}}
+            group.addTask {
+                for await status in statuses {
+                    if Task.isCancelled {break}
+                    if case .subscribed = status {await onChange()}
+                }
+            }
+            await group.waitForAll()
+        }
+        await client.removeChannel(channel)
+    }
+
     func messages(for account: UUID) async throws -> [Message] {
         _ = try await identity(account)
         let result:[Message] = try await client.rpc("coffee_message_inbox").execute().value

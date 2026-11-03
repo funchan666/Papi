@@ -161,6 +161,11 @@ final class PapiApplicationDelegate:NSObject,UIApplicationDelegate {
             }
             .task {PapiNetworkCoordinator.shared.start();commerce.start(store:store);guard store.state.pendingCloudDeletionID==nil else{return};store.presentWelcomeIfNeeded();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}
             .task {if scenePhase == .active && store.state.signedIn {await PapiPushCoordinator.shared.requestPermissionIfNeeded()}}
+            .task(id:"\(store.state.cloudAccountID?.uuidString ?? "none")|\(store.state.signedIn)|\(scenePhase == .active)") {
+                guard scenePhase == .active,store.state.signedIn,store.usesCloudWallet,
+                      let account=store.state.cloudAccountID else{return}
+                await store.watchCloudMessageChanges(account:account)
+            }
             .onChange(of:scenePhase) { _,phase in PapiNetworkCoordinator.shared.setActive(phase != .background);if phase == .active && store.state.pendingCloudDeletionID==nil {store.presentWelcomeIfNeeded();if store.state.signedIn {Task {await PapiPushCoordinator.shared.requestPermissionIfNeeded()}};Task {await commerce.recover();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}} }
             .onChange(of:store.state.signedIn) { _,signedIn in
                 router.resetForAccountChange()
