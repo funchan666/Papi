@@ -50,15 +50,19 @@ workflows:
 
           project = Path(os.environ['XCODE_PROJECT']) / 'project.pbxproj'
           source = project.read_text()
-          versions = re.findall(r'CURRENT_PROJECT_VERSION = (\d+);', source)
-          if len(versions) != 2:
-              raise SystemExit('Expected one numeric build number in each project configuration.')
+          versions = re.findall(r'(?m)^[ \t]*CURRENT_PROJECT_VERSION\s*=\s*([^;]+);', source)
+          versions = [version.strip() for version in versions]
+          if len(versions) < 2 or any(not version.isdecimal() for version in versions):
+              raise SystemExit('Expected numeric build numbers in the project configurations.')
           remote = os.environ['LATEST_BUILD_NUMBER'].strip()
           run = os.environ.get('PROJECT_BUILD_NUMBER', '0')
           if (remote and not remote.isdecimal()) or not run.isdecimal():
               raise SystemExit('App Store Connect or Codemagic returned a nonnumeric build number.')
           next_number = max([int(remote or '0'), int(run), *map(int, versions)]) + 1
-          updated = re.sub(r'CURRENT_PROJECT_VERSION = \d+;', f'CURRENT_PROJECT_VERSION = {next_number};', source)
+          updated = re.sub(
+              r'(?m)^([ \t]*CURRENT_PROJECT_VERSION\s*=\s*)\d+(\s*;)',
+              lambda match: f'{match.group(1)}{next_number}{match.group(2)}', source
+          )
           project.write_text(updated)
           print(next_number)
           PY
