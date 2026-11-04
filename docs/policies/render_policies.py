@@ -2,6 +2,7 @@
 from html import escape
 from pathlib import Path
 import re
+import sys
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.styles import ParagraphStyle
@@ -48,12 +49,17 @@ def build(policy):
     story=[Paragraph('PAPI  /  YOUR COFFEE BOOK',styles['brand']),Paragraph(title,styles['title']),Paragraph(escape(header[1]),styles['date'])]
     for block in raw:
         lines=block.splitlines()
-        if re.match(r'^\d+\. ',lines[0]):
+        if re.match(r'^\d+[A-Za-z]?\. ',lines[0]):
             story.append(Paragraph(escape(lines.pop(0)),styles['heading']))
         if lines:
             content=escape(' '.join(lines)).replace('Papi_service2026@outlook.com','<link href="mailto:Papi_service2026@outlook.com" color="#704631">Papi_service2026@outlook.com</link>')
+            content=re.sub(r'https://[^\s<>]+',lambda match: '<link href="'+match.group(0).rstrip('.,')+'" color="#704631">'+match.group(0).rstrip('.,')+'</link>'+match.group(0)[len(match.group(0).rstrip('.,')):],content)
             story.append(Paragraph(content,styles['body']))
     doc.build(story,onFirstPage=decorate,onLaterPages=decorate)
 
-for policy in ('terms','privacy','terms-online-v1','privacy-online-v1'):
-    build(policy)
+if __name__ == '__main__':
+    requested = sys.argv[1:] or ['terms','privacy','terms-online-v1','privacy-online-v1']
+    for policy in requested:
+        if not re.fullmatch(r'(?:terms|privacy)(?:-online-v[0-9]+)?',policy):
+            raise SystemExit('Unsupported policy name')
+        build(policy)

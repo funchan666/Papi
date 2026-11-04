@@ -1,5 +1,6 @@
 import SwiftUI
 import PhotosUI
+import Supabase
 
 struct CorrespondenceInbox:View {
     @EnvironmentObject private var store:CoffeeHouse
@@ -33,6 +34,17 @@ struct CorrespondenceInbox:View {
                         }.padding(.horizontal,18).padding(.vertical,18).frame(maxWidth:.infinity,minHeight:88,alignment:.leading)
                             .background {Image("coffeeDeskPlate").resizable()}.contentShape(Rectangle())
                     }.buttonStyle(.plain)
+                    Button {router.go(.coffeeGuide)} label:{
+                        HStack(spacing:12) {
+                            VStack(alignment:.leading,spacing:6) {
+                                PapiText("Coffee guide").font(CoffeeType.display(.title3,weight:.bold))
+                                PapiText("Ask about beans, brewing and your next cup").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                                PapiText("Ask the AI guide").font(CoffeeType.face(.caption,weight:.bold)).padding(.top,3)
+                            }.frame(maxWidth:.infinity,alignment:.leading)
+                            PapiArtworkFit(asset:"coffeeGuideArt").frame(width:124,height:102)
+                        }.foregroundStyle(Color.coffee).padding(18).frame(maxWidth:.infinity,alignment:.leading)
+                            .background(Color.butter.opacity(0.75),in:RoundedRectangle(cornerRadius:22))
+                    }.buttonStyle(.plain).papiAvoidReserved()
                     let followed=store.communityPeople.filter{store.isFollowing($0.id) && !store.isUserHidden($0.id)}
                     if !followed.isEmpty {
                         PapiText("Following").font(CoffeeType.face(.headline)).padding(.top,2)
@@ -258,5 +270,78 @@ struct CoffeeDeskView:View {
                 }.padding(20).frame(maxWidth:700).frame(maxWidth:.infinity)
             }
         }}
+    }
+}
+
+struct CoffeeGuideView:View {
+    @EnvironmentObject private var store:CoffeeHouse
+    @EnvironmentObject private var router:CoffeeNavigation
+    @Environment(\.dynamicTypeSize) private var typeSize
+    @State private var question=""
+    @State private var answer:String?
+    @State private var problem:String?
+    @State private var asking=false
+    @State private var requestTask:Task<Void,Never>?
+    @State private var requestGeneration=UUID()
+    private var canAsk:Bool {
+        store.usesCloudWallet && store.state.signedIn && store.state.cloudAccountID != nil &&
+        !asking && !question.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty
+    }
+    var body:some View {
+        PapiScreen {
+            VStack(spacing:0) {
+                PapiHeader("Coffee guide")
+                ScrollView {
+                    VStack(alignment:.leading,spacing:18) {
+                        let hero=typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(alignment:.leading,spacing:8)):AnyLayout(HStackLayout(spacing:8))
+                        hero {
+                            VStack(alignment:.leading,spacing:7) {
+                                PapiText("A little help for your next cup").font(CoffeeType.display(.title2,weight:.bold)).fixedSize(horizontal:false,vertical:true)
+                                PapiText("Ask about coffee, from beans to brewing.").font(CoffeeType.face(.subheadline)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                            }.frame(maxWidth:.infinity,alignment:.leading)
+                            PapiArtworkFit(asset:"coffeeGuideArt").frame(width:typeSize.isAccessibilitySize ? 170:145,height:120)
+                        }.padding(18).frame(maxWidth:.infinity,alignment:.leading)
+                            .background(Color.butter.opacity(0.72),in:RoundedRectangle(cornerRadius:22))
+                        VStack(alignment:.leading,spacing:12) {
+                            PapiText("Your coffee question").font(CoffeeType.display(.headline,weight:.bold))
+                            PapiInput("What would you like to know?",text:Binding(get:{question},set:{question=String($0.prefix(1200))}),axis:.vertical)
+                                .lineLimit(3...6).padding(14).background(Color.white,in:RoundedRectangle(cornerRadius:16)).disabled(asking)
+                            PapiText("Your question is sent through Papi to Groq to generate an answer. Do not include sensitive information.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee).fixedSize(horizontal:false,vertical:true)
+                            PapiTextButton("Read the privacy policy"){router.go(.legal("privacy"))}.font(CoffeeType.face(.caption,weight:.bold)).frame(minHeight:44)
+                            PapiTextButton(asking ? "Asking the guide…":"Agree and ask"){ask()}
+                                .buttonStyle(PapiButtonStyle(wide:true)).disabled(!canAsk)
+                            if !store.usesCloudWallet {PapiText("Connect your account to ask a question.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)}
+                        }.padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.cream,in:RoundedRectangle(cornerRadius:22))
+                        if let answer {
+                            VStack(alignment:.leading,spacing:10) {
+                                PapiText("A note from your coffee guide").font(CoffeeType.display(.headline,weight:.bold))
+                                PapiText(verbatim:answer).font(CoffeeType.face(.body)).fixedSize(horizontal:false,vertical:true).textSelection(.enabled)
+                                PapiText("AI answers can be inaccurate.").font(CoffeeType.face(.caption)).foregroundStyle(Color.mutedCoffee)
+                            }.padding(18).frame(maxWidth:.infinity,alignment:.leading).background(Color.white.opacity(0.92),in:RoundedRectangle(cornerRadius:22))
+                        }
+                        if let problem {PapiText(problem).font(CoffeeType.face(.subheadline)).foregroundStyle(Color.coffee).accessibilityAddTraits(.updatesFrequently)}
+                    }.padding(20).frame(maxWidth:700).frame(maxWidth:.infinity)
+                }
+            }
+        }.onDisappear{requestGeneration=UUID();requestTask?.cancel();requestTask=nil;asking=false}
+            .onChange(of:store.state.cloudAccountID){_,_ in requestGeneration=UUID();requestTask?.cancel();requestTask=nil;asking=false;answer=nil;problem=nil;question=""}
+    }
+    private func ask() {
+        guard canAsk,let account=store.state.cloudAccountID else{return}
+        let prompt=question.trimmingCharacters(in:.whitespacesAndNewlines)
+        let generation=UUID();requestGeneration=generation
+        asking=true;answer=nil;problem=nil
+        requestTask=Task {
+            defer{if requestGeneration==generation {asking=false;requestTask=nil}}
+            do {
+                let result=try await CoffeeCloud.shared.askCoffeeGuide(prompt,account:account,requestID:UUID())
+                guard !Task.isCancelled,requestGeneration==generation,store.state.cloudAccountID==account,store.state.signedIn else{return}
+                answer=result
+            } catch {
+                guard !Task.isCancelled,requestGeneration==generation,store.state.cloudAccountID==account else{return}
+                if let failure=error as? FunctionsError,case .httpError(let code,_)=failure,code == 429 {problem="The coffee guide is busy. Please try again later."}
+                else {problem="The coffee guide could not answer. Please try again."}
+            }
+        }
     }
 }

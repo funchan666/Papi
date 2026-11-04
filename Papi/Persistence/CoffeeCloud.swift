@@ -312,6 +312,8 @@ actor CoffeeCloud {
     private struct PurchaseCancellation: Encodable { let p_order: UUID }
     private struct PurchaseSettlement: Decodable { let balance: Int }
     private struct BootstrapRequest: Encodable {}
+    private struct CoffeeGuideRequest:Encodable {let request_id:UUID;let question:String;let consent:Bool}
+    private struct CoffeeGuideResponse:Decodable {let answer:String}
     private struct BootstrapResponse: Decodable {
         let code: Int
         let message: String
@@ -1013,6 +1015,15 @@ actor CoffeeCloud {
         let allowed:Bool = try await client.rpc("can_join_coffee_call",params:CallID(p_id:id)).execute().value
         _ = try await identity(account)
         return allowed
+    }
+
+    func askCoffeeGuide(_ question:String,account:UUID,requestID:UUID) async throws -> String {
+        _ = try await identity(account)
+        let response:CoffeeGuideResponse = try await client.functions.invoke("coffee-ai",
+            options:FunctionInvokeOptions(body:CoffeeGuideRequest(request_id:requestID,question:question,consent:true)))
+        _ = try await identity(account)
+        guard !response.answer.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty else {throw ConnectionError.actionUnavailable}
+        return response.answer
     }
 
     func watchMessageChanges(account:UUID,onChange:@escaping @Sendable () async -> Void) async throws {

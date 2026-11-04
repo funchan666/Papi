@@ -1,6 +1,6 @@
 {
-  "date": "2026-10-28",
-  "method": "Supabase public Storage, anonymous HTTPS byte comparison and rendered PDF inspection",
+  "date": "2026-11-03",
+  "method": "Supabase public Storage; privacy v2 anonymously fetched and SHA256 matched; original terms retained",
   "documents": [
     {
       "policy": "terms",
@@ -12,10 +12,10 @@
     },
     {
       "policy": "privacy",
-      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy-online-v1.pdf",
+      "url": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy-online-v2.pdf",
       "anonymousRead": true,
       "contentType": "application/pdf",
-      "sha256": "7a27a24da20808be8747b37a507cfad1619fc2f70eb21ef36f8d2361d6972432",
+      "sha256": "5d1e135e188d4dd86c2274fe44e74dc79f48cf3715e0d5a32eaf3f9591fdf577",
       "contact": "Papi_service2026@outlook.com"
     }
   ],

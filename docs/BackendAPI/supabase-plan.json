@@ -26,7 +26,11 @@
     "journalEntries": 40,
     "profileEntries": 41,
     "appReadsCatalog": true,
-    "legacyFallbackRetained": false
+    "legacyFallbackRetained": false,
+    "storageBucket": "papi-content",
+    "storageObjectsVerified": 81,
+    "verification": "All 81 public objects matched original SHA-256 and byte count; one MP4 range GET returned 206.",
+    "rollout": "2026-11-03: user requested immediate cutover; production catalog now references Supabase Storage. Old assets remain; previous clients restricted to the old host need a compatible build."
   },
   "editorialCatalog": {
     "table": "coffee_editorial_catalog",
@@ -60,9 +64,9 @@
   },
   "legal": {
     "terms": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms-online-v1.pdf",
-    "privacy": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy-online-v1.pdf",
+    "privacy": "https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy-online-v2.pdf",
     "email": "Papi_service2026@outlook.com",
-    "frozen": "Keep existing versions unless explicitly requested by the user."
+    "frozen": "User authorized privacy update for Groq AI on 2026-11-03; terms unchanged. Future modifications require explicit user request."
   },
   "validation": {
     "sourceAndConfigurationInspection": "performed",
@@ -70,7 +74,7 @@
     "build": "not performed; user requested integration checks but did not explicitly request a build",
     "appRuntime": "not performed at user direction",
     "purchaseTesting": "not performed",
-    "isolatedRlsValidation": "not performed",
+    "isolatedRlsValidation": "Three-account realtime subscription and message access checks passed 2026-11-03; prior A-stage checks recorded separately.",
     "newCatalogs": "read-only full-field comparison matched 10 guides, 5 recipes and 8 gifts; six voice topics have metadata",
     "isolatedHostedApi": "2026-10-29: real anonymous Auth and bootstrap, six catalog reads, owner-only personal data, wallet isolation, book, messaging and private Storage passed in Papi-Isolated-Validation; synthetic test users and objects removed; anonymous sign-in and test switches restored.",
     "isolatedDatabaseTransactions": "2026-10-29: personal data, editorial interactions, moderation, voice messages and gifts passed rollback fixtures with two test sessions.",
@@ -80,7 +84,8 @@
     "Validate iOS session restore and device-level cloud CRUD, media playback, microphone, calls, room gifts and account deletion; isolated API coverage is recorded above.",
     "Configure Apple Developer push capability, provisioning and a push sender when developer access is available; APNs token delivery is not yet wired to a sender.",
     "Resolve Apple sandbox wallet isolation and refund/reversal handling, and verify real StoreKit transactions when authorized.",
-    "Build, run and verify on real devices when authorized; static inspection and read-only catalog comparison do not prove runtime behavior."
+    "Build, run and verify on real devices when authorized; static inspection and read-only catalog comparison do not prove runtime behavior.",
+    "Install and verify a compatible iOS build and check image loading and video playback; older builds accept only the previous media host."
   ],
   "referenceGuides": {
     "table": "coffee_reference_guides",
@@ -144,5 +149,19 @@
     "legacyLocalRecords": "preserved and not automatically assigned to the new account",
     "validation": "deployment, RLS, grants and function metadata read back; no isolated-account runtime checks"
   },
-  "loginAfterDeletion": "new anonymous account using default cloud profile, saved bootstrap marker, old device book retained and conflict-gated against automatic upload"
+  "loginAfterDeletion": "new anonymous account using default cloud profile, saved bootstrap marker, old device book retained and conflict-gated against automatic upload",
+  "coffeeAI": {
+    "function": "coffee-ai",
+    "version": 2,
+    "provider": "Groq",
+    "secret": "GROQ_API_KEY stored server-side",
+    "consent": "per question before transmission",
+    "quota": "3 per minute and 40 per day per account; 1000 per day per project",
+    "validation": "Production authenticated test returned an answer; exact temporary accounts and quota records removed."
+  },
+  "realtimeChat": {
+    "migration": "papi_private_message_realtime",
+    "production": "deployed",
+    "validation": "Three isolated users: sender/recipient receive private invalidations, unrelated user denied and cannot read messages; temporary users removed; anonymous sign-in restored off."
+  }
 }

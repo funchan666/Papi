@@ -448,8 +448,8 @@ struct CoffeeReceipt: Identifiable {
             return
         }
         if let entries=try? await CoffeeCloud.shared.mediaCatalog(account:account),
+           let base=entries.first?.base_url,
            state.signedIn,state.cloudAccountID==account {
-            let base=entries.first?.base_url ?? "https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev"
             if entries.allSatisfy({$0.base_url==base && $0.asset==$0.item.asset}) {
                 cloudMediaCatalogReady = CoffeeCollection.useCloud(baseURL:base,items:entries.map(\.item))
             }

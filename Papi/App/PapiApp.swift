@@ -161,7 +161,7 @@ final class PapiApplicationDelegate:NSObject,UIApplicationDelegate {
             }
             .task {PapiNetworkCoordinator.shared.start();commerce.start(store:store);guard store.state.pendingCloudDeletionID==nil else{return};store.presentWelcomeIfNeeded();await store.refreshCloudWallet();await store.syncCloudBrewBook();await store.refreshCloudSocial()}
             .task {if scenePhase == .active && store.state.signedIn {await PapiPushCoordinator.shared.requestPermissionIfNeeded()}}
-            .task(id:"\(store.state.cloudAccountID?.uuidString ?? "none")|\(store.state.signedIn)|\(scenePhase == .active)") {
+            .task(id:"\(store.state.cloudAccountID?.uuidString ?? "none")|\(store.state.signedIn)|\(store.usesCloudWallet)|\(scenePhase == .active)") {
                 guard scenePhase == .active,store.state.signedIn,store.usesCloudWallet,
                       let account=store.state.cloudAccountID else{return}
                 await store.watchCloudMessageChanges(account:account)
@@ -183,7 +183,7 @@ final class PapiApplicationDelegate:NSObject,UIApplicationDelegate {
     }
 }
 enum CoffeeDestination:Hashable {
-    case room(String),post(String),playPost(String),person(String),chat(String),liveCall(UUID),beans,cafes,settings,editProfile,linkEmail,recoverEmail,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,photo(String),gifts(String),reviewQueue,tables,brewBench,brewRecipe(String),brewArchive,brewCup(UUID),cuppingFlight,cupChoice(Int)
+    case room(String),post(String),playPost(String),person(String),chat(String),liveCall(UUID),beans,cafes,settings,editProfile,linkEmail,recoverEmail,wallet,backpack,level,relationships(Int),blacklist,language,legal(String),notifications,coffeeGuide,photo(String),gifts(String),reviewQueue,tables,brewBench,brewRecipe(String),brewArchive,brewCup(UUID),cuppingFlight,cupChoice(Int)
 }
 enum CoffeePresentation:Identifiable {
     case compose,checkin,report(SafetyTarget),safety(SafetyTarget),more(String),gifts(String)
@@ -315,6 +315,7 @@ struct PapiRootView:View {
         case .language:LanguageView()
         case .legal(let type):LegalView(type:type)
         case .notifications:CoffeeDeskView()
+        case .coffeeGuide:CoffeeGuideView()
         case .photo(let name):PhotoDetailView(name:name)
         case .gifts(let context):CollectibleCounterView(context:context)
         case .reviewQueue:ReviewQueueView()

@@ -142,8 +142,9 @@ enum CoffeeCollection {
         return true
     }
     static func entry(_ reference:String)->CoffeeCollectionAsset? {assets.first{$0.asset==CoffeeArtwork.canonical(reference)}}
+    private static let storageCatalogBase="https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-content"
     static func useCloud(baseURL:String,items:[CoffeeCollectionAsset]) -> Bool {
-        guard baseURL=="https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev",
+        guard baseURL==storageCatalogBase,
               Set(items.map(\.asset)).count==items.count,
               items.allSatisfy({item in
                   ["photo","film"].contains(item.kind) &&
@@ -151,12 +152,12 @@ enum CoffeeCollection {
                   !item.path.contains("..") && item.path.split(separator:"/").count==2
               }) else {return false}
         catalogLock.lock();defer {catalogLock.unlock()}
-        catalog=Catalog(baseURL:baseURL,items:items)
+        catalog=Catalog(baseURL:storageCatalogBase,items:items)
         return true
     }
     static func url(_ reference:String)->URL? {
         guard let current=snapshot(),let item=current.items.first(where:{$0.asset==CoffeeArtwork.canonical(reference)}),
-              current.baseURL=="https://pub-6ba5fcb7fe264001a73e75d43c95636c.r2.dev",
+              current.baseURL==storageCatalogBase,
               item.path.hasPrefix(item.kind=="film" ? "vv/":"pp/"),
               !item.path.contains(".."),item.path.split(separator:"/").count==2 else{return nil}
         return URL(string:current.baseURL+"/"+item.path)

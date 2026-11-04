@@ -1,6 +1,6 @@
 # Papi：云端接入状态与剩余工作
 
-更新：2026-10-28。用户确认之前只有本人测试，没有真实用户和充值记录；已有设备档案、余额记录和媒体继续保留，不自动清理。
+更新：2026-11-03。用户确认之前只有本人测试，没有真实用户和充值记录；已有设备档案、余额记录和媒体继续保留，不自动清理。
 
 ## 已完成和可供真机验证
 
@@ -27,4 +27,11 @@
 
 原本地版协议与媒体仍保留。新的在线版协议：
 - https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/terms-online-v1.pdf
-- https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy-online-v1.pdf
+- https://cquoffowtjnxmgaxavym.supabase.co/storage/v1/object/public/papi-policies/privacy-online-v2.pdf
+
+## 2026-11-03 新增进度
+
+- 咖啡 AI 已部署并通过正式云端真实提问；临时账号和测试记录已清理。客户端入口和用户同意流程仍需编译及真机确认。
+- 私聊实时通知已在三账号隔离环境验证并部署正式服务端，App 端仍需真机确认。
+- 81 个公开素材已经复制并逐一校验至 Supabase；2026-11-03 按用户要求，正式媒体目录已切换至 Supabase。旧来源保留；需要安装兼容新版并确认图片及视频播放，旧版客户端只接受旧域名，可能无法显示素材。
+- Groq 密钥曾出现在本次操作记录，需替换服务端密钥并撤销旧值。
